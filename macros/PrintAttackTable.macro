@@ -1,0 +1,33 @@
+<!-- PrintAttackTable macro -->
+<!-- takes in a Json similar to this: attack,result,target,damage , attack,result,target,damage -->
+<!-- each nested Json array is a row in the table to be displayed -->
+
+[h:argle=macro.args]
+[h,if(json.length(argle)<1): abort(0)]
+<table border="0" width="400">
+[count(json.length(argle),""),code: 
+{
+  [h:row=json.get(argle,roll.count)]
+  <tr>
+    <td style="padding:2px 0px;" align=left>
+      [h:output=json.get(row,0)]
+      {output}
+    </td>
+    <td style="padding:2px 0px;" align=left>
+      [h,switch(json.get(row,1)):
+        case 0: output="<font color='red'>FUMBLE</font>";
+        case 1: output="<font color='magenta'>MISS</font>";
+        case 2: output="HIT";
+        case 3: output="<font color='green'>CRITICAL</font>";
+        default: output="";
+      ]
+      [h:output=strformat("%s vs. %s",output,json.get(row,2))]
+      {output}
+    </td>
+    <td style="padding:2px 0px;" align=left>
+      [h:output=json.get(row,3)]
+      {output}
+    </td>
+  </tr>
+}]
+</table>

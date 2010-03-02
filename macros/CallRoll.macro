@@ -1,0 +1,63 @@
+<!-- CallRoll macro -->
+
+<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
+<!-- 1 = Single/Multi -->
+<!-- 2 = Single/Multi No Damage -->
+<!-- 3 = Single/Multi No Attack -->
+<!-- 4 = AOE -->
+<!-- 5 = AOE No Damage -->
+<!-- 6 = Utility -->
+[h:atkKey        = json.get(macro.args, 0)]
+[h:atkName       = json.get(macro.args, 1)]
+[h:atkMod        = json.get(macro.args, 2)]
+[h:damMod        = json.get(macro.args, 3)]
+[h:damRoll       = json.get(macro.args, 4)]
+[h:critDamRoll   = json.get(macro.args, 5)]
+[h:maxRange      = json.get(macro.args, 6)]
+[h:numTargets    = json.get(macro.args, 7)]
+[h:targetDefense = json.get(macro.args, 8)]
+
+[h:MULTI=1]
+[h:CA=0]
+[h:charge=0]
+[h:cover=0]
+[h:longRange=0]
+[h:miscAtk=0]
+[h:miscDam=0]
+[h:status=1]
+
+[h,if(maxRange>-1): evalMacro('[macro("GetTargets@Lib:PlayerStomp"): json.append("[]", maxRange)]')]
+[h,if(maxRange>-1): targetJson = macro.return]
+[h:targetImageList = "None,"]
+[h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
+
+[h:inputJson = json.append("[]",
+    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
+    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
+)]
+[h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
+[h:inputJson = json.append(inputJson,
+    "MULTI|1|Number of Targets",
+    "CA|0|Combat Advantage vs. Targets (All)|CHECK",
+    "charge|0|Charge Attack vs. Targets (All)|CHECK",
+    "cover|None,Regular(-2),Superior(-5)|Cover vs. Targets (All)|RADIO|ORIENT=H",
+    "longRange|0|Long Range vs. Targets (All)|CHECK",
+    "miscAtk|0|<html>Miscellaneous <b>modifier</b> to attack</html>",
+    "miscDam|0|<html>Miscellaneous <b>modifier</b> to damage</html>"
+)]
+[h:status = input(json.toList(inputJson,"##"))]
+[h:abort(status)]
+[h:targJson="[]"]
+[h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
+
+<!-- Skip attack portion on attack 3 -->
+[h,if(atkKey!=3): evalMacro('[h,macro("AttackBonusTotal@Lib:PlayerStomp"): json.append("[]", atkMod, CA, charge, cover, longRange, miscAtk)]')]
+[h,if(atkKey!=3): atkText=json.get(macro.return, 0)]
+[h,if(atkKey!=3): atkVal=json.get(macro.return, 1)]
+<!-- Skip damage portion on attacks 2 & 5 -->
+[h,if(atkKey!=2 && atkKey!=5): evalMacro('[h,macro("DamageBonusTotal@Lib:PlayerStomp"): json.append("[]", damMod, miscDam)]')]
+[h,if(atkKey!=2 && atkKey!=5): damText=json.get(macro.return, 0)]
+[h,if(atkKey!=2 && atkKey!=5): damVal=json.get(macro.return, 1)]
+[h:versusJson="[]"]
+[h,foreach(targ,json.toList(targJson),""): versusJson = json.append(versusJson,json.set("{}",targ,json.append("[]",eval("1d20"),eval(atkVal),eval(damRoll)+eval(damVal),eval(critDamRoll)+eval(damVal))))]
+

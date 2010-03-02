@@ -1,0 +1,11 @@
+<!-- rollAttack macro -->
+
+<!-- assume 1 roll to be done if numRolls isn't passed -->
+[h:numRolls=number(getStrProp(macro.args, "numRolls", 1))]
+
+[h:atkRollList=""]
+[h,count(numRolls):atkRollList=listAppend(atkRollList,eval("1d20"))]
+
+<!-- output variables: atkRollList -->
+<!-- atkRollList = list of attack rolls -->
+[h:macro.return = "atkRollList=" + encode(atkRollList) + ";"]

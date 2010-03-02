@@ -1,0 +1,48 @@
+<!-- CallRoll macro -->
+
+[h:atkMod = json.get(macro.args, 0)]
+[h:damMod = json.get(macro.args, 1)]
+[h:damRoll = json.get(macro.args, 2)]
+[h:maxDamRoll = json.get(macro.args, 3)]
+[h:CR = json.get(macro.args, 4)]
+
+[h:propJson=getProperty("Miscellaneous")]
+[h:atkJson=json.get(propJson,strformat("atkMod%d",atkMod))]
+[h:damJson=json.get(propJson,strformat("damMod%d",damMod))]
+[h:atkJson=json.merge(atkJson,AttackBonuses)]
+[h:damJson=json.merge(damJson,DamageBonuses)]
+
+[h:crits = 0]
+[h:fumbles = 0]
+[h:critText=""]
+[h:fumbleText=""]
+
+<html>
+  <table border="0" width="500">
+    [h:atkFields=json.fields(atkJson)]
+    [h:atkText=listFormat(atkFields, "%list", "%item", "+")]
+    [h:atkVal=""]
+    [h,foreach(val,atkFields): atkVal=listAppend(atkVal,json.get(atkJson,val))]
+    [h:atkVal=listFormat(atkVal, "%list", "%item", "+")]
+    [h:damFields=json.fields(damJson)]
+    [h:damText=listFormat(damFields, "%list", "%item", "+")]
+    [h:damVal=""]
+    [h,foreach(val,damFields): damVal=listAppend(damVal,json.get(damJson,val))]
+    [h:damVal=listFormat(damVal, "%list", "%item", "+")]
+    <tr>        
+      [macro("CallAttackRoll@Lib:PlayerStomp"): json.append("[]", atkText, atkVal)]
+      [h:dieRoll=json.get(macro.return, 0)]
+      [h,SWITCH(dieRoll):
+        case 20: crits=crits+1;
+        case 1:  fumbles=fumbles+1;
+        default: ""
+      ]    
+      [macro("CallDamageRoll@Lib:PlayerStomp"): json.append("[]", if(dieRoll==20,strformat("%s+%s",maxDamRoll,CR),damRoll), damText, damVal, if(dieRoll==20,1,0))]
+    </tr>
+  </table>
+</html>
+[h,if(crits>0):critText="<span style=color:red>***CRITICAL HIT*** </span>"]
+[h,if(crits>1):critText="<span style=color:red>***"+crits+" CRITICAL HIT(s)*** </span>"]
+[h,if(fumbles>0):fumbleText="<span style=color:red>***FUMBLE***</span>"]
+[h,if(fumbles>1):fumbleText="<span style=color:red>***"+fumbles+" FUMBLE(s)***</span>"]
+[if(crits>0 || fumbles>0): critText + " " + fumbleText]

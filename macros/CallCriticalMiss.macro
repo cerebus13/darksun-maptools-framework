@@ -1,0 +1,12 @@
+<!-- CallCriticalMiss Macro -->
+
+[h:dieRoll=eval("1d100")]
+[h,if(dieRoll>0 && dieRoll<=20): output=customTooltip("<html><body><table width='250'><tr><td align='justify'>1 adjacent enemy may make an opportunity attack against you.</td></tr></table></body></html>",strformat("<b>Critical Miss Table</b><br>Guard Down -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>20 && dieRoll<=35): output=customTooltip("You are knocked prone.",strformat("<b>Critical Miss Table</b><br>Off balance/Trip -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>35 && dieRoll<=50): output=customTooltip("<html><table width='250'><tr><td align='justify'>You lose your grip and drop your weapon or implement.  Your weapon flies 2 squares in a random direction determined by d8 roll. You must spend a minor action on your next turn to retrieve it before attacking.</td></tr></table></html>",strformat("<b>Critical Miss Table</b><br>Drop Weapon/Disarmed -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>50 && dieRoll<=65): output=customTooltip("<html><table width='250'><tr><td align='justify'>If you missed on a melee or ranged attack, roll to hit against an adjacent ally or the ally nearest your target. If you hit the ally takes the damage. If you missed on a arcane/divine spell attack, roll to hit against your own defense. If you hit you take the damage.</td></tr></table></html>",strformat("<b>Critical Miss Table</b><br>Wild Attack/Wild Magic -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>65 && dieRoll<=85): output=customTooltip("<html><table width='250'><tr><td align='justify'>Your attack immediately ends and you grant combat advantage until the end of your next turn.</td></tr></table></html>",strformat("<b>Critical Miss Table</b><br>Fumble -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>85): output=customTooltip("No ill effect.",strformat("<b>Critical Miss Table</b><br>Recover -> d100( <b>%d</b> )",dieRoll))]
+<font color='black'>{output}</font>
+[h,if(dieRoll>35 && dieRoll<=50): moreStr = strformat("<br><font color='black'>d8( <b>%d</b> )</font>",eval("1d8")); moreStr=""]
+{moreStr}

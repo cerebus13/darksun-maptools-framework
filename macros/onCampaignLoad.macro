@@ -1,0 +1,5 @@
+[h:defineFunction("rangeError", "rangeError@"+getMacroLocation())]
+[h:defineFunction("pause", "pause@this", 1, 0 ) ] 
+[h:defineFunction("FormatTooltip", "FormatTooltip@this", 1, 1 ) ]
+[h:defineFunction("customTooltip", "customTooltip@this", 1, 1 ) ]
+[h:defineFunction("updateMacroLabel", "updateMacroLabel@"+getMacroLocation(), 1, 0 ) ]

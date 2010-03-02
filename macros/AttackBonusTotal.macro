@@ -1,0 +1,26 @@
+<!-- AttackBonusTotal macro -->
+
+[h:atkMod      = json.get(macro.args, 0)]
+[h:CA          = json.get(macro.args, 1)]
+[h:charge      = json.get(macro.args, 2)]
+[h:cover       = json.get(macro.args, 3)]
+[h:longRange   = json.get(macro.args, 4)]
+[h:miscAtk     = json.get(macro.args, 5)]
+
+[h:atkJson=json.merge(atkMod,AttackBonuses)]
+[h:inputAJson="{}"]
+[h,if(CA): inputAJson = json.set(inputAJson,"CA",2)]
+[h,if(charge): inputAJson = json.set(inputAJson,"charge",1)]
+[h,if(cover>0): inputAJson = json.set(inputAJson,"cover",if(cover==1,-2,-5))]
+[h,if(longRange): inputAJson = json.set(inputAJson,"range",-2)]
+[h,if(miscAtk!=0): inputAJson = json.set(inputAJson,"misc",miscAtk)]
+[h:atkJson=json.merge(atkJson,inputAJson)]
+
+[h:atkFields=json.fields(atkJson)]
+[h:atkText=""]
+[h,foreach(val,atkFields): atkText=concat(atkText,strformat(" + %s(%s)",val,json.get(atkJson,val)))]
+[h:atkVal=""]
+[h,foreach(val,atkFields): atkVal=listAppend(atkVal,json.get(atkJson,val))]
+[h:atkVal=listFormat(atkVal, "%list", "%item", "+")]
+
+[h:macro.return=json.append("[]", atkText, atkVal)]

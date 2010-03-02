@@ -1,0 +1,6 @@
+<!-- updateMacroLabel user defined function -->
+<!-- takes in 1 argument: text to append to the macro label, it only does this if the text is not already on the end -->
+
+[h:argu=arg(0)]
+[h:macroStr=json.get(getMacroProps(getMacroButtonIndex(),"json"),"label")]
+[h,if(endsWith(macroStr,argu)!=1): setMacroProps(getMacroButtonIndex(),strformat("label=%s%s",macroStr,argu))]

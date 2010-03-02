@@ -1,0 +1,156 @@
+[h: tokens = getSelected()]
+[h: tokencount = listCount(tokens)]
+[h: allStates = "Blinded, Bloodied, Dazed, Dead, Deafened, Dominated, Dying, Grabbed, GrantingCA, GrantingPartialCA, Helpless, Immobilized, PlusToAC, PlusToHit, MinusToAC, MinusToHit, Petrified, Prone, Restrained, Slowed, Stunned, Surprised, Weakened, Unconscious, FightingDefense, Insubstantial, Invisible, Light, Rage, TotalDefense , Curse_blue, Curse_cyan, Curse_green, "
+                   +"Curse_orange, Curse_red, Curse_yellow,"
+                   + "Marked_blue, Marked_cyan, Marked_green, "
+                    +"Marked_orange, Marked_red, Marked_yellow,"
+                    +"Quarry_blue, Quarry_cyan, Quarry_green, "
+                    +"Quarry_orange, Quarry_red, Quarry_yellow, Oath,"
+                    +"Ongoing_acid, Ongoing_cold, Ongoing_fire, Ongoing_force, "
+    +"Ongoing_lightning, Ongoing_necrotic, Ongoing_poison, "
+    +"Ongoing_psychic, Ongoing_radiant, Ongoing_thunder, Ongoing_damage,"
+    +"Bless, Fly, Gaseous, Haste, Levitate, Prayer,"
+    +"Resist_acid, Resist_cold, Resist_fire, Resist_force, Resist_generic, Resist_lightning, Resist_necrotic, Resist_poison, Resist_psychic, Resist_radiant, Resist_thunder, Vuln_acid, Vuln_cold, Vuln_fire, Vuln_force, Vuln_generic, Vuln_lightning, Vuln_necrotic, Vuln_poison, Vuln_psychic, Vuln_radiant, Vuln_thunder,"
+    +"UsedAP, UsedCurse, UsedImmediate, UsedMinor, UsedMove, UsedQuarry, UsedSecondWind, UsedSneakAttack, UsedStandard"]
+    
+[H:allNum = eval(""+listCount(allStates))]    
+    
+[frame("All States"): {
+  <html>
+    <head>
+      <title>All States</title>
+    </head>
+    <body>
+      <table style="text-align:center">
+        <tr>
+          <td style="text-align:center">      
+       [c(allNum,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(allStates, roll.count),30)+'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(allStates, roll.count), "selected") ]<br>[r: listGet(allStates, roll.count)]</span> }]
+         </td>
+          <td>
+      <table>
+    </body>
+  </html>
+}] 
+
+[abort(0)]
+
+[h: conditionStates =
+  "Blinded, Bloodied, Dazed, Dead, Deafened, Dominated, Dying, Grabbed, GrantingCA, GrantingPartialCA, Helpless, Immobilized, PlusToAC, PlusToHit, MinusToAC, MinusToHit, Petrified, Prone, Restrained, Slowed, Stunned, Surprised"]
+[H:num1 = eval(""+listCount(conditionStates))]
+
+[h: actionStates =
+  "FightingDefense, Insubstantial, Invisible, Light, Rage, TotalDefense"]
+[H:num4 = eval(""+listCount(actionStates))]
+[h: CurseStates = "Curse_blue, Curse_cyan, Curse_green, "
+                   +"Curse_orange, Curse_red, Curse_yellow,"
+                   + "Marked_blue, Marked_cyan, Marked_green, "
+                    +"Marked_orange, Marked_red, Marked_yellow,"
+                    +"Quarry_blue, Quarry_cyan, Quarry_green, "
+                    +"Quarry_orange, Quarry_red, Quarry_yellow, Oath"]
+[H:num2 = eval(""+listCount(CurseStates))]
+[h: OngoingStates =
+   "Ongoing_acid, Ongoing_cold, Ongoing_fire, Ongoing_force, "
+    +"Ongoing_lightning, Ongoing_necrotic, Ongoing_poison, "
+    +"Ongoing_psychic, Ongoing_radiant, Ongoing_thunder, Ongoing_damage"]
+[H:num5 = eval(""+listCount(OngoingStates))]
+[h: powerStates =
+  "Bless, Fly, Gaseous, Haste, Levitate, Prayer"]
+[H:num6 = eval(""+listCount(powerStates))]
+
+[h:resVulnStates = "Resist_acid, Resist_cold, Resist_fire, Resist_force, Resist_generic, Resist_lightning, Resist_necrotic, Resist_poison, Resist_psychic, Resist_radiant, Resist_thunder, Vuln_acid, Vuln_cold, Vuln_fire, Vuln_force, Vuln_generic, Vuln_lightning, Vuln_necrotic, Vuln_poison, Vuln_psychic, Vuln_radiant, Vuln_thunder"]
+[h:num7 = eval(""+listCount(resVulnStates))]
+[h:usedStates = "UsedAP, UsedCurse, UsedImmediate, UsedMinor, UsedMove, UsedQuarry, UsedSecondWind, UsedSneakAttack, UsedStandard"]  
+[h:num8 = eval(""+listCount(usedStates))]
+
+[frame("Actions/Conditions List"): {
+  <html>
+    <head>
+      <title>Actions/Conditions State List</title>
+    </head>
+    <body>
+      <table style="text-align:center">
+        <tr>
+          <td style="text-align:center" valign=top> 
+       [c(num1,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(conditionStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(conditionStates, roll.count), "selected") ]<br>[r: listGet(conditionStates, roll.count)]</span> }]
+         </td>
+          <td style="text-align:center" valign=top> 
+       [c(num4,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(actionStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(actionStates, roll.count), "selected") ]<br>[r: listGet(actionStates, roll.count)]</span> }]
+         </td>
+          <td>
+      <table>
+    </body>
+  </html>
+}] 
+
+[frame("Ongoing Damage List"): {
+  <html>
+    <head>
+      <title>Ongoing Damage List</title>
+    </head>
+    <body>
+      <table style="text-align:center">
+        <tr>
+          <td style="text-align:center"> 
+       [c(num5,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(OngoingStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(), "self" ,listGet(OngoingStates, roll.count),"selected") ]<br>[r: listGet(OngoingStates, roll.count)]</span> }]
+         </td>
+          <td>
+      <table>
+    </body>
+  </html>
+}] 
+
+[frame("Mark/Curse/Quarry/Oath List"): {
+  <html>
+    <head>
+      <title>Mark, Curse, Quarry List</title>
+    </head>
+    <body>
+      <table style="text-align:center">
+        <tr>
+          <td style="text-align:center">      
+       [c(num2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(CurseStates, roll.count),30)+'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(CurseStates, roll.count), "selected") ]<br>[r: listGet(CurseStates, roll.count)]</span> }]
+         </td>
+          <td>
+      <table>
+    </body>
+  </html>
+}] 
+
+[frame("Resists/Vulns List"): {
+  <html>
+    <head>
+      <title>Resists, Vulns List</title>
+    </head>
+    <body>
+      <table style="text-align:center">
+        <tr>
+          <td style="text-align:center">      
+       [c(num7,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(resVulnStates, roll.count),30)+'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(resVulnStates, roll.count), "selected") ]<br>[r: listGet(resVulnStates, roll.count)]</span> }]
+         </td>
+          <td>
+      <table>
+    </body>
+  </html>
+}] 
+
+[frame("Powers/Used List"): {
+  <html>
+    <head>
+      <title>Powers/Used State List</title>
+    </head>
+    <body>
+      <table style="text-align:center">
+        <tr>
+          <td style="text-align:center" valign=top> 
+       [c(num6,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(powerStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(powerStates, roll.count), "selected") ]<br>[r: listGet(powerStates, roll.count)]</span> }]
+         </td>
+          <td style="text-align:center" valign=top> 
+       [c(num8,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(usedStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(usedStates, roll.count), "selected") ]<br>[r: listGet(usedStates, roll.count)]</span> }]
+         </td>
+          <td>
+      <table>
+    </body>
+  </html>
+}] 
+
+[abort(0)]

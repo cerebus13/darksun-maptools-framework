@@ -1,0 +1,32 @@
+[h,foreach(j,targetNameList),code:
+{
+  [if(cover==1): evalMacro('[h:atk'+j+'=setStrProp(atk'+j+',"cover",-2)]')]
+  [if(cover==2): evalMacro('[h:atk'+j+'=setStrProp(atk'+j+',"cover",-5)]')]
+  [if(CA==1): evalMacro('[h:atk'+j+'=setStrProp(atk'+j+',"CA",2)]')]
+  [if(miscAtk!=0 && miscAtk!=999): evalMacro('[h:atk'+j+'=setStrProp(atk'+j+',"miscAtk",miscAtk)]')]
+  [if(miscDam!=0 && miscDam!=999): evalMacro('[h:atk'+j+'=setStrProp(atk'+j+',"miscDam",miscDam)]')]
+}]
+
+
+
+
+
+  <!-- Assemble the list of target names from all target dropdowns in the input control dynamically, store in a StrPropList for processing -->
+  [h:tarVarJson=json.append("[]","")]
+  [h:for(i,1,multiAtkNum+1,1,""):json.append(tarVarJson,"targetNum"+i)]
+  [h:tarVarList=strPropFromVars(json.toList(tarVarJson),"UNSUFFIXED")]
+  <!-- tarVarList now looks like: targetNum1=1,targetNum2=3,targetNum3=2,etc -->
+  [h:tarChoiceList=""]
+  [h,for(i,0,countStrProp(tarVarList),1,""), code:
+  {
+    [h:tarChoiceList = listAppend(tarChoiceList,indexValueStrProp(tarVarList, i))]
+  }]
+  <!-- tarChoiceList now looks like: 1,3,2,etc -->
+  [h:targetNameList=""] 
+  [h,foreach(j,tarChoiceList): if(j!=listCount(getTargetList)-1, targetNameList=listAppend(targetNameList,listGet(getTargetList,number(j))), "")]
+  <!-- targetNameList now looks like: Goblin 1,Elf 2,BigMcLargeHuge,etc... all None choices have been ignored -->
+  
+  
+  
+  
+  [h:targetName=getStrProp(macro.return, "targetName", 0)]

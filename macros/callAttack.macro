@@ -1,0 +1,67 @@
+<!-- CallAttack macro -->
+
+<!-- Process parameters -->
+
+<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
+<!-- 1 = Single/Multi -->
+<!-- 2 = Single/Multi No Damage -->
+<!-- 3 = Single/Multi No Attack -->
+<!-- 4 = AOE -->
+<!-- 5 = AOE No Damage -->
+<!-- 6 = AOE No Attack -->
+<!-- 7 = Single/Multi heal -->
+<!-- 8 = AOE heal -->
+<!-- 20 = Utility -->
+[h:atkKey         = json.get(macro.args, 0)]
+[h:atkName        = json.get(macro.args, 1)]
+[h:atkType        = json.get(macro.args, 2)]
+[h:atkTypeName    = json.get(macro.args, 3)]
+[h:keywords       = json.get(macro.args, 4)]
+[h:actionType     = json.get(macro.args, 5)]
+[h:targetDefense  = json.get(macro.args, 6)]
+[h:hitStatAdded   = json.get(macro.args, 7)]
+[h:rangeText      = json.get(macro.args, 8)]
+[h:numTargetsText = json.get(macro.args, 9)]
+[h:atkMod         = json.get(macro.args, 10)]
+[h:damMod         = json.get(macro.args, 11)]
+[h:damRoll        = json.get(macro.args, 12)]
+[h:critDamRoll    = json.get(macro.args, 13)]
+[h,if(json.length(macro.args)>14): maxRange     = json.get(macro.args, 14);maxRange=-1]
+[h,if(json.length(macro.args)>15): numTargets   = json.get(macro.args, 15);numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
+[h,if(json.length(macro.args)>16): effectText   = json.get(macro.args, 16);effectText=""]
+[h,if(json.length(macro.args)>17): extraRoll    = json.get(macro.args, 17);extraRoll=""]
+[h,if(json.length(macro.args)>18): useMagicItem = json.get(macro.args, 18);useMagicItem=0]
+[h,if(json.length(macro.args)>19): friendlyFire = json.get(macro.args, 19);friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
+[h,if(json.length(macro.args)>20): otherSource  = json.get(macro.args, 20);otherSource=""] <!-- name of other token to use as source for figuring targets based on range -->
+[h,if(json.length(macro.args)>21): paramStateJson = json.get(macro.args, 21);paramStateJson="{}"] <!-- Json holding states to be applied with this power -->
+[h,if(json.length(macro.args)>22): missDamageRoll = json.get(macro.args, 22);missDamageRoll=-1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
+
+<!-- Deal with magic item uses -->
+[h:status=1]
+[h,if(useMagicItem && MagicItemUses<=0): status = input("junk|Your Magic Item Uses are at 0, do you still want to use power anyway? Click OK if Yes, cancel if No.||LABEL|SPAN=TRUE")]
+[h:abort(status)]
+[h,if(useMagicItem && MagicItemUses>0): MagicItemUses=MagicItemUses-1]
+
+<!-- Print power card -->
+
+<!--  At-Will = 1, Encounter = 2, Daily = 3 -->
+[h,SWITCH(atkType):
+  case 1: tableBG="#00CC00";
+  case 2: tableBG="#FF0000";
+  case 3: tableBG="#000000"
+]
+[h,if(length(keywords)!=0): keywords=strformat("<tr><td style='padding:0px 5px;' align=left><b>%s</b></td></tr>",keywords); keywords=""]
+[h,if(length(rangeText)!=0): rangeText=strformat("<td style='padding:0px 5px;' align=right><b>%s</b></td>",rangeText); rangeText=""]
+[h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px;' align=right><b>Attack:</b> %s vs. %s</td>",hitStatAdded,targetDefense); versusStr=""]
+[h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px;' align=right><b>Attack:</b>vs. %s</td>",targetDefense)]
+[h,if(length(effectText)!=0): effectText=strformat("<tr bgcolor='#D6D6C2'><td style='padding:0px 5px;' align=left colspan='2'>%s</td></tr>",effectText); effectText=""]
+[h:powaStr=strformat("<html><body><table width='400'><tr bgcolor=%s><td style='padding:0px 5px;' align=left><font color='white'><b>%s</b></font></td><td style='padding:0px 5px;' align=right><font color='white'><b>%s</b></font></td></tr>%s<tr><td style='padding:0px 5px;' align=left><b>%s</b></td>%s</tr><tr><td style='padding:0px 5px;' align=left><b>Target:</b> %s</td>%s</tr>%s</table></body></html>",
+tableBG,atkName,atkTypeName,keywords,actionType,rangeText,numTargetsText,versusStr,effectText)]
+[h:output=customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+
+[h,if(length(extraRoll)>0): customTooltip(extraRoll,strformat("Extra Roll: <b>%s</b>",eval(string(extraRoll))))]
+[if(length(extraRoll)>0): macro.return; ""]
+
+[h,if(atkKey<20): macroNamer="TargetScreen@"+UseLib;macroNamer=""]
+[macro(macroNamer): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, paramStateJson, missDamageRoll)]

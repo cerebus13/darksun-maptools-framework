@@ -1,0 +1,22 @@
+<!-- GetTargets macro -->
+
+<!--Display all valid targets within range, choose only a Single one of them-->
+
+[h:maxRange=json.get(macro.args, 0)]
+[h:friendlyFire=json.get(macro.args, 1)]
+[h:otherSource=json.get(macro.args, 2)]
+[h,if(friendlyFire==0):hitNPC=1;hitNPC=0]
+[h,if(friendlyFire==1):hitPC=1;hitPC=0]
+[h,if(maxRange==0): abort(0)]
+
+[h:rangeFilter = json.set("{}", "from", 0, "upto", maxRange, "distancePerCell", "false", "metric", "ONE_ONE_ONE")]
+[h,if(length(otherSource)>0): rangeFilter = json.set(rangeFilter,"token",otherSource)]
+[h:targetFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "range", rangeFilter)]
+[h,if(hitNPC): targetFilter = json.set(targetFilter,"npc",1)]
+[h,if(hitPC): targetFilter = json.set(targetFilter,"pc",1)]
+
+[h:targetJson = getTokenNames("json", targetFilter)]
+
+[h,if(length(targetJson)==0):assert(0, rangeError(), 0)]
+
+[h:macro.return=targetJson]

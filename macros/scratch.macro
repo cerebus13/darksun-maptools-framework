@@ -1,0 +1,86 @@
+[h:versusJson="[]"]
+[h,foreach(targ,json.toList(targJson),""): versusJson = json.append(versusJson,json.set("{}",targ,json.append("[]",eval("1d20"),eval(atkVal),eval(damRoll)+eval(damVal),eval(critDamRoll)+eval(damVal))))]
+
+{strformat('{"atkMod1":{"Level":%{HalfLevel},"Str":%{StrMod}},"atkMod2":{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":1,"EX":1},"atkMod3":{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"EX":1},"atkMod4":{"Level":%{HalfLevel},"Str":%{StrMod},"extra":2},"atkMod5":{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":1,"EX":1,"Power":2},"atkMod6":{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":1,"EX":1,"Item":1},"atkMod7":{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":2},"damMod1":{"Str":%{StrMod},"Magic":1,"Racial":1,"WF":1,"CS":4},"damMod2":{"Str":%{StrMod},"Magic":1,"Racial":1,"WF":1},"damMod3":{"Str":%{StrMod},"Racial":1,"WF":1},"damMod4":{"Str":%{StrMod},"Con":%{ConMod},"Magic":1,"Racial":1,"WF":1},"damMod5":{"Con":%{ConMod}},"damMod6":{"Str":%{StrMod},"Magic":2}}')}
+
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod}}')}
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":1,"EX":1}')}
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"EX":1}')}
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod},"extra":2}')}
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":1,"EX":1,"Power":2}')}
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":1,"EX":1,"Item":1}')}
+{strformat('{"Level":%{HalfLevel},"Str":%{StrMod},"Prof":2,"Magic":2}')}
+
+{strformat('{"Str":%{StrMod},"Magic":1,"Racial":1,"WF":1,"CS":4}')}
+{strformat('{"Str":%{StrMod},"Magic":1,"Racial":1,"WF":1}')}
+{strformat('{"Str":%{StrMod},"Racial":1,"WF":1}')}
+{strformat('{"Str":%{StrMod},"Con":%{ConMod},"Magic":1,"Racial":1,"WF":1}')}
+{strformat('{"Con":%{ConMod}}')}
+{strformat('{"Str":%{StrMod},"Magic":2}')}
+
+0 = miss, 1 = hit, 2 = crit, 3 = all
+{0:["Marked_green","Marked_yellow"],1:["Marked_red"],2:["Marked_cyan"],3:["Marked_blue"]}
+
+0:Curse_red,1:Curse_green
+
+[macro("CallAttack@"+UseLib):
+  json.append
+  (
+  "[]",
+  1,
+  "Melee Basic Attack",
+  1,
+  "At-Will",
+  "Weapon",
+  "Standard Action",
+  "AC",
+  "Strength",
+  "Melee Weapon",
+  "One Creature",
+  AtkMod2,
+  DamMod2,
+  WeaponDice1,
+  CritWeaponDice1,
+  1,
+  1,
+  "",
+  "",
+  0,
+  0,
+  "",
+  '{0:["Quarry_green","Quarry_yellow"],1:["Quarry_red"],2:["Quarry_cyan"],3:["Quarry_blue"]}',
+  -2
+  )
+]
+
+[macro("CallAttack@"+UseLib):
+  json.append
+  (
+  "[]",
+  1,
+  "Thunderhawk Rage",
+  3,
+  "Daily",
+  "Primal, Weapon, Thunder",
+  "Standard Action",
+  "AC",
+  "Strength",
+  "Melee Weapon",
+  "One Creature",
+  AtkMod2,
+  DamMod2,
+  WeaponDice4,
+  CritWeaponDice4,
+  1,
+  1,
+  "<b>Hit:</b> Target is dazed (save ends).<br><b>Miss:</b> Half Damage.<br><b>Effect:</b> You enter the rage of the thunder hawk. Until the rage ends, you can make a secondary attack once during each of your turns to knock an opponent prone.",
+  "",
+  0,
+  0,
+  "",
+  '{1:["Dazed"]}',
+  -2
+  )
+]
+[h: updateMacroLabel("(Used)")]
+[h,if(getState("Rage")!=1): setState("Rage", 1)]

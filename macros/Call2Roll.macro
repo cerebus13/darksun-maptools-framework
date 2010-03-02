@@ -1,0 +1,21 @@
+<!-- Call2Roll macro -->
+<!-- called when atkKey = 2 -->
+<!-- 2 = Single/Multi No Damage -->
+
+[h:atkMod      = json.get(macro.args, 0)]
+[h:MULTI       = json.get(macro.args, 4)]
+[h:CA          = json.get(macro.args, 5)]
+[h:charge      = json.get(macro.args, 6)]
+[h:cover       = json.get(macro.args, 7)]
+[h:longRange   = json.get(macro.args, 8)]
+[h:miscAtk     = json.get(macro.args, 9)]
+
+[h,macro("AttackBonusTotal@Lib:PlayerStomp"): json.append("[]", atkMod, CA, charge, cover, longRange, miscAtk)]
+[h:atkText=json.get(macro.return, 0)]
+[h:atkVal=json.get(macro.return, 1)]
+
+[h:paramJson=json.append("[]", atkText, atkVal)]
+
+<table border="0" width="500">
+  [count(MULTI,""),code: { <tr>[macro("CallAttackRoll@Lib:PlayerStomp"): paramJson]</tr> }]
+</table>

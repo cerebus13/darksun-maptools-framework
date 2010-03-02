@@ -1,0 +1,12 @@
+<!-- rollDamage macro -->
+
+<!-- assume 1 roll to be done if numRolls isn't passed -->
+[h:numRolls=number(getStrProp(macro.args, "numRolls", 1))]
+[h:damRoll=getStrProp(macro.args, "damRoll", "0d0")]
+
+[h:damRollList=""]
+[h,count(numRolls):damRollList=listAppend(damRollList,eval(damRoll))]
+
+<!-- output variables: damRollList -->
+<!-- damRollList = list of damage rolls -->
+[h:macro.return = "damRollList=" + encode(damRollList) + ";"]

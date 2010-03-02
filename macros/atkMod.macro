@@ -1,0 +1,12 @@
+<!-- Trog attack mods 1: Level + Str + misc -->
+<!-- Trog attack mods 2: Level + Str + Weapon Magic + Expertise + misc -->
+<!-- Trog attack mods 3: Level + Str + Expertise + misc -->
+<!-- Trog attack mods 4: Level + Str + Extra=2 + misc -->
+[h:resetProperty("PassAttackBonuses")]
+[h,switch(number(macro.args)):
+  case 1: PassAttackBonuses=json.set("","myLevel",floor(Level/2),"strMod",floor((Strength-10)/2));  
+  case 2: PassAttackBonuses=json.set("","myLevel",floor(Level/2),"strMod",floor((Strength-10)/2),"aMAG",1,"EX",1);
+  case 3: PassAttackBonuses=json.set("","myLevel",floor(Level/2),"strMod",floor((Strength-10)/2),"EX",1);
+  case 4: PassAttackBonuses=json.set("","myLevel",floor(Level/2),"strMod",floor((Strength-10)/2),"extra",2);
+  default: ""
+]

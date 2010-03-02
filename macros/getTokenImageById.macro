@@ -1,0 +1,4 @@
+<!-- getTokenImageById function -->
+
+[h,token(arg(0)): output=getTokenImage(30)]
+{output}

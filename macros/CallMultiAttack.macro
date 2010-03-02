@@ -1,0 +1,191 @@
+<!-- Process parameters -->
+
+[h: atkName=getStrProp(macro.args, "atkName")]
+[h: atkType=number(getStrProp(macro.args, "atkType"))]
+[h: atkTypeName=getStrProp(macro.args, "atkTypeName")]
+[h: keywords=getStrProp(macro.args, "keywords", 0)]
+[h: actionType=getStrProp(macro.args, "actionType")]
+[h: targetDefense=getStrProp(macro.args, "targetDefense", 0)]
+[h: hitStatAdded=getStrProp(macro.args, "hitStatAdded", 0)]
+[h: rangeText=getStrProp(macro.args, "rangeText", 0)]
+[h: numTargetsText=getStrProp(macro.args, "numTargetsText")]
+<!-- anything passed to miscDamMod must be an encoded String Property list such as encode(CS=4;Racial=1) -->
+[h: miscDamMod=getStrProp(macro.args, "miscDamMod", 0)]
+<!-- anything passed to miscAtkMod must be an encoded String Property list such as encode(CS=4;Racial=1) -->
+[h: miscAtkMod=getStrProp(macro.args, "miscAtkMod", 0)]
+<!--  Critical hit extra dice rolled -->
+[h: CR=getStrProp(macro.args, "CR", 0)]
+[h: damRoll=getStrProp(macro.args, "damRoll", "0d0")]
+[h: maxDamRoll=getStrProp(macro.args, "maxDamRoll", 0)]
+[h: effectText=getStrProp(macro.args, "effectText", 0)]
+[h: MULTI=number(getStrProp(macro.args, "MULTI", 0))]
+
+[h: crits = 0]
+[h: fumbles = 0]
+[h: critText=""]
+[h: fumbleText=""]
+
+<!-- decode miscDamMod if it isn't 0 -->
+[h,if(miscDamMod!=0),code: 
+{
+  [h: miscDamMod = decode(miscDamMod)]
+  [h: varsFromStrProp(miscDamMod)]
+};{
+  [h: miscDamMod = ""]
+}]
+<!-- decode miscAtkMod if it isn't 0 -->
+[h,if(miscAtkMod!=0),code: 
+{
+  [h: miscAtkMod = decode(miscAtkMod)]
+  [h: varsFromStrProp(miscAtkMod)]
+};{
+  [h: miscAtkMod = ""]
+}]
+
+<!--  At-Will = 1, Encounter = 2, Daily = 3 -->
+[h,SWITCH(atkType):
+  case 1: tableBG="#00CC00";
+  case 2: tableBG="#FF0000";
+  case 3: tableBG="#000000"
+]
+
+<table border="0" width="500"> 
+  <tr bgcolor={tableBG}> 
+      <td style="padding:0px 5px;" align=left> 
+        <span style="color:white"><b>{atkName}</b></font> 
+      </td> 
+      <td style="padding:0px 5px;" align=right> 
+        <span style="color:white"><b>{atkTypeName}</b></font> 
+      </td> 
+  </tr>
+[if(isNumber(keywords)==0), CODE:
+{
+  <tr> 
+    <td style="padding:0px 5px;" align=left> 
+      <b>{keywords}</b>
+    </td> 
+  </tr> 
+};{}]
+  <tr> 
+    <td style="padding:0px 5px;" align=left> 
+      <b>{actionType}</b>
+    </td>
+  [if(isNumber(rangeText)==0), CODE:
+  {
+    <td style="padding:0px 5px;" align=right> 
+      <b>{rangeText}</b>
+    </td> 
+  };{}]
+  </tr> 
+  <tr> 
+    <td style="padding:0px 5px;" align=left> 
+      <b>Target:</b> {numTargetsText}
+    </td> 
+  [if(isNumber(hitStatAdded)==0 && isNumber(targetDefense)==0), CODE:
+  {
+    <td style="padding:0px 5px;" align=right> 
+      <b>Attack:</b> {hitStatAdded} vs. {targetDefense}
+    </td> 
+  };{}]
+  [if(isNumber(hitStatAdded)!=0 && isNumber(targetDefense)==0), CODE:
+  {
+    <td style="padding:0px 5px;" align=right> 
+      <b>Attack:</b>vs. {targetDefense}
+    </td> 
+  };{}]
+  </tr>
+  [if(isNumber(effectText)==0), CODE:
+  {
+  <tr bgcolor="#D6D6C2"> 
+    <td style="padding:0px 5px;" align=left colspan="2"> 
+      {effectText}
+    </td> 
+  </tr>
+  };{}]
+</table>
+<table border="0" width="500">
+[h,if(MULTI==0),code:
+{
+  [h: status=input(
+      "MULTI||# of Multi-Attack Targets"
+  )]
+  [h: abort(status)]
+  [h,if(MULTI<1): abort(0)]
+};{}]
+
+<!-- total Damage mods outside of CODE loop to avoid nested > 2 limit -->
+[h: dmgText = ""]
+[h: dmgVal  = ""]
+[h,for(j,0,countStrProp(miscDamMod),1,""), CODE:
+{
+  [h: dmgText = dmgText + indexKeyStrProp(miscDamMod, j)]
+  [h,if(j!=countStrProp(miscDamMod)-1): dmgText = dmgText + "+"]
+  [h: dmgVal = dmgVal + indexValueStrProp(miscDamMod, j)]
+  [h,if(j!=countStrProp(miscDamMod)-1): dmgVal = dmgVal + " + "]
+}]
+
+<!-- total Attack mods outside of CODE loop to avoid nested > 2 limit -->
+[h: atkText = ""]
+[h: atkVal  = ""]
+[h,for(j,0,countStrProp(miscAtkMod),1,""), CODE:
+{
+  [h: atkText = atkText + indexKeyStrProp(miscAtkMod, j)]
+  [h,if(j!=countStrProp(miscAtkMod)-1): atkText = atkText + "+"]
+  [h: atkVal = atkVal + indexValueStrProp(miscAtkMod, j)]
+  [h,if(j!=countStrProp(miscAtkMod)-1): atkVal = atkVal + " + "]
+}]
+
+[for(i,0,MULTI,1,""), CODE:
+{
+  <tr>
+    <td style="padding:2px 5px;" align=left>
+      <!-- 1d20+myLevel+hitStat+EX+MAG = (15 + 3 + 5 + 1 + 1) -->
+      [h: dieRoll = eval("1d20")]
+      [h: atkTT = "1d20+" + atkText + " = (eval(" + dieRoll + ") + " + atkVal + ")"]
+      [h: atkEval = "[res = dieRoll + " + atkText + "]"]
+      [h: evalMacro(atkEval)]
+      <b>Attack:</b> <span style=color:red>[t(res): atkTT]</span>
+    </td>
+    [h,SWITCH(dieRoll):
+      case 20: crits=crits+1;
+      case 1:  fumbles=fumbles+1;
+      default: ""
+    ]
+    <td style="padding:2px 5px;" align=left>
+      [SWITCH(dieRoll),CODE:
+        case 20: 
+        {
+          <!-- 2*eval(damRoll)+eval(CR)+damStat+2 = (2 * eval(1d10+2) + eval(1d10+1d6+2) + 5 + 2) -->
+          <!-- eval(damRoll)+damStat+2 = (2 * 8 + 11 + 5 + 2) -->
+          [h: res = eval(damRoll)]
+          [h: resCR = 0]
+          [h,if(CR!=0): resCR = eval(CR)]
+          [h: dmgTT = "2*eval(" + damRoll + ")+"]
+          [h,if(resCR!=0): dmgTT = dmgTT + "eval(" + CR + ")+"]
+          [h: dmgTT = dmgTT + dmgText + " = (2 * eval(" + res + ")"]
+          [h,if(resCR!=0): dmgTT = dmgTT + " + eval(" + resCR + ")"]
+          [h: dmgTT = dmgTT + " + " + dmgVal + ")"]
+          [h: dmgEval = "[res = 2*res + resCR + " + dmgText + "]"]
+          [h: evalMacro(dmgEval)]
+          [h,if(res<1): res = 1]
+          <b>Critical:</b> <span style=color:red>[t(res): dmgTT]</span>
+        };
+        default:
+        {
+          <!-- eval(damRoll)+damStat+2 = (eval(1d10+2) + 5 + 2) -->
+          <!-- eval(damRoll)+damStat+2 = (8 + 5 + 2) -->
+          [h: res = eval(damRoll)]
+          [h: dmgTT = "eval(" + damRoll + ")+" + dmgText + " = (eval(" + res + ") + " + dmgVal + ")"]
+          [h: dmgEval = "[res = res + " + dmgText + "]"]
+          [h: evalMacro(dmgEval)]
+          [h,if(res<1): res = 1]
+          <b>Damage:</b> <span style=color:red>[t(res): dmgTT]</span>
+        }
+      ]
+    </td>
+  </tr>
+}]
+</table>
+[h,if(crits>0):critText="<span style=color:red>***"+crits+" CRITICAL HIT(s)*** </span>"]
+[h,if(fumbles>0):fumbleText="<span style=color:red>***"+fumbles+" FUMBLE(s)***</span>"]
+[if(critText!="" || fumbleText!=""): critText + " " + fumbleText]

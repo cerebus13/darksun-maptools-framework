@@ -1,0 +1,8 @@
+<!-- CallInjuryTable Macro -->
+
+[h:dieRoll=eval("1d100")]
+[h,if(dieRoll>0 && dieRoll<=25): output=customTooltip("<html><b>Effect:</b> Target takes a -2 penalty to all attack rolls and athletics checks and loses 1 healing surge until you take an extended rest.<br><b>Bloodied:</b> While bloodied the target is weakened.</html>",strformat("<b>Injury Table</b><br>Arm / Hand Injury -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>25 && dieRoll<=50): output=customTooltip("<html><b>Effect:</b> The targets speed is reduced by 2 and loses 1 healing surges that cannot be regained until you take an extended rest.<br><b>Bloodied:</b> While bloodied the target is slowed.</html>",strformat("<b>Injury Table</b><br>Leg / Foot Injury -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>50 && dieRoll<=75): output=customTooltip("<html><b>Effect:</b> The target loses 1 healing surge and suffers a -4 penalty to Perception checks.<br><b>Bloodied:</b> Each time the target becomes bloodied it is dazed (save ends).</html>",strformat("<b>Injury Table</b><br>Head Injury -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>75 && dieRoll<=100): output=customTooltip("<html><b>Effect:</b> The target loses 2 healing surges.<br><b>Bloodied:</b> Each time the target becomes bloodied it takes ongoing (5 heroic / 10 paragon / 15 epic) damage (save ends).</html>",strformat("<b>Injury Table</b><br>Body Injury -> d100( <b>%d</b> )",dieRoll))]
+<font color='black'>{output}</font>

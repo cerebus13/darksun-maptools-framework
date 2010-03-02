@@ -1,0 +1,87 @@
+<!-- TargetScreen macro -->
+<!-- Pops up the targetting GUI that has targets in dropdown lists, and modifications to apply to the attack such as CA -->
+
+<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
+<!-- 1 = Single/Multi -->
+<!-- 2 = Single/Multi No Damage -->
+<!-- 3 = Single/Multi No Attack -->
+<!-- 4 = AOE -->
+<!-- 5 = AOE No Damage -->
+<!-- 6 = AOE No Attack -->
+<!-- 7 = Single/Multi heal -->
+<!-- 8 = AOE heal -->
+<!-- 20 = Utility -->
+[h:atkKey        = json.get(macro.args, 0)]
+[h:atkName       = json.get(macro.args, 1)]
+[h:atkMod        = json.get(macro.args, 2)]
+[h:damMod        = json.get(macro.args, 3)]
+[h:damRoll       = json.get(macro.args, 4)]
+[h:critDamRoll   = json.get(macro.args, 5)]
+[h:maxRange      = json.get(macro.args, 6)]
+[h:numTargets    = json.get(macro.args, 7)]
+[h:targetDefense = json.get(macro.args, 8)]
+[h:friendlyFire  = json.get(macro.args, 9)] <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource   = json.get(macro.args, 10)] <!-- name of other token to use as source for figuring targets based on range -->
+[h:paramStateJson = json.get(macro.args, 11)] <!-- Json holding states to be applied with this power -->
+[h:missDamageRoll = json.get(macro.args, 12)] <!-- damage to roll on a miss, will not apply to minions -->
+
+[h:CA=0]
+[h:charge=0]
+[h:cover=0]
+[h:longRange=0]
+[h:miscAtk=0]
+[h:miscDam=0]
+[h:status=1]
+
+[h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
+[h,if(maxRange>-1): targetJson = macro.return]
+[h:targetImageList = "None,"]
+[h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
+
+[h:inputJson = json.append("[]",
+    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
+    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
+)]
+[h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
+[h:inputJson = json.append(inputJson,
+    "CA|0|Combat Advantage vs. Targets (All)|CHECK",
+    "charge|0|Charge Attack vs. Targets (All)|CHECK",
+    "cover|None,Regular(-2),Superior(-5)|Cover vs. Targets (All)|RADIO|ORIENT=H",
+    "longRange|0|Long Range vs. Targets (All)|CHECK",
+    "miscAtk|0|<html>Miscellaneous <b>modifier</b> to attack</html>",
+    "miscDam|0|<html>Miscellaneous <b>modifier</b> to damage</html>"
+)]
+[h:status = input(json.toList(inputJson,"##"))]
+[h:abort(status)]
+[h:targJson="[]"]
+[h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
+[h,if(numTargets<=0): targJson = targetJson]
+
+<!-- Skip attack portion on attack 3 and 6 -->
+[h,if(atkKey!=3 && atkKey!=6): evalMacro('[h,macro("AttackBonusTotal@"+UseLib): json.append("[]", atkMod, CA, charge, cover, longRange, miscAtk)]')]
+[h,if(atkKey!=3 && atkKey!=6): atkText=json.get(macro.return, 0)]
+[h,if(atkKey!=3 && atkKey!=6): atkVal=json.get(macro.return, 1)]
+<!-- Skip damage portion on attacks 2 and 5 -->
+[h,if(atkKey!=2 && atkKey!=5): evalMacro('[h,macro("DamageBonusTotal@"+UseLib): json.append("[]", damMod, miscDam)]')]
+[h,if(atkKey!=2 && atkKey!=5): damText=json.get(macro.return, 0);damText="0"]
+[h,if(atkKey!=2 && atkKey!=5): damVal=json.get(macro.return, 1);damVal="0"]
+
+[h,if(atkKey>3): useDam=eval(damRoll); useDam=damRoll]
+[h,if(atkKey>3): useCritDam=eval(critDamRoll); useCritDam=critDamRoll]
+
+[h:tableJson="[]"]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),paramStateJson,missDamageRoll)]
+  
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s",json.get(retu,1),atkText),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal)))),
+      json.get(retu,0),
+      targ,
+      if(atkKey==2 || atkKey==5,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+}]
+[macro("PrintAttackTable@"+UseLib): tableJson]
