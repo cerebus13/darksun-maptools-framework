@@ -1,0 +1,24 @@
+Strength (Str)
+Constitution (Con)
+Dexterity (Dex)
+Intelligence (Int)
+Wisdom (Wis)
+Charisma (Char)
+CurrentHP:0
+MaxHP:0
+TempHP:0
+*#HP:{CurrentHP} / {MaxHP} ({TempHP} temp)
+*#AC:10
+*#Fortitude (Fort):10
+*#Reflex (Ref):10
+*#Willpower (Will):10
+*#Speed
+*#Healing Surges
+*Elevation
+Movement (Mov)
+Level (Lvl)
+Description (Des)
+Skills (Skl):Acrobatics=0 ; Arcana=0 ; Athletics=0 ; Bluff=0 ; Diplomacy=0 ; Dungeoneering=0 ; Endurance=0 ; Heal=0 ; History=0 ; Insight=0 ; Intimidate=0 ; Nature=0 ; Perception=0 ; Religion=0 ; Stealth=0 ; Streetwise=0 ; Thievery=0 ;
+AttackBonuses (ABon):CA=0 ; Generic=0 ;
+DamageBonuses (DBon):Generic=0 ;
+Miscellaneous (Misc)
