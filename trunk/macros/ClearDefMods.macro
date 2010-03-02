@@ -1,0 +1,8 @@
+<!-- ClearDefMods macro -->
+
+[h:setState("MinusToAC", 0)]
+[h:ACMod=0]
+[h:FortMod=0]
+[h:WillMod=0]
+[h:RefMod=0]
+[abort(0)]

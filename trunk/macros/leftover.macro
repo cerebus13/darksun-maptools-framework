@@ -1,0 +1,45 @@
+        [SWITCH(dieRoll),CODE:
+          case 20: 
+          {
+            <!-- eval(2*(damRoll)+CR)+damStat+2 = (eval(2*(1d10+2) + 1d10+1d6+2) + 5 + 2) -->
+            <!-- eval(damRoll)+damStat+2 = (2 * 8 + 11 + 5 + 2) -->
+            [h,for(i,0,countStrProp(miscDamMod),1,""), CODE:
+            {
+              [h: dmgText = dmgText + indexKeyStrProp(miscDamMod, i)]
+              [h,if(i!=countStrProp(miscDamMod)-1): dmgText = dmgText + "+"]
+              [h: dmgVal = dmgVal + indexValueStrProp(miscDamMod, i)]
+              [h,if(i!=countStrProp(miscDamMod)-1): dmgVal = dmgVal + " + "]
+            }]
+            [h: res = eval(damRoll)]
+            [h: resCR = 0]
+            [h,if(CR!=0): resCR = eval(CR)]
+            [h: dmgTT = "2*eval(" + damRoll + ")+"]
+            [h,if(resCR!=0): dmgTT = dmgTT + "eval(" + CR + ")+"]
+            [h: dmgTT = dmgTT + dmgText + " = (2 * eval(" + res + ")"]
+            [h,if(resCR!=0): dmgTT = dmgTT + " + eval(" + resCR + ")"]
+            [h: dmgTT = dmgTT + " + " + dmgVal + ")"]
+            [h: dmgText = "[res = 2*res + resCR + " + dmgText + "]"]
+            [h: evalMacro(dmgText)]
+            [h,if(res<1): res = 1]
+            <b>Critical:</b> <span style=color:red>[t(res): dmgTT]</span>
+          };
+          default:
+          {
+            <!-- eval(damRoll)+damStat+2 = (eval(1d10+2) + 5 + 2) -->
+            <!-- eval(damRoll)+damStat+2 = (8 + 5 + 2) -->
+            [h,for(i,0,countStrProp(miscDamMod),1,""), CODE:
+            {
+              [h: dmgText = dmgText + indexKeyStrProp(miscDamMod, i)]
+              [h,if(i!=countStrProp(miscDamMod)-1): dmgText = dmgText + "+"]
+              [h: dmgVal = dmgVal + indexValueStrProp(miscDamMod, i)]
+              [h,if(i!=countStrProp(miscDamMod)-1): dmgVal = dmgVal + " + "]
+            }]
+            [h: res = eval(damRoll)]
+            [h: dmgTT = "eval(" + damRoll + ")+" + dmgText + " = (eval(" + res + ") + " + dmgVal + ")"]
+            [h: dmgText = "[res = res + " + dmgText + "]"]
+            [h: evalMacro(dmgText)]
+            [h,if(res<1): res = 1]
+            <b>Damage:</b> <span style=color:red>[t(res): dmgTT]</span>
+          }
+        ]
+        

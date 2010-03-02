@@ -1,0 +1,127 @@
+<!-- CallStatusGUI macro -->
+<!-- pops a Tabbed Input form that lists all player visible PC and NPCs -->
+<!-- other tabs contain various conditions/resists/vulns/etc in categories -->
+<!-- any conditions that are checked will be toggled for all PC/NPCs that are checked -->
+
+<!-- get all NPC names -->
+[h:npcFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "npc", 1)]
+[h:npcJson = getTokenNames("json", npcFilter)]
+[h:npcJson = json.sort(npcJson)]
+[h:npcInputJson = "[]"]
+[h,foreach(n,json.toList(npcJson)): npcInputJson = 
+  json.append(npcInputJson,
+    strformat("c%s|0|%s|CHECK",findToken(n),n)
+  )
+]
+
+<!-- get all PC names -->
+[h:pcFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "pc", 1)]
+[h:pcJson = getTokenNames("json", pcFilter)]
+[h:pcJson = json.sort(pcJson)]
+[h:pcInputJson = "[]"]
+[h,foreach(n,json.toList(pcJson)): pcInputJson = 
+  json.append(pcInputJson,
+    strformat("c%s|0|%s|CHECK",findToken(n),n)
+  )
+]
+
+<!-- condition names -->
+[h:condJson = json.sort(getTokenStates("json", "Conditions"))]
+[h:condInputJson = "[]"]
+[h,foreach(n,json.toList(condJson)): condInputJson = 
+  json.append(condInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- curse/mark/oath/quarry names -->
+[h:markJson = json.sort(json.merge(getTokenStates("json", "Curse"),getTokenStates("json", "Mark"),getTokenStates("json", "Oath"),getTokenStates("json", "Quarry")))]
+[h:markInputJson = "[]"]
+[h,foreach(n,json.toList(markJson)): markInputJson = 
+  json.append(markInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- ongoing damage names -->
+[h:ongoingJson = json.sort(getTokenStates("json", "OngoingDamage"))]
+[h:ongoingInputJson = "[]"]
+[h,foreach(n,json.toList(ongoingJson)): ongoingInputJson = 
+  json.append(ongoingInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- resist names -->
+[h:resistJson = json.sort(getTokenStates("json", "Resist"))]
+[h:resistInputJson = "[]"]
+[h,foreach(n,json.toList(resistJson)): resistInputJson = 
+  json.append(resistInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- vuln names -->
+[h:vulnJson = json.sort(getTokenStates("json", "Vuln"))]
+[h:vulnInputJson = "[]"]
+[h,foreach(n,json.toList(vulnJson)): vulnInputJson = 
+  json.append(vulnInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- PC centric states such as Actions/Powers/Used -->
+[h:actionJson = json.sort(json.merge(getTokenStates("json", "Actions"),getTokenStates("json", "Powers"),getTokenStates("json", "Used")))]
+[h:actionInputJson = "[]"]
+[h,foreach(n,json.toList(actionJson)): actionInputJson = 
+  json.append(actionInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+[h: status = input(
+  "tab0 | NPCs || TAB | SELECT=TRUE",
+  ".|---------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE",
+  json.toList(npcInputJson,"##"),
+  "tab1 | PCs || TAB",
+  json.toList(pcInputJson,"##"),
+  "tab2 | Conditions || TAB",
+  json.toList(condInputJson,"##"),
+  "tab3 | Marks || TAB",
+  json.toList(markInputJson,"##"),
+  "tab4 | Ongoing || TAB",
+  json.toList(ongoingInputJson,"##"),
+  "tab5 | Resists || TAB",
+  json.toList(resistInputJson,"##"),
+  "tab6 | Vulns || TAB",
+  json.toList(vulnInputJson,"##"),
+  "tab7 | PC Stuff || TAB",
+  json.toList(actionInputJson,"##")
+)]
+
+[abort(status)]
+
+<!-- assemble Json of checked names -->
+[h:nameJson = "[]"]
+[h:tmpJson = json.merge(npcJson,pcJson)]
+[h,foreach(n,json.toList(tmpJson)): 
+  evalMacro(strformat('[h:nameJson = if(c%s==1,json.append(nameJson,n),nameJson)]',findToken(n)))
+]
+[h,if(json.length(nameJson)<1): abort(0)]
+
+<!-- assemble Json of checked states -->
+[h:stateJson = "[]"]
+[h:tmpJson = json.merge(condJson,markJson,ongoingJson,resistJson,vulnJson,actionJson)]
+[h,foreach(n,json.toList(tmpJson)): 
+  evalMacro(strformat('[h:stateJson = if(c%s==1,json.append(stateJson,n),stateJson)]',n))
+]
+[h,if(json.length(stateJson)<1): abort(0)]
+
+<!-- update states on names in nameJson -->
+[h,foreach(n,json.toList(nameJson)),code:
+{
+  [h:switchToken(n)]
+  [h,foreach(m,json.toList(stateJson)): if(getState(m)==1,setState(m,0),setState(m,1))]
+}]
+
+[abort(0)]

@@ -1,0 +1,19 @@
+<!-- Short Rest macro -->
+
+[h: names = getSelectedNames("json")]
+[h,if(json.length(names)!=1): abort(0)]
+[h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
+
+[h,foreach(index,getMacroGroup("Encounter Powers")), code: 
+{
+  [h: props = getMacroProps(index)]
+  [h: label = getStrProp(props, "label")]
+  [h,if(endsWith(label,"(Used)")): setMacroProps(index, "label="+replace(label, " \\(Used\\)", ""))]
+}]
+[h: setAllStates(0)]
+[h: TempHP=0]
+[h,if(json.length(AttackBonuses)>0): AttackBonuses = json.removeAll(AttackBonuses,AttackBonuses)]
+[h,if(json.get(DamageBonuses,"Reckless")==2): AC = AC + 2]
+[h,if(json.length(DamageBonuses)>0): DamageBonuses = json.removeAll(DamageBonuses,DamageBonuses)]
+
+[abort(0)]

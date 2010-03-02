@@ -1,0 +1,23 @@
+[macro("CallAttack@Lib:PlayerStomp"): 
+  json.append
+  (
+  "[]",
+  1,
+  "Tyrant's Rage",
+  3,
+  "Daily",
+  "Fear, Primal, Rage, Weapon",
+  "Standard Action",
+  "AC",
+  "Strength",
+  "Melee Weapon",
+  "One Creature",
+  2,
+  2,
+  "2d10+4",
+  "2*(2d10+4)+1d10+2+1d8",
+  "<b>Hit:</b> Target is dazed until the end of your next turn.<br><b>Miss:</b> Half Damage.<br><b>Effect:</b> You enter the rage of the tyrant. Until the rage ends, you can push every enemy adjacent to you 1 square as a minor action once per round."
+  )
+]
+[h: setMacroProps("Tyrants Rage", "label=Tyrants Rage (Used)")]
+[h: setState("Rage", 1)]

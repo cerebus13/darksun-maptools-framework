@@ -1,0 +1,37 @@
+<!-- Call4Roll macro -->
+<!-- called when atkKey = 4 -->
+<!-- 4 = AOE -->
+
+[h:atkMod      = json.get(macro.args, 0)]
+[h:damMod      = json.get(macro.args, 1)]
+[h:damRoll     = json.get(macro.args, 2)]
+[h:critDamRoll = json.get(macro.args, 3)]
+[h:MULTI       = json.get(macro.args, 4)]
+[h:CA          = json.get(macro.args, 5)]
+[h:charge      = json.get(macro.args, 6)]
+[h:cover       = json.get(macro.args, 7)]
+[h:longRange   = json.get(macro.args, 8)]
+[h:miscAtk     = json.get(macro.args, 9)]
+[h:miscDam     = json.get(macro.args, 10)]
+
+[h,macro("AttackBonusTotal@Lib:PlayerStomp"): json.append("[]", atkMod, CA, charge, cover, longRange, miscAtk)]
+[h:atkText=json.get(macro.return, 0)]
+[h:atkVal=json.get(macro.return, 1)]
+[h,macro("DamageBonusTotal@Lib:PlayerStomp"): json.append("[]", damMod, miscDam)]
+[h:damText=json.get(macro.return, 0)]
+[h:damVal=json.get(macro.return, 1)]
+
+[h:paramJson=json.append("[]", atkText, atkVal)]
+
+<table border="0" width="500">
+  <tr>
+    [macro("CallDamageRoll@Lib:PlayerStomp"): json.append("[]", damRoll, damText, damVal, 0)]
+    [macro("CallDamageRoll@Lib:PlayerStomp"): json.append("[]", critDamRoll, damText, damVal, 1)]
+  </tr>
+  [count(MULTI,""),code: 
+  { 
+    <tr>
+    [macro("CallAttackRoll@Lib:PlayerStomp"): paramJson]
+    </tr>
+  }]
+</table>

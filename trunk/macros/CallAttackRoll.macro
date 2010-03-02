@@ -1,0 +1,11 @@
+<!-- CallAttackRoll macro -->
+
+[h:atkText = json.get(macro.args, 0)]
+[h:atkVal  = json.get(macro.args, 1)]
+
+[h:dieRoll = eval("1d20")]
+[h:atkTT = strformat("d20(%s)%s",dieRoll,atkText)]
+[h:evalMacro(strformat("[res = dieRoll + %s]",atkVal))]
+[h:customTooltip(atkTT,strformat("%s: <b>%s</b>",if(dieRoll==20,"<font color='red'>Critical</font>",if(dieRoll==1,"<font color='red'>Fumble</font>","Attack")),res))]
+<td style="padding:2px 0px;" align=left>{macro.return}</td>
+[h:macro.return=json.append("[]", dieRoll)]

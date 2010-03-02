@@ -1,0 +1,5 @@
+<!-- setJsonStates user defined function -->
+<!-- takes in 1 argument: a Json array of state names to apply to the current token -->
+
+[h:blah=arg(0)]
+[h,foreach(item,json.toList(blah)): if(getState(item),"",setState(item,1))]

@@ -1,0 +1,69 @@
+<!-- DoAttack2 macro -->
+<!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
+<!-- Apply damage/effects to target on hit/miss and return values depending on result -->
+<!-- Return 3 things: result, attack roll, damage roll -->
+<!-- result: 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+
+[h:targetName    = json.get(macro.args, 0)]
+[h:targetDefense = json.get(macro.args, 1)]
+[h:atkMod        = json.get(macro.args, 2)]
+[h:damRoll       = json.get(macro.args, 3)]
+[h:critDamRoll   = json.get(macro.args, 4)]
+[h:damMod        = json.get(macro.args, 5)]
+[h:autoHit       = json.get(macro.args, 6)]
+[h:paramStateJson = json.get(macro.args, 7)]
+[h:missDamageRoll = json.get(macro.args, 8)] <!-- damage to roll on a miss, will not apply to minions -->
+
+[h:jsonAttackStates = AttackStates]
+[h:switchToken(targetName)]
+[h:def=getProperty(targetDefense)]
+[h:atkRoll=eval("1d20")]
+[h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
+[h:totalDamage=damage+eval(string(damMod))]
+[h,if(totalDamage<1):totalDamage=1]
+[h,if(atkRoll+eval(atkMod)>=def):  resu=2; resu=1]
+[h,if(atkRoll==20): resu=3]
+[h,if(atkRoll==1):  resu=0]
+[h,if(autoHit):     resu=2]
+
+<!-- set damage to missDamageRoll if attack will not hit -->
+[h,if(resu<=1 && missDamageRoll!=-1 && MaxHP>1): applyMissDam=1;applyMissDam=0]
+[h,if(applyMissDam && missDamageRoll!=-2): totalDamage = eval(string(missDamageRoll))]
+[h,if(applyMissDam && missDamageRoll==-2): totalDamage = floor(totalDamage/2)] 
+
+<!-- apply damage to target if needed -->
+[h,if(resu>1 || applyMissDam),code:
+{
+  [h,if(TempHP>=totalDamage), code:
+  {
+    [h: TempHP = TempHP - totalDamage]
+  };{
+    [h: totalDamage = totalDamage - TempHP]
+    [h: TempHP = 0]
+    [h: CurrentHP = CurrentHP - totalDamage]
+    [h,if(CurrentHP<=floor(MaxHP/2) && CurrentHP+totalDamage>floor(MaxHP/2)): state.Bloodied=1]
+  }]
+  [h,if(CurrentHP<=0 && isPC()),code:
+  {
+    [h:state.Unconscious=1]
+    [h:state.Prone=1]
+    [h:CurrentHP = 0]
+  };{}]
+  [h,if(CurrentHP<=0 && isNPC()),code:
+  {
+    [h:setAllStates(0)]
+    [h:state.Dead=1]
+  };{}]
+};{}]
+
+<!-- apply property states to target -->
+[h:emptyJson="[]"]
+[h,SWITCH(resu):
+  case 0: setJsonStates(json.merge(json.get(jsonAttackStates,0),if(length(json.get(paramStateJson,0))>0,json.get(paramStateJson,0),emptyJson)));
+  case 1: setJsonStates(json.merge(json.get(jsonAttackStates,0),if(length(json.get(paramStateJson,0))>0,json.get(paramStateJson,0),emptyJson)));
+  case 2: setJsonStates(json.merge(json.get(jsonAttackStates,1),if(length(json.get(paramStateJson,1))>0,json.get(paramStateJson,1),emptyJson)));
+  case 3: setJsonStates(json.merge(json.get(jsonAttackStates,2),if(length(json.get(paramStateJson,2))>0,json.get(paramStateJson,2),emptyJson)));
+]
+[h:setJsonStates(json.merge(json.get(jsonAttackStates,3),if(length(json.get(paramStateJson,3))>0,json.get(paramStateJson,3),emptyJson)))]
+
+[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage)]

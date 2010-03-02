@@ -1,0 +1,27 @@
+<!-- CallSave macro -->
+
+<!-- The assumption is made that all States in campaign do not have spaces in their name, otherwise code will break -->
+
+[h:stateJson = getTokenStates("json", "Conditions")]
+[h:stateJson1 = getTokenStates("json", "OngoingDamage")]
+[h:stateJson2 = getTokenStates("json", "Vuln")]
+[h:stateJson = json.merge(stateJson,stateJson1,stateJson2)]
+[h:imageList = "None,"]
+[h,foreach(item,json.toList(stateJson)): imageList = strformat("%s%s",imageList,if(getState(item),strformat("%s %s,",item,getStateImage(item)),""))]
+
+[h: status=input(
+  strformat("Choice|%s|State to Save against|LIST|ICON=TRUE ICONSIZE=30",imageList),
+  "misc|0|<html>Miscellaneous <b>modifier</b> to save</html>"
+)]
+[h:abort(status)]
+
+[h:dieRoll=eval("1d20")+misc]
+[h,if(Choice!=0): stateChoice=substring(listGet(imageList,Choice),0,indexOf(listGet(imageList,Choice)," ")); stateChoice="None"]
+[h,if(Choice!=0): imgLink=strformat(" <img src='%s' align='middle'></img>",getStateImage(stateChoice,30)); imgLink=""]
+
+[h,if(dieRoll>=10): 
+  output=strformat("Save <font color='green'>SUCCESS</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)));
+  output=strformat("Save <font color='red'>FAILED</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)))
+]
+<p>{output}</p>
+[h,if(dieRoll>=10 && Choice != 0): setState(stateChoice,0)]

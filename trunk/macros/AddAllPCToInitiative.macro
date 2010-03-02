@@ -1,0 +1,30 @@
+<!-- Add all PC to Initiative Macro -->
+[h: initGroup = getPCNames()]
+<table border="1" width="250"> 
+<tr>
+  <td style="padding:0px 5px;" align=left>
+    <b>PC Names</b>
+  </td>
+  <td style="padding:0px 5px;" align=left>
+    <b>Initiative</b>
+  </td>
+</tr>
+[foreach(token,initGroup,""),CODE:
+{
+  [token(token),CODE:
+  {       
+    [h:addToInitiative()]
+    [h:dieRoll=eval("1d20")]
+    [h:token.init=dieRoll+if(getProperty("Initiative")=="",0,getProperty("Initiative"))]
+    [h:customTooltip(strformat("d20(%d) + Init (%s))",dieRoll,if(length(getProperty("Initiative"))>0,getProperty("Initiative"),0)),token.init)]
+    <tr>
+      <td style="padding:0px 5px;" align=left>
+        [token.name]
+      </td>
+      <td style="padding:0px 5px;" align=left>
+        [macro.return]
+      </td>
+    </tr>
+  }]
+}]
+</table>

@@ -1,0 +1,47 @@
+<!-----===== FormatTooltip =====----->
+<!-- This function takes a JSON object of variables (labels) and values
+to be formatted into a table for a tooltip pop-up in the MapTools non-standard HTML interpreter,
+overtop the sum, which is automatically calculated -->
+[H: numArgs = argCount() ]
+[H: tValues = arg(0) ]   <!-- macro.args if not a user-defined function -->
+[H, IF( numArgs>1 ): sumValues = arg(1) ; sumValues = 1 ]   <!-- optional switch to calculate sum or just return formatted table -->
+[H, IF( numArgs>2 ): vsDC = arg(2) ; vsDC = "" ]   <!-- optional value to compare to sum as success threshold (DC) -->
+[H, if( isNumber( vsDC ) ): vsDC = number( vsDC ) ; vsDC = 0 ]
+[H: tNames = json.fields( tValues )]
+[H: toolTipContents = "<html><head>"+
+   "<style>"+
+   "   td   { font-family: Verdana,sans-serif ; }
+      td.var {
+         font-style: italic;
+         text-align: left;
+      }
+      td.value {
+         text-align: right;
+      }
+      tr.total {
+         font-weight: bold;
+         color: #333333;
+         background: #CCCCFF;
+      }
+      tr.dc, tr.dcfail {
+         font-weight: normal;
+         font-size: 100%;
+         color: #000000;
+         background: #CCCCFF;
+      }
+      tr.dcFail {
+         color: #660000;
+         background: #CCCCCC;
+      }
+   "+
+   "</style></head><body><table>" ]
+[H: valueSum = 0 ]
+[H, FOREACH( var, tNames, "" ): valueSum = valueSum + json.get( tValues, var )]
+[H: marginDC = valueSum - vsDC ]   <!-- margin of the roll vs DC.  >=0 is a pass, <0 is a fail -->
+[H, FOREACH( var, tNames, "" ): toolTipContents = toolTipContents + "<tr><td class='var'><em>"+ var +"</em></td><td class='value' style='text-align: right;'>"+ json.get( tValues,var ) +"</td></tr>" ]
+[H: toolTipContents = toolTipContents + "<tr class='total' ><td class='var'><em>Total</em></td><td class='value' >"+ valueSum +"</td></tr>" ]
+[H, if( vsDC!=0 ): toolTipContents = toolTipContents + "<tr class='"+ if( marginDC<0, "dcFail", "dc" )  +"' >" ]
+[H, if( vsDC!=0 ): toolTipContents = toolTipContents + "<td class='var'><strong>"+ if( marginDC>0, "+", "" )+ marginDC + "</strong></td><td class='value' style='text-align: right;'><em>vs.</em> "+ vsDC +" </td></tr>" ]
+[H: toolTipContents = toolTipContents + "</table></body></html>" ]
+[H, IF( sumValues ): formattedToolTip = '<span style="background:#EEEEEE" title="'+ toolTipContents +'">'+ if( vsDC==0, valueSum, if( marginDC>0, "+", "" )+ marginDC ) +'</span>' ; formattedToolTip = toolTipContents ]
+[H: macro.return = formattedToolTip ]

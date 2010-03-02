@@ -1,0 +1,7 @@
+<!-- updateProperty user defined function -->
+<!-- takes in 2 arguments: (1) is property to be set, (2) is value to set property to -->
+<!-- checks that property doesn't already have the value passed before setting it -->
+
+[h:prop=arg(0)]
+[h:val=arg(1)]
+[h,if(getProperty(prop)!=val): setProperty(prop,val)]

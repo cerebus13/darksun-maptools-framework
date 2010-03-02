@@ -1,0 +1,26 @@
+<!-- DoAttack macro -->
+<!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
+<!-- Apply damage/effects to target on hit/miss and return values depending on result -->
+<!-- Return 3 things: result, attack roll, damage roll -->
+<!-- result: 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+
+[h:targetName    = json.get(macro.args, 0)]
+[h:targetDefense = json.get(macro.args, 1)]
+[h:atkMod        = json.get(macro.args, 2)]
+[h:damRoll       = json.get(macro.args, 3)]
+[h:critDamRoll   = json.get(macro.args, 4)]
+[h:damMod        = json.get(macro.args, 5)]
+[h:autoHit       = json.get(macro.args, 6)]
+
+[h:missDamageRoll = json.get(macro.args, 8)]
+
+[h:atkRoll=eval("1d20")]
+[h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
+[h,if(missDamageRoll!=-1 && missDamageRoll!=-2): totalDamage = eval(string(missDamageRoll));totalDamage=0]
+[h,if(missDamageRoll==-2): totalDamage = floor((damage+eval(string(damMod)))/2)] 
+[h:resu=-1]
+[h,if(atkRoll==20): resu=3]
+[h,if(atkRoll==1):  resu=0]
+[h,if(autoHit):     resu=2]
+
+[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage)]

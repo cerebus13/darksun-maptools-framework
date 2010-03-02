@@ -1,0 +1,20 @@
+[h: cancel = input("HOD||(+#)Healing or (-#)Damage")]
+[h: Abort(cancel)]
+[h: CHP=getProperty("CurrentHP")]
+[h: MHP=getProperty("MaxHP")]
+[h: CHP=CHP+HOD]
+[h: setProperty("CurrentHP",CHP)]
+[h, IF(CHP<=0), code:
+{
+  [h: setAllStates(0)]
+  [h,if(getState("Dead")!=1): state.Dead=1]
+};{
+  [h,if(getState("Dead")==1): state.Dead=0]
+  [h, IF(CHP<=MHP/2), code:
+  {
+    [h,if(getState("Bloodied")!=1): state.Bloodied=1]
+  };{
+    [h,if(getState("Bloodied")==1): state.Bloodied=0]
+  }]
+}]
+[h:abort(0)]

@@ -1,0 +1,45 @@
+<!-- CallMoveGUI macro -->
+<!-- pops an Input form that has a dropdown list with all player visible NPCs in it -->
+<!-- below is a radio button list of all 8 cardinal directions -->
+<!-- user picks a name from the list, and a direction and the token will move there -->
+
+<!-- get all NPC names -->
+[h:npcFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "npc", 1)]
+[h:npcJson = getTokenNames("json", npcFilter)]
+[h:npcJson = json.sort(npcJson)]
+[h:npcInputList = strformat("npcList|%s|Choose NPC|LIST|VALUE=STRING",json.toList(npcJson))]
+
+[h: status = input(
+  ".|<html><b>NPC MOVER</b></html>||LABEL|SPAN=TRUE",
+  npcInputList,
+  ".|---------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE",
+  "rad | North,Northeast,East,Southeast,South,Southwest,West,Northwest | Choose Direction | RADIO |"
+)]
+
+[abort(status)]
+
+[h: currentX = getTokenX(0, npcList)]
+[h: currentY = getTokenY(0, npcList)]
+[h,switch(rad):
+  case 0: newX = currentX + 0;
+  case 1: newX = currentX + 1;
+  case 2: newX = currentX + 1;
+  case 3: newX = currentX + 1;
+  case 4: newX = currentX + 0;
+  case 5: newX = currentX - 1;
+  case 6: newX = currentX - 1;
+  case 7: newX = currentX - 1
+]
+[h,switch(rad):
+  case 0: newY = currentY - 1;
+  case 1: newY = currentY - 1;
+  case 2: newY = currentY + 0;
+  case 3: newY = currentY + 1;
+  case 4: newY = currentY + 1;
+  case 5: newY = currentY + 1;
+  case 6: newY = currentY + 0;
+  case 7: newY = currentY - 1
+]
+[h: moveToken(newX, newY, 0, npcList)]
+
+[abort(0)]

@@ -1,0 +1,23 @@
+[macro("CallAttack@Lib:PlayerStomp"): 
+  json.append
+  (
+  "[]",
+  1,
+  "Ranged Basic Attack (+2 Hungry Trident)",
+  1,
+  "At-Will",
+  "Weapon",
+  "Standard Action",
+  "AC",
+  "Strength",
+  "Ranged 10/20",
+  "One Creature",
+  3,
+  3,
+  "1d8",
+  "2*(1d8)+2d6",
+  ""
+  )
+]
+
+{"atkMod1":{"Lvl":4,"Str":5},"atkMod2":{"Lvl":4,"Str":5,"Prof":2,"Magic":1,"EX":1},"atkMod3":{"Lvl":4,"Str":5,"Prof":2,"EX":1},"atkMod4":{"Lvl":4,"Str":5,"extra":2},"atkMod5":{"Lvl":4,"Str":5,"Prof":2,"Magic":1,"EX":1,"Power":2},"atkMod6":{"Lvl":4,"Str":5,"Prof":2,"Magic":1,"EX":1,"Item":1},"atkMod7":{"Lvl":4,"Str":5,"Prof":2,"Magic":2},"damMod1":{"Str":5,"Magic":1,"Racial":1,"WF":1,"CS":4},"damMod2":{"Str":5,"Magic":1,"Racial":1,"WF":1},"damMod3":{"Str":5,"Racial":1,"WF":1},"damMod4":{"Str":5,"Con":2,"Magic":1,"Racial":1,"WF":1},"damMod5":{"Con":2},"damMod6":{"Str":5,"Magic":2}}

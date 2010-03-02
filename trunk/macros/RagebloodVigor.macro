@@ -1,0 +1,12 @@
+[h: Con=floor((Constitution-10)/2) + 5]
+[h: TempHP=Con]
+[h: macroParams = "
+  atkKey=6;
+  atkName=Rageblood Vigor;
+  atkType=1;
+  atkTypeName=At-Will;
+  actionType=Free Action;
+  numTargetsText=Personal;
+  effectText=<b>Trigger:</b> Your attack reduces an enemy to 0 hit points.<br><b>Effect:</b> You gain temporary hit points equal to your Constitution modifier + 5 ("+Con+").
+"] 
+[macro("CallAttack@Lib:PlayerStomp"): macroParams]

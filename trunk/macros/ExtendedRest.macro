@@ -1,0 +1,26 @@
+[h: names = getSelectedNames("json")]
+[h,if(json.length(names)!=1): abort(0)]
+[h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
+
+[h,foreach(index,getMacroGroup("Encounter Powers")), code: 
+{
+  [h: props = getMacroProps(index)]
+  [h: label = getStrProp(props, "label")]
+  [h,if(endsWith(label,"(Used)")): setMacroProps(index, "label="+replace(label, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("Daily Powers")), code: 
+{
+  [h: props = getMacroProps(index)]
+  [h: label = getStrProp(props, "label")]
+  [h,if(endsWith(label,"(Used)")): setMacroProps(index, "label="+replace(label, " \\(Used\\)", ""))]
+}]
+[h: setAllStates(0)]
+[h: CurrentHP=MaxHP]
+[h: TempHP=0]
+[h: Con = floor((Constitution-10)/2)]
+[h: SurgeVal=floor(MaxHP/4) + floor((Constitution-10)/2)]
+[h: setProperty("Healing Surges",add(Con,8)+"/"+add(Con,8)+" ("+SurgeVal+"hp)")]
+[h,if(json.length(AttackBonuses)>0): AttackBonuses = json.removeAll(AttackBonuses,AttackBonuses)]
+[h,if(json.get(DamageBonuses,"Reckless")==2): AC = AC + 2]
+[h,if(json.length(DamageBonuses)>0): DamageBonuses = json.removeAll(DamageBonuses,DamageBonuses)]
+[abort(0)]

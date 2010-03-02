@@ -1,0 +1,13 @@
+<!-- CallDamageRoll macro -->
+
+[h:useRoll = json.get(macro.args, 0)]
+[h:damText = json.get(macro.args, 1)]
+[h:damVal  = json.get(macro.args, 2)]
+[h:isCrit  = json.get(macro.args, 3)]
+
+[h:damDieRoll=eval(useRoll)]
+[h:dmgTT=strformat("<html>%s = (%s)<br>%s</html>",useRoll,damDieRoll,damText)]
+[h:evalMacro(strformat("[res = damDieRoll + %s]",damVal))]
+[h,if(res<1): res = 1]
+[h:customTooltip(dmgTT,strformat("%s: <b>%s</b>",if(isCrit,"<font color='red'>Critical Damage</font>","Damage"),res))]
+<td style="padding:2px 0px;" align=left>{macro.return}</td>

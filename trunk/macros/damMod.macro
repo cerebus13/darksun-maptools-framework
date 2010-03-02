@@ -1,0 +1,13 @@
+<!-- Trog damage mods 1: Strength + Racial + Weapon Magic + Commander Strike + misc -->
+<!-- Trog damage mods 2: Strength + Racial + Weapon Magic + misc -->
+<!-- Trog damage mods 3: Strength + Racial + misc -->
+<!-- Trog damage mods 4: Str + Con + Racial + Weapon Magic + misc -->
+<!-- Trog damage mods 5: Con + misc -->
+[h,switch(number(macro.args)):
+  case 1: macro.return = encode("strMod="+floor((Strength-10)/2)+";Racial=1;dMAG=1;CS=4;"+DamageBonuses+";");
+  case 2: macro.return = encode("strMod="+floor((Strength-10)/2)+";Racial=1;dMAG=1;"+DamageBonuses+";");
+  case 3: macro.return = encode("strMod="+floor((Strength-10)/2)+";Racial=1;"+DamageBonuses+";");
+  case 4: macro.return = encode("strMod="+floor((Strength-10)/2)+";conMod="+floor((Constitution-10)/2)+";Racial=1;dMAG=1;"+DamageBonuses+";");
+  case 5: macro.return = encode("conMod="+floor((Constitution-10)/2)+";"+DamageBonuses+";");
+  default: ""
+]

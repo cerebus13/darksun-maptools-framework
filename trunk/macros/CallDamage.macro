@@ -1,0 +1,19 @@
+[h:cancel = input("dam|0|Damage Taken")]
+[h:Abort(cancel)]
+[h,if(dam<=0): abort(0)]
+[h,if(TempHP>=dam), code:
+{
+  [h: TempHP = TempHP - dam]
+};{
+  [h: dam = dam - TempHP]
+  [h: TempHP = 0]
+  [h: CurrentHP = CurrentHP - dam]
+}]
+[h,if(CurrentHP<=MaxHP/2): state.Bloodied=1]
+[h,if(CurrentHP<=0),code:
+{
+  [h:state.Unconscious=1]
+  [h:state.Prone=1]
+  [h:CurrentHP = 0]
+};{}]
+[abort(0)]

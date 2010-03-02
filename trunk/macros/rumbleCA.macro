@@ -1,0 +1,25 @@
+[h:selectedTargets=arg(0)]
+
+[h:inputParams = json.append("[]", ".|Granting Combat Advantage?|<html><b>Target</b></html>|LABEL")]
+[h,foreach(enemy,selectedTargets): inputParams = json.append(inputParams, "target"+roll.count+"ca|Yes,No|<html> &nbsp; "+enemy+"</html>|RADIO|SELECT=0 ORIENT=H")]
+[h:inputParams = json.toList(inputParams, "##")]
+[h:status=input(inputParams)]
+[h:abort(status)]
+
+[h:comAdvMod=json.set("{}", "key", "0")]
+
+[h,foreach(target, selectedTargets),CODE:
+{
+   [switch(eval("target"+roll.count+"ca")), CODE:
+   case 0:
+   {
+      [h:comAdvMod=json.set(comAdvMod, target, 2)]
+   };
+   case 1:
+   {
+      [h:comAdvMod=json.set(comAdvMod, target, 0)]
+   };]
+}]
+
+
+[r:comAdvMod]
