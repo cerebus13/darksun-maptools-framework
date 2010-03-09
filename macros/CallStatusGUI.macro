@@ -1,5 +1,5 @@
 <!-- CallStatusGUI macro -->
-<!-- pops a Tabbed Input form that lists all player visible PC and NPCs -->
+<!-- pops a Tabbed Input form that lists all player visible PC & NPCs -->
 <!-- other tabs contain various conditions/resists/vulns/etc in categories -->
 <!-- any conditions that are checked will be toggled for all PC/NPCs that are checked -->
 
