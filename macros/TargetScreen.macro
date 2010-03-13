@@ -11,19 +11,21 @@
 <!-- 7 = Single/Multi heal -->
 <!-- 8 = AOE heal -->
 <!-- 20 = Utility -->
-[h:atkKey        = json.get(macro.args, 0)]
-[h:atkName       = json.get(macro.args, 1)]
-[h:atkMod        = json.get(macro.args, 2)]
-[h:damMod        = json.get(macro.args, 3)]
-[h:damRoll       = json.get(macro.args, 4)]
-[h:critDamRoll   = json.get(macro.args, 5)]
-[h:maxRange      = json.get(macro.args, 6)]
-[h:numTargets    = json.get(macro.args, 7)]
-[h:targetDefense = json.get(macro.args, 8)]
-[h:friendlyFire  = json.get(macro.args, 9)] <!-- 0 NPC, 1 PC, 2 Both -->
-[h:otherSource   = json.get(macro.args, 10)] <!-- name of other token to use as source for figuring targets based on range -->
-[h:paramStateJson = json.get(macro.args, 11)] <!-- Json holding states to be applied with this power -->
-[h:missDamageRoll = json.get(macro.args, 12)] <!-- damage to roll on a miss, will not apply to minions -->
+[h:atkKey          = json.get(macro.args, 0)]
+[h:atkName         = json.get(macro.args, 1)]
+[h:atkMod          = json.get(macro.args, 2)]
+[h:damMod          = json.get(macro.args, 3)]
+[h:damRoll         = json.get(macro.args, 4)]
+[h:critDamRoll     = json.get(macro.args, 5)]
+[h:maxRange        = json.get(macro.args, 6)]
+[h:numTargets      = json.get(macro.args, 7)]
+[h:targetDefense   = json.get(macro.args, 8)]
+[h:friendlyFire    = json.get(macro.args, 9)]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource     = json.get(macro.args, 10)] <!-- name of other token to use as source for figuring targets based on range -->
+[h:missDamageRoll  = json.get(macro.args, 11)] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(macro.args, 12)] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
+[h:selfHaloJson    = json.get(macro.args, 14)] <!-- Json holding halos to be applied to self with this power -->
 
 [h:CA=0]
 [h:charge=0]
@@ -72,7 +74,7 @@
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
 {
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),paramStateJson,missDamageRoll)]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,selfHaloJson)]
   
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
