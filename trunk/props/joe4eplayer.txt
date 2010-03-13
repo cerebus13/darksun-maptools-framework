@@ -1,3 +1,4 @@
+-------------STATS-------------
 Strength (Str)
 Constitution (Con)
 Dexterity (Dex)
@@ -10,10 +11,16 @@ DexMod:{floor((Dexterity-10)/2)}
 IntMod:{floor((Intelligence-10)/2)}
 WisMod:{floor((Wisdom-10)/2)}
 ChaMod:{floor((Charisma-10)/2)}
+-------------HP STUFF-------------
 CurrentHP:0
 MaxHP:0
 TempHP:0
 *HP:{CurrentHP} / {MaxHP} ({TempHP} temp)
+*Healing Surges (Surges):{CurrentSurge} / {MaxSurge} ({SurgeValue}hp)
+CurrentSurge:0
+MaxSurge:0
+SurgeValue:{floor(MaxHP/4)}
+-------------DEFENSES-------------
 *AC:{ACBase+ACMod}
 ACBase:0
 ACMod:0
@@ -26,23 +33,23 @@ RefMod:0
 *Willpower (Will):{WillBase+WillMod}
 WillBase:0
 WillMod:0
-*Healing Surges (Surges):{CurrentSurge} / {MaxSurge} ({SurgeValue}hp)
+-------------LIMITED USES-------------
 *ActionPoints (AP):0
 *LuckPoints (Luck):0
 *MagicItemUses (Magic):0
-CurrentSurge:0
-MaxSurge:0
-SurgeValue:{floor(MaxHP/4)}
+-------------OTHER STATISTICS-------------
 *Elevation (Elev)
 Initiative (Init):0
 Movement (Mov)
 Level (Lvl)
 HalfLevel:{floor(Level/2)}
 Skills (Skl):Acrobatics=0 ; Arcana=0 ; Athletics=0 ; Bluff=0 ; Diplomacy=0 ; Dungeoneering=0 ; Endurance=0 ; Heal=0 ; History=0 ; Insight=0 ; Intimidate=0 ; Nature=0 ; Perception=0 ; Religion=0 ; Stealth=0 ; Streetwise=0 ; Thievery=0 ;
-AttackBonuses (ABon):CA=0 ; Generic=0 ;
-DamageBonuses (DBon):Generic=0 ;
 Miscellaneous (Misc)
 UseLib
+-------------STATIC ATTACK & DAMAGE MODIFIERS-------------
+AttackBonuses (ABon):CA=0 ; Generic=0 ;
+DamageBonuses (DBon):Generic=0 ;
+-------------NUMBERED ATTACK MOD LISTS-------------
 AtkMod1:{}
 AtkMod2:{}
 AtkMod3:{}
@@ -53,6 +60,7 @@ AtkMod7:{}
 AtkMod8:{}
 AtkMod9:{}
 AtkMod10:{}
+-------------NUMBERED DAMAGE MOD LISTS-------------
 DamMod1:{}
 DamMod2:{}
 DamMod3:{}
@@ -63,7 +71,10 @@ DamMod7:{}
 DamMod8:{}
 DamMod9:{}
 DamMod10:{}
-AttackStates:{}
+-------------STATES-------------
+TargetStates:{}
+SelfStates:{}
+SelfHalo:{}
 -------------RESIST AND VULNERABILITY-------------
 InnateResist:{}
 InnateVulnerable:{}
