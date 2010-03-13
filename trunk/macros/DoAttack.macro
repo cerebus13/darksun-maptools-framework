@@ -11,8 +11,7 @@
 [h:critDamRoll   = json.get(macro.args, 4)]
 [h:damMod        = json.get(macro.args, 5)]
 [h:autoHit       = json.get(macro.args, 6)]
-
-[h:missDamageRoll = json.get(macro.args, 8)]
+[h:missDamageRoll = json.get(macro.args, 7)] <!-- damage to roll on a miss -->
 
 [h:atkRoll=eval("1d20")]
 [h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
