@@ -1,0 +1,154 @@
+#summary Road map of code planned for Dark Sun campaign.
+#labels roadmap,darksun
+
+= Introduction =
+
+This is just a rough road map of what I plan to code up for the Dark Sun campaign.  Some will not go out with the initial release of the framework because I want to get some playtesting in first to determine if I should waste the time for certain features or not.
+
+
+= Details =
+
+todo list:
+
+5) add to attack macro: states to target on hit/miss/always, states to self on hit/miss/always, halo to self on hit/miss/always
+use a single nested Json in each power to store it, similar to:
+"{"1":{"marked_yellow","sleeping"},"2":{"marked_blue","prone"}}"
+the halo states will have their numeric key and a single color rather than a list
+each numeric key will determine which of the 9 possible outcomes is, keyed as:
+1 = states to target on hit
+2 = states to target on miss
+3 = states to target always
+4 = states to self on hit
+5 = states to self on miss
+6 = states to self always
+7 = halo to self on hit
+8 = halo to self on miss
+9 = halo to self always
+the second value in each json pair is just a json array containing state names (need exact spelling on them)
+this will be a bit ugly to set up by hand, but easily done through a power creation macro
+
+6) make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer
+to comments to edit powers later if needed
+
+8) create a template PC and NPC token for my campaign
+give PCs 10 attack mod props, and 10 damage mod props
+npcs probably only need 5 of each
+use derivied properties to do statmods, maxhp, and healing surge value and whatnot
+healing surge value property
+magic item uses property
+# of AP property
+make AP and magic item uses part of the mouse over stat sheet, and just use the Used AP state to tell yourself if you've popped an AP yet for
+a given encounter
+
+9) finish creating reticle token
+flag it as npc, and create a reticle state to set on it to use for target filtering
+add a section of custom light sources of "aura" type with shape square in various sizes
+probably do a burst 1, burst 2, burst 3, burst 4, burst 5, and burst 10 as macros that toggle the aura needed to display that burst template
+7.5 range with square shape = burst 1, 12.5 = burst 2, and so on
+
+10) finish targetting form
+it will actually be 2 forms, first will be target picking from dropdowns (for multi/single target powers), and have various modifiers like CA/cover
+with radio buttons to say affect ALL or affect NONE or affect SOME
+if anything is selected to say affect SOME then pop second form with tabs in it.  each tab will have all targets listed and allow user to pick
+which targets get CA or cover against them and so on
+each target dropdown in the first form will also have a None choice so they can opt to not hit something, and each list will include ALL valid
+targets so a user could double up on the same guy if they wanted
+in the 2nd form each target dropdown will not include a None choice because you need to specify bonuses against each dude (defaults will be set to
+DON'T apply, so they could just click through it and nobody will get modifiers)
+
+11) update attack macro to take in a distinct number of targets per power rather than making it a user entered choice
+
+12) update attack/damage table output to include target on each line (once have targetting form finished)
+
+13) get the whole package deal working within the attack macro to roll attacks, check defenses of each target, and apply appropriate damage/states
+to affected units and so on [this will be a lot of work]
+
+14) figure out how to make heal powers into a macro that does all of the work including update hp, decrement healing surges etc.  might need to
+make a 7th attack type beyond a utility power even
+
+15) revisit recharge powers macro
+
+16) revisit initiative macros for adding all units/tokens to init list - fixed up AddAllPCToInitiative for stomp's game
+
+17) add another attack type for items beyond utility that will check number of magic item uses on token and spit out a warning if = 0, otherwise
+will simply decrement it downwards
+
+19) update short rest/extended rest macro to only work if the number of things you have selected = 1
+
+20) implement striker damage, figure out a clean way to make it only apply to one target per round (in the case of multi-target attacks)
+if have a drop down appear on the 2nd stage target form (where you apply mods to opponents) can list all available targets for attack and allow
+player to choose one or none.  make 1st stage form just have a check box to say YES i am applying striker damage or something.
+otherwise in the case of multi-class guys who get striker damage as an encounter power i can look into the "damage only" typed attack and have
+them use that to automatically apply it to a single target
+
+23) give a checkbox to make attack rolls reroll d20s, such as with avengers and their omen or whatever
+
+24) implement on-miss damage to be rolled/used for stuff like Reaping Strike
+when going to apply damage if target is an NPC and MaxHP=1 then know that it is a minion and do not apply damage and indicate as such in damage
+printout
+
+25) figure out a system to implement Vulns/Resists automatically when applying various damages
+the system would check if you have vuln/resist state, and then a vuln/resist amount property to determine how much to reduce damage taken
+damage reduction/increase would not be readily apparent to players and easily hidden with this system by simply putting innate resistances
+onto monsters in the amount properties
+resist all would need a slightly special consideration since no keywords could counter it
+this means will need to get a real Keyword system going for each attack used to determine what damage type it is and so on
+perhaps would need to look into making Keyword stables similar to the attack/damage-mod stables i'm planning so that a player could toggle on
+a cold weapon or something for all of their Weapon powers (which use stable1 or whatever), or toggle it off if against a resist monster
+this system should also check the attacker for certain statuses (Weakened or whatever), and the defender for statuses (Insubstantial or something)
+and modify damage/attack accordingly
+would need to consider improving the marking system a bit by giving a marked_red status, and then a mark_red_source status so that you can say
+as an attacker if i am marked_color and my defender target is not marked_color_source then i get a -2 attack
+would probably add another 5 mark colors and just try to be smart about the usage of them.....
+unless i got clever and just did a run down of all tokens on the board filtering based on each mark color in turn until i find an empty one, then
+use the first target/source pairing that hasn't been used yet (this would be done in the status application coding, just put a "Mark" in under
+inflicted statuses for a player and the code behind the scenes would automatically assign you an open color)
+"piercing" type magic items/feats that bypass resistances would be dealt with manually at the start or else can implement a pierce property
+that indicates how much your say cold powers bypass resistances or something
+
+28) Add a States text box to the Targetting Screen that lets you enter states to be inflicted on that individual power.  Do something as simple as
+an array like this:
+0,Prone,1,Stunned,etc
+An alternating array where the number is what attack result you want (0 = miss, 1 = hit, 2 = crit, 3 = always), and then the name of a state
+
+29) change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
+locally to your token and make those properties show up on mouseover.
+
+30) Similar to #29 but only for the Marked_color states.  Make a MarkSource property that is only filled if you mark a guy, and remember to clear it
+if you have no marks applied for your turn.  Update the DoAttack code to check if you have any Marked_color states, and if you do and then attack
+a target check that your Marked_color state = their MarkSource, otherwise take a -2 to attack.
+
+31) If players in game take feats/powers that increase the default -attack penalty for Marking then will have to implement a MarkPenalty property on
+tokens, and have any attack that marks include the penalty in an optional parameter.  Default to -2.  Only implement this if needed.
+
+DONE:
+
+1) convert damage tooltip functionality from t: to <span> like hit rolls
+
+2) make the entire top part of power card into a tooltip using <span> with just the power name as text
+
+4) finish up states for campaign: Grabbed, Grabbing, Vulnerabilities to all damage types
+
+18) make a milestone macro that will increment magic item usage property, increment AP property, clear the Used AP state
+
+21) spruce up tooltips for the various things including: attack rolls, damage rolls, extra rolls, and power cards
+
+27) implement Optional parameter type of behavior in the CallAttack macro so that I can append new parameters to the end of the macro later and not
+have older versions on older tokens immediately break
+
+7) update bonus parser such that if a value for a pairing = 999, then the user actually wants to refer to a property from their token using the
+key from the current pairing (exact spelling needed).  This way easy stuff like Level and statmods can just reference macro properties and not
+need updating as you level - didn't need to do this, can instead get clever in properties by using a {strformat} to make it emulate a normal macro
+operation and pull in other variables.  will need to make variables like HalfLevel/StrMod and so on because I can't parse Properties this way, but
+this will work.
+
+22) update mod parser to allow for die rolls instead of static bonus/penalty - this isn't really feasible without a lot of pain in the ass work.  instead a player could get clever using strformat in their AtkMod# or DamMod# properties to set a placeholder %d to something like eval(1d8) and just
+make the name of the variable include the die roll like this: PenorMod->1d8(%d),eval("1d8") which would give something like: PenorMod->1d8(6) when
+you actually rolled it.  puts more burden on the player but it works out cleaner this way in code
+
+3) add Extra Roll functionality for misc. rolls on some powers
+
+26) when doing the apply damage code if a monster is killed set it to dead and clear all other states
+
+27) Fix up skill roller to associate stat values with each skill so a player only has to enter their training + racial/class/item bonuses for each 
+skill to be stored, and the roller will apply Level and stat mod as needed
