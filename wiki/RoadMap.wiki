@@ -10,23 +10,6 @@ This is just a rough road map of what I plan to code up for the Dark Sun campaig
 
 todo list:
 
-5) add to attack macro: states to target on hit/miss/always, states to self on hit/miss/always, halo to self on hit/miss/always
-use a single nested Json in each power to store it, similar to:
-"{"1":{"marked_yellow","sleeping"},"2":{"marked_blue","prone"}}"
-the halo states will have their numeric key and a single color rather than a list
-each numeric key will determine which of the 9 possible outcomes is, keyed as:
-1 = states to target on hit
-2 = states to target on miss
-3 = states to target always
-4 = states to self on hit
-5 = states to self on miss
-6 = states to self always
-7 = halo to self on hit
-8 = halo to self on miss
-9 = halo to self always
-the second value in each json pair is just a json array containing state names (need exact spelling on them)
-this will be a bit ugly to set up by hand, but easily done through a power creation macro
-
 6) make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer
 to comments to edit powers later if needed
 
@@ -40,12 +23,6 @@ magic item uses property
 make AP and magic item uses part of the mouse over stat sheet, and just use the Used AP state to tell yourself if you've popped an AP yet for
 a given encounter
 
-9) finish creating reticle token
-flag it as npc, and create a reticle state to set on it to use for target filtering
-add a section of custom light sources of "aura" type with shape square in various sizes
-probably do a burst 1, burst 2, burst 3, burst 4, burst 5, and burst 10 as macros that toggle the aura needed to display that burst template
-7.5 range with square shape = burst 1, 12.5 = burst 2, and so on
-
 10) finish targetting form
 it will actually be 2 forms, first will be target picking from dropdowns (for multi/single target powers), and have various modifiers like CA/cover
 with radio buttons to say affect ALL or affect NONE or affect SOME
@@ -56,24 +33,8 @@ targets so a user could double up on the same guy if they wanted
 in the 2nd form each target dropdown will not include a None choice because you need to specify bonuses against each dude (defaults will be set to
 DON'T apply, so they could just click through it and nobody will get modifiers)
 
-11) update attack macro to take in a distinct number of targets per power rather than making it a user entered choice
-
-12) update attack/damage table output to include target on each line (once have targetting form finished)
-
-13) get the whole package deal working within the attack macro to roll attacks, check defenses of each target, and apply appropriate damage/states
-to affected units and so on [this will be a lot of work]
-
 14) figure out how to make heal powers into a macro that does all of the work including update hp, decrement healing surges etc.  might need to
 make a 7th attack type beyond a utility power even
-
-15) revisit recharge powers macro
-
-16) revisit initiative macros for adding all units/tokens to init list - fixed up AddAllPCToInitiative for stomp's game
-
-17) add another attack type for items beyond utility that will check number of magic item uses on token and spit out a warning if = 0, otherwise
-will simply decrement it downwards
-
-19) update short rest/extended rest macro to only work if the number of things you have selected = 1
 
 20) implement striker damage, figure out a clean way to make it only apply to one target per round (in the case of multi-target attacks)
 if have a drop down appear on the 2nd stage target form (where you apply mods to opponents) can list all available targets for attack and allow
@@ -81,11 +42,7 @@ player to choose one or none.  make 1st stage form just have a check box to say 
 otherwise in the case of multi-class guys who get striker damage as an encounter power i can look into the "damage only" typed attack and have
 them use that to automatically apply it to a single target
 
-23) give a checkbox to make attack rolls reroll d20s, such as with avengers and their omen or whatever
-
-24) implement on-miss damage to be rolled/used for stuff like Reaping Strike
-when going to apply damage if target is an NPC and MaxHP=1 then know that it is a minion and do not apply damage and indicate as such in damage
-printout
+23) give a checkbox to make attack rolls reroll d20s, such as with avengers and their Oath or whatever
 
 25) figure out a system to implement Vulns/Resists automatically when applying various damages
 the system would check if you have vuln/resist state, and then a vuln/resist amount property to determine how much to reduce damage taken
@@ -111,7 +68,8 @@ an array like this:
 0,Prone,1,Stunned,etc
 An alternating array where the number is what attack result you want (0 = miss, 1 = hit, 2 = crit, 3 = always), and then the name of a state
 
-29) change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
+29) change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say 
+Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
 locally to your token and make those properties show up on mouseover.
 
 30) Similar to #29 but only for the Marked_color states.  Make a MarkSource property that is only filled if you mark a guy, and remember to clear it
@@ -152,3 +110,51 @@ you actually rolled it.  puts more burden on the player but it works out cleaner
 
 27) Fix up skill roller to associate stat values with each skill so a player only has to enter their training + racial/class/item bonuses for each 
 skill to be stored, and the roller will apply Level and stat mod as needed
+
+5) add to attack macro: states to target on hit/miss/always, states to self on hit/miss/always, halo to self on hit/miss/always
+use a single nested Json in each power to store it, similar to:
+"{"1":{"marked_yellow","sleeping"},"2":{"marked_blue","prone"}}"
+the halo states will have their numeric key and a single color rather than a list
+each numeric key will determine which of the 9 possible outcomes is, keyed as:
+1 = states to target on hit
+2 = states to target on miss
+3 = states to target always
+4 = states to self on hit
+5 = states to self on miss
+6 = states to self always
+7 = halo to self on hit
+8 = halo to self on miss
+9 = halo to self always
+the second value in each json pair is just a json array containing state names (need exact spelling on them)
+this will be a bit ugly to set up by hand, but easily done through a power creation macro
+
+9) finish creating reticle token
+flag it as npc, and create a reticle state to set on it to use for target filtering
+add a section of custom light sources of "aura" type with shape square in various sizes
+probably do a burst 1, burst 2, burst 3, burst 4, burst 5, and burst 10 as macros that toggle the aura needed to display that burst template
+7.5 range with square shape = burst 1, 12.5 = burst 2, and so on
+
+11) update attack macro to take in a distinct number of targets per power rather than making it a user entered choice
+
+12) update attack/damage table output to include target on each line (once have targetting form finished)
+
+13) get the whole package deal working within the attack macro to roll attacks, check defenses of each target, and apply appropriate damage/states
+to affected units and so on [this will be a lot of work]
+
+15) revisit recharge powers macro
+- changed it to simply run on the token it is called from to make things easier
+
+17) add another attack type for items beyond utility that will check number of magic item uses on token and spit out a warning if = 0, otherwise
+will simply decrement it downwards
+
+19) update short rest/extended rest macro to only work if the number of things you have selected = 1
+
+24) implement on-miss damage to be rolled/used for stuff like Reaping Strike
+when going to apply damage if target is an NPC and MaxHP=1 then know that it is a minion and do not apply damage and indicate as such in damage
+printout
+- also implemented 1/2 damage with this parameter
+
+16) revisit initiative macros for adding all units/tokens to init list 
+- fixed up AddAllPCToInitiative for stomp's game
+- In order to make NPCs work easier just make a same named "Initiative" macro on each token, highlight ALL npcs you want to roll for, and click the
+"Initiative" macro in the Common macros area and should be good to go
