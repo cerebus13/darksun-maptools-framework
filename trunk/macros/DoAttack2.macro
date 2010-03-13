@@ -2,19 +2,24 @@
 <!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
 <!-- Apply damage/effects to target on hit/miss and return values depending on result -->
 <!-- Return 3 things: result, attack roll, damage roll -->
-<!-- result: 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+<!-- result(resu): 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
 
-[h:targetName    = json.get(macro.args, 0)]
-[h:targetDefense = json.get(macro.args, 1)]
-[h:atkMod        = json.get(macro.args, 2)]
-[h:damRoll       = json.get(macro.args, 3)]
-[h:critDamRoll   = json.get(macro.args, 4)]
-[h:damMod        = json.get(macro.args, 5)]
-[h:autoHit       = json.get(macro.args, 6)]
-[h:paramStateJson = json.get(macro.args, 7)]
-[h:missDamageRoll = json.get(macro.args, 8)] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetName      = json.get(macro.args, 0)]
+[h:targetDefense   = json.get(macro.args, 1)]
+[h:atkMod          = json.get(macro.args, 2)]
+[h:damRoll         = json.get(macro.args, 3)]
+[h:critDamRoll     = json.get(macro.args, 4)]
+[h:damMod          = json.get(macro.args, 5)]
+[h:autoHit         = json.get(macro.args, 6)]
+[h:missDamageRoll  = json.get(macro.args, 7)]  <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(macro.args, 8)]  <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(macro.args, 9)]  <!-- Json holding states to be applied to self with this power -->
+[h:selfHaloJson    = json.get(macro.args, 10)] <!-- Json holding halos to be applied to self with this power -->
 
-[h:jsonAttackStates = AttackStates]
+[h:propTargetStatesJson = getProperty("TargetStates")]
+[h:propSelfStatesJson   = getProperty("SelfStates")]
+[h:propSelfHaloJson     = getProperty("SelfHalo")]
+[h:selfName             = getName()]
 [h:switchToken(targetName)]
 [h:def=getProperty(targetDefense)]
 [h:atkRoll=eval("1d20")]
@@ -56,14 +61,49 @@
   };{}]
 };{}]
 
-<!-- apply property states to target -->
+<!-- apply states to Target -->
 [h:emptyJson="[]"]
 [h,SWITCH(resu):
-  case 0: setJsonStates(json.merge(json.get(jsonAttackStates,0),if(length(json.get(paramStateJson,0))>0,json.get(paramStateJson,0),emptyJson)));
-  case 1: setJsonStates(json.merge(json.get(jsonAttackStates,0),if(length(json.get(paramStateJson,0))>0,json.get(paramStateJson,0),emptyJson)));
-  case 2: setJsonStates(json.merge(json.get(jsonAttackStates,1),if(length(json.get(paramStateJson,1))>0,json.get(paramStateJson,1),emptyJson)));
-  case 3: setJsonStates(json.merge(json.get(jsonAttackStates,2),if(length(json.get(paramStateJson,2))>0,json.get(paramStateJson,2),emptyJson)));
+  case 0: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
+  case 1: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
+  case 2: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,1))>0,json.get(propTargetStatesJson,1),emptyJson),if(length(json.get(targetStateJson,1))>0,json.get(targetStateJson,1),emptyJson)),targetName);
+  case 3: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,2))>0,json.get(propTargetStatesJson,2),emptyJson),if(length(json.get(targetStateJson,2))>0,json.get(targetStateJson,2),emptyJson)),targetName);
 ]
-[h:setJsonStates(json.merge(json.get(jsonAttackStates,3),if(length(json.get(paramStateJson,3))>0,json.get(paramStateJson,3),emptyJson)))]
+[h:setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,3))>0,json.get(propTargetStatesJson,3),emptyJson),if(length(json.get(targetStateJson,3))>0,json.get(targetStateJson,3),emptyJson)),targetName)]
+
+<!-- apply states to Self -->
+[h:emptyJson="[]"]
+[h,SWITCH(resu):
+  case 0: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,0))>0,json.get(propSelfStatesJson,0),emptyJson),if(length(json.get(selfStateJson,0))>0,json.get(selfStateJson,0),emptyJson)),selfName);
+  case 1: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,0))>0,json.get(propSelfStatesJson,0),emptyJson),if(length(json.get(selfStateJson,0))>0,json.get(selfStateJson,0),emptyJson)),selfName);
+  case 2: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,1))>0,json.get(propSelfStatesJson,1),emptyJson),if(length(json.get(selfStateJson,1))>0,json.get(selfStateJson,1),emptyJson)),selfName);
+  case 3: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,2))>0,json.get(propSelfStatesJson,2),emptyJson),if(length(json.get(selfStateJson,2))>0,json.get(selfStateJson,2),emptyJson)),selfName);
+]
+[h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),selfName)]
+
+<!-- apply halo to Self -->
+<!-- Note: Since you can only have 1 Halo on at a time and the system can have Halos from a Token state or from a power parameter I am making -->
+<!-- parameter Halos take priority over the ones from the Token -->
+[h,if(json.length(selfHaloJson)>0): haloResu=0;haloResu=4]
+[h,SWITCH(resu+haloResu):
+  case 0: if(length(json.get(selfHaloJson,0))>0,setHalo(json.get(selfHaloJson,0),selfName),"");
+  case 1: if(length(json.get(selfHaloJson,0))>0,setHalo(json.get(selfHaloJson,0),selfName),"");
+  case 2: if(length(json.get(selfHaloJson,1))>0,setHalo(json.get(selfHaloJson,1),selfName),"");
+  case 3: if(length(json.get(selfHaloJson,2))>0,setHalo(json.get(selfHaloJson,2),selfName),"");
+  default: ""
+]
+[h:tmp=json.get(selfHaloJson,3)]
+[h,if(haloResu!=4 && length(tmp)>0): setHalo(json.get(selfHaloJson,3),selfName)]
+
+[h,if(json.length(selfHaloJson)<1 && json.length(propSelfHaloJson)>0): haloResu=0;haloResu=4]
+[h,SWITCH(resu+haloResu):
+  case 0: if(length(json.get(propSelfHaloJson,0))>0,setHalo(json.get(propSelfHaloJson,0),selfName),"");
+  case 1: if(length(json.get(propSelfHaloJson,0))>0,setHalo(json.get(propSelfHaloJson,0),selfName),"");
+  case 2: if(length(json.get(propSelfHaloJson,1))>0,setHalo(json.get(propSelfHaloJson,1),selfName),"");
+  case 3: if(length(json.get(propSelfHaloJson,2))>0,setHalo(json.get(propSelfHaloJson,2),selfName),"");
+  default: ""
+]
+[h:tmp=json.get(propSelfHaloJson,3)]
+[h,if(haloResu!=4 && length(tmp)>0): setHalo(json.get(propSelfHaloJson,3),selfName)]
 
 [h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage)]
