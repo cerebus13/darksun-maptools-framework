@@ -14,7 +14,7 @@
 <!-- 20 = Utility -->
 [h:atkKey         = json.get(macro.args, 0)]
 [h:atkName        = json.get(macro.args, 1)]
-[h:atkType        = json.get(macro.args, 2)]
+[h:atkType        = json.get(macro.args, 2)] <!--  At-Will = 1, Encounter = 2, Daily = 3 -->
 [h:atkTypeName    = json.get(macro.args, 3)]
 [h:keywords       = json.get(macro.args, 4)]
 [h:actionType     = json.get(macro.args, 5)]
@@ -33,8 +33,18 @@
 [h,if(json.length(macro.args)>18): useMagicItem = json.get(macro.args, 18);useMagicItem=0]
 [h,if(json.length(macro.args)>19): friendlyFire = json.get(macro.args, 19);friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
 [h,if(json.length(macro.args)>20): otherSource  = json.get(macro.args, 20);otherSource=""] <!-- name of other token to use as source for figuring targets based on range -->
-[h,if(json.length(macro.args)>21): paramStateJson = json.get(macro.args, 21);paramStateJson="{}"] <!-- Json holding states to be applied with this power -->
-[h,if(json.length(macro.args)>22): missDamageRoll = json.get(macro.args, 22);missDamageRoll=-1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
+[h,if(json.length(macro.args)>21): missDamageRoll = json.get(macro.args, 21);missDamageRoll=-1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
+<!-- targetStateJson: Json with states to apply to target.  In the format of Key:Value, Key = a number 0-3, Value = json of State names-->
+<!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
+[h,if(json.length(macro.args)>22): targetStateJson = json.get(macro.args, 22);targetStateJson="{}"] 
+<!-- selfStateJson: Json with states to apply to self.  In the format of Key:Value, Key = a number 0-3, Value = json of State names-->
+<!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
+[h,if(json.length(macro.args)>23): selfStateJson = json.get(macro.args, 23);selfStateJson="{}"]
+<!-- selfHaloJson: Json with halos to apply to self.  In the format of Key:Value, Key = a number 0-3, Value = Halo name/color/None-->
+<!-- Keys: 0 = apply halo on miss, 1 = apply halo on hit, 2 = apply halo on crit, 3 = always apply halo -->
+<!-- Values: One of 8 predefined color names, hexadecimal format of #RRGGBB, or None -->
+<!-- Note: only have 1 Halo for each key/situation, or else behavior will be odd (such as a 0 key and a 3 key at the same time) -->
+[h,if(json.length(macro.args)>24): selfHaloJson = json.get(macro.args, 24);selfHaloJson="{}"]
 
 <!-- Deal with magic item uses -->
 [h:status=1]
@@ -43,8 +53,6 @@
 [h,if(useMagicItem && MagicItemUses>0): MagicItemUses=MagicItemUses-1]
 
 <!-- Print power card -->
-
-<!--  At-Will = 1, Encounter = 2, Daily = 3 -->
 [h,SWITCH(atkType):
   case 1: tableBG="#00CC00";
   case 2: tableBG="#FF0000";
@@ -64,4 +72,4 @@ tableBG,atkName,atkTypeName,keywords,actionType,rangeText,numTargetsText,versusS
 [if(length(extraRoll)>0): macro.return; ""]
 
 [h,if(atkKey<20): macroNamer="TargetScreen@"+UseLib;macroNamer=""]
-[macro(macroNamer): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, paramStateJson, missDamageRoll)]
+[macro(macroNamer): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, selfHaloJson)]
