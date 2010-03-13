@@ -1,5 +1,9 @@
 <!-- setJsonStates user defined function -->
-<!-- takes in 1 argument: a Json array of state names to apply to the current token -->
+<!-- takes in 2 arguments: -->
+<!-- arg0 - a Json array of state names to apply -->
+<!-- arg1 - token id to switch to before setting states -->
 
-[h:blah=arg(0)]
-[h,foreach(item,json.toList(blah)): if(getState(item),"",setState(item,1))]
+[h:states=arg(0)]
+[h:target=arg(1)]
+[h:switchToken(target)]
+[h,foreach(st,json.toList(states)): if(getState(st),"",setState(st,1))]
