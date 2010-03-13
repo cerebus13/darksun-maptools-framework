@@ -1,0 +1,17 @@
+<!-- RechargePowers macro -->
+<!-- scans all macros on current token for "Recharge" -->
+<!-- rolls a 1d6 against each macro and if it beats "#" then sets the label to drop the " (Recharge #)" -->
+[h,foreach(m,getMacros(),""), code: 
+{
+  [h:index=getMacroIndexes(m)]
+  [h:propJson=getMacroProps(index,"json")]
+  [h:label=json.get(propJson, "label")]
+  
+  [h,if(matches(label,".*Recharge.*")),code:
+  {
+    [h: chargeRoll = eval("1d6")]
+    [h: chargeNumber = number(substring(label,length(label)-2,length(label)-1))]
+    [h,if(chargeRoll>=chargeNumber): setMacroProps(index, "label="+replace(label, " \\(Recharge "+chargeNumber+"\\)", ""))]
+  };{[h: ""]}]
+}]
+Recharge Powers run!
