@@ -75,6 +75,8 @@ DamMod10:{}
 TargetStates:{}
 SelfStates:{}
 SelfHalo:{}
+TargetMark:[]
+MarkedBy
 -------------RESIST AND VULNERABILITY-------------
 InnateResist:{}
 InnateVulnerable:{}
