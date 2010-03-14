@@ -15,10 +15,12 @@
 [h:targetStateJson = json.get(macro.args, 8)]  <!-- Json holding states to be applied to target with this power -->
 [h:selfStateJson   = json.get(macro.args, 9)]  <!-- Json holding states to be applied to self with this power -->
 [h:selfHaloJson    = json.get(macro.args, 10)] <!-- Json holding halos to be applied to self with this power -->
+[h:markJson        = json.get(macro.args, 11)] <!-- Json array telling when to apply Mark to target -->
 
 [h:propTargetStatesJson = getProperty("TargetStates")]
 [h:propSelfStatesJson   = getProperty("SelfStates")]
 [h:propSelfHaloJson     = getProperty("SelfHalo")]
+[h:propMarkJson         = getProperty("TargetMark")]
 [h:selfName             = getName()]
 [h:switchToken(targetName)]
 [h:def=getProperty(targetDefense)]
@@ -61,6 +63,8 @@
   };{}]
 };{}]
 
+[h:switchToken(selfName)]
+
 <!-- apply states to Target -->
 [h:emptyJson="[]"]
 [h,SWITCH(resu):
@@ -82,8 +86,8 @@
 [h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),selfName)]
 
 <!-- apply halo to Self -->
-<!-- Note: Since you can only have 1 Halo on at a time and the system can have Halos from a Token state or from a power parameter I am making -->
-<!-- parameter Halos take priority over the ones from the Token -->
+<!-- Note: Since you can only have 1 Halo on at a time and the system can have Halos from a Token state or from a power argument I am making -->
+<!-- argument Halos take priority over the ones from the Token -->
 [h,if(json.length(selfHaloJson)>0): haloResu=0;haloResu=4]
 [h,SWITCH(resu+haloResu):
   case 0: if(length(json.get(selfHaloJson,0))>0,setHalo(json.get(selfHaloJson,0),selfName),"");
@@ -94,7 +98,6 @@
 ]
 [h:tmp=json.get(selfHaloJson,3)]
 [h,if(haloResu!=4 && length(tmp)>0): setHalo(json.get(selfHaloJson,3),selfName)]
-
 [h,if(json.length(selfHaloJson)<1 && json.length(propSelfHaloJson)>0): haloResu=0;haloResu=4]
 [h,SWITCH(resu+haloResu):
   case 0: if(length(json.get(propSelfHaloJson,0))>0,setHalo(json.get(propSelfHaloJson,0),selfName),"");
@@ -105,5 +108,10 @@
 ]
 [h:tmp=json.get(propSelfHaloJson,3)]
 [h,if(haloResu!=4 && length(tmp)>0): setHalo(json.get(propSelfHaloJson,3),selfName)]
+
+<!-- apply Marks to target -->
+[h:useMarkJson=json.unique(json.merge(propMarkJson,markJson))]
+[h,if(json.indexOf(useMarkJson,resu-1)!=-1 || json.indexOf(useMarkJson,3)!=-1): tmpBool=1;tmpBool=0]
+[h,if(json.length(useMarkJson)>0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",useMarkJson,targetName)]')]
 
 [h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage)]
