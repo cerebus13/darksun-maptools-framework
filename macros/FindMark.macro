@@ -1,0 +1,13 @@
+<!-- FindMark macro -->
+<!-- Returns: color of Mark state that should be used next -->
+<!-- Parameters: 0 -->
+<!-- scans all visible tokens on the map for Marks to determine what next in the list of Marks is open -->
+<!-- asserts an error message if all Marks are taken (and then we need to make new Mark states) -->
+
+[h:mJson=getTokenStates("json","Mark")]
+[h:foundJson = "[]"]
+[h:i=0]
+[h,while(i < json.length(mJson)): i = if(json.length(getWithState(json.get(mJson,i),"json"))>0,i+1,i+json.length(mJson)+1)]
+[h:assert(i!=json.length(mJson),"All Mark states have been used, please make new Mark states and try again.")]
+[h:mark=json.get(mJson,i-json.length(mJson)-1)]
+[h:macro.return=substring(mark,7)]
