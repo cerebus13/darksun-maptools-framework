@@ -72,12 +72,8 @@ An alternating array where the number is what attack result you want (0 = miss, 
 Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
 locally to your token and make those properties show up on mouseover.
 
-30) Similar to #29 but only for the Marked_color states.  Make a MarkSource property that is only filled if you mark a guy, and remember to clear it
-if you have no marks applied for your turn.  Update the DoAttack code to check if you have any Marked_color states, and if you do and then attack
-a target check that your Marked_color state = their MarkSource, otherwise take a -2 to attack.
-
-31) If players in game take feats/powers that increase the default -attack penalty for Marking then will have to implement a MarkPenalty property on
-tokens, and have any attack that marks include the penalty in an optional parameter.  Default to -2.  Only implement this if needed.
+32) Add a checkbox to TargetScreen called "Do not roll damage" that stops damage from being rolled for a power, but still applies States/Marks.  Use
+this for when a person uses something that allows them to reroll a power.
 
 DONE:
 
@@ -158,3 +154,10 @@ printout
 - fixed up AddAllPCToInitiative for stomp's game
 - In order to make NPCs work easier just make a same named "Initiative" macro on each token, highlight ALL npcs you want to roll for, and click the
 "Initiative" macro in the Common macros area and should be good to go
+
+30) Similar to #29 but only for the Marked_color states.  Make a MarkSource property that is only filled if you mark a guy, and remember to clear it
+if you have no marks applied for your turn.  Update the DoAttack code to check if you have any Marked_color states, and if you do and then attack
+a target check that your Marked_color state = their MarkSource, otherwise take a -2 to attack.
+
+31) If players in game take feats/powers that increase the default -attack penalty for Marking then will have to implement a MarkPenalty property on
+tokens, and have any attack that marks include the penalty in an optional parameter.  Default to -2.  Only implement this if needed.
