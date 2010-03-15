@@ -21,7 +21,8 @@
   case "#ffff00": halo="yellow";
   default: halo=""
 ]
-[h,if(getProperty("MarkedBy",targetName)!=getName() || getState("Marked_"+halo,targetName)!=1 || length(halo)==0): callFind=1;callFind=0]
+[h,if(getProperty("MarkedBy",targetName)!=getName() || length(halo)==0): callFind=1;callFind=0]
+[h,if(callFind!=1): callFind = if(getState("Marked_"+halo,targetName)!=1,1,0)]
 [h,if(callFind): evalMacro('[h,macro("FindMark@"+UseLib): ""]')]
 [h,if(callFind): setHalo(macro.return)]
 [h,if(callFind): setState("Marked_"+macro.return,1,targetName)]
