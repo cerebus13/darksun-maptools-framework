@@ -25,8 +25,7 @@
 [h:missDamageRoll  = json.get(macro.args, 11)] <!-- damage to roll on a miss, will not apply to minions -->
 [h:targetStateJson = json.get(macro.args, 12)] <!-- Json holding states to be applied to target with this power -->
 [h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
-[h:selfHaloJson    = json.get(macro.args, 14)] <!-- Json holding halos to be applied to self with this power -->
-[h:markJson        = json.get(macro.args, 15)] <!-- Json array telling when to apply Mark to target -->
+[h:markJson        = json.get(macro.args, 14)] <!-- Json array telling when to apply Mark to target -->
 
 [h:CA=0]
 [h:charge=0]
@@ -75,11 +74,11 @@
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
 {
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+"-2"),useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,selfHaloJson,markJson)]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)),useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson)]
   
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
-      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s",json.get(retu,1),if(targ==MarkedBy || length(MarkedBy)==0,atkText,atkText+" + Mark(-2)")),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+"-2"))))),
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s",json.get(retu,1),if(targ==MarkedBy || length(MarkedBy)==0,atkText,strformat("%s + Mark(%s)",atkText,getProperty("MarkPenalty",MarkedBy)))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)))))),
       json.get(retu,0),
       targ,
       if(atkKey==2 || atkKey==5,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
