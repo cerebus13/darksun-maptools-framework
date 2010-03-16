@@ -53,6 +53,8 @@
     "miscAtk|0|<html>Miscellaneous <b>modifier</b> to attack</html>",
     "miscDam|0|<html>Miscellaneous <b>modifier</b> to damage</html>"
 )]
+[h:yesDamRoll=1]
+[h,if(atkKey==1 || atkKey==4): inputJson = json.append(inputJson,"yesDamRoll|1|Roll damage? |CHECK")]
 [h:status = input(json.toList(inputJson,"##"))]
 [h:abort(status)]
 [h:targJson="[]"]
@@ -64,12 +66,15 @@
 [h,if(atkKey!=3 && atkKey!=6): atkText=json.get(macro.return, 0)]
 [h,if(atkKey!=3 && atkKey!=6): atkVal=json.get(macro.return, 1)]
 <!-- Skip damage portion on attacks 2 and 5 -->
-[h,if(atkKey!=2 && atkKey!=5): evalMacro('[h,macro("DamageBonusTotal@"+UseLib): json.append("[]", damMod, miscDam)]')]
-[h,if(atkKey!=2 && atkKey!=5): damText=json.get(macro.return, 0);damText="0"]
-[h,if(atkKey!=2 && atkKey!=5): damVal=json.get(macro.return, 1);damVal="0"]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): evalMacro('[h,macro("DamageBonusTotal@"+UseLib): json.append("[]", damMod, miscDam)]')]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damText=json.get(macro.return, 0);damText="0"]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damVal=json.get(macro.return, 1);damVal="0"]
 
-[h,if(atkKey>3): useDam=eval(damRoll); useDam=damRoll]
-[h,if(atkKey>3): useCritDam=eval(critDamRoll); useCritDam=critDamRoll]
+[h,if(yesDamRoll==0): useDam="0"]
+[h,if(yesDamRoll==0): useCritDam="0"]
+
+[h,if(atkKey>3 && yesDamRoll): useDam=eval(damRoll); useDam=damRoll]
+[h,if(atkKey>3 && yesDamRoll): useCritDam=eval(critDamRoll); useCritDam=critDamRoll]
 
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
@@ -81,7 +86,7 @@
       if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s",json.get(retu,1),if(targ==MarkedBy || length(MarkedBy)==0,atkText,strformat("%s + Mark(%s)",atkText,getProperty("MarkPenalty",MarkedBy)))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)))))),
       json.get(retu,0),
       targ,
-      if(atkKey==2 || atkKey==5,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
+      if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
     )
   ]
   [h:tableJson = json.append(tableJson,nextRowJson))]
