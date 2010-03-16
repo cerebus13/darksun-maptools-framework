@@ -72,9 +72,6 @@ An alternating array where the number is what attack result you want (0 = miss, 
 Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
 locally to your token and make those properties show up on mouseover.
 
-32) Add a checkbox to TargetScreen called "Do not roll damage" that stops damage from being rolled for a power, but still applies States/Marks.  Use
-this for when a person uses something that allows them to reroll a power.
-
 DONE:
 
 1) convert damage tooltip functionality from t: to <span> like hit rolls
@@ -161,3 +158,7 @@ a target check that your Marked_color state = their MarkSource, otherwise take a
 
 31) If players in game take feats/powers that increase the default -attack penalty for Marking then will have to implement a MarkPenalty property on
 tokens, and have any attack that marks include the penalty in an optional parameter.  Default to -2.  Only implement this if needed.
+
+32) Add a checkbox to TargetScreen called "Do not roll damage" that stops damage from being rolled for a power, but still applies States/Marks.  Use
+this for when a person uses something that allows them to reroll a power.
+  * Added a checkbox (Yes roll damage?) that is defaulted to checked.  Should work for both games.
