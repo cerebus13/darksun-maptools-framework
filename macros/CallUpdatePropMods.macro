@@ -1,0 +1,49 @@
+<!-- CallUpdatePropMods macro -->
+<!-- When called on a token with correct properties allows the user to Add/Update/Remove entries to the Attack, DamageBonuses properties -->
+<!-- and the TempVuln/Resist properties.  If Remove is selected an array of names is all that is needed. -->
+
+[h:status = input(
+    '.|Example Text-> CA:2,Cover:-5 or Blah,Durp (to remove)||LABEL|SPAN=TRUE',
+    '.|No spaces allowed in Name, use underscores if needed||LABEL|SPAN=TRUE',
+    '.|Use exact words for Resist/Vuln (Cold, Acid...), "All" is valid||LABEL|SPAN=TRUE',
+    "atkRadio|Skip,Add/Update,Remove|<html><b>Attack</b> Modifiers</html>|RADIO|ORIENT=H",
+    "atkText||Attack Entry",
+    "damRadio|Skip,Add/Update,Remove|<html><b>Damage</b> Modifiers</html>|RADIO|ORIENT=H",
+    "damText||Damage Entry",
+    "resistRadio|Skip,Add/Update,Remove|<html><b>Resistance</b> Modifiers</html>|RADIO|ORIENT=H",
+    "resistText||Resistance Entry",
+    "vulnRadio|Skip,Add/Update,Remove|<html><b>Vulnerability</b> Modifiers</html>|RADIO|ORIENT=H",
+    "vulnText||Vulnerability Entry"
+)]
+[h:abort(status)]
+[h,if(atkRadio==0 && damRadio==0 && resistRadio==0 && vulnRadio==0): abort(0)]
+
+[h,switch(atkRadio),code:
+  case 0: {""};
+  case 1: { [h:atkText = strformat("{%s}",atkText)]
+            [h,foreach(item,json.fields(atkText)): AttackBonuses = json.set(AttackBonuses,item,json.get(atkText,item))] };
+  case 2: { [h,foreach(item,json.toList(atkText)): AttackBonuses = json.remove(AttackBonuses,item)] };
+  default: {""}
+]
+[h,switch(damRadio),code:
+  case 0: {""};
+  case 1: { [h:damText = strformat("{%s}",damText)]
+            [h,foreach(item,json.fields(damText)): DamageBonuses = json.set(DamageBonuses,item,json.get(damText,item))] };
+  case 2: { [h,foreach(item,json.toList(damText)): DamageBonuses = json.remove(DamageBonuses,item)] };
+  default: {""}
+]
+[h,switch(resistRadio),code:
+  case 0: {""};
+  case 1: { [h:resistText = strformat("{%s}",resistText)]
+            [h,foreach(item,json.fields(resistText)): TempResist = json.set(TempResist,item,json.get(resistText,item))] };
+  case 2: { [h,foreach(item,json.toList(resistText)): TempResist = json.remove(TempResist,item)] };
+  default: {""}
+]
+[h,switch(vulnRadio),code:
+  case 0: {""};
+  case 1: { [h:vulnText = strformat("{%s}",vulnText)]
+            [h,foreach(item,json.fields(vulnText)): TempVulnerable = json.set(TempVulnerable,item,json.get(vulnText,item))] };
+  case 2: { [h,foreach(item,json.toList(vulnText)): TempVulnerable = json.remove(TempVulnerable,item)] };
+  default: {""}
+]
+[abort(0)]
