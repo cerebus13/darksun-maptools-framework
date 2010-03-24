@@ -72,6 +72,8 @@ An alternating array where the number is what attack result you want (0 = miss, 
 Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
 locally to your token and make those properties show up on mouseover.
 
+34) Quick macro to clear MarkedBy prop and all Mark states on current token.
+
 DONE:
 
 1) convert damage tooltip functionality from t: to <span> like hit rolls
@@ -162,3 +164,6 @@ tokens, and have any attack that marks include the penalty in an optional parame
 32) Add a checkbox to TargetScreen called "Do not roll damage" that stops damage from being rolled for a power, but still applies States/Marks.  Use
 this for when a person uses something that allows them to reroll a power.
   * Added a checkbox (Yes roll damage?) that is defaulted to checked.  Should work for both games.
+  
+33) Make macros to manually set or remove Attack & Damage bonuses, and Vuln/Resists in a seperate macro.
+  * Done as an individual macro, and as a pair of macros for the GM to use over multiple selected tokens
