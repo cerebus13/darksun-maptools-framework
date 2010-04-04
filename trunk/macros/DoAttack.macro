@@ -1,19 +1,32 @@
-<!-- DoAttack macro -->
+<!-- DoAttack macro (used in Stomp's game) -->
+<!-- Returns: 4 -->
+<!-- 1 : Result of attack roll.  0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+<!-- 2 : Actual attack roll 1-20 -->
+<!-- 3 : Rolled damage -->
+<!-- 4 : Total damage of rolled + modifiers -->
+<!-- 5 : String of multiple attack rolls if rerollAttack = 1 -->
+<!-- Parameters: 12 (9 - 11 are ignored) -->
+<!-- 12 : Integer boolean to reroll attack 1 time and use higher value -->
 <!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
 <!-- Apply damage/effects to target on hit/miss and return values depending on result -->
-<!-- Return 3 things: result, attack roll, damage roll -->
-<!-- result: 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
 
-[h:targetName    = json.get(macro.args, 0)]
-[h:targetDefense = json.get(macro.args, 1)]
-[h:atkMod        = json.get(macro.args, 2)]
-[h:damRoll       = json.get(macro.args, 3)]
-[h:critDamRoll   = json.get(macro.args, 4)]
-[h:damMod        = json.get(macro.args, 5)]
-[h:autoHit       = json.get(macro.args, 6)]
+[h:targetName     = json.get(macro.args, 0)]
+[h:targetDefense  = json.get(macro.args, 1)]
+[h:atkMod         = json.get(macro.args, 2)]
+[h:damRoll        = json.get(macro.args, 3)]
+[h:critDamRoll    = json.get(macro.args, 4)]
+[h:damMod         = json.get(macro.args, 5)]
+[h:autoHit        = json.get(macro.args, 6)]
 [h:missDamageRoll = json.get(macro.args, 7)] <!-- damage to roll on a miss -->
+[h:rerollAttack   = json.get(macro.args, 11)]
 
 [h:atkRoll=eval("1d20")]
+<!-- Reroll the attack roll once, take highest -->
+[h:atkRolls=""]
+[h,if(rerollAttack): atkRoll2=eval("1d20")]
+[h,if(rerollAttack): atkRolls=strformat("(%d,%d)",atkRoll,atkRoll2)]
+[h,if(rerollAttack): atkRoll=if(atkRoll2>atkRoll,atkRoll2,atkRoll)]
+
 [h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
 [h,if(missDamageRoll!=-1 && missDamageRoll!=-2): totalDamage = eval(string(missDamageRoll));totalDamage=0]
 [h,if(missDamageRoll==-2): totalDamage = floor((damage+eval(string(damMod)))/2)] 
@@ -22,4 +35,4 @@
 [h,if(atkRoll==1):  resu=0]
 [h,if(autoHit):     resu=2]
 
-[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage)]
+[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage,atkRolls)]

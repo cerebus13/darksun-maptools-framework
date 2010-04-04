@@ -1,8 +1,14 @@
 <!-- DoAttack2 macro -->
+<!-- Returns: 4 -->
+<!-- 1 : Result of attack roll.  0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+<!-- 2 : Actual attack roll 1-20 -->
+<!-- 3 : Rolled damage -->
+<!-- 4 : Total damage of rolled + modifiers -->
+<!-- 5 : String of multiple attack rolls if rerollAttack = 1 -->
+<!-- Parameters: 12 -->
+<!-- 12 : Integer boolean to reroll attack 1 time and use higher value -->
 <!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
 <!-- Apply damage/effects to target on hit/miss and return values depending on result -->
-<!-- Return 3 things: result, attack roll, damage roll -->
-<!-- result(resu): 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
 
 [h:targetName      = json.get(macro.args, 0)]
 [h:targetDefense   = json.get(macro.args, 1)]
@@ -15,6 +21,7 @@
 [h:targetStateJson = json.get(macro.args, 8)]  <!-- Json holding states to be applied to target with this power -->
 [h:selfStateJson   = json.get(macro.args, 9)]  <!-- Json holding states to be applied to self with this power -->
 [h:markJson        = json.get(macro.args, 10)] <!-- Json array telling when to apply Mark to target -->
+[h:rerollAttack    = json.get(macro.args, 11)]
 
 [h:propTargetStatesJson = getProperty("TargetStates")]
 [h:propSelfStatesJson   = getProperty("SelfStates")]
@@ -23,6 +30,12 @@
 [h:switchToken(targetName)]
 [h:def=getProperty(targetDefense)]
 [h:atkRoll=eval("1d20")]
+<!-- Reroll the attack roll once, take highest -->
+[h:atkRolls=""]
+[h,if(rerollAttack): atkRoll2=eval("1d20")]
+[h,if(rerollAttack): atkRolls=strformat("(%d,%d)",atkRoll,atkRoll2)]
+[h,if(rerollAttack): atkRoll=if(atkRoll2>atkRoll,atkRoll2,atkRoll)]
+
 [h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
 [h:totalDamage=damage+eval(string(damMod))]
 [h,if(totalDamage<1):totalDamage=1]
@@ -88,4 +101,4 @@
 [h,if(json.indexOf(useMarkJson,resu-1)!=-1 || json.indexOf(useMarkJson,3)!=-1): tmpBool=1;tmpBool=0]
 [h,if(json.length(useMarkJson)>0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",useMarkJson,targetName)]')]
 
-[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage)]
+[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage,atkRolls)]

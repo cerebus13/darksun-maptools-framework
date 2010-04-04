@@ -55,6 +55,8 @@
 )]
 [h:yesDamRoll=1]
 [h,if(atkKey==1 || atkKey==4): inputJson = json.append(inputJson,"yesDamRoll|1|Roll damage? |CHECK")]
+[h:rerollAttack=0]
+[h,if(atkKey==1 || atkKey==2 || atkKey==4 || atkKey==5): inputJson = json.append(inputJson,"rerollAttack|0|Reroll d20 for attack and take highest? |CHECK")]
 [h:status = input(json.toList(inputJson,"##"))]
 [h:abort(status)]
 [h:targJson="[]"]
@@ -79,11 +81,11 @@
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
 {
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)),useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson)]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)),useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack)]
   
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
-      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s",json.get(retu,1),if(targ==MarkedBy || length(MarkedBy)==0,atkText,strformat("%s + Mark(%s)",atkText,getProperty("MarkPenalty",MarkedBy)))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)))))),
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(targ==MarkedBy || length(MarkedBy)==0,atkText,strformat("%s + Mark(%s)",atkText,getProperty("MarkPenalty",MarkedBy)))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)))))),
       json.get(retu,0),
       targ,
       if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
