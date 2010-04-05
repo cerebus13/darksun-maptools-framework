@@ -5,80 +5,59 @@
 
 This is just a rough road map of what I plan to code up for the Dark Sun campaign.  Some will not go out with the initial release of the framework because I want to get some playtesting in first to determine if I should waste the time for certain features or not.
 
-
 = Details =
 
-todo list:
+TODO list: (strikethrough means it is finished)
 
-6) make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer
-to comments to edit powers later if needed
-
-8) create a template PC and NPC token for my campaign
-give PCs 10 attack mod props, and 10 damage mod props
-npcs probably only need 5 of each
-use derivied properties to do statmods, maxhp, and healing surge value and whatnot
-healing surge value property
-magic item uses property
-# of AP property
-make AP and magic item uses part of the mouse over stat sheet, and just use the Used AP state to tell yourself if you've popped an AP yet for
-a given encounter
-
-10) finish targetting form
-it will actually be 2 forms, first will be target picking from dropdowns (for multi/single target powers), and have various modifiers like CA/cover
-with radio buttons to say affect ALL or affect NONE or affect SOME
-if anything is selected to say affect SOME then pop second form with tabs in it.  each tab will have all targets listed and allow user to pick
-which targets get CA or cover against them and so on
-each target dropdown in the first form will also have a None choice so they can opt to not hit something, and each list will include ALL valid
-targets so a user could double up on the same guy if they wanted
-in the 2nd form each target dropdown will not include a None choice because you need to specify bonuses against each dude (defaults will be set to
-DON'T apply, so they could just click through it and nobody will get modifiers)
-
-14) figure out how to make heal powers into a macro that does all of the work including update hp, decrement healing surges etc.  might need to
-make a 7th attack type beyond a utility power even
-
-20) implement striker damage, figure out a clean way to make it only apply to one target per round (in the case of multi-target attacks)
-if have a drop down appear on the 2nd stage target form (where you apply mods to opponents) can list all available targets for attack and allow
-player to choose one or none.  make 1st stage form just have a check box to say YES i am applying striker damage or something.
-otherwise in the case of multi-class guys who get striker damage as an encounter power i can look into the "damage only" typed attack and have
-them use that to automatically apply it to a single target
-
-23) give a checkbox to make attack rolls reroll d20s, such as with avengers and their Oath or whatever
-
-25) figure out a system to implement Vulns/Resists automatically when applying various damages
-the system would check if you have vuln/resist state, and then a vuln/resist amount property to determine how much to reduce damage taken
-damage reduction/increase would not be readily apparent to players and easily hidden with this system by simply putting innate resistances
-onto monsters in the amount properties
-resist all would need a slightly special consideration since no keywords could counter it
-this means will need to get a real Keyword system going for each attack used to determine what damage type it is and so on
-perhaps would need to look into making Keyword stables similar to the attack/damage-mod stables i'm planning so that a player could toggle on
-a cold weapon or something for all of their Weapon powers (which use stable1 or whatever), or toggle it off if against a resist monster
-this system should also check the attacker for certain statuses (Weakened or whatever), and the defender for statuses (Insubstantial or something)
-and modify damage/attack accordingly
-would need to consider improving the marking system a bit by giving a marked_red status, and then a mark_red_source status so that you can say
-as an attacker if i am marked_color and my defender target is not marked_color_source then i get a -2 attack
-would probably add another 5 mark colors and just try to be smart about the usage of them.....
-unless i got clever and just did a run down of all tokens on the board filtering based on each mark color in turn until i find an empty one, then
-use the first target/source pairing that hasn't been used yet (this would be done in the status application coding, just put a "Mark" in under
-inflicted statuses for a player and the code behind the scenes would automatically assign you an open color)
-"piercing" type magic items/feats that bypass resistances would be dealt with manually at the start or else can implement a pierce property
-that indicates how much your say cold powers bypass resistances or something
-
-28) Add a States text box to the Targetting Screen that lets you enter states to be inflicted on that individual power.  Do something as simple as
-an array like this:
-0,Prone,1,Stunned,etc
-An alternating array where the number is what attack result you want (0 = miss, 1 = hit, 2 = crit, 3 = always), and then the name of a state
-
-29) change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say 
-Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever
-locally to your token and make those properties show up on mouseover.
-
-34) Quick macro to clear MarkedBy prop and all Mark states on current token.
+  ## make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer to comments to edit powers later if needed
+  ## create a template PC and NPC token for my campaign
+   * give PCs 10 attack mod props, and 10 damage mod props
+   * npcs probably only need 5 of each
+   * use derivied properties to do statmods, maxhp, and healing surge value and whatnot
+   * healing surge value property
+   * magic item uses property
+   * number of AP property
+   * make AP and magic item uses part of the mouse over stat sheet, and just use the Used AP state to tell yourself if you've popped an AP yet for a given encounter
+  ## finish targetting form
+   * it will actually be 2 forms, first will be target picking from dropdowns (for multi/single target powers), and have various modifiers like CA/cover
+   * with radio buttons to say affect ALL or affect NONE or affect SOME
+   * if anything is selected to say affect SOME then pop second form with tabs in it.  each tab will have all targets listed and allow user to pick
+   * which targets get CA or cover against them and so on
+   * each target dropdown in the first form will also have a None choice so they can opt to not hit something, and each list will include ALL valid
+   * targets so a user could double up on the same guy if they wanted
+   * in the 2nd form each target dropdown will not include a None choice because you need to specify bonuses against each dude (defaults will be set to
+   * DON'T apply, so they could just click through it and nobody will get modifiers)
+  ## figure out how to make heal powers into a macro that does all of the work including update hp, decrement healing surges etc.  might need to make a 7th attack type beyond a utility power even
+  ## implement striker damage, figure out a clean way to make it only apply to one target per round (in the case of multi-target attacks)
+   * if have a drop down appear on the 2nd stage target form (where you apply mods to opponents) can list all available targets for attack and allow
+   * player to choose one or none.  make 1st stage form just have a check box to say YES i am applying striker damage or something.
+   * otherwise in the case of multi-class guys who get striker damage as an encounter power i can look into the "damage only" typed attack and have
+   * them use that to automatically apply it to a single target
+  ## give a checkbox to make attack rolls reroll d20s, such as with avengers and their Oath or whatever
+  ## figure out a system to implement Vulns/Resists automatically when applying various damages
+   * the system would check if you have vuln/resist state, and then a vuln/resist amount property to determine how much to reduce damage taken
+   * damage reduction/increase would not be readily apparent to players and easily hidden with this system by simply putting innate resistances onto monsters in the amount properties
+   * resist all would need a slightly special consideration since no keywords could counter it
+   * this means will need to get a real Keyword system going for each attack used to determine what damage type it is and so on
+   * perhaps would need to look into making Keyword stables similar to the attack/damage-mod stables i'm planning so that a player could toggle on a cold weapon or something for all of their Weapon powers (which use stable1 or whatever), or toggle it off if against a resist monster
+   * this system should also check the attacker for certain statuses (Weakened or whatever), and the defender for statuses (Insubstantial or something) and modify damage/attack accordingly
+   * would need to consider improving the marking system a bit by giving a marked_red status, and then a mark_red_source status so that you can say as an attacker if i am marked_color and my defender target is not marked_color_source then i get a -2 attack
+   * would probably add another 5 mark colors and just try to be smart about the usage of them.....
+   * unless i got clever and just did a run down of all tokens on the board filtering based on each mark color in turn until i find an empty one, then use the first target/source pairing that hasn't been used yet (this would be done in the status application coding, just put a "Mark" in under
+   * inflicted statuses for a player and the code behind the scenes would automatically assign you an open color)
+   * "piercing" type magic items/feats that bypass resistances would be dealt with manually at the start or else can implement a pierce property that indicates how much your say cold powers bypass resistances or something
+  ## Add a States text box to the Targetting Screen that lets you enter states to be inflicted on that individual power.  Do something as simple as an array like this:
+   * 0,Prone,1,Stunned,etc
+   * An alternating array where the number is what attack result you want (0 = miss, 1 = hit, 2 = crit, 3 = always), and then the name of a state
+  ## change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever locally to your token and make those properties show up on mouseover.
+  ## ~~Quick macro to clear MarkedBy prop and all Mark states on current token.~~ *(r33)*
 
 DONE:
 
-1) convert damage tooltip functionality from t: to <span> like hit rolls
+<b>
+1) convert damage tooltip functionality from t: to span like hit rolls
 
-2) make the entire top part of power card into a tooltip using <span> with just the power name as text
+2) make the entire top part of power card into a tooltip using span with just the power name as text
 
 4) finish up states for campaign: Grabbed, Grabbing, Vulnerabilities to all damage types
 
@@ -167,3 +146,4 @@ this for when a person uses something that allows them to reroll a power.
   
 33) Make macros to manually set or remove Attack & Damage bonuses, and Vuln/Resists in a seperate macro.
   * Done as an individual macro, and as a pair of macros for the GM to use over multiple selected tokens
+</b>
