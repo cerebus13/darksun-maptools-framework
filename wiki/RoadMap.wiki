@@ -51,6 +51,12 @@ TODO list: (strikethrough means it is finished)
    * An alternating array where the number is what attack result you want (0 = miss, 1 = hit, 2 = crit, 3 = always), and then the name of a state
   ## change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever locally to your token and make those properties show up on mouseover.
   ## ~~Quick macro to clear MarkedBy prop and all Mark states on current token.~~ *(r33)*
+  ## Revamp the Mod system concerning defenses (AC/Will/Fort/Ref/All 5)
+   * Add a static number of properties for each defense (and some for All) that hold a single mod.
+   * Add a couple Override mod properties per defense that are special in that they don't need any explanation
+   * Create a mod list property that shows on mouseover that is just a list made up of ALL the mods on a defense.  Could even just make it a single property using some clever {} code stuff so it would look like: "All: -2, Will: 2, 3, Fort: 7".  This will let players and the GM know that a token has modifiers applied to its defenses.
+   * Add a couple Hidden mod properties that don't show up in the mod list?  Would be useful for monster powers that buff/debuff themselves that a player shouldn't know about but should still apply anyway.
+   * Each defense will have a property that holds an Object Json that describes each Mod field.  So Json key entry of "0" in the AC mod description property would explain what ACMod0 is.  Probably store Name of the source of the mod, the attack used to apply it.  This will allow us to add defensive mod applications to powers on miss/hit/crit and be sure that they aren't being applied multiple times by the same power/source.  Other applications from powers (Vulns/Resists/States) don't have the same problems that applying mods do because they don't just directly stack.
 
 DONE:
 
