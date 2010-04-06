@@ -57,6 +57,9 @@ TODO list: (strikethrough means it is finished)
    * Create a mod list property that shows on mouseover that is just a list made up of ALL the mods on a defense.  Could even just make it a single property using some clever {} code stuff so it would look like: "All: -2, Will: 2, 3, Fort: 7".  This will let players and the GM know that a token has modifiers applied to its defenses.
    * Add a couple Hidden mod properties that don't show up in the mod list?  Would be useful for monster powers that buff/debuff themselves that a player shouldn't know about but should still apply anyway.
    * Each defense will have a property that holds an Object Json that describes each Mod field.  So Json key entry of "0" in the AC mod description property would explain what ACMod0 is.  Probably store Name of the source of the mod, the attack used to apply it.  This will allow us to add defensive mod applications to powers on miss/hit/crit and be sure that they aren't being applied multiple times by the same power/source.  Other applications from powers (Vulns/Resists/States) don't have the same problems that applying mods do because they don't just directly stack.
+  ## Add a boolean to attacks to require a Milestone having been passed before allowing the attack, but user can override if needed.  Will need a property on player tokens for Milestone, and a quick GM macro to indicate that a Milestone has come that will increment AP/Magic Item use and set Milestone to 1 for all PCs.
+  ## Mess with properties to get Vuln/Resist to appear on mouseover when they exist for PCs or NPCs.
+  ## Second Wind power macro so players know when they have used it, and have it do all of the various state setting and healing in 1 click.
 
 DONE:
 
