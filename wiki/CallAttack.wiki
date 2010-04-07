@@ -56,7 +56,7 @@ Because the comment system in Maptools actually just hides the execution of line
 <!-- Json Object of when to apply a resist/vuln to target/self.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
 <!-- Nested Json Object keys: 0 = Vuln to target, 1 = Vuln to self, 2 = Resist to target, 3 = Resist to self -->
 <!-- Alternating array of element type, then value : sqBracket Cold,5,Fire,10,All,15 sqBracket -->
-<!-- Example: {"0":{"0":"[Cold,5]","1":"[Cold,5]"},"1":{"2":"[Fire,5]"},"2":{"3":"[Fire,5,Cold,5]"},"3":{"0":"[Fire,5]","2":"[Fire,5]"}} -->
+<!-- Example: {"0":{"0":["Cold",5],"1":["Cold",5]},"1":{"2":["Fire",5]},"2":{"3":["Fire",5,"Cold",5]},"3":{"0":["Fire",5],"2":["Fire",5]}} -->
 <!-- Example: On miss applies Vuln Cold 5 to target and Vuln Cold 5 to self; On hit applies Resist Fire 5 to target; -->
 <!--          On crit applies Resist Fire 5 and Resist Cold 5 to self; On always applies Vuln Fire 5 to target and   -->
 <!--          Resist Fire 5 to target -->
