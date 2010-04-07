@@ -1,0 +1,16 @@
+#summary Coding work done on given dates
+#labels worklog,darksun
+
+= Introduction =
+
+A simple journal detailing the coding work I've gotten done on a given day.
+
+= Details =
+
+=04/06/2010=
+
+  * Got the correct format for a nested Object/Array Json worked out and put into the wiki for the CallAttack macro comments.
+  * Finally got Resists/Vulns to apply to target and self through a passed Json in a power.
+  * With _application_ of Vulns/Resists worked out, now I need to work on getting DoAttack2 to respect them based on Keywords of power and Keywords of Resist/Vuln that are present.  Don't forget to handle Generic...
+  * Had a Piercing (resist avoidance) property I wanted to implement for powers or as a property on a token, curious if I should bother with that now or just leave it on the wish list.
+  * When working on DoAttack2 I should toss a property on tokens to indicate if they are Insubstantial and half damage.  Swarms also half damage from melee/ranged attacks, but have a variable Vuln to Area/Close so I'm not sure how to implement that quite yet.
