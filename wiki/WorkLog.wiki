@@ -5,9 +5,7 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
-= Details =
-
-=04/06/2010=
+===04/06/2010===
 
   * Got the correct format for a nested Object/Array Json worked out and put into the wiki for the CallAttack macro comments.
   * Finally got Resists/Vulns to apply to target and self through a passed Json in a power.
