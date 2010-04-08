@@ -5,6 +5,12 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/07/2010===
+
+  * Added Insubstantial to Campaign Props, and then implemented it inside DoAttack2.  Added comments for spots where I am going to deal with Resists/Vulns and even Swarms above Insubstantial...because it applies last.
+  * Cleaned up a possible bug in DoAttack2.
+  * Fixed DefineFunction calls for decodeVulnResistJson and applyVulnResistJson so they get a new variable scope.
+
 ===04/06/2010===
 
   * Got the correct format for a nested Object/Array Json worked out and put into the wiki for the CallAttack macro comments.
