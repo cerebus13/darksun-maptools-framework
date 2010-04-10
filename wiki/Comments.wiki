@@ -16,4 +16,5 @@ These are just a series of general comments concerning the framework.
 
 ===Parameters to CallAttack Macro===
 
-  # The damageTypes parameter is just for keywords on a power that can be resisted/vuln'd against, such as Cold/Fire/Psychic.  The only exception is "Area" is a custom damage type I'm implementing so that Swarms can have "Area":# as a Vulnerability.  "Area" should never show up as a Resistance on any creature as the behavior would likely be unpredictable.
+  # The damageTypes parameter is just for keywords on a power that can be resisted/vuln'd against, such as Cold/Fire/Psychic.  
+  # To indicate an area attack place "Area" in the keywords parameter, not the damageTypes parameters.
