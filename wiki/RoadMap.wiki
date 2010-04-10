@@ -33,7 +33,7 @@ TODO list: (strikethrough means it is finished)
    * player to choose one or none.  make 1st stage form just have a check box to say YES i am applying striker damage or something.
    * otherwise in the case of multi-class guys who get striker damage as an encounter power i can look into the "damage only" typed attack and have
    * them use that to automatically apply it to a single target
-  ## give a checkbox to make attack rolls reroll d20s, such as with avengers and their Oath or whatever
+  ## ~~give a checkbox to make attack rolls reroll d20s, such as with avengers and their Oath or whatever~~ *(r34)*
   ## figure out a system to implement Vulns/Resists automatically when applying various damages
    * the system would check if you have vuln/resist state, and then a vuln/resist amount property to determine how much to reduce damage taken
    * damage reduction/increase would not be readily apparent to players and easily hidden with this system by simply putting innate resistances onto monsters in the amount properties
