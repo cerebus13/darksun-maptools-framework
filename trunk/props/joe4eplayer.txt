@@ -27,12 +27,15 @@ ACMod:0
 *Fortitude (Fort):{FortBase+FortMod}
 FortBase:0
 FortMod:0
+*FortList
 *Reflex (Ref):{RefBase+RefMod}
 RefBase:0
 RefMod:0
-*Willpower (Will):{WillBase+WillMod}
+*RefList
+*Willpower (Will):{WillBase+add(json.toList(WillMod))}
 WillBase:0
 WillMod:0
+*WillList
 -------------LIMITED USES-------------
 *ActionPoints (AP):0
 *LuckPoints (Luck):0
@@ -47,8 +50,8 @@ Skills (Skl):Acrobatics=0 ; Arcana=0 ; Athletics=0 ; Bluff=0 ; Diplomacy=0 ; Dun
 Miscellaneous (Misc)
 UseLib
 -------------STATIC ATTACK & DAMAGE MODIFIERS-------------
-AttackBonuses (ABon):CA=0 ; Generic=0 ;
-DamageBonuses (DBon):Generic=0 ;
+AttackBonuses (ABon):{}
+DamageBonuses (DBon):{}
 -------------NUMBERED ATTACK MOD LISTS-------------
 AtkMod1:{}
 AtkMod2:{}
@@ -80,8 +83,14 @@ MarkPenalty:-2
 -------------RESIST AND VULNERABILITY-------------
 InnateResist:{}
 InnateVulnerable:{}
-TempResist:{}
-TempVulnerable:{}
+*TempResist
+*TempVulnerable
+ApplyVulnTarget:{}
+ApplyVulnSelf:{}
+ApplyResistTarget:{}
+ApplyResistSelf:{}
+Insubstantial:0
+Swarm:0
 -------------WEAPON DICE-------------
 WeaponDice1:0d0
 WeaponDice2:0d0

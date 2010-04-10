@@ -17,32 +17,44 @@
 [h:atkType        = json.get(macro.args, 2)] <!--  At-Will = 1, Encounter = 2, Daily = 3 -->
 [h:atkTypeName    = json.get(macro.args, 3)]
 [h:keywords       = json.get(macro.args, 4)]
-[h:actionType     = json.get(macro.args, 5)]
-[h:targetDefense  = json.get(macro.args, 6)]
-[h:hitStatAdded   = json.get(macro.args, 7)]
-[h:rangeText      = json.get(macro.args, 8)]
-[h:numTargetsText = json.get(macro.args, 9)]
-[h:atkMod         = json.get(macro.args, 10)]
-[h:damMod         = json.get(macro.args, 11)]
-[h:damRoll        = json.get(macro.args, 12)]
-[h:critDamRoll    = json.get(macro.args, 13)]
-[h,if(json.length(macro.args)>14): maxRange     = json.get(macro.args, 14);maxRange=-1]
-[h,if(json.length(macro.args)>15): numTargets   = json.get(macro.args, 15);numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
-[h,if(json.length(macro.args)>16): effectText   = json.get(macro.args, 16);effectText=""]
-[h,if(json.length(macro.args)>17): extraRoll    = json.get(macro.args, 17);extraRoll=""]
-[h,if(json.length(macro.args)>18): useMagicItem = json.get(macro.args, 18);useMagicItem=0]
-[h,if(json.length(macro.args)>19): friendlyFire = json.get(macro.args, 19);friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
-[h,if(json.length(macro.args)>20): otherSource  = json.get(macro.args, 20);otherSource=""] <!-- name of other token to use as source for figuring targets based on range -->
-[h,if(json.length(macro.args)>21): missDamageRoll = json.get(macro.args, 21);missDamageRoll=-1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
+[h:damageTypes    = json.get(macro.args, 5)]
+[h:actionType     = json.get(macro.args, 6)]
+[h:targetDefense  = json.get(macro.args, 7)]
+[h:hitStatAdded   = json.get(macro.args, 8)]
+[h:rangeText      = json.get(macro.args, 9)]
+[h:numTargetsText = json.get(macro.args, 10)]
+[h:atkMod         = json.get(macro.args, 11)]
+[h:damMod         = json.get(macro.args, 12)]
+[h:damRoll        = json.get(macro.args, 13)]
+[h:critDamRoll    = json.get(macro.args, 14)]
+[h,if(json.length(macro.args)>15): maxRange        = json.get(macro.args, 15);maxRange=-1]
+[h,if(json.length(macro.args)>16): numTargets      = json.get(macro.args, 16);numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
+[h,if(json.length(macro.args)>17): effectText      = json.get(macro.args, 17);effectText=""]
+[h,if(json.length(macro.args)>18): extraRoll       = json.get(macro.args, 18);extraRoll=""]
+[h,if(json.length(macro.args)>19): useMagicItem    = json.get(macro.args, 19);useMagicItem=0]
+[h,if(json.length(macro.args)>20): friendlyFire    = json.get(macro.args, 20);friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
+[h,if(json.length(macro.args)>21): otherSource     = json.get(macro.args, 21);otherSource=""] <!-- name of other token to use as source for figuring targets based on range -->
+[h,if(json.length(macro.args)>22): missDamageRoll  = json.get(macro.args, 22);missDamageRoll=-1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
 <!-- targetStateJson: Json with states to apply to target.  In the format of Key:Value, Key = a number 0-3, Value = json of State names -->
 <!-- note: avoid using Marked states, they are covered below -->
 <!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
-[h,if(json.length(macro.args)>22): targetStateJson = json.get(macro.args, 22);targetStateJson="{}"] 
+[h,if(json.length(macro.args)>23): targetStateJson = json.get(macro.args, 23);targetStateJson="{}"] 
 <!-- selfStateJson: Json with states to apply to self.  In the format of Key:Value, Key = a number 0-3, Value = json of State names-->
 <!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
-[h,if(json.length(macro.args)>23): selfStateJson = json.get(macro.args, 23);selfStateJson="{}"]
+[h,if(json.length(macro.args)>24): selfStateJson   = json.get(macro.args, 24);selfStateJson="{}"]
  <!-- Json array of when to mark target.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
-[h,if(json.length(macro.args)>24): markJson = json.get(macro.args,24);markJson="[]"]
+[h,if(json.length(macro.args)>25): markJson        = json.get(macro.args, 25);markJson="[]"]
+<!-- Json Object of when to apply a resist/vuln to target/self.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
+<!-- Nested Json Object keys: 0 = Vuln to target, 1 = Vuln to self, 2 = Resist to target, 3 = Resist to self -->
+<!-- Alternating array of element type, then value : sqBracket Cold,5,Fire,10,All,15 sqBracket -->
+<!-- comment moved to wiki -->
+<!-- Example: On miss applies Vuln Cold 5 to target and Vuln Cold 5 to self; On hit applies Resist Fire 5 to target; -->
+<!--          On crit applies Resist Fire 5 and Resist Cold 5 to self; On always applies Vuln Fire 5 to target and   -->
+<!--          Resist Fire 5 to target -->
+[h,if(json.length(macro.args)>26): vulnResistJson  = json.get(macro.args, 26);vulnResistJson="{}"]
+
+[h:passKeywords=keywords]
+[h:keywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
 
 <!-- Deal with magic item uses -->
 [h:status=1]
@@ -70,4 +82,4 @@ tableBG,atkName,atkTypeName,keywords,actionType,rangeText,numTargetsText,versusS
 [if(length(extraRoll)>0): macro.return; ""]
 
 [h,if(atkKey<20): macroNamer="TargetScreen@"+UseLib;macroNamer=""]
-[macro(macroNamer): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson)]
+[macro(macroNamer): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, passKeywords, damageTypes)]

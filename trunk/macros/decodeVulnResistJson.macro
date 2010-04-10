@@ -1,0 +1,44 @@
+<!-- decodeVulnResistJson user defined function -->
+<!-- Returns: none -->
+<!-- Parameters: 3 -->
+<!-- arg0 : Json that needs to be decoded into arrays of Vulns/Resists to apply around -->
+<!-- arg1 : Target name -->
+<!-- arg2 : Attack result, 0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+<!-- This function simply parses through the correct Property and the correct Key in the passed Json and sends them -->
+<!-- to applyVulnResistJson for processing and actual application to the right token -->
+
+[h:vulnResistJson       = arg(0)]
+[h:targetName           = arg(1)]
+[h:resu                 = arg(2)]
+[h:selfName             = getName()]
+[h:propVulnTargetJson   = getProperty("ApplyVulnTarget")]
+[h:propVulnSelfJson     = getProperty("ApplyVulnSelf")]
+[h:propResistTargetJson = getProperty("ApplyResistTarget")]
+[h:propResistSelfJson   = getProperty("ApplyResistSelf")]
+
+[h,SWITCH(resu):
+  case 1: resu = 0;
+  case 2: resu = 1;
+  case 3: resu = 2;
+  default: ""
+]
+
+<!-- Apply Vulns to target, Key = 0 from arg0 and use Key = arg2 and 3 from propVulnTargetJson as well -->
+[h,if(json.isEmpty(propVulnTargetJson)): propJsonGet = "[]";propJsonGet = json.merge(if(length(json.get(propVulnTargetJson,resu)) > 0,json.get(propVulnTargetJson,resu),"[]"),if(length(json.get(propVulnTargetJson,"3")) > 0,json.get(propVulnTargetJson,"3"),"[]"))]
+[h,if(json.isEmpty(vulnResistJson)): tmpJson = propJsonGet;tmpJson = json.merge(propJsonGet,if(length(json.get(vulnResistJson,"0")) > 0,json.get(vulnResistJson,"0"),"[]"))]
+[h,if(json.length(tmpJson) > 0): applyVulnResistJson(tmpJson,targetName,"TempVulnerable")]
+
+<!-- Apply Vulns to self, Key = 1 from arg0 and use Key = arg2 and 3 from propVulnSelfJson as well -->
+[h,if(json.isEmpty(propVulnSelfJson)): propJsonGet = "[]";propJsonGet = json.merge(if(length(json.get(propVulnSelfJson,resu)) > 0,json.get(propVulnSelfJson,resu),"[]"),if(length(json.get(propVulnSelfJson,"3")) > 0,json.get(propVulnSelfJson,"3"),"[]"))]
+[h,if(json.isEmpty(vulnResistJson)): tmpJson = propJsonGet;tmpJson = json.merge(propJsonGet,if(length(json.get(vulnResistJson,"1")) > 0,json.get(vulnResistJson,"1"),"[]"))]
+[h,if(json.length(tmpJson) > 0): applyVulnResistJson(tmpJson,selfName,"TempVulnerable")]
+
+<!-- Apply Resists to target, Key = 2 from arg0 and use Key = arg2 and 3 from propResistTargetJson as well -->
+[h,if(json.isEmpty(propResistTargetJson)): propJsonGet = "[]";propJsonGet = json.merge(if(length(json.get(propResistTargetJson,resu)) > 0,json.get(propResistTargetJson,resu),"[]"),if(length(json.get(propResistTargetJson,"3")) > 0,json.get(propResistTargetJson,"3"),"[]"))]
+[h,if(json.isEmpty(vulnResistJson)): tmpJson = propJsonGet;tmpJson = json.merge(propJsonGet,if(length(json.get(vulnResistJson,"2")) > 0,json.get(vulnResistJson,"2"),"[]"))]
+[h,if(json.length(tmpJson) > 0): applyVulnResistJson(tmpJson,targetName,"TempResist")]
+
+<!-- Apply Resists to self, Key = 3 from arg0 and use Key = arg2 and 3 from propResistSelfJson as well -->
+[h,if(json.isEmpty(propResistSelfJson)): propJsonGet = "[]";propJsonGet = json.merge(if(length(json.get(propResistSelfJson,resu)) > 0,json.get(propResistSelfJson,resu),"[]"),if(length(json.get(propResistSelfJson,"3")) > 0,json.get(propResistSelfJson,"3"),"[]"))]
+[h,if(json.isEmpty(vulnResistJson)): tmpJson = propJsonGet;tmpJson = json.merge(propJsonGet,if(length(json.get(vulnResistJson,"3")) > 0,json.get(vulnResistJson,"3"),"[]"))]
+[h,if(json.length(tmpJson) > 0): applyVulnResistJson(tmpJson,selfName,"TempResist")]

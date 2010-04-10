@@ -5,8 +5,10 @@
 <!-- 3 : Rolled damage -->
 <!-- 4 : Total damage of rolled + modifiers -->
 <!-- 5 : String of multiple attack rolls if rerollAttack = 1 -->
-<!-- Parameters: 12 -->
+<!-- Parameters: 14 -->
 <!-- 12 : Integer boolean to reroll attack 1 time and use higher value -->
+<!-- 13 : Json object of when to apply a resist/vuln to target/self -->
+<!-- 14 : Keyword list from attack -->
 <!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
 <!-- Apply damage/effects to target on hit/miss and return values depending on result -->
 
@@ -21,7 +23,10 @@
 [h:targetStateJson = json.get(macro.args, 8)]  <!-- Json holding states to be applied to target with this power -->
 [h:selfStateJson   = json.get(macro.args, 9)]  <!-- Json holding states to be applied to self with this power -->
 [h:markJson        = json.get(macro.args, 10)] <!-- Json array telling when to apply Mark to target -->
-[h:rerollAttack    = json.get(macro.args, 11)]
+[h:rerollAttack    = json.get(macro.args, 11)] <!-- Integer boolean to reroll attack 1 time and use higher value -->
+[h:vulnResistJson  = json.get(macro.args, 12)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:keywords        = json.get(macro.args, 13)]
+[h:damageTypes     = json.get(macro.args, 14)]
 
 [h:propTargetStatesJson = getProperty("TargetStates")]
 [h:propSelfStatesJson   = getProperty("SelfStates")]
@@ -49,17 +54,79 @@
 [h,if(applyMissDam && missDamageRoll!=-2): totalDamage = eval(string(missDamageRoll))]
 [h,if(applyMissDam && missDamageRoll==-2): totalDamage = floor(totalDamage/2)] 
 
+<!-- Apply Vulns/Resists -->
+[h:useTotalDamage       = totalDamage]
+[h:propTempVulnerable   = TempVulnerable]
+[h:propInnateVulnerable = InnateVulnerable]
+[h:propTempResist       = TempResist]
+[h:propInnateResist     = InnateResist]
+[h:pVuln="{}"]
+[h:pResist="{}"]
+[h:tmpList=json.toList(json.intersection(propTempVulnerable,propInnateVulnerable))]
+[h,foreach(key,tmpList): 
+  pVuln = json.set(pVuln,key,if(json.get(propTempVulnerable,key) > json.get(propInnateVulnerable,key),
+                                json.get(propTempVulnerable,key),
+                                json.get(propInnateVulnerable,key)
+                               )
+                  )
+]
+[h:tmpList=json.toList(json.difference(json.union(propTempVulnerable,propInnateVulnerable),
+                                       json.intersection(propTempVulnerable,propInnateVulnerable)
+))]
+[h,foreach(key,tmpList):
+  pVuln = json.set(pVuln,key,if(json.contains(propTempVulnerable,key),
+                                json.get(propTempVulnerable,key),
+                                json.get(propInnateVulnerable,key)
+                               )
+                  )
+] 
+[h:tmpList=json.toList(json.intersection(propTempResist,propInnateResist))]
+[h,foreach(key,tmpList): 
+  pResist = json.set(pResist,key,if(json.get(propTempResist,key)>json.get(propInnateResist,key),
+                                    json.get(propTempResist,key),
+                                    json.get(propInnateResist,key)
+                                   )
+                    )
+]
+[h:tmpList=json.toList(json.difference(json.union(propTempResist,propInnateResist),
+                                       json.intersection(propTempResist,propInnateResist)
+))]
+[h,foreach(key,tmpList):
+  pResist = json.set(pResist,key,if(json.contains(propTempResist,key),
+                                    json.get(propTempResist,key),
+                                    json.get(propInnateResist,key)
+                                   )
+                    )
+] 
+[h,foreach(item,damageTypes): useTotalDamage = useTotalDamage + if(json.contains(pVuln,item),json.get(pVuln,item),0)]
+[h:tmpSubset = json.equals(json.fromList(damageTypes),json.intersection(json.fields(pResist,"json"),json.fromList(damageTypes)))]
+[h,if(tmpSubset != 1): damageTypes=""]
+[h:minResist = 999]
+[h,foreach(typ,damageTypes): minResist = if(if(json.contains(pResist,typ),json.get(pResist,typ),999) < minResist,json.get(pResist,typ),minResist)]
+[h:useTotalDamage = useTotalDamage - if(minResist != 999,minResist,0)]
+[h:useTotalDamage = useTotalDamage 
+                     + if(json.contains(pVuln,"All"),json.get(pVuln,"All"),0) 
+                     - if(json.contains(pResist,"All"),json.get(pResist,"All"),0) 
+]
+[h,if(useTotalDamage<0):useTotalDamage=0]
+
+<!-- Check Swarm -->
+[h,if(Swarm && listFind(keywords,"Area")==-1): useTotalDamage = floor(totalDamage/2)]
+
+<!-- Check Insubstantial -->
+[h,if(Insubstantial): useTotalDamage = floor(useTotalDamage/2)]
+
 <!-- apply damage to target if needed -->
 [h,if(resu>1 || applyMissDam),code:
 {
-  [h,if(TempHP>=totalDamage), code:
+  [h,if(TempHP>=useTotalDamage), code:
   {
-    [h: TempHP = TempHP - totalDamage]
+    [h: TempHP = TempHP - useTotalDamage]
   };{
-    [h: totalDamage = totalDamage - TempHP]
+    [h: useTotalDamage = useTotalDamage - TempHP]
     [h: TempHP = 0]
-    [h: CurrentHP = CurrentHP - totalDamage]
-    [h,if(CurrentHP<=floor(MaxHP/2) && CurrentHP+totalDamage>floor(MaxHP/2)): state.Bloodied=1]
+    [h: CurrentHP = CurrentHP - useTotalDamage]
+    [h,if(CurrentHP<=floor(MaxHP/2) && CurrentHP+useTotalDamage>floor(MaxHP/2)): state.Bloodied=1]
   }]
   [h,if(CurrentHP<=0 && isPC()),code:
   {
@@ -76,8 +143,9 @@
 
 [h:switchToken(selfName)]
 
-<!-- apply states to Target -->
 [h:emptyJson="[]"]
+[h:emptyObjectJson="{}"]
+<!-- apply states to Target -->
 [h,SWITCH(resu):
   case 0: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
   case 1: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
@@ -87,7 +155,6 @@
 [h:setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,3))>0,json.get(propTargetStatesJson,3),emptyJson),if(length(json.get(targetStateJson,3))>0,json.get(targetStateJson,3),emptyJson)),targetName)]
 
 <!-- apply states to Self -->
-[h:emptyJson="[]"]
 [h,SWITCH(resu):
   case 0: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,0))>0,json.get(propSelfStatesJson,0),emptyJson),if(length(json.get(selfStateJson,0))>0,json.get(selfStateJson,0),emptyJson)),selfName);
   case 1: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,0))>0,json.get(propSelfStatesJson,0),emptyJson),if(length(json.get(selfStateJson,0))>0,json.get(selfStateJson,0),emptyJson)),selfName);
@@ -100,5 +167,14 @@
 [h:useMarkJson=json.unique(json.merge(propMarkJson,markJson))]
 [h,if(json.indexOf(useMarkJson,resu-1)!=-1 || json.indexOf(useMarkJson,3)!=-1): tmpBool=1;tmpBool=0]
 [h,if(json.length(useMarkJson)>0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",useMarkJson,targetName)]')]
+
+<!-- apply Resists/Vulns to Target/Self -->
+[h,SWITCH(resu):
+  case 0: decodeVulnResistJson(if(length(json.get(vulnResistJson,"0"))>0,json.get(vulnResistJson,"0"),emptyObjectJson),targetName,resu);
+  case 1: decodeVulnResistJson(if(length(json.get(vulnResistJson,"0"))>0,json.get(vulnResistJson,"0"),emptyObjectJson),targetName,resu);
+  case 2: decodeVulnResistJson(if(length(json.get(vulnResistJson,"1"))>0,json.get(vulnResistJson,"1"),emptyObjectJson),targetName,resu);
+  case 3: decodeVulnResistJson(if(length(json.get(vulnResistJson,"2"))>0,json.get(vulnResistJson,"2"),emptyObjectJson),targetName,resu)
+]
+[h:decodeVulnResistJson(if(length(json.get(vulnResistJson,"3"))>0,json.get(vulnResistJson,"3"),emptyObjectJson),targetName,resu)]
 
 [h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage,atkRolls)]
