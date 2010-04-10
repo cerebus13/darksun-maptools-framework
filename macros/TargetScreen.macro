@@ -26,6 +26,9 @@
 [h:targetStateJson = json.get(macro.args, 12)] <!-- Json holding states to be applied to target with this power -->
 [h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
 [h:markJson        = json.get(macro.args, 14)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(macro.args, 15)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:keywords        = json.get(macro.args, 16)]
+[h:damageTypes     = json.get(macro.args, 17)]
 
 [h:CA=0]
 [h:charge=0]
@@ -81,7 +84,7 @@
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
 {
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)),useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack)]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,if(targ==MarkedBy || length(MarkedBy)==0,atkVal,atkVal+getProperty("MarkPenalty",MarkedBy)),useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,keywords,damageTypes)]
   
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
