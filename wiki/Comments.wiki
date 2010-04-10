@@ -1,6 +1,4 @@
-#summary General comments concerning the framework
 #labels maptools,comments,darksun
-
 = Introduction =
 
 These are just a series of general comments concerning the framework.
