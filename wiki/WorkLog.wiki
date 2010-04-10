@@ -5,6 +5,11 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/10/2010===
+
+  * Added Swarm support to DoAttack2, and a Swarm property to tokens.  Had to create a whole separate wiki page dedicated to random comments on this framework because there are so many oddities you need to know to get it to work right.
+  * Got Vulns/Resists working in DoAttack2.  Added a small bit to check for "All" in any of the 4 jsons related to these and to always apply the affect for it despite what Keywords may be on an attack.  Further testing before check-in.
+
 ===04/07/2010===
 
   * Added Insubstantial to Campaign Props, and then implemented it inside DoAttack2.  Added comments for spots where I am going to deal with Resists/Vulns and even Swarms above Insubstantial...because it applies last.
