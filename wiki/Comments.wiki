@@ -9,3 +9,7 @@ These are just a series of general comments concerning the framework.
 
   # If a token has Swarm=1 property then when an attack goes to apply damage to them DoAttack2 checks to see if the attack has an "Area" keyword.  Any attack without an "Area" keyword is assumed to be Swarm resistable, so the damage is halved.
   # On the flip side with Swarm=1 the GM needs to add Area:# to the InnateVulnerable property so they take the proper amount of extra damage from Area attacks as per their monster entry.
+
+===Token Properties===
+
+  # Values for Vulns/Resists should always be positive as the code in DoAttack2 determines whether to add or subtract it from the damage done.
