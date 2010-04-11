@@ -50,9 +50,11 @@ Skills (Skl):Acrobatics=0 ; Arcana=0 ; Athletics=0 ; Bluff=0 ; Diplomacy=0 ; Dun
 Miscellaneous (Misc)
 Milestone:0
 UseLib
--------------STATIC ATTACK & DAMAGE MODIFIERS-------------
+-------------STATIC ATTACK, DAMAGE, HEAL, TEMP HP MODIFIERS-------------
 AttackBonuses (ABon):{}
 DamageBonuses (DBon):{}
+HealBonuses:{}
+TempHPBonuses:{}
 -------------NUMBERED ATTACK MOD LISTS-------------
 AtkMod1:{}
 AtkMod2:{}
@@ -75,6 +77,18 @@ DamMod7:{}
 DamMod8:{}
 DamMod9:{}
 DamMod10:{}
+-------------NUMBERED HEAL MOD LISTS-------------
+HealMod1:{}
+HealMod2:{}
+HealMod3:{}
+HealMod4:{}
+HealMod5:{}
+-------------NUMBERED TEMP HP MOD LISTS-------------
+TmpMod1:{}
+TmpMod2:{}
+TmpMod3:{}
+TmpMod4:{}
+TmpMod5:{}
 -------------STATES-------------
 TargetStates:{}
 SelfStates:{}

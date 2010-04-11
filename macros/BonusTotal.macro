@@ -15,4 +15,4 @@
 [h,foreach(val,mainFields): mainVal=listAppend(mainVal,json.get(mainJson,val))]
 [h:mainVal=listFormat(mainVal, "%list", "%item", "+")]
 
-[h:macro.return=json.append("[]", mainText, mainVal)]
+[h:macro.return=json.append("[]", mainText, if(mainVal == "",0,mainVal))]

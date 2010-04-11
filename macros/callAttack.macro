@@ -11,6 +11,7 @@
 <!-- 6 = AOE No Attack -->
 <!-- 7 = Single/Multi heal -->
 <!-- 8 = AOE heal -->
+<!-- 9 = Self only heal -->
 <!-- 20 = Utility -->
 [h:atkKey         = json.get(macro.args, "atkKey")]
 [h:atkName        = json.get(macro.args, "atkName")]
@@ -55,9 +56,9 @@
 [h,if(json.contains(macro.args,"needMilestone")): needMilestone   = json.get(macro.args,"needMilestone");needMilestone = 0]
 [h,if(json.contains(macro.args,"yesHeal")):yesHeal         = json.get(macro.args, "yesHeal");yesHeal = 0]
 [h,if(json.contains(macro.args,"yesTempHP")):yesTempHP         = json.get(macro.args, "yesTempHP");yesTempHP = 0]
-[h,if(json.contains(macro.args,"healMod")):healMod         = json.get(macro.args, "healMod");healMod = 0]
+[h,if(json.contains(macro.args,"healMod")):healMod         = json.get(macro.args, "healMod");healMod = "{}"]
 [h,if(json.contains(macro.args,"healRoll")):healRoll        = json.get(macro.args, "healRoll");healRoll = "0d0"]
-[h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = 0]
+[h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = "{}"]
 [h,if(json.contains(macro.args,"tempHPRoll")):tempHPRoll    = json.get(macro.args, "tempHPRoll");tempHPRoll = "0d0"]
 [h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
 
