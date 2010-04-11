@@ -1,0 +1,10 @@
+<!-- AllPCMilestone Macro -->
+[h: allPCs = getPCNames()]
+[h,foreach(tkn,allPCs),CODE: 
+{ 
+  [h:switchToken(tkn)]
+  [h:ActionPoints = ActionPoints + 1]
+  [h:MagicItemUses = MagicItemUses + 1]
+  [h,if(Milestone != 1): Milestone = 1]
+}]
+Milestone has been reached!
