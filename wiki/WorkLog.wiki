@@ -15,6 +15,7 @@ A simple journal detailing the coding work I've gotten done on a given day.
     * Using lots of nested code with json lookups in if() statements doesn't work for dick, so had to use lots of temp variables to store function calls and crap that I shouldn't have to.
     * Using the Set-Notation functions for jsons (union,intersection,difference) is a pain in the ass, avoid it unless you have no other recourse.  In my case I was forced to either use this or do a damn for-loop parsing of paired jsons because json.subset() is missing.
   * Checked in code for Vuln/Resist mess, (r52).  Might test some more and make revisions if needed.
+  * Milestone stuff done, and even made a small GM macro to give all the PCs a milestone without them having to click anything.  (r55)
 
 ===04/07/2010===
 
