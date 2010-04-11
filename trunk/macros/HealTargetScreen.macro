@@ -1,0 +1,67 @@
+<!-- HealTargetScreen macro -->
+<!-- Pops up the targetting GUI that has targets in dropdown lists, and modifications to apply to the heal if applicable -->
+
+<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
+<!-- 7 = Single/Multi heal -->
+<!-- 8 = AOE heal -->
+[h:atkKey          = json.get(macro.args, 0)]
+[h:atkName         = json.get(macro.args, 1)]
+[h:yesHeal         = json.get(macro.args, 2)]
+[h:healMod         = json.get(macro.args, 3)]
+[h:healRoll        = json.get(macro.args, 4)]
+[h:yesTempHP       = json.get(macro.args, 5)]
+[h:tempHPMod       = json.get(macro.args, 6)]
+[h:tempHPRoll      = json.get(macro.args, 7)]
+[h:maxRange        = json.get(macro.args, 8)]
+[h:numTargets      = json.get(macro.args, 9)]
+[h:friendlyFire    = json.get(macro.args, 10)]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource     = json.get(macro.args, 11)]  <!-- name of other token to use as source for figuring targets based on range -->
+[h:useSurge        = json.get(macro.args, 12)]
+
+[h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
+[h,if(maxRange>-1): targetJson = macro.return]
+[h:targetImageList = "None,"]
+[h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
+
+[h:inputJson = json.append("[]",
+    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
+    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
+)]
+[h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
+[h:inputJson = json.append(inputJson,
+    "miscHeal|0|<html>Miscellaneous <b>modifier</b> to heal</html>",
+    "miscTempHP|0|<html>Miscellaneous <b>modifier</b> to temp HP granted</html>"
+)]
+[h:status = input(json.toList(inputJson,"##"))]
+[h:abort(status)]
+[h:targJson="[]"]
+[h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
+[h,if(numTargets<=0): targJson = targetJson]
+
+[h,if(yesHeal): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", healMod, "HealBonuses", miscHeal, "{}")]')]
+[h,if(yesHeal): healText = json.get(macro.return, 0);healText="0"]
+[h,if(yesHeal): healVal = json.get(macro.return, 1);healVal="0"]
+
+[h,if(yesTempHP): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", tempHPMod, "TempHPBonuses", miscTempHP, "{}")]')]
+[h,if(yesTempHP): tempHPText = json.get(macro.return, 0);tempHPText="0"]
+[h,if(yesTempHP): tempHPVal = json.get(macro.return, 1);tempHPVal="0"]
+
+<!-- AOE heal applies the same roll to all targets -->
+[h,if(atkKey==8): useHeal=eval(healRoll); useHeal=healRoll]
+[h,if(atkKey==8): useTempHP=eval(tempHPRoll); useTempHP=tempHPRoll]
+
+[h:tableJson="[]"]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge)]
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",healRoll,json.get(retu,0),healText),strformat("Heal: <b>%s</b>",json.get(retu,1))),""),
+      -1,
+      targ,
+      if(yesTempHP,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",tempHPRoll,json.get(retu,2),tempHPText),strformat("Temp HP: <b>%s</b>",json.get(retu,3))),"")
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+}]
+[macro("PrintAttackTable@"+UseLib): tableJson]

@@ -1,6 +1,6 @@
 <!-- GetTargets macro -->
 
-<!--Display all valid targets within range, choose only a Single one of them-->
+<!-- Display all valid targets within range, choose only a Single one of them -->
 
 [h:maxRange=json.get(macro.args, 0)]
 [h:friendlyFire=json.get(macro.args, 1)]

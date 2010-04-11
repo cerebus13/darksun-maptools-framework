@@ -1,0 +1,19 @@
+<!-- DoHeal macro -->
+<!-- Returns: 4 -->
+<!-- Parameters: 6 -->
+<!-- This macro takes in a single target and information to resolve healing on that target -->
+
+[h:targetName      = json.get(macro.args, 0)]
+[h:healRoll        = json.get(macro.args, 1)]
+[h:healVal         = json.get(macro.args, 2)]
+[h:tempHPRoll      = json.get(macro.args, 3)]
+[h:tempHPVal       = json.get(macro.args, 4)]
+
+[h:switchToken(targetName)]
+
+[h:healing = eval(string(healRoll))]
+[h:totalHeal = healing + eval(string(healVal))]
+[h:tmping = eval(string(tempHPRoll))]
+[h:totalTemp = tmping + eval(string(tempHPVal))]
+
+[h:macro.return = json.append("[]",healing,totalHeal,tmping,totalTemp)]

@@ -12,38 +12,38 @@
 <!-- 7 = Single/Multi heal -->
 <!-- 8 = AOE heal -->
 <!-- 20 = Utility -->
-[h:atkKey         = json.get(macro.args, 0)]
-[h:atkName        = json.get(macro.args, 1)]
-[h:atkType        = json.get(macro.args, 2)] <!--  At-Will = 1, Encounter = 2, Daily = 3 -->
-[h:atkTypeName    = json.get(macro.args, 3)]
-[h:keywords       = json.get(macro.args, 4)]
-[h:damageTypes    = json.get(macro.args, 5)]
-[h:actionType     = json.get(macro.args, 6)]
-[h:targetDefense  = json.get(macro.args, 7)]
-[h:hitStatAdded   = json.get(macro.args, 8)]
-[h:rangeText      = json.get(macro.args, 9)]
-[h:numTargetsText = json.get(macro.args, 10)]
-[h:atkMod         = json.get(macro.args, 11)]
-[h:damMod         = json.get(macro.args, 12)]
-[h:damRoll        = json.get(macro.args, 13)]
-[h:critDamRoll    = json.get(macro.args, 14)]
-[h,if(json.length(macro.args) > 15): maxRange        = json.get(macro.args, 15);maxRange=-1]
-[h,if(json.length(macro.args) > 16): numTargets      = json.get(macro.args, 16);numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
-[h,if(json.length(macro.args) > 17): effectText      = json.get(macro.args, 17);effectText=""]
-[h,if(json.length(macro.args) > 18): extraRoll       = json.get(macro.args, 18);extraRoll=""]
-[h,if(json.length(macro.args) > 19): useMagicItem    = json.get(macro.args, 19);useMagicItem=0]
-[h,if(json.length(macro.args) > 20): friendlyFire    = json.get(macro.args, 20);friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
-[h,if(json.length(macro.args) > 21): otherSource     = json.get(macro.args, 21);otherSource=""] <!-- name of other token to use as source for figuring targets based on range -->
-[h,if(json.length(macro.args) > 22): missDamageRoll  = json.get(macro.args, 22);missDamageRoll=-1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
+[h:atkKey         = json.get(macro.args, "atkKey")]
+[h:atkName        = json.get(macro.args, "atkName")]
+[h:atkType        = json.get(macro.args, "atkType")] <!--  At-Will = 1, Encounter = 2, Daily = 3 -->
+[h:atkTypeName    = json.get(macro.args, "atkTypeName")]
+[h:keywords       = json.get(macro.args, "keywords")]
+[h:damageTypes    = json.get(macro.args, "damageTypes")]
+[h:actionType     = json.get(macro.args, "actionType")]
+[h:targetDefense  = json.get(macro.args, "targetDefense")]
+[h:hitStatAdded   = json.get(macro.args, "hitStatAdded")]
+[h:rangeText      = json.get(macro.args, "rangeText")]
+[h:numTargetsText = json.get(macro.args, "numTargetsText")]
+[h,if(json.contains(macro.args,"atkMod")):atkMod         = json.get(macro.args, "atkMod");atkMod = 0]
+[h,if(json.contains(macro.args,"damMod")):damMod         = json.get(macro.args, "damMod");damMod = 0]
+[h,if(json.contains(macro.args,"damRoll")):damRoll        = json.get(macro.args, "damRoll");damRoll = "0d0"]
+[h,if(json.contains(macro.args,"critDamRoll")):critDamRoll    = json.get(macro.args, "critDamRoll");critDamRoll = "0d0"]
+[h,if(json.contains(macro.args,"maxRange")): maxRange        = json.get(macro.args,"maxRange");maxRange=-1]
+[h,if(json.contains(macro.args,"numTargets")): numTargets      = json.get(macro.args,"numTargets");numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
+[h:effectText      = json.get(macro.args, "effectText")]
+[h:extraRoll       = json.get(macro.args, "extraRoll")]
+[h,if(json.contains(macro.args,"useMagicItem")): useMagicItem    = json.get(macro.args,"useMagicItem");useMagicItem=0]
+[h,if(json.contains(macro.args,"friendlyFire")): friendlyFire    = json.get(macro.args,"friendlyFire");friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource     = json.get(macro.args,"otherSource")] <!-- name of other token to use as source for figuring targets based on range -->
+[h,if(json.contains(macro.args,"missDamageRoll")): missDamageRoll  = json.get(macro.args,"missDamageRoll");missDamageRoll = -1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
 <!-- targetStateJson: Json with states to apply to target.  In the format of Key:Value, Key = a number 0-3, Value = json of State names -->
 <!-- note: avoid using Marked states, they are covered below -->
 <!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
-[h,if(json.length(macro.args) > 23): targetStateJson = json.get(macro.args, 23);targetStateJson="{}"] 
+[h,if(json.contains(macro.args,"targetStateJson")): targetStateJson = json.get(macro.args,"targetStateJson");targetStateJson="{}"] 
 <!-- selfStateJson: Json with states to apply to self.  In the format of Key:Value, Key = a number 0-3, Value = json of State names-->
 <!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
-[h,if(json.length(macro.args) > 24): selfStateJson   = json.get(macro.args, 24);selfStateJson="{}"]
+[h,if(json.contains(macro.args,"selfStateJson")): selfStateJson   = json.get(macro.args,"selfStateJson");selfStateJson="{}"]
  <!-- Json array of when to mark target.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
-[h,if(json.length(macro.args) > 25): markJson        = json.get(macro.args, 25);markJson="[]"]
+[h,if(json.contains(macro.args,"markJson")): markJson        = json.get(macro.args,"markJson");markJson="[]"]
 <!-- Json Object of when to apply a resist/vuln to target/self.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
 <!-- Nested Json Object keys: 0 = Vuln to target, 1 = Vuln to self, 2 = Resist to target, 3 = Resist to self -->
 <!-- Alternating array of element type, then value : sqBracket Cold,5,Fire,10,All,15 sqBracket -->
@@ -51,11 +51,17 @@
 <!-- Example: On miss applies Vuln Cold 5 to target and Vuln Cold 5 to self; On hit applies Resist Fire 5 to target; -->
 <!--          On crit applies Resist Fire 5 and Resist Cold 5 to self; On always applies Vuln Fire 5 to target and   -->
 <!--          Resist Fire 5 to target -->
-[h,if(json.length(macro.args) > 26): vulnResistJson  = json.get(macro.args, 26);vulnResistJson="{}"]
-[h,if(json.length(macro.args) > 27): needMilestone   = json.get(macro.args, 27);needMilestone = 0]
+[h,if(json.contains(macro.args,"vulnResistJson")): vulnResistJson  = json.get(macro.args,"vulnResistJson");vulnResistJson="{}"]
+[h,if(json.contains(macro.args,"needMilestone")): needMilestone   = json.get(macro.args,"needMilestone");needMilestone = 0]
+[h,if(json.contains(macro.args,"yesHeal")):yesHeal         = json.get(macro.args, "yesHeal");yesHeal = 0]
+[h,if(json.contains(macro.args,"yesTempHP")):yesTempHP         = json.get(macro.args, "yesTempHP");yesTempHP = 0]
+[h,if(json.contains(macro.args,"healMod")):healMod         = json.get(macro.args, "healMod");healMod = 0]
+[h,if(json.contains(macro.args,"healRoll")):healRoll        = json.get(macro.args, "healRoll");healRoll = "0d0"]
+[h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = 0]
+[h,if(json.contains(macro.args,"tempHPRoll")):tempHPRoll    = json.get(macro.args, "tempHPRoll");tempHPRoll = "0d0"]
+[h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
 
-[h:passKeywords=keywords]
-[h:keywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
+[h:useKeywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
 
 <!-- Check milestone requirement -->
 [h:status=1]
@@ -74,18 +80,18 @@
   case 2: tableBG="#FF0000";
   case 3: tableBG="#000000"
 ]
-[h,if(length(keywords)!=0): keywords=strformat("<tr><td style='padding:0px 5px;' align=left><b>%s</b></td></tr>",keywords); keywords=""]
+[h,if(length(useKeywords)!=0): useKeywords=strformat("<tr><td style='padding:0px 5px;' align=left><b>%s</b></td></tr>",useKeywords); useKeywords=""]
 [h,if(length(rangeText)!=0): rangeText=strformat("<td style='padding:0px 5px;' align=right><b>%s</b></td>",rangeText); rangeText=""]
 [h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px;' align=right><b>Attack:</b> %s vs. %s</td>",hitStatAdded,targetDefense); versusStr=""]
 [h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px;' align=right><b>Attack:</b>vs. %s</td>",targetDefense)]
 [h,if(length(effectText)!=0): effectText=strformat("<tr bgcolor='#D6D6C2'><td style='padding:0px 5px;' align=left colspan='2'>%s</td></tr>",effectText); effectText=""]
 [h:powaStr=strformat("<html><body><table width='400'><tr bgcolor=%s><td style='padding:0px 5px;' align=left><font color='white'><b>%s</b></font></td><td style='padding:0px 5px;' align=right><font color='white'><b>%s</b></font></td></tr>%s<tr><td style='padding:0px 5px;' align=left><b>%s</b></td>%s</tr><tr><td style='padding:0px 5px;' align=left><b>Target:</b> %s</td>%s</tr>%s</table></body></html>",
-tableBG,atkName,atkTypeName,keywords,actionType,rangeText,numTargetsText,versusStr,effectText)]
+tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,versusStr,effectText)]
 [h:output=customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 
 [h,if(length(extraRoll)>0): customTooltip(extraRoll,strformat("Extra Roll: <b>%s</b>",eval(string(extraRoll))))]
 [if(length(extraRoll)>0): macro.return; ""]
 
-[h,if(atkKey<20): macroNamer="TargetScreen@"+UseLib;macroNamer=""]
-[macro(macroNamer): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, passKeywords, damageTypes)]
+[if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, keywords, damageTypes)]')]
+[if(atkKey>6 && atkKey<20): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge)]')]

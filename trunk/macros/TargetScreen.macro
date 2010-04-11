@@ -67,11 +67,17 @@
 [h,if(numTargets<=0): targJson = targetJson]
 
 <!-- Skip attack portion on attack 3 and 6 -->
-[h,if(atkKey!=3 && atkKey!=6): evalMacro('[h,macro("AttackBonusTotal@"+UseLib): json.append("[]", atkMod, CA, charge, cover, longRange, miscAtk)]')]
+[h:inputAJson="{}"]
+[h,if(CA): inputAJson = json.set(inputAJson,"CA",2)]
+[h,if(charge): inputAJson = json.set(inputAJson,"charge",1)]
+[h,if(cover>0): inputAJson = json.set(inputAJson,"cover",if(cover==1,-2,-5))]
+[h,if(longRange): inputAJson = json.set(inputAJson,"range",-2)]
+[h,if(miscAtk!=0): inputAJson = json.set(inputAJson,"misc",miscAtk)]
+[h,if(atkKey!=3 && atkKey!=6): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", atkMod, "AttackBonuses", miscAtk, inputAJson)]')]
 [h,if(atkKey!=3 && atkKey!=6): atkText=json.get(macro.return, 0)]
 [h,if(atkKey!=3 && atkKey!=6): atkVal=json.get(macro.return, 1)]
 <!-- Skip damage portion on attacks 2 and 5 -->
-[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): evalMacro('[h,macro("DamageBonusTotal@"+UseLib): json.append("[]", damMod, miscDam)]')]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", damMod, "DamageBonuses", miscDam, "{}")]')]
 [h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damText=json.get(macro.return, 0);damText="0"]
 [h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damVal=json.get(macro.return, 1);damVal="0"]
 
