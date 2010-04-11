@@ -1,9 +1,10 @@
 <!-- HealTargetScreen macro -->
 <!-- Pops up the targetting GUI that has targets in dropdown lists, and modifications to apply to the heal if applicable -->
 
-<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
+<!-- atkKey = Integer switch used to determine which roll combinations to use: -->
 <!-- 7 = Single/Multi heal -->
 <!-- 8 = AOE heal -->
+<!-- 9 = Self only heal -->
 [h:atkKey          = json.get(macro.args, 0)]
 [h:atkName         = json.get(macro.args, 1)]
 [h:yesHeal         = json.get(macro.args, 2)]
@@ -18,6 +19,7 @@
 [h:otherSource     = json.get(macro.args, 11)]  <!-- name of other token to use as source for figuring targets based on range -->
 [h:useSurge        = json.get(macro.args, 12)]
 
+[h:targetJson="[]"]
 [h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
 [h,if(maxRange>-1): targetJson = macro.return]
 [h:targetImageList = "None,"]
@@ -28,15 +30,14 @@
     ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
 )]
 [h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
-[h:inputJson = json.append(inputJson,
-    "miscHeal|0|<html>Miscellaneous <b>modifier</b> to heal</html>",
-    "miscTempHP|0|<html>Miscellaneous <b>modifier</b> to temp HP granted</html>"
-)]
+[h,if(yesHeal): inputJson = json.append(inputJson,"miscHeal|0|<html>Miscellaneous <b>modifier</b> to heal</html>")]
+[h,if(yesTempHP): inputJson = json.append(inputJson,"miscTempHP|0|<html>Miscellaneous <b>modifier</b> to temp HP granted</html>")]
 [h:status = input(json.toList(inputJson,"##"))]
 [h:abort(status)]
 [h:targJson="[]"]
 [h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
-[h,if(numTargets<=0): targJson = targetJson]
+[h,if(numTargets<=0 && atkKey != 9): targJson = targetJson]
+[h,if(atkKey == 9): targJson = json.append("[]", getName())]
 
 [h,if(yesHeal): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", healMod, "HealBonuses", miscHeal, "{}")]')]
 [h,if(yesHeal): healText = json.get(macro.return, 0);healText="0"]
@@ -56,7 +57,7 @@
   [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge)]
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
-      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",healRoll,json.get(retu,0),healText),strformat("Heal: <b>%s</b>",json.get(retu,1))),""),
+      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),
       -1,
       targ,
       if(yesTempHP,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",tempHPRoll,json.get(retu,2),tempHPText),strformat("Temp HP: <b>%s</b>",json.get(retu,3))),"")
