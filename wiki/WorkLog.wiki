@@ -16,6 +16,8 @@ A simple journal detailing the coding work I've gotten done on a given day.
     * Using the Set-Notation functions for jsons (union,intersection,difference) is a pain in the ass, avoid it unless you have no other recourse.  In my case I was forced to either use this or do a damn for-loop parsing of paired jsons because json.subset() is missing.
   * Checked in code for Vuln/Resist mess, (r52).  Might test some more and make revisions if needed.
   * Milestone stuff done, and even made a small GM macro to give all the PCs a milestone without them having to click anything.  (r55)
+  * Started working on Healing Powers.  Lot of stuff to get done here as I need to basically clone the entire work flow for Damage Powers and strip out all the extra crap.  I'm thinking for the first iteration of the framework I won't bother allowing Heals to apply status/Vuln/Resist and crap to targets since it's pretty rare.  Also am not going to implement powers that basically call a DIFFERENT power depending on if you hit or miss (such as how Healing Strike heals a player if you hit a monster).  Future wishlist on that stuff.
+  * Lots of work left to do on healing.  Going to replace Attack/Damage with TempHP/Heals I believe in the work flow, so lots of cloning to do.  Also going to try and make a few macros a bit more generic so I don't have 4 or 5 copies floating around when I could just have made 1 shared among them all.
 
 ===04/07/2010===
 
