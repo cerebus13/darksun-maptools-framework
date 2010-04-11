@@ -1,0 +1,18 @@
+<!-- BonusTotal macro -->
+
+[h:modJson     = json.get(macro.args, 0)]
+[h:propName    = json.get(macro.args, 1)]
+[h:miscMod     = json.get(macro.args, 2)]
+[h:otherJson   = json.get(macro.args, 3)]
+
+[h:mainJson=json.merge(modJson,getProperty(propName),otherJson)]
+[h,if(miscMod != 0): mainJson = json.set(mainJson,"misc",miscMod)]
+
+[h:mainFields=json.fields(mainJson)]
+[h:mainText=""]
+[h,foreach(val,mainFields): mainText=concat(mainText,strformat(" + %s(%s)",val,json.get(mainJson,val)))]
+[h:mainVal=""]
+[h,foreach(val,mainFields): mainVal=listAppend(mainVal,json.get(mainJson,val))]
+[h:mainVal=listFormat(mainVal, "%list", "%item", "+")]
+
+[h:macro.return=json.append("[]", mainText, mainVal)]
