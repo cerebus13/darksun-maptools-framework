@@ -5,6 +5,28 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/11/2010===
+
+  * Big check-in (r59) to cover all of the various crap for healing powers.  Modified CallAttack to use an Object Json Parameter to make power macros look a lot cleaner and use less empty junk.
+  * Made a self-heal atkType so Second Wind would work, (r60).
+  * Started mucking with Campaign properties to get Defense Mods working better.  Discovered that a dynamic property that sums up an array Json property to display a number actually lags the client a bit, so I won't be able to go that route.  Instead I'll make a DefMod list for each defense that is just an array of mods, and players will need to be smart enough not to apply a mod over and over again.  I think I'll make a few checkboxes for the Target Screen to allow a player to NOT apply DefMods.  Doesn't matter for States/Vulns/Resists since they don't stack the same as Defenses do.
+  * Need to have DoAttack respect states on tokens.  Here is a short list:
+    * Attacker:
+      * Weakened : 1/2 damage
+      * Restrained : -2 atk 
+      * Prone : -2 atk
+      * Blinded : targets have full concealment (-5 atk) unless attack is Area in keywords
+    * Defender:
+      * Dazed : grant CA
+      * Helpless : grant CA
+      * Prone : +2 defenses vs. attacks with Ranged in keyword
+      * Restrained : grant CA
+      * Stunned : grant CA
+      * Surprised : grant CA
+      * Unconscious : same as helpless, and -5 all defenses
+  * Had a good idea on how to get the multi-target form to work.  Since I call DoAttack for each target, I could have an Input box pop up for each one if the Player selects "Detailed Modifiers" from the main TargetScreen.  Have each detailed popup default to the values chosen from TargetScreen, but the player could tweak CA off or bump a MiscAtk value up for a target or 2.  Have each screen show the name (and picture?) of current target, and the power name just to remind them what they're doing.
+  * Going along with the Defense mods work I've been doing I was thinking I should make an additional tooltip called like "Applications" that would show a table of "Target Name|Had blah applied to them".  Would let you know quick if a player accidentally double stacked a defmod, and gives a quick summary of everything else the power did besides the damage already being shown.  Probably place it after the damage table, and just have it be a word with a customTooltip showing the full table text to spare chat spam.
+
 ===04/10/2010===
 
   * Added Swarm support to DoAttack2, and a Swarm property to tokens.  Had to create a whole separate wiki page dedicated to random comments on this framework because there are so many oddities you need to know to get it to work right.
