@@ -5,6 +5,11 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/12/2010===
+
+  * Drycoded all of the Self and Target state handling for stuff like Prone/Restrained inside of TargetScreen.  The only one I put into DoAttack was Weakened, because that just halves damage anyway.  This is all dry-coded and untested which I'll get to later.
+  * Looking at how things work it would be better to do the Multi-target form inside of the targ loop in TargetScreen.  I could move the code for BonusTotal into the targ loop and just adjust from there based on what the result was from each subsequent Input.  I could even make this all up into another macro called TargetScreen2 or somesuch to avoid the growing CODE block in here.
+
 ===04/11/2010===
 
   * Big check-in (r59) to cover all of the various crap for healing powers.  Modified CallAttack to use an Object Json Parameter to make power macros look a lot cleaner and use less empty junk.
