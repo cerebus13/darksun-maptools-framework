@@ -9,7 +9,7 @@ This is just a rough road map of what I plan to code up for the Dark Sun campaig
 
 TODO list: (strikethrough means it is finished)
 
-  ## make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer to comments to edit powers later if needed (PHASE 2)
+  ## (PHASE 2) make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer to comments to edit powers later if needed
   ## create a template PC and NPC token for my campaign
    * give PCs 10 attack mod props, and 10 damage mod props
    * npcs probably only need 5 of each
@@ -28,7 +28,7 @@ TODO list: (strikethrough means it is finished)
    * in the 2nd form each target dropdown will not include a None choice because you need to specify bonuses against each dude (defaults will be set to
    * DON'T apply, so they could just click through it and nobody will get modifiers)
   ## ~~figure out how to make heal powers into a macro that does all of the work including update hp, decrement healing surges etc.  might need to make a 7th attack type beyond a utility power even~~ *(r59)*
-  ## implement striker damage, figure out a clean way to make it only apply to one target per round (in the case of multi-target attacks) (PHASE 2)
+  ## (PHASE 2) implement striker damage, figure out a clean way to make it only apply to one target per round (in the case of multi-target attacks)
    * if have a drop down appear on the 2nd stage target form (where you apply mods to opponents) can list all available targets for attack and allow
    * player to choose one or none.  make 1st stage form just have a check box to say YES i am applying striker damage or something.
    * otherwise in the case of multi-class guys who get striker damage as an encounter power i can look into the "damage only" typed attack and have
@@ -46,7 +46,7 @@ TODO list: (strikethrough means it is finished)
    * unless i got clever and just did a run down of all tokens on the board filtering based on each mark color in turn until i find an empty one, then use the first target/source pairing that hasn't been used yet (this would be done in the status application coding, just put a "Mark" in under
    * inflicted statuses for a player and the code behind the scenes would automatically assign you an open color)
    * "piercing" type magic items/feats that bypass resistances would be dealt with manually at the start or else can implement a pierce property that indicates how much your say cold powers bypass resistances or something
-  ## Add a States text box to the Targetting Screen that lets you enter states to be inflicted on that individual power.  Do something as simple as an array like this:
+  ## (PHASE 2) Add a States text box to the Targetting Screen that lets you enter states to be inflicted on that individual power.  Do something as simple as an array like this:
    * 0,Prone,1,Stunned,etc
    * An alternating array where the number is what attack result you want (0 = miss, 1 = hit, 2 = crit, 3 = always), and then the name of a state
   ## change State application code to not need a color choice when putting it in the list.  Instead have code search the map for all monsters with say Quarry_firstColor and continue down the list until it finds a matching color.  Can then store the fact that you are a "QuarrySource" or whatever locally to your token and make those properties show up on mouseover.
