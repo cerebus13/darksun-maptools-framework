@@ -1,0 +1,19 @@
+[h:modDefenseJson       = arg(0)]
+[h:targetName           = arg(1)]
+[h:selfName             = getName()]
+[h: propDefenseTargetJson = getProperty("AllDefModList", targetName)]
+[h: propDefenseSelfJson = getProperty("AllDefModList", selfName)]
+[h: newDefenseTargetJson = json.get(modDefenseJson, "0")]
+[h: newDefenseSelfJson = json.get(modDefenseJson, "1")]
+
+[h, if(json.isEmpty(newDefenseSelfJson)), CODE:
+{};
+{[h, if(json.isEmpty(propDefenseSelfJson)), CODE:
+{[h: applyModDefenseJson(newDefenseSelfJson, selfName)]};
+{[h: applyModDefenseJson(json.unique(json.merge(propDefenseSelfJson, newDefenseSelfJson)), selfName)]}]};]
+
+[h, if(json.isEmpty(newDefenseTargetJson)), CODE:
+{};
+{[h, if(json.isEmpty(propDefenseTargetJson)), CODE:
+{[h: applyModDefenseJson(newDefenseTargetJson, targetName)]};
+{[h: applyModDefenseJson(json.unique(json.merge(propDefenseTargetJson, newDefenseTargetJson)), TargetName)]}]};]
