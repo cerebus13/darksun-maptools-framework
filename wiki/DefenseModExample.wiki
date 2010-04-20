@@ -1,3 +1,4 @@
+#labels macro,maptools,comments,darksun
 <!-- Json Object of when to apply a Defense Modifier to target/self.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
 
 <!-- Nested Json Object keys: 0 = Target, 1 = Self -->
