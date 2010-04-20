@@ -8,3 +8,5 @@
 [h:defineFunction("updateState", "updateState@"+getMacroLocation(), 1, 0 ) ]
 [h:defineFunction("decodeVulnResistJson", "decodeVulnResistJson@"+getMacroLocation(), 1 ) ]
 [h:defineFunction("applyVulnResistJson", "applyVulnResistJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("decodeModDefenseJson", "decodeVulnResistJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("applyModDefenseJson", "applyVulnResistJson@"+getMacroLocation(), 1 ) ]
