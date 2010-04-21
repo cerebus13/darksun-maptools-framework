@@ -5,6 +5,13 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/21/2010===
+
+  * Did testing of my State handling junk in TargetScreen, and the Multi-target "detail" form for doing modifiers.  A bit of tweaking and it looks to be reasonably stable.
+  * Played with the TortiseSVN merge tool a bit, but I'm either not very good at it or it is rather lacking.
+  * Having trouble with Sam's code, get error: Argument index 2 out of range (max = 1) in function arg.  Happens immediately upon calling decodeModDefenseJson and I'm not sure why.
+    * Nevermind figured it out.  Sam had decodeModDefenseJson and applyModDefenseJson defined in onCampaignLoad to point to their VulnResist counterparts still through a likely copy/paste error.  Not sure if his code ever worked with it done this way, will need to do more testing.
+
 ===04/12/2010===
 
   * Drycoded all of the Self and Target state handling for stuff like Prone/Restrained inside of TargetScreen.  The only one I put into DoAttack was Weakened, because that just halves damage anyway.  This is all dry-coded and untested which I'll get to later.
