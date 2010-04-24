@@ -1,0 +1,11 @@
+<!-- Delete Modifier -->
+
+[h: propDefenseSelfJson = json.get(macro.args, "propDefenseSelfJson")]
+[h: propLength = json.get(macro.args, "propLength")]
+[h: selfName = json.get(macro.args, "selfName")]
+[c(propLength),code:{
+[h, if(json.get(macro.args, "mod"+roll.count) == "on"): propDefenseSelfJson = json.remove(propDefenseSelfJson, roll.count)]}]
+[h: applyModDefenseJson(propDefenseSelfJson, selfName)]
+[h: closeDialog("Modifiers")]
+[macro("ModifierDialog@"+getMacroLocation()):""]
+[abort(0)]
