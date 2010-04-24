@@ -1,0 +1,4 @@
+<!-- View Defense Modifier for tokens-->
+
+[macro("ModifierDialog@"+UseLib):""]
+[abort(0)]
