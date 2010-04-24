@@ -1,0 +1,42 @@
+<!-- Modifier Dialog -->
+
+[h:selfName             = getName()]
+[h: propDefenseSelfJson = getProperty("AllDefModList", selfName)]
+[h, if(length(propDefenseSelfJson) > 0): propLength = json.length(propDefenseSelfJson); propLength = 0]
+[h, if(propLength > 0), code:
+{[dialog("Modifiers"): {
+  <html>
+    <head>
+      <title>Modifiers on [r: selfName]</title>
+    </head>
+    <body>
+     <table style="text-align:center" border="1">
+	 <tr>
+     <td style="text-align:center">
+     <span style="color:#000000">
+	 <form name ="FormTest" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
+	  [c(propLength,'<BR>'),code:{[h: propDefenseJsonObject= json.get(propDefenseSelfJson, roll.count)]
+	  <input type="checkbox" name=[r: "mod"+roll.count] />
+	  <span style="color:blue; font-size:12">[r: json.get(propDefenseJsonObject, "modName")]: [r, if(json.get(propDefenseJsonObject, "modValue")>0): "+"][r: json.get(propDefenseJsonObject, "modValue")] to 
+	  [r, switch(json.get(propDefenseJsonObject, "modDef")):
+	  case 0: "All";
+	  case 1: "AC";
+	  case 2: "Fortitude";
+	  case 3: "Reflex";
+	  case 4: "Willpower";]
+	   by [r: json.get(propDefenseJsonObject, "modOwner")]
+	  </span> }]
+	  <br>
+	  <input type="hidden" name="propDefenseSelfJson" value='[r: propDefenseSelfJson]'></input>
+	  <input type="hidden" name="propLength" value='[r: propLength]'></input>
+	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
+	  <input type="submit" value="Delete" />
+	 </form>
+	 </span>
+     </td>
+	 </tr>
+     </table>
+    </body>
+  </html>
+}]}]
+[abort(0)]
