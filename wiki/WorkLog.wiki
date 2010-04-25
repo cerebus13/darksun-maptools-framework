@@ -5,6 +5,14 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/24/2010===
+
+  * Got Fighter and Wizard demo tokens made.
+  * Created a new chain of execution for utility type powers that don't attack or heal.  SecondaryTargetScreen -> DoSecondary.
+  * Fixed a stupid bug in setStateJson function that was leaking a switchToken statement everywhere.  Made me think that evalMacro had a bug in it, but apparently the bug is that if you switch token in a User-Defined function that doesn't have a new stack that it never goes out of scope and thus the switch stays forever.
+  * Need to rethink how we are piggy backing Self targetting mods/vulns/resists/whatever.  Found a situation where you might use a power that targets nobody, but you still want the Self effects to fire, and nothing would happen.  Think I should just make a DoSelf function to grab all the Self junk from the various parameter Jsons and process it once by itself which should hopefully speed up execution a bit.
+  * Take a quick look at the Mark code again to see if I can speed that up at all because it is a bit of a bear right now playing as a Fighter.
+
 ===04/21/2010===
 
   * Did testing of my State handling junk in TargetScreen, and the Multi-target "detail" form for doing modifiers.  A bit of tweaking and it looks to be reasonably stable.
