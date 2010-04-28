@@ -1,6 +1,6 @@
 <!-- DoHeal2 macro -->
 <!-- Returns: 4 -->
-<!-- Parameters: 6 -->
+<!-- Parameters: 7 -->
 <!-- This macro takes in a single target and information to resolve healing on that target -->
 
 [h:targetName      = json.get(macro.args, 0)]
@@ -9,7 +9,13 @@
 [h:tempHPRoll      = json.get(macro.args, 3)]
 [h:tempHPVal       = json.get(macro.args, 4)]
 [h:useSurge        = json.get(macro.args, 5)]
+[h:selfStateJson   = json.get(macro.args, 6)]  <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(macro.args, 7)]
 
+[h:emptyObjectJson="{}"]
+[h:emptyJson="[]"]
+[h:propSelfStatesJson   = getProperty("SelfStates")]
+[h:selfName = getName()]
 [h:switchToken(targetName)]
 
 [h:healing = eval(string(healRoll))]
@@ -23,5 +29,13 @@
 [h,if(CHP>MaxHP/2):state.Bloodied=0]
 [h,if(CHP>MaxHP):CurrentHP = MaxHP;CurrentHP = CHP]
 [h,if(useSurge):CurrentSurge = CurrentSurge-1]
+
+[h:switchToken(selfName)]
+
+<!-- apply states to Self -->
+[h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),selfName)]
+
+<!-- Apply only the Always mods to defense, type "3" -->
+[h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3")) > 0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
 
 [h:macro.return = json.append("[]",healing,totalHeal,tmping,totalTemp)]

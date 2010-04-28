@@ -38,12 +38,12 @@ Generic
 
 Attack Range
 ----
-Range 10 : aura square 52.5#ff0000 
-Range 4 : aura square 22.5#ff0000 
-Range 3 : aura square 17.5#ff0000 
-Range 1 : aura square 7.5#ff0000 
-Range 2 : aura square 12.5#ff0000 
-Range 5 : aura square 27.5#ff0000 
-Range 7 : aura square 37.5#ff0000 
-Range 20 : aura square 102.5#ff0000 
-Range 15 : aura square 77.5#ff0000 
+Range 10 : aura square 10.5#ff0000 
+Range 4 : aura square 4.5#ff0000 
+Range 3 : aura square 3.5#ff0000 
+Range 1 : aura square 1.5#ff0000 
+Range 2 : aura square 2.5#ff0000 
+Range 5 : aura square 5.5#ff0000 
+Range 7 : aura square 7.5#ff0000 
+Range 20 : aura square 20.5#ff0000 
+Range 15 : aura square 15.5#ff0000 

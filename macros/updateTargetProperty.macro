@@ -1,0 +1,10 @@
+<!-- updateTargetProperty user defined function -->
+<!-- takes in 3 arguments: (1) is property to be set, (2) is value to set property to -->
+<!-- (3) token id to use -->
+<!-- checks that property doesn't already have the value passed before setting it -->
+
+[h:prop=arg(0)]
+[h:val=arg(1)]
+[h:targ = arg(2)]
+[h:check = getProperty(prop,targ)]
+[h,if(string(check) != string(val)): setProperty(prop,val,targ)]

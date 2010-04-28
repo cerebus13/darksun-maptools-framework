@@ -1,0 +1,34 @@
+<!-- DoSecondary2 macro -->
+<!-- Returns: 0 -->
+<!-- Parameters: 6 -->
+<!-- Apply effects to target -->
+
+[h:targetName      = json.get(macro.args, 0)]
+[h:targetStateJson = json.get(macro.args, 1)]  <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(macro.args, 2)]  <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(macro.args, 3)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(macro.args, 4)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(macro.args, 5)]
+
+[h:propTargetStatesJson = getProperty("TargetStates")]
+[h:propSelfStatesJson   = getProperty("SelfStates")]
+[h:propMarkJson         = getProperty("TargetMark")]
+[h:emptyObjectJson="{}"]
+[h:emptyJson="[]"]
+
+<!-- apply states to Target -->
+[h:setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,3))>0,json.get(propTargetStatesJson,3),emptyJson),if(length(json.get(targetStateJson,3))>0,json.get(targetStateJson,3),emptyJson)),targetName)]
+
+<!-- apply states to Self -->
+[h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),getName())]
+
+<!-- apply Marks to target -->
+[h:useMarkJson=json.unique(json.merge(propMarkJson,markJson))]
+[h,if(json.contains(useMarkJson,3)): tmpBool=1;tmpBool=0]
+[h,if(json.length(useMarkJson) > 0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",targetName)]')]
+
+<!-- apply Resists/Vulns to Target/Self -->
+[h:decodeVulnResistJson(if(length(json.get(vulnResistJson,"3"))>0,json.get(vulnResistJson,"3"),emptyObjectJson),targetName,-1)]
+
+<!-- Apply only the Always mods to defense, type "3" -->
+[h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3"))>0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]

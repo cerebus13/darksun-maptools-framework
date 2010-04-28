@@ -1,30 +1,28 @@
 [h:arrayJson       = arg(0)]
 [h:tokenName       = arg(1)]
 
-[h: setProperty("AllDefModList",arrayJson, tokenName)]
+[h: updateTargetProperty("AllDefModList",arrayJson,tokenName)]
+[h: AllModifier = 0]
 [h: ACModifier = 0]
 [h: FortModifier = 0]
 [h: RefModifier = 0]
 [h: WillModifier = 0]
 [for(i,0,json.length(arrayJson),1,""), CODE:
 {
-[h: mod = json.get(arrayJson, i)]
-[h:defense = json.get(mod, "modDef")]
-[h:value = json.get(mod, "modValue")]
-[h,SWITCH(defense),code:
-  case 0: {
-		  [ACModifier = ACModifier + value]
-		  [FortModifier = FortModifier + value]
-		  [RefModifier = RefModifier + value]
-		  [WillModifier = WillModifier + value]
-		  };
-  case 1: {[ACModifier = ACModifier + value]};
-  case 2: {[FortModifier = FortModifier + value]};
-  case 3: {[RefModifier = RefModifier + value]};
-  case 4: {[WillModifier = WillModifier + value]}
-]
+  [h:mod = json.get(arrayJson, i)]
+  [h:defense = json.get(mod, "modDef")]
+  [h:value = json.get(mod, "modValue")]
+  [h,SWITCH(defense):
+    case 0: AllModifier = AllModifier + value;
+    case 1: ACModifier = ACModifier + value;
+    case 2: FortModifier = FortModifier + value;
+    case 3: RefModifier = RefModifier + value;
+    case 4: WillModifier = WillModifier + value;
+    default: ""
+  ]
 }]
-[h: setProperty("ACMod", ACModifier, tokenName)]
-[h: setProperty("FortMod", FortModifier, tokenName)]
-[h: setProperty("RefMod", RefModifier, tokenName)]
-[h: setProperty("WillMod", WillModifier, tokenName)]
+[h:updateTargetProperty("AllDefMod", AllModifier, tokenName)]
+[h:updateTargetProperty("ACMod", ACModifier, tokenName)]
+[h:updateTargetProperty("FortMod", FortModifier, tokenName)]
+[h:updateTargetProperty("RefMod", RefModifier, tokenName)]
+[h:updateTargetProperty("WillMod", WillModifier, tokenName)]

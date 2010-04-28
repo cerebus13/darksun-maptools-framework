@@ -18,10 +18,21 @@
 [h:friendlyFire    = json.get(macro.args, 10)]  <!-- 0 NPC, 1 PC, 2 Both -->
 [h:otherSource     = json.get(macro.args, 11)]  <!-- name of other token to use as source for figuring targets based on range -->
 [h:useSurge        = json.get(macro.args, 12)]
+[h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(macro.args, 14)]
+[h:includeSelf     = json.get(macro.args, 15)]
+[h:bloodyOnly      = json.get(macro.args, 16)]
 
 [h:targetJson="[]"]
+[h:selfName = getName()]
 [h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
 [h,if(maxRange>-1): targetJson = macro.return]
+[h,if(includeSelf && json.contains(targetJson,selfName) == 0): targetJson = json.append(targetJson, selfName)]
+[h,if(bloodyOnly): bloodyJson = targetJson;bloodyJson = "[]"]
+[h,if(bloodyOnly): bloodyJson2 = ""]
+[h,foreach(item,json.toList(bloodyJson)): bloodyJson2 = if(getProperty("CurrentHP",item) > getProperty("BloodyValue",item),bloodyJson2,bloodyJson2 + item + ",")]
+[h,if(bloodyOnly): targetJson = json.fromList(bloodyJson2)]
+
 [h:targetImageList = "None,"]
 [h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
 
@@ -54,7 +65,7 @@
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
 {
-  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge)]
+  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson)]
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
       if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),

@@ -1,0 +1,23 @@
+<!-- bonusTargetScreen user-defined function -->
+
+[h,if(CA): inputAJson = json.set(inputAJson,"CA",2)]
+[h,if(charge): inputAJson = json.set(inputAJson,"charge",1)]
+[h,if(cover>0): inputAJson = json.set(inputAJson,"cover",if(cover==1,-2,-5))]
+[h,if(conceal>0): inputAJson = json.set(inputAJson,"concealment",if(conceal==1,-2,-5))]
+[h,if(longRange): inputAJson = json.set(inputAJson,"range",-2)]
+[h,if(miscAtk!=0): inputAJson = json.set(inputAJson,"misc",miscAtk)]
+[h,if(getState("Restrained")): inputAJson = json.set(inputAJson,"Restrained",-2)]
+[h,if(getState("Prone")): inputAJson = json.set(inputAJson,"SelfProne",-2)]
+[h,if(getState("Blinded") && listFind(keywords,"Area") == -1): inputAJson = json.set(inputAJson,"concealment",-5)]
+[h,if(atkKey!=3 && atkKey!=6): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", atkMod, "AttackBonuses", miscAtk, inputAJson)]')]
+[h,if(atkKey!=3 && atkKey!=6): atkText=json.get(macro.return, 0)]
+[h,if(atkKey!=3 && atkKey!=6): atkVal=json.get(macro.return, 1)]
+<!-- Skip damage portion on attacks 2 and 5 -->
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", damMod, "DamageBonuses", miscDam, "{}")]')]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damText=json.get(macro.return, 0);damText="0"]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damVal=json.get(macro.return, 1);damVal="0"]
+
+[h,if(yesDamRoll==0): useDam="0"]
+[h,if(yesDamRoll==0): useCritDam="0"]
+[h,if(atkKey>3 && yesDamRoll): useDam=eval(string(damRoll)); useDam=damRoll]
+[h,if(atkKey>3 && yesDamRoll): useCritDam=eval(string(critDamRoll)); useCritDam=critDamRoll]

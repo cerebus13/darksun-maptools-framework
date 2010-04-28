@@ -4,4 +4,5 @@
 
 [h:prop=arg(0)]
 [h:val=arg(1)]
-[h,if(getProperty(prop)!=val): setProperty(prop,val)]
+[h:check = getProperty(prop)]
+[h,if(string(check) != string(val)): setProperty(prop,val)]

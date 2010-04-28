@@ -12,6 +12,9 @@
 <!-- 7 = Single/Multi heal -->
 <!-- 8 = AOE heal -->
 <!-- 9 = Self only heal -->
+<!-- 15 = Single/Multi Secondary -->
+<!-- 16 = AOE Secondary -->
+<!-- 17 = Self only Secondary -->
 <!-- 20 = Utility -->
 [h:atkKey         = json.get(macro.args, "atkKey")]
 [h:atkName        = json.get(macro.args, "atkName")]
@@ -24,8 +27,8 @@
 [h:hitStatAdded   = json.get(macro.args, "hitStatAdded")]
 [h:rangeText      = json.get(macro.args, "rangeText")]
 [h:numTargetsText = json.get(macro.args, "numTargetsText")]
-[h,if(json.contains(macro.args,"atkMod")):atkMod         = json.get(macro.args, "atkMod");atkMod = 0]
-[h,if(json.contains(macro.args,"damMod")):damMod         = json.get(macro.args, "damMod");damMod = 0]
+[h,if(json.contains(macro.args,"atkMod")):atkMod         = json.get(macro.args, "atkMod");atkMod = "{}"]
+[h,if(json.contains(macro.args,"damMod")):damMod         = json.get(macro.args, "damMod");damMod = "{}"]
 [h,if(json.contains(macro.args,"damRoll")):damRoll        = json.get(macro.args, "damRoll");damRoll = "0d0"]
 [h,if(json.contains(macro.args,"critDamRoll")):critDamRoll    = json.get(macro.args, "critDamRoll");critDamRoll = "0d0"]
 [h,if(json.contains(macro.args,"maxRange")): maxRange        = json.get(macro.args,"maxRange");maxRange=-1]
@@ -62,6 +65,8 @@
 [h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = "{}"]
 [h,if(json.contains(macro.args,"tempHPRoll")):tempHPRoll    = json.get(macro.args, "tempHPRoll");tempHPRoll = "0d0"]
 [h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
+[h,if(json.contains(macro.args,"includeSelf")):includeSelf  = json.get(macro.args,"includeSelf");includeSelf = 0]
+[h,if(json.contains(macro.args,"bloodyOnly")):bloodyOnly  = json.get(macro.args,"bloodyOnly");bloodyOnly = 0]
 
 [h:useKeywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
 
@@ -82,18 +87,21 @@
   case 2: tableBG="#FF0000";
   case 3: tableBG="#000000"
 ]
-[h,if(length(useKeywords)!=0): useKeywords=strformat("<tr><td style='padding:0px 5px;' align=left><b>%s</b></td></tr>",useKeywords); useKeywords=""]
-[h,if(length(rangeText)!=0): rangeText=strformat("<td style='padding:0px 5px;' align=right><b>%s</b></td>",rangeText); rangeText=""]
-[h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px;' align=right><b>Attack:</b> %s vs. %s</td>",hitStatAdded,targetDefense); versusStr=""]
-[h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px;' align=right><b>Attack:</b>vs. %s</td>",targetDefense)]
-[h,if(length(effectText)!=0): effectText=strformat("<tr bgcolor='#D6D6C2'><td style='padding:0px 5px;' align=left colspan='2'>%s</td></tr>",effectText); effectText=""]
-[h:powaStr=strformat("<html><body><table width='400'><tr bgcolor=%s><td style='padding:0px 5px;' align=left><font color='white'><b>%s</b></font></td><td style='padding:0px 5px;' align=right><font color='white'><b>%s</b></font></td></tr>%s<tr><td style='padding:0px 5px;' align=left><b>%s</b></td>%s</tr><tr><td style='padding:0px 5px;' align=left><b>Target:</b> %s</td>%s</tr>%s</table></body></html>",
+[h,if(length(useKeywords)!=0): useKeywords=strformat("<tr><td style='padding:0px 5px' align=left><b>%s</b></td></tr>",useKeywords); useKeywords=""]
+[h,if(length(rangeText)!=0): rangeText=strformat("<td style='padding:0px 5px' align=right><b>%s</b></td>",rangeText); rangeText=""]
+[h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px' align=right><b>Attack:</b> %s vs. %s</td>",hitStatAdded,targetDefense); versusStr=""]
+[h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat("<td style='padding:0px 5px' align=right><b>Attack:</b>vs. %s</td>",targetDefense)]
+[h,if(length(effectText)!=0): effectText=strformat("<tr bgcolor='#D6D6C2'><td style='padding:0px 5px' align=left colspan='2'>%s</td></tr>",effectText); effectText=""]
+[h:powaStr=strformat("<html><body><table width='400'><tr bgcolor=%s><td style='padding:0px 5px' align=left><font color='white'><b>%s</b></font></td><td style='padding:0px 5px' align=right><font color='white'><b>%s</b></font></td></tr>%s<tr><td style='padding:0px 5px' align=left><b>%s</b></td>%s</tr><tr><td style='padding:0px 5px' align=left><b>Target:</b> %s</td>%s</tr>%s</table></body></html>",
 tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,versusStr,effectText)]
 [h:output=customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
+[h:macroTT=json.get(getMacroProps(getMacroButtonIndex(),"json"),"tooltip")]
+[h,if(length(macroTT) <= 0): setMacroProps(getMacroButtonIndex(),"tooltip="+powaStr)]
 
-[h,if(length(extraRoll)>0): customTooltip(extraRoll,strformat("Extra Roll: <b>%s</b>",eval(string(extraRoll))))]
-[if(length(extraRoll)>0): macro.return; ""]
+[h,if(length(extraRoll)>0): output = customTooltip(extraRoll,strformat("<br><font color='black'>Extra Roll: <b>%s</b></font>",eval(string(extraRoll))));output = ""]
+{output}
 
 [if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, keywords, damageTypes)]')]
-[if(atkKey>6 && atkKey<20): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge)]')]
+[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, includeSelf, bloodyOnly)]')]
+[if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, maxRange, numTargets, friendlyFire, otherSource, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, includeSelf)]')]

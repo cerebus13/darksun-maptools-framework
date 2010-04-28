@@ -14,6 +14,7 @@ ChaMod:{floor((Charisma-10)/2)}
 -------------HP STUFF-------------
 CurrentHP:0
 MaxHP:0
+BloodyValue:{MaxHP/2}
 TempHP:0
 *HP:{CurrentHP} / {MaxHP} ({TempHP} temp)
 *Healing Surges (Surges):{CurrentSurge} / {MaxSurge} ({SurgeValue}hp)
@@ -21,25 +22,31 @@ CurrentSurge:0
 MaxSurge:0
 SurgeValue:{floor(MaxHP/4)}
 -------------DEFENSES-------------
-*AC:{ACBase+ACMod}
+*Defenses (AC|Fort|Ref|Will):{strformat("%s | %s | %s | %s",AC,Fortitude,Reflex,Willpower)}
+*DefMod:{strformat("%s%s%s%s%s",if(AllDefMod != 0," All = " + AllDefMod,""),if(ACMod != 0," AC = " + ACMod,""),if(FortMod != 0," Fort = " + FortMod,""),if(RefMod != 0," Ref = " + RefMod,""),if(WillMod != 0," Will = " + WillMod,""))}
+AllDefMod:0
+AllDefModList
+AC:{ACBase+ACMod+AllDefMod}
 ACBase:0
 ACMod:0
-*Fortitude (Fort):{FortBase+FortMod}
+ACModList
+Fortitude (Fort):{FortBase+FortMod+AllDefMod}
 FortBase:0
 FortMod:0
-*FortList
-*Reflex (Ref):{RefBase+RefMod}
+FortModList
+Reflex (Ref):{RefBase+RefMod+AllDefMod}
 RefBase:0
 RefMod:0
-*RefList
-*Willpower (Will):{WillBase+add(json.toList(WillMod))}
+RefModList
+Willpower (Will):{WillBase+WillMod+AllDefMod}
 WillBase:0
 WillMod:0
-*WillList
+WillModList
 -------------LIMITED USES-------------
-*ActionPoints (AP):0
-*LuckPoints (Luck):0
-*MagicItemUses (Magic):0
+*Uses (AP|Luck|Magic):{strformat("%s | %s | %s",ActionPoints,LuckPoints,MagicItemUses)}
+ActionPoints (AP):0
+LuckPoints (Luck):0
+MagicItemUses (Magic):0
 -------------OTHER STATISTICS-------------
 *Elevation (Elev)
 Initiative (Init):0
@@ -93,13 +100,13 @@ TmpMod5:{}
 TargetStates:{}
 SelfStates:{}
 TargetMark:[]
-MarkedBy
+*MarkedBy
 MarkPenalty:-2
 -------------RESIST AND VULNERABILITY-------------
 InnateResist:{}
 InnateVulnerable:{}
-*TempResist
-*TempVulnerable
+*TempResist (Resist)
+*TempVulnerable (Vuln)
 ApplyVulnTarget:{}
 ApplyVulnSelf:{}
 ApplyResistTarget:{}

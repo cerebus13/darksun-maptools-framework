@@ -1,0 +1,1 @@
+<!-- updateTargetState user defined function --><!-- takes in 3 arguments: (1) is state to be set, (2) is value to set state to, 1 = on, 0 = off --><!-- (3) is token id --><!-- checks that property doesn't already have the state setting passed before setting it -->[h:stater=arg(0)][h:val=arg(1)][h:targ=arg(2)][h,if(getState(stater,targ)!=val): setState(stater,val,targ)]

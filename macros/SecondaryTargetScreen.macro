@@ -1,0 +1,47 @@
+<!-- SecondaryTargetScreen macro -->
+<!-- Pops up the targetting GUI that has targets in dropdown lists -->
+
+<!-- atkKey = Integer switch used to determine which roll combinations to use: -->
+<!-- 15 = Single/Multi Secondary -->
+<!-- 16 = AOE Secondary -->
+<!-- 17 = Self only Secondary -->
+[h:atkKey          = json.get(macro.args, 0)]
+[h:atkName         = json.get(macro.args, 1)]
+[h:maxRange        = json.get(macro.args, 2)]
+[h:numTargets      = json.get(macro.args, 3)]
+[h:friendlyFire    = json.get(macro.args, 4)]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource     = json.get(macro.args, 5)]  <!-- name of other token to use as source for figuring targets based on range -->
+[h:targetStateJson = json.get(macro.args, 6)] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(macro.args, 7)] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(macro.args, 8)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(macro.args, 9)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(macro.args, 10)]
+[h:includeSelf     = json.get(macro.args, 11)]
+
+[h:targetJson="[]"]
+[h:selfName = getName()]
+[h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
+[h,if(maxRange>-1): targetJson = macro.return]
+[h,if(includeSelf && json.contains(targetJson,selfName) == 0): targetJson = json.append(targetJson, getName())]
+[h:targetImageList = "None,"]
+[h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
+
+[h:inputJson = json.append("[]",
+    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
+    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
+)]
+[h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
+[h,if(numTargets != 0): status = input(json.toList(inputJson,"##"))]
+[h,if(numTargets != 0): abort(status)]
+[h:targJson="[]"]
+[h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
+[h,if(numTargets<=0 && atkKey != 17): targJson = targetJson]
+[h,if(atkKey == 17): targJson = json.append("[]", getName())]
+
+[h:affectedTargs = ""]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h,macro("DoSecondary@"+UseLib): json.append("[]",targ,targetStateJson,selfStateJson,markJson,vulnResistJson,modDefenseJson)]
+  [h:affectedTargs = strformat("%s%s, ",affectedTargs,targ)]
+}]
+<br><span title=""><font color='black'><b>Affected: </b> {affectedTargs}</font></span>
