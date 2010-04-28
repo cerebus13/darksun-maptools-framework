@@ -5,6 +5,11 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===04/27/2010===
+
+  * Checked in all of my code work from the Demo.  Might be some bugs present but I think it is better to get it all checked in so Sam can start more work.
+  * Saved a new campaign file from this release, r79.
+
 ===04/24/2010===
 
   * Got Fighter and Wizard demo tokens made.
