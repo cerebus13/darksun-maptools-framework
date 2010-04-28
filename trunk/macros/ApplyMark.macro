@@ -1,29 +1,25 @@
 <!-- ApplyMark macro -->
 <!-- Returns: none -->
-<!-- Parameters: 2 -->
-<!-- 1 : A Json array of when to apply the mark.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
-<!-- 2 : Target name -->
+<!-- Parameters: 1 -->
+<!-- 0 : Target name -->
 <!-- called only if a attack parameter or token property indicates that a Mark is to be applied as part of an attack -->
 
 <!-- Halo #RRGGBB values: Blue = #0000FF, Cyan = #00FFFF, Green = #00FF00, Orange = #FF9C00, Red = #FF0000, Yellow = #FFFF00 -->
-
-[h:useMarkJson      = json.get(macro.args, 0)]
-[h:targetName       = json.get(macro.args, 1)]
+[h:targetName = json.get(macro.args, 0)]
 
 [h:mJson=getTokenStates("json","Mark")]
-[h:halo=getHalo()]
-[h,switch(halo):
-  case "#0000ff": halo="blue";
-  case "#00ffff": halo="cyan";
-  case "#00ff00": halo="green";
-  case "#ff9c00": halo="orange";
-  case "#ff0000": halo="red";
-  case "#ffff00": halo="yellow";
-  default: halo=""
+[h:haloz = getHalo()]
+[h,switch(haloz):
+  case "#0000ff": haloz="blue";
+  case "#00ffff": haloz="cyan";
+  case "#00ff00": haloz="green";
+  case "#ff9c00": haloz="orange";
+  case "#ff0000": haloz="red";
+  case "#ffff00": haloz="yellow";
+  default: haloz=""
 ]
-[h,if(getProperty("MarkedBy",targetName)!=getName() || length(halo)==0): callFind=1;callFind=0]
-[h,if(callFind!=1): callFind = if(getState("Marked_"+halo,targetName)!=1,1,0)]
+[h,if(getProperty("MarkedBy",targetName) != getName() && length(haloz) == 0): callFind = 1;callFind = 0]
 [h,if(callFind): evalMacro('[h,macro("FindMark@"+UseLib): ""]')]
 [h,if(callFind): setHalo(macro.return)]
-[h,if(callFind): setState("Marked_"+macro.return,1,targetName)]
-[h,if(callFind): setProperty("MarkedBy",getName(),targetName)]
+[h,if(callFind): updateTargetState("Marked_"+macro.return,1,targetName); updateTargetState("Marked_"+haloz,1,targetName)]
+[h:updateTargetProperty("MarkedBy",getName(),targetName)]

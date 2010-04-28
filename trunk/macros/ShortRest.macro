@@ -4,16 +4,30 @@
 [h,if(json.length(names)!=1): abort(0)]
 [h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
 
-[h,foreach(index,getMacroGroup("Encounter Powers")), code: 
+[h,foreach(index,getMacroGroup("Encounter Attacks")), code: 
 {
-  [h: props = getMacroProps(index)]
-  [h: label = getStrProp(props, "label")]
-  [h,if(endsWith(label,"(Used)")): setMacroProps(index, "label="+replace(label, " \\(Used\\)", ""))]
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
-[h: setAllStates(0)]
-[h: TempHP=0]
+[h,foreach(index,getMacroGroup("Encounter Immediates")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("Encounter Utilities")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("Healing/Damage")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h:setAllStates(0)]
+[h:TempHP = 0]
+[h,macro("ClearDefMods@"+UseLib): ""]
 [h,if(json.length(AttackBonuses)>0): AttackBonuses = json.removeAll(AttackBonuses,AttackBonuses)]
-[h,if(json.get(DamageBonuses,"Reckless")==2): AC = AC + 2]
 [h,if(json.length(DamageBonuses)>0): DamageBonuses = json.removeAll(DamageBonuses,DamageBonuses)]
 
 [abort(0)]

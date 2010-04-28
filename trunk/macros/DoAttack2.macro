@@ -33,8 +33,11 @@
 [h:propSelfStatesJson   = getProperty("SelfStates")]
 [h:propMarkJson         = getProperty("TargetMark")]
 [h:selfName             = getName()]
+[h:isWeakened           = getState("Weakened")]
+[h:emptyObjectJson="{}"]
 [h:switchToken(targetName)]
-[h:def=getProperty(targetDefense)]
+[h:def = if(length(targetDefense) > 0,getProperty(targetDefense),0)]
+
 [h:atkRoll=eval("1d20")]
 <!-- Reroll the attack roll once, take highest -->
 [h:atkRolls=""]
@@ -44,8 +47,9 @@
 
 [h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
 [h:totalDamage=damage+eval(string(damMod))]
-[h,if(totalDamage<1):totalDamage=1]
-[h,if(atkRoll+eval(atkMod)>=def):  resu=2; resu=1]
+[h,if(totalDamage<0):totalDamage=0]
+[h:atkRollMod = atkRoll + eval(string(atkMod))]
+[h,if(atkRollMod >= def): resu=2; resu=1]
 [h,if(atkRoll==20): resu=3]
 [h,if(atkRoll==1):  resu=0]
 [h,if(autoHit):     resu=2]
@@ -58,8 +62,10 @@
 <!-- Apply Vulns/Resists -->
 [h:useTotalDamage       = totalDamage]
 [h:propTempVulnerable   = TempVulnerable]
+[h,if(length(propTempVulnerable) == 0): propTempVulnerable = emptyObjectJson]
 [h:propInnateVulnerable = InnateVulnerable]
 [h:propTempResist       = TempResist]
+[h,if(length(propTempResist) == 0): propTempResist = emptyObjectJson]
 [h:propInnateResist     = InnateResist]
 [h:pVuln="{}"]
 [h:pResist="{}"]
@@ -117,6 +123,9 @@
 <!-- Check Insubstantial -->
 [h,if(Insubstantial): useTotalDamage = floor(useTotalDamage/2)]
 
+<!-- Check Weakened -->
+[h,if(isWeakened): useTotalDamage = floor(useTotalDamage/2)]
+
 <!-- apply damage to target if needed -->
 [h,if(resu>1 || applyMissDam),code:
 {
@@ -145,7 +154,6 @@
 [h:switchToken(selfName)]
 
 [h:emptyJson="[]"]
-[h:emptyObjectJson="{}"]
 <!-- apply states to Target -->
 [h,SWITCH(resu):
   case 0: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
@@ -167,7 +175,7 @@
 <!-- apply Marks to target -->
 [h:useMarkJson=json.unique(json.merge(propMarkJson,markJson))]
 [h,if(json.indexOf(useMarkJson,resu-1)!=-1 || json.indexOf(useMarkJson,3)!=-1): tmpBool=1;tmpBool=0]
-[h,if(json.length(useMarkJson)>0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",useMarkJson,targetName)]')]
+[h,if(json.length(useMarkJson)>0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",targetName)]')]
 
 <!-- apply Resists/Vulns to Target/Self -->
 [h,SWITCH(resu):
