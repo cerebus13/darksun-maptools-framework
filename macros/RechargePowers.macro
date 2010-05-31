@@ -4,9 +4,8 @@
 [h,foreach(m,getMacros(),""), code: 
 {
   [h:index=getMacroIndexes(m)]
-  [h:propJson=getMacroProps(index,"json")]
+  [h,if(isNumber(index)): propJson=getMacroProps(index,"json");propJson = '{}']
   [h:label=json.get(propJson, "label")]
-  
   [h,if(matches(label,".*Recharge.*")),code:
   {
     [h: chargeRoll = eval("1d6")]
@@ -14,4 +13,4 @@
     [h,if(chargeRoll>=chargeNumber): setMacroProps(index, "label="+replace(label, " \\(Recharge "+chargeNumber+"\\)", ""))]
   };{[h: ""]}]
 }]
-Recharge Powers run!
+[g:"Recharge Powers run!"]

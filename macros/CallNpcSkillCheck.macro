@@ -1,4 +1,4 @@
-<!-- CallSkillCheck macro -->
+<!-- CallNpcSkillCheck macro -->
 
 [h: SkillNames = "Acrobatics, Arcana, Athletics, Bluff, Diplomacy, Dungeoneering, Endurance, Heal, History, Insight, Intimidate, Nature, Perception, Religion, Stealth, Streetwise, Thievery"]
 [h: status=input(
@@ -17,5 +17,7 @@
 
 <b>{Choice} Check:</b><br>
 [h:dieRoll=1d20]
-[h:output=customTooltip(strformat("d20(%d) + Level(%d) + %s(%d)%s%s%s",dieRoll,HalfLevel,json.get(statNameJson,Choice),json.get(statValJson,Choice),if(Skill!=0,strformat(" + Skill(%d)",Skill),""),if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),"")),dieRoll+HalfLevel+json.get(statValJson,Choice)+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0))]
+[h,if(Skill <= 0): output=customTooltip(strformat("d20(%d) + Level(%d) + %s(%d)%s%s%s",dieRoll,HalfLevel,json.get(statNameJson,Choice),json.get(statValJson,Choice),if(Skill!=0,strformat(" + Skill(%d)",Skill),""),if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),"")),dieRoll+HalfLevel+json.get(statValJson,Choice)+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0)) ; 
+                   output=customTooltip(strformat("d20(%d) + Bonus(%d) + %s%s",dieRoll,Skill,if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),"")),dieRoll+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0))
+]
 {output}
