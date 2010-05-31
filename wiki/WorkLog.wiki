@@ -5,6 +5,10 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===05/30/2010===
+
+  * Checked in (r81) with a few small macro changes and a lot of changes to the NPC property set.  Been working on my actual maps for the campaign and just had to make a few tweaks here and there to get things working.  Streamlined the NPC props a lot so creating monster tokens is quicker.
+
 ===04/27/2010===
 
   * Checked in all of my code work from the Demo.  Might be some bugs present but I think it is better to get it all checked in so Sam can start more work.
