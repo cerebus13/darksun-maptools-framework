@@ -12,5 +12,7 @@
 [h:defineFunction("applyVulnResistJson", "applyVulnResistJson@"+getMacroLocation(), 1 ) ]
 [h:defineFunction("decodeModDefenseJson", "decodeModDefenseJson@"+getMacroLocation(), 1 ) ]
 [h:defineFunction("applyModDefenseJson", "applyModDefenseJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("decodeModDefenseJson", "decodeModAttackJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("applyModDefenseJson", "applyModAttackJson@"+getMacroLocation(), 1 ) ]
 [h:defineFunction("detailTargetScreen", "detailTargetScreen@"+getMacroLocation(), 1, 0 ) ]
 [h:defineFunction("bonusTargetScreen", "bonusTargetScreen@"+getMacroLocation(), 1, 0 ) ]

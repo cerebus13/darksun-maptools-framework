@@ -57,6 +57,7 @@
 <!--          Resist Fire 5 to target -->
 [h,if(json.contains(macro.args,"vulnResistJson")): vulnResistJson  = json.get(macro.args,"vulnResistJson");vulnResistJson="{}"]
 [h,if(json.contains(macro.args,"modDefenseJson")): modDefenseJson  = json.get(macro.args,"modDefenseJson");modDefenseJson="{}"]
+[h,if(json.contains(macro.args,"modAttackJson")): modAttackJson  = json.get(macro.args,"modAttackJson");modAttackJson="{}"]
 [h,if(json.contains(macro.args,"needMilestone")): needMilestone   = json.get(macro.args,"needMilestone");needMilestone = 0]
 [h,if(json.contains(macro.args,"yesHeal")):yesHeal         = json.get(macro.args, "yesHeal");yesHeal = 0]
 [h,if(json.contains(macro.args,"yesTempHP")):yesTempHP         = json.get(macro.args, "yesTempHP");yesTempHP = 0]
@@ -102,6 +103,6 @@ tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,vers
 [h,if(length(extraRoll)>0): output = customTooltip(extraRoll,strformat("<br><font color='black'>Extra Roll: <b>%s</b></font>",eval(string(extraRoll))));output = ""]
 {output}
 
-[if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, keywords, damageTypes)]')]
+[if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes)]')]
 [if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, includeSelf, bloodyOnly)]')]
 [if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, maxRange, numTargets, friendlyFire, otherSource, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, includeSelf)]')]
