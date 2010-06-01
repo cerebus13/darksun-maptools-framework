@@ -28,8 +28,9 @@
 [h:markJson        = json.get(macro.args, 14)] <!-- Json array telling when to apply Mark to target -->
 [h:vulnResistJson  = json.get(macro.args, 15)] <!-- Json object of when to apply a resist/vuln to target/self -->
 [h:modDefenseJson  = json.get(macro.args, 16)]
-[h:keywords        = json.get(macro.args, 17)]
-[h:damageTypes     = json.get(macro.args, 18)]
+[h:modAttackJson   = json.get(macro.args, 17)]
+[h:keywords        = json.get(macro.args, 18)]
+[h:damageTypes     = json.get(macro.args, 19)]
 
 [h:CA=0]
 [h:charge=0]
@@ -113,7 +114,7 @@
   [h,if(getState("Unconscious",targ)): atkText = atkText + " + Unconscious(5)"]
   [h,if(getState("Weakened")): damText = damText + " + Weakened(1/2 damage)"]
   [h,if(targ != MarkedBy && length(MarkedBy) > 0): useMarkPen = getProperty("MarkPenalty",MarkedBy); useMarkPen = 0]
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,keywords,damageTypes)]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
 
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",

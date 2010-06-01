@@ -26,8 +26,9 @@
 [h:rerollAttack    = json.get(macro.args, 11)] <!-- Integer boolean to reroll attack 1 time and use higher value -->
 [h:vulnResistJson  = json.get(macro.args, 12)] <!-- Json object of when to apply a resist/vuln to target/self -->
 [h:modDefenseJson  = json.get(macro.args, 13)]
-[h:keywords        = json.get(macro.args, 14)]
-[h:damageTypes     = json.get(macro.args, 15)]
+[h:modAttackJson   = json.get(macro.args, 14)]
+[h:keywords        = json.get(macro.args, 15)]
+[h:damageTypes     = json.get(macro.args, 16)]
 
 [h:propTargetStatesJson = getProperty("TargetStates")]
 [h:propSelfStatesJson   = getProperty("SelfStates")]
@@ -193,5 +194,13 @@
   case 3: decodeModDefenseJson(if(length(json.get(modDefenseJson,"2"))>0,json.get(modDefenseJson,"2"),emptyObjectJson),targetName)
 ]
 [h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3"))>0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
+
+[h,SWITCH(resu):
+  case 0: decodeModAttackJson(if(length(json.get(modAttackJson,"0"))>0,json.get(modAttackJson,"0"),emptyObjectJson),targetName);
+  case 1: decodeModAttackJson(if(length(json.get(modAttackJson,"0"))>0,json.get(modAttackJson,"0"),emptyObjectJson),targetName);
+  case 2: decodeModAttackJson(if(length(json.get(modAttackJson,"1"))>0,json.get(modAttackJson,"1"),emptyObjectJson),targetName);
+  case 3: decodeModAttackJson(if(length(json.get(modAttackJson,"2"))>0,json.get(modAttackJson,"2"),emptyObjectJson),targetName)
+]
+[h:decodeModAttackJson(if(length(json.get(modAttackJson,"3"))>0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
 
 [h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage,atkRolls)]
