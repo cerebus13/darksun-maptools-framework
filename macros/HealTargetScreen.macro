@@ -20,8 +20,9 @@
 [h:useSurge        = json.get(macro.args, 12)]
 [h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(macro.args, 14)]
-[h:includeSelf     = json.get(macro.args, 15)]
-[h:bloodyOnly      = json.get(macro.args, 16)]
+[h:modAttackJson   = json.get(macro.args, 15)]
+[h:includeSelf     = json.get(macro.args, 16)]
+[h:bloodyOnly      = json.get(macro.args, 17)]
 
 [h:targetJson="[]"]
 [h:selfName = getName()]
@@ -65,7 +66,7 @@
 [h:tableJson="[]"]
 [h,foreach(targ,json.toList(targJson),""),code: 
 {
-  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson)]
+  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson,modAttackJson)]
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
       if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),

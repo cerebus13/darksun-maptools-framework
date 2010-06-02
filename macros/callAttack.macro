@@ -104,5 +104,5 @@ tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,vers
 {output}
 
 [if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, maxRange, numTargets, targetDefense, friendlyFire, otherSource, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes)]')]
-[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, includeSelf, bloodyOnly)]')]
-[if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, maxRange, numTargets, friendlyFire, otherSource, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, includeSelf)]')]
+[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, modAttackJson, includeSelf, bloodyOnly)]')]
+[if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, maxRange, numTargets, friendlyFire, otherSource, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, includeSelf)]')]

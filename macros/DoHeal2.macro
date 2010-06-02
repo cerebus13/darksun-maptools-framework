@@ -11,6 +11,7 @@
 [h:useSurge        = json.get(macro.args, 5)]
 [h:selfStateJson   = json.get(macro.args, 6)]  <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(macro.args, 7)]
+[h:modAttackJson  = json.get(macro.args, 8)]
 
 [h:emptyObjectJson="{}"]
 [h:emptyJson="[]"]
@@ -37,5 +38,6 @@
 
 <!-- Apply only the Always mods to defense, type "3" -->
 [h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3")) > 0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
+[h:decodeModAttackJson(if(length(json.get(modAttackJson,"3")) > 0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
 
 [h:macro.return = json.append("[]",healing,totalHeal,tmping,totalTemp)]
