@@ -4,8 +4,11 @@
 [h: propSelfJson = json.get(macro.args, "propSelfJson")]
 [h: propLength = json.get(macro.args, "propLength")]
 [h: selfName = json.get(macro.args, "selfName")]
+[h: removed = 0]
 [c(propLength),code:{
-[h, if(json.get(macro.args, "mod"+roll.count) == "on"): propSelfJson = json.remove(propSelfJson, roll.count)]}]
+[h, if(json.get(macro.args, "mod"+roll.count) == "on"), CODE:
+{[propSelfJson = json.remove(propSelfJson, (roll.count-removed))];
+[removed = removed+1];}]}]
 [h, if(ModifierForm == "Delete Defense"): applyModDefenseJson(propSelfJson, selfName)]
 [h, if(ModifierForm == "Delete Attack"): applyModAttackJson(propSelfJson, selfName)]
 [h: closeDialog("Modifiers")]
