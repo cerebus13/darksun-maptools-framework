@@ -9,6 +9,7 @@
 [h:markJson        = json.get(macro.args, 3)] <!-- Json array telling when to apply Mark to target -->
 [h:vulnResistJson  = json.get(macro.args, 4)] <!-- Json object of when to apply a resist/vuln to target/self -->
 [h:modDefenseJson  = json.get(macro.args, 5)]
+[h:modAttackJson   = json.get(macro.args, 6)]
 
 [h:propTargetStatesJson = getProperty("TargetStates")]
 [h:propSelfStatesJson   = getProperty("SelfStates")]
@@ -32,3 +33,4 @@
 
 <!-- Apply only the Always mods to defense, type "3" -->
 [h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3"))>0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
+[h:decodeModAttackJson(if(length(json.get(modAttackJson,"3"))>0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
