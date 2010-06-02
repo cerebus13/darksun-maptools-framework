@@ -1,0 +1,19 @@
+[h:modAttackJson       = arg(0)]
+[h:targetName           = arg(1)]
+[h:selfName             = getName()]
+[h: propAttackTargetJson = getProperty("AllAtkModList", targetName)]
+[h: propAttackSelfJson = getProperty("AllAtkModList", selfName)]
+[h: newAttackTargetJson = json.get(modAttackJson, "0")]
+[h: newAttackSelfJson = json.get(modAttackJson, "1")]
+
+[h, if(json.isEmpty(newAttackSelfJson)), CODE:
+{};
+{[h, if(json.isEmpty(propAttackSelfJson)), CODE:
+{[h: applyModAttackJson(newAttackSelfJson, selfName)]};
+{[h: applyModAttackJson(json.unique(json.merge(propAttackSelfJson, newAttackSelfJson)), selfName)]}]};]
+
+[h, if(json.isEmpty(newAttackTargetJson)), CODE:
+{};
+{[h, if(json.isEmpty(propAttackTargetJson)), CODE:
+{[h: applyModAttackJson(newAttackTargetJson, targetName)]};
+{[h: applyModAttackJson(json.unique(json.merge(propAttackTargetJson, newAttackTargetJson)), TargetName)]}]};]
