@@ -36,6 +36,6 @@
 [h:CurrentSurge = MaxSurge]
 [h:MagicItemUses = 1]
 [h:ActionPoints = 1]
-[h,if(json.length(AttackBonuses)>0): AttackBonuses = ""]
-[h,if(json.length(DamageBonuses)>0): DamageBonuses = ""]
+[h,if(length(AttackBonuses)>0): AttackBonuses = ""]
+[h,if(length(DamageBonuses)>0): DamageBonuses = ""]
 [abort(0)]

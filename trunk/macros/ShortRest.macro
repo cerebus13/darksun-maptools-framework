@@ -27,7 +27,7 @@
 [h:setAllStates(0)]
 [h:TempHP = 0]
 [h,macro("ClearDefMods@"+UseLib): ""]
-[h,if(json.length(AttackBonuses)>0): AttackBonuses = ""]
-[h,if(json.length(DamageBonuses)>0): DamageBonuses = ""]
+[h,if(length(AttackBonuses)>0): AttackBonuses = ""]
+[h,if(length(DamageBonuses)>0): DamageBonuses = ""]
 
 [abort(0)]
