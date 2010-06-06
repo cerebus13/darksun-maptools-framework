@@ -1,156 +1,140 @@
 [h: tokens = getSelected()]
 [h: tokencount = listCount(tokens)]
-[h: allStates = "Blinded, Bloodied, Dazed, Dead, Deafened, Dominated, Dying, Grabbed, GrantingCA, GrantingPartialCA, Helpless, Immobilized, PlusToAC, PlusToHit, MinusToAC, MinusToHit, Petrified, Prone, Restrained, Slowed, Stunned, Surprised, Weakened, Unconscious, FightingDefense, Insubstantial, Invisible, Light, Rage, TotalDefense , Curse_blue, Curse_cyan, Curse_green, "
-                   +"Curse_orange, Curse_red, Curse_yellow,"
-                   + "Marked_blue, Marked_cyan, Marked_green, "
-                    +"Marked_orange, Marked_red, Marked_yellow,"
-                    +"Quarry_blue, Quarry_cyan, Quarry_green, "
-                    +"Quarry_orange, Quarry_red, Quarry_yellow, Oath,"
-                    +"Ongoing_acid, Ongoing_cold, Ongoing_fire, Ongoing_force, "
-    +"Ongoing_lightning, Ongoing_necrotic, Ongoing_poison, "
-    +"Ongoing_psychic, Ongoing_radiant, Ongoing_thunder, Ongoing_damage,"
-    +"Bless, Fly, Gaseous, Haste, Levitate, Prayer,"
-    +"Resist_acid, Resist_cold, Resist_fire, Resist_force, Resist_generic, Resist_lightning, Resist_necrotic, Resist_poison, Resist_psychic, Resist_radiant, Resist_thunder, Vuln_acid, Vuln_cold, Vuln_fire, Vuln_force, Vuln_generic, Vuln_lightning, Vuln_necrotic, Vuln_poison, Vuln_psychic, Vuln_radiant, Vuln_thunder,"
-    +"UsedAP, UsedCurse, UsedImmediate, UsedMinor, UsedMove, UsedQuarry, UsedSecondWind, UsedSneakAttack, UsedStandard"]
-    
-[H:allNum = eval(""+listCount(allStates))]    
-    
-[frame("All States"): {
+
+[h: conditionStates = "Blinded, Bloodied, Dazed, Dead, Deafened, Dominated, Dying, Helpless"]
+[h: conditionStates2 = "Insubstantial,Invisible,Light,Oath,Stunned,Surprised,Unconscious,Weakened"]
+
+[h: movementStates = "Fly,Grabbed,Haste,Immobilized,Levitate"]
+[h: movementStates2 = "Petrified,Prone,Restrained,Slowed"]
+
+[h: combatStates = "FightingDefense,GrantingCA,GrantingPartialCA,MinusToAC, MinusToHit,PlusToAC,PlusToHit,Rage,TotalDefense"]
+[h: combatStates2 = "UsedAP, UsedCurse, UsedImmediate, UsedMinor, UsedMove, UsedQuarry, UsedSecondWind, UsedSneakAttack, UsedStandard"]
+   
+[H:allNumConditions = eval(""+listCount(conditionStates))]
+[H:allNumConditions2 = eval(""+listCount(conditionStates2))]
+[H:allNumMovement = eval(""+listCount(movementStates))]
+[H:allNumMovement2 = eval(""+listCount(movementStates2))]
+[H:allNumCombat = eval(""+listCount(combatStates))]
+[H:allNumCombat2 = eval(""+listCount(combatStates2))]
+   
+[frame("Marks/Ongoing"): {
   <html>
     <head>
-      <title>All States</title>
+      <title>Marks/Ongoing</title>
     </head>
     <body>
-      <table style="text-align:center">
-        <tr>
-          <td style="text-align:center">      
-       [c(allNum,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(allStates, roll.count),30)+'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(allStates, roll.count), "selected") ]<br>[r: listGet(allStates, roll.count)]</span> }]
+     <table style="text-align:center" border="1">
+	 <tr>
+     <td style="text-align:center">
+     <span style="color:#000000">
+	 <form name ="FormTest" method = "json" action = "[r: macroLinkText("decodeState@"+getMacroLocation(), "self", "", "selected")]">
+      <select name="myDropdown">
+	  <option>Blue</option>
+	  <option>Cyan</option>
+	  <option>Green</option>
+	  <option>Orange</option>
+	  <option>Red</option>
+	  <option>Yellow</option>
+	  </select>
+	  <br>	  
+	  <input id="Marked" type="image" name="Marked" value="Marked" src = '[r:tableImage("smallStateImages", 1)]'></input>
+	  <input id="Curse" type="image" name="Curse" value="Curse" src = '[r: tableImage("smallStateImages", 2)]'></input>
+	  <input id="Quarry" type="image" name="Quarry" value="Quarry" src = '[r: tableImage("smallStateImages", 3)]'></input>
+	 </form>
+	 </span>
+     </td>
+	 </tr>
+     </table>
+	 <table style="text-align:center" border="1">
+	 <tr>
+     <td style="text-align:center">
+     <span style="color:#000000">
+	 <form name ="FormTest2" method = "json" action = "[r: macroLinkText("decodeState@"+getMacroLocation(), "self", "", "selected")]">
+	  <select name="myDropdown">
+	  <option value="acid">Acid</option>
+	  <option value="cold">Cold</option>
+	  <option value="fire">Fire</option>
+	  <option value="force">Force</option>
+	  <option value="lightning">Lightning</option>
+	  <option value="necrotic">Necrotic</option>
+	  <option value="poison">Poison</option>
+	  <option value="psychic">Psychic</option>
+	  <option value="radiant">Radiant</option>
+	  <option value="thunder">Thunder</option>
+	  <option value="damage">Generic</option>
+	  </select>
+	  <br>
+	  <input id="Ongoing" type="image" name="Ongoing" title="Test" value="Ongoing" src = '[r:tableImage("smallStateImages", 4)]'></input>
+	  <input id="Vuln" type="image" name="Vuln" value="Vuln" src = '[r: tableImage("smallStateImages", 5)]'></input>
+	  <input id="Resist" type="image" name="Resist" value="Resist" src = '[r: tableImage("smallStateImages", 6)]'></input>
+	 </form>
+		 </span>
          </td>
-          <td>
-      <table>
+		 </tr>
+      </table>
     </body>
   </html>
-}] 
+}]   
 
-[abort(0)]
-
-[h: conditionStates =
-  "Blinded, Bloodied, Dazed, Dead, Deafened, Dominated, Dying, Grabbed, GrantingCA, GrantingPartialCA, Helpless, Immobilized, PlusToAC, PlusToHit, MinusToAC, MinusToHit, Petrified, Prone, Restrained, Slowed, Stunned, Surprised"]
-[H:num1 = eval(""+listCount(conditionStates))]
-
-[h: actionStates =
-  "FightingDefense, Insubstantial, Invisible, Light, Rage, TotalDefense"]
-[H:num4 = eval(""+listCount(actionStates))]
-[h: CurseStates = "Curse_blue, Curse_cyan, Curse_green, "
-                   +"Curse_orange, Curse_red, Curse_yellow,"
-                   + "Marked_blue, Marked_cyan, Marked_green, "
-                    +"Marked_orange, Marked_red, Marked_yellow,"
-                    +"Quarry_blue, Quarry_cyan, Quarry_green, "
-                    +"Quarry_orange, Quarry_red, Quarry_yellow, Oath"]
-[H:num2 = eval(""+listCount(CurseStates))]
-[h: OngoingStates =
-   "Ongoing_acid, Ongoing_cold, Ongoing_fire, Ongoing_force, "
-    +"Ongoing_lightning, Ongoing_necrotic, Ongoing_poison, "
-    +"Ongoing_psychic, Ongoing_radiant, Ongoing_thunder, Ongoing_damage"]
-[H:num5 = eval(""+listCount(OngoingStates))]
-[h: powerStates =
-  "Bless, Fly, Gaseous, Haste, Levitate, Prayer"]
-[H:num6 = eval(""+listCount(powerStates))]
-
-[h:resVulnStates = "Resist_acid, Resist_cold, Resist_fire, Resist_force, Resist_generic, Resist_lightning, Resist_necrotic, Resist_poison, Resist_psychic, Resist_radiant, Resist_thunder, Vuln_acid, Vuln_cold, Vuln_fire, Vuln_force, Vuln_generic, Vuln_lightning, Vuln_necrotic, Vuln_poison, Vuln_psychic, Vuln_radiant, Vuln_thunder"]
-[h:num7 = eval(""+listCount(resVulnStates))]
-[h:usedStates = "UsedAP, UsedCurse, UsedImmediate, UsedMinor, UsedMove, UsedQuarry, UsedSecondWind, UsedSneakAttack, UsedStandard"]  
-[h:num8 = eval(""+listCount(usedStates))]
-
-[frame("Actions/Conditions List"): {
+   
+[frame("Conditions"): {
   <html>
     <head>
-      <title>Actions/Conditions State List</title>
+      <title>Conditions</title>
     </head>
     <body>
-      <table style="text-align:center">
+      <table style="text-align:center" border="1">
         <tr>
-          <td style="text-align:center" valign=top> 
-       [c(num1,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(conditionStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(conditionStates, roll.count), "selected") ]<br>[r: listGet(conditionStates, roll.count)]</span> }]
+          <td style="text-align:center" valign="top">     
+       [c(allNumConditions,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(conditionStates, roll.count),30)+' alt='+listGet(conditionStates, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(conditionStates, roll.count), "selected") ]</span> }]
          </td>
-          <td style="text-align:center" valign=top> 
-       [c(num4,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(actionStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(actionStates, roll.count), "selected") ]<br>[r: listGet(actionStates, roll.count)]</span> }]
+		 <td style="text-align:center" valign="top">     
+       [c(allNumConditions2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(conditionStates2, roll.count),30)+' alt='+listGet(conditionStates2, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(conditionStates2, roll.count), "selected") ]</span> }]
          </td>
-          <td>
-      <table>
+          </tr>
+      </table>
     </body>
   </html>
-}] 
+}]
 
-[frame("Ongoing Damage List"): {
+[frame("Movement"): {
   <html>
     <head>
-      <title>Ongoing Damage List</title>
+      <title>Movement</title>
     </head>
     <body>
-      <table style="text-align:center">
+      <table style="text-align:center" border="1">
         <tr>
-          <td style="text-align:center"> 
-       [c(num5,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(OngoingStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(), "self" ,listGet(OngoingStates, roll.count),"selected") ]<br>[r: listGet(OngoingStates, roll.count)]</span> }]
+          <td style="text-align:center" valign="top">
+       [c(allNumMovement,'<BR>'),code:{<span style="color:#AAAAAA">[r:macroLink('<img src='+getStateImage(listGet(movementStates, roll.count),30)+' alt='+listGet(movementStates, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(movementStates, roll.count), "selected") ]</span>}]
+		 </td>
+		 <td style="text-align:center" valign="top">     
+       [c(allNumMovement2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(movementStates2, roll.count),30)+' alt='+listGet(movementStates2, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(movementStates2, roll.count), "selected") ]</span> }]
          </td>
-          <td>
-      <table>
+          </tr>
+      </table>
     </body>
   </html>
-}] 
+}]
 
-[frame("Mark/Curse/Quarry/Oath List"): {
+[frame("Combat Mods"): {
   <html>
     <head>
-      <title>Mark, Curse, Quarry List</title>
+      <title>Combat Mods</title>
     </head>
     <body>
-      <table style="text-align:center">
+      <table style="text-align:center" border="1">
         <tr>
-          <td style="text-align:center">      
-       [c(num2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(CurseStates, roll.count),30)+'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(CurseStates, roll.count), "selected") ]<br>[r: listGet(CurseStates, roll.count)]</span> }]
+          <td style="text-align:center" valign="top">     
+       [c(allNumCombat,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(combatStates, roll.count),30)+' alt='+listGet(combatStates, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(combatStates, roll.count), "selected") ]</span> }]
          </td>
-          <td>
-      <table>
+		 <td style="text-align:center" valign="top">     
+       [c(allNumCombat2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(combatStates2, roll.count),30)+' alt='+listGet(combatStates2, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(combatStates2, roll.count), "selected") ]</span> }]
+         </td>
+          </tr>
+      </table>
     </body>
   </html>
-}] 
-
-[frame("Resists/Vulns List"): {
-  <html>
-    <head>
-      <title>Resists, Vulns List</title>
-    </head>
-    <body>
-      <table style="text-align:center">
-        <tr>
-          <td style="text-align:center">      
-       [c(num7,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(resVulnStates, roll.count),30)+'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(resVulnStates, roll.count), "selected") ]<br>[r: listGet(resVulnStates, roll.count)]</span> }]
-         </td>
-          <td>
-      <table>
-    </body>
-  </html>
-}] 
-
-[frame("Powers/Used List"): {
-  <html>
-    <head>
-      <title>Powers/Used State List</title>
-    </head>
-    <body>
-      <table style="text-align:center">
-        <tr>
-          <td style="text-align:center" valign=top> 
-       [c(num6,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(powerStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(powerStates, roll.count), "selected") ]<br>[r: listGet(powerStates, roll.count)]</span> }]
-         </td>
-          <td style="text-align:center" valign=top> 
-       [c(num8,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(usedStates, roll.count),30)+'> ', "StateToggle@"+getMacroLocation(),"self" ,listGet(usedStates, roll.count), "selected") ]<br>[r: listGet(usedStates, roll.count)]</span> }]
-         </td>
-          <td>
-      <table>
-    </body>
-  </html>
-}] 
+}]
 
 [abort(0)]

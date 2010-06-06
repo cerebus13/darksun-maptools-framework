@@ -1,0 +1,2 @@
+[H: eval("state." + macro.args + "= band(2^state." + macro.args + ",1)")]
+[h:abort(0)]
