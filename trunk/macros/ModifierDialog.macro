@@ -7,7 +7,7 @@
 [h, if(length(propAttackSelfJson) > 0): propLength2 = json.length(propAttackSelfJson); propLength2 = 0]
 [h: propVulnResistSelfJson = getProperty("TempResVuln", selfName)]
 [h, if(length(propVulnResistSelfJson) > 0): propLength3 = json.length(propVulnResistSelfJson); propLength3 = 0]
-[h, if(propLength > 0 || propLength2 > 0 || propLength3 > 0), code:
+[r, if(propLength > 0 || propLength2 > 0 || propLength3 > 0), code:
 {[dialog("Modifiers"): {
   <html>
     <head>
@@ -17,8 +17,7 @@
      <table style="text-align:center" border="1">
 	 <tr>
      <td style="text-align:center">
-     <span style="color:#000000">
-	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
+	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")] border="1">
 	  [c(propLength,'<BR>'),code:{[h: propDefenseJsonObject= json.get(propDefenseSelfJson, roll.count)]
 	  <input type="checkbox" name=[r: "mod"+roll.count] />
 	  <span style="color:blue; font-size:12">[r: json.get(propDefenseJsonObject, "modName")]: [r, if(json.get(propDefenseJsonObject, "modValue")>0): "+"][r: json.get(propDefenseJsonObject, "modValue")] to 
@@ -36,7 +35,11 @@
 	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
 	  <input type="submit" value="Delete Defense" />
 	 </form>
-	<form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
+	 </td>
+	 </tr>
+	 <tr>
+     <td style="text-align:center">
+	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
 	  [c(propLength2,'<BR>'),code:{[h: propAttackJsonObject= json.get(propAttackSelfJson, roll.count)]
 	  <input type="checkbox" name=[r: "mod"+roll.count] />
 	  <span style="color:blue; font-size:12">[r: json.get(propAttackJsonObject, "modName")]: [r, if(json.get(propAttackJsonObject, "modValue")>0): "+"][r: json.get(propAttackJsonObject, "modValue")] to 
@@ -52,6 +55,10 @@
 	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
 	  <input type="submit" value="Delete Attack" />
 	 </form>
+	 </td>
+	 </tr>
+	 <tr>
+     <td style="text-align:center">
 	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
 	  [c(propLength3,'<BR>'),code:{[h: propVulnResistJsonObject= json.get(propVulnResistSelfJson, roll.count)]
 	  <input type="checkbox" name=[r: "mod"+roll.count] />
@@ -66,7 +73,6 @@
 	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
 	  <input type="submit" value="Delete Resist/Vuln" />
 	 </form>
-	 </span>
      </td>
 	 </tr>
      </table>
