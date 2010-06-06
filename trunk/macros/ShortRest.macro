@@ -9,11 +9,6 @@
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
-[h,foreach(index,getMacroGroup("Encounter Immediates")), code: 
-{
-  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
-  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
-}]
 [h,foreach(index,getMacroGroup("Encounter Utilities")), code: 
 {
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
@@ -25,9 +20,12 @@
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
 [h:setAllStates(0)]
+[h:updateProperty("MarkedBy","")]
 [h:TempHP = 0]
 [h,macro("ClearDefMods@"+UseLib): ""]
 [h,if(length(AttackBonuses)>0): AttackBonuses = ""]
 [h,if(length(DamageBonuses)>0): DamageBonuses = ""]
+[h,macro("ClearVulnResist@"+UseLib): ""]
+[h,macro("ClearAtkDamMods@"+UseLib): ""]
 
 [abort(0)]

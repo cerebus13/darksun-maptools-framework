@@ -1,3 +1,5 @@
+<!-- StateListToggle macro -->
+
 [h: tokens = getSelected()]
 [h: tokencount = listCount(tokens)]
 
