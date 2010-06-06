@@ -3,4 +3,4 @@
   * Nested Json Object keys: 0 = Target, 1 = Self
   * Array of Resist/Vuln modifier Json object made up of 4 Key/Value pairs (modName, modValue, modDef {0=resist,1=vuln}, modOwner).  ModValue should typically be positive as the behavior of the negative could be unpredictable.
   * Example: {"3":{"0":[{"modDef":1, "modName":"Fire", "modValue":5, "modOwner": "Udo"}]}}
-  * Example: 3 = Perform Always, Nested 0 = To target, apply Modifier Fire Thing, as issued by Udo, to give Vuln to Fire
+  * Example: 3 = Perform Always, Nested 0 = To target, mod defined as a Vuln, apply modifier to Fire, as issued by Udo, with a value of 5
