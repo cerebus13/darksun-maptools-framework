@@ -1,0 +1,3 @@
+<!-- ClearAtkDamMods macro -->
+
+[h: applyModAttackJson("{}", getName())]

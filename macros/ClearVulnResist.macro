@@ -1,0 +1,1 @@
+<!-- ClearVulnResist macro -->[h: applyVulnResistJson("{}", getName())]
