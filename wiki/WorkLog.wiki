@@ -5,6 +5,12 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===06/05/2010===
+
+  * Redid Vulns and Resists to work very similar to how Sam had done attack/defense modifiers.  Involved making 40+ new properties for each resist/vuln combination, but this method will make it a lot easier to use and should be speedier.
+  * Updated onCampaignLoad for some typos from Sam.
+  * Checked in updateState since it was missing.
+
 ===05/30/2010===
 
   * Checked in (r81) with a few small macro changes and a lot of changes to the NPC property set.  Been working on my actual maps for the campaign and just had to make a few tweaks here and there to get things working.  Streamlined the NPC props a lot so creating monster tokens is quicker.
