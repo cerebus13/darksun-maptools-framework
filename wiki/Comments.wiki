@@ -7,7 +7,7 @@ These are just a series of general comments concerning the framework.
 
 ===Resists/Vulnerabilities===
 
-  # If a token has Swarm=1 property then when an attack goes to apply damage to them DoAttack2 checks to see if the attack has an "Area" keyword.  Any attack without an "Area" keyword is assumed to be Swarm resistable, so the damage is halved.
+  # If a token has Swarm=1 property then when an attack goes to apply damage to them DoAttack2 checks to see if the attack has an "Area" keyword.  Any attack without an "Area" keyword is assumed to be Swarm resistable, so the damage is halved.  "Area" keyword attacks will deal additional damage to the Swarm equal to their SwarmVuln property which must be set according to what their monster entry says.
 
 ===Token Properties===
 
