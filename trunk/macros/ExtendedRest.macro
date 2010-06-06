@@ -36,6 +36,6 @@
 [h:CurrentSurge = MaxSurge]
 [h:MagicItemUses = 1]
 [h:ActionPoints = 1]
-[h,if(json.length(AttackBonuses)>0): AttackBonuses = json.removeAll(AttackBonuses,AttackBonuses)]
-[h,if(json.length(DamageBonuses)>0): DamageBonuses = json.removeAll(DamageBonuses,DamageBonuses)]
+[h,if(json.length(AttackBonuses)>0): AttackBonuses = ""]
+[h,if(json.length(DamageBonuses)>0): DamageBonuses = ""]
 [abort(0)]

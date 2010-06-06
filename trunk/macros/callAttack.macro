@@ -36,7 +36,7 @@
 [h:effectText      = json.get(macro.args, "effectText")]
 [h:extraRoll       = json.get(macro.args, "extraRoll")]
 [h,if(json.contains(macro.args,"useMagicItem")): useMagicItem    = json.get(macro.args,"useMagicItem");useMagicItem=0]
-[h,if(json.contains(macro.args,"friendlyFire")): friendlyFire    = json.get(macro.args,"friendlyFire");friendlyFire=0] <!-- 0 NPC, 1 PC, 2 Both -->
+[h,if(json.contains(macro.args,"friendlyFire")): friendlyFire    = json.get(macro.args,"friendlyFire");friendlyFire = isNPC()] <!-- 0 NPC, 1 PC, 2 Both -->
 [h:otherSource     = json.get(macro.args,"otherSource")] <!-- name of other token to use as source for figuring targets based on range -->
 [h,if(json.contains(macro.args,"missDamageRoll")): missDamageRoll  = json.get(macro.args,"missDamageRoll");missDamageRoll = -1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
 <!-- targetStateJson: Json with states to apply to target.  In the format of Key:Value, Key = a number 0-3, Value = json of State names -->

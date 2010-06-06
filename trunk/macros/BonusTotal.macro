@@ -5,7 +5,8 @@
 [h:miscMod     = json.get(macro.args, 2)]
 [h:otherJson   = json.get(macro.args, 3)]
 
-[h:mainJson=json.merge(modJson,getProperty(propName),otherJson)]
+[h:localProp = getProperty(propName)]
+[h:mainJson=json.merge(modJson,if(json.isEmpty(localProp),"{}",localProp),otherJson)]
 [h,if(miscMod != 0): mainJson = json.set(mainJson,"misc",miscMod)]
 
 [h:mainFields=json.fields(mainJson)]
