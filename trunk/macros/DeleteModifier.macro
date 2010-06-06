@@ -11,6 +11,7 @@
 [removed = removed+1];}]}]
 [h, if(ModifierForm == "Delete Defense"): applyModDefenseJson(propSelfJson, selfName)]
 [h, if(ModifierForm == "Delete Attack"): applyModAttackJson(propSelfJson, selfName)]
+[h, if(ModifierForm == "Delete Resist/Vuln"): applyVulnResistJson(propSelfJson, selfName)]
 [h: closeDialog("Modifiers")]
 [macro("ModifierDialog@"+getMacroLocation()):""]
 [abort(0)]
