@@ -61,8 +61,8 @@ Miscellaneous (Misc)
 Milestone:0
 UseLib
 -------------STATIC ATTACK, DAMAGE, HEAL, TEMP HP MODIFIERS-------------
-AttackBonuses (ABon):{}
-DamageBonuses (DBon):{}
+AttackBonuses (ABon)
+DamageBonuses (DBon)
 HealBonuses:{}
 TempHPBonuses:{}
 -------------NUMBERED ATTACK MOD LISTS-------------
@@ -156,6 +156,7 @@ TempVulnRadiant:0
 TempVulnThunder:0
 Insubstantial:0
 Swarm:0
+SwarmVuln:0
 -------------WEAPON DICE-------------
 WeaponDice1:0d0
 WeaponDice2:0d0

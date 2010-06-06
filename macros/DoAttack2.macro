@@ -70,7 +70,8 @@
 [h,if(useTotalDamage<0):useTotalDamage=0]
 
 <!-- Check Swarm -->
-[h,if(Swarm && listFind(keywords,"Area")==-1): useTotalDamage = floor(totalDamage/2)]
+[h,if(Swarm && listFind(keywords,"Area") == -1): useTotalDamage = floor(useTotalDamage/2)]
+[h,if(Swarm && listFind(keywords,"Area") != -1): useTotalDamage = useTotalDamage + SwarmVuln]
 
 <!-- Check Insubstantial -->
 [h,if(Insubstantial): useTotalDamage = floor(useTotalDamage/2)]
@@ -98,6 +99,7 @@
   };{}]
   [h,if(CurrentHP<=0 && isNPC()),code:
   {
+    [h:updateProperty("MarkedBy","")]
     [h:setAllStates(0)]
     [h:state.Dead=1]
   };{}]

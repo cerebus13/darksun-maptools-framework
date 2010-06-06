@@ -56,8 +56,8 @@ Milestone:0
 UseLib
 -------------STATIC ATTACK, DAMAGE, HEAL, TEMP HP MODIFIERS-------------
 AllAtkModList (AllAtk)
-*AttackBonuses (ABon):{}
-*DamageBonuses (DBon):{}
+*AttackBonuses (ABon)
+*DamageBonuses (DBon)
 HealBonuses:{}
 TempHPBonuses:{}
 -------------NUMBERED ATTACK MOD LISTS-------------
