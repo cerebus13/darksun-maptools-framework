@@ -1,0 +1,7 @@
+<!-- updateState user defined function -->
+<!-- takes in 2 arguments: (1) is state to be set, (2) is value to set state to, 1 = on, 0 = off -->
+<!-- checks that property doesn't already have the state setting passed before setting it -->
+
+[h:stater=arg(0)]
+[h:val=arg(1)]
+[h,if(getState(stater)!=val): setState(stater,val)]

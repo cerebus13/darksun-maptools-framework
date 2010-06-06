@@ -9,7 +9,3 @@
 [h,if(RefMod!=0):RefMod=0]
 [h,if(AllDefMod!=0):AllDefMod=0]
 [h,if(length(AllDefModList) != 0):AllDefModList = ""]
-[h,if(length(ACModList) != 0):ACModList = ""]
-[h,if(length(FortModList) != 0):FortModList = ""]
-[h,if(length(WillModList) != 0):WillModList = ""]
-[h,if(length(RefModList) != 0):RefModList = ""]

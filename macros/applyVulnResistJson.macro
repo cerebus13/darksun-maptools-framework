@@ -1,26 +1,61 @@
 <!-- applyVulnResistJson user defined function -->
-<!-- Returns: none -->
-<!-- Parameters: 3 -->
-<!-- arg0 : Json Array of alternating element/value that needs to be set in the passed property on the passed token -->
-<!-- arg1 : Token name to look at -->
-<!-- arg2 : Property to be set -->
-<!-- Loop through passed Json Array collecting each alternating element name as a Key, and the integer as the Value and then do a -->
-<!-- Json.set to set the passed Property object Json -->
-
 [h:arrayJson       = arg(0)]
 [h:tokenName       = arg(1)]
-[h:propName        = arg(2)]
 
-[h:propJson = getProperty(propName,tokenName)]
-[h,if(length(propJson) <= 0): propJson = "{}"]
-[h:propJson2 = propJson]
-[h:tmpKey = ""]
-[h:tmpVal = 0]
-[for(i,0,json.length(arrayJson) - 1,2,""), CODE:
+[h:updateTargetProperty("TempResVuln",arrayJson,tokenName)]
+[h:ResAcid = 0]
+[h:ResAll = 0]
+[h:ResCold = 0]
+[h:ResFire = 0]
+[h:ResForce = 0]
+[h:ResLightning = 0]
+[h:ResNecrotic = 0]
+[h:ResPoison = 0]
+[h:ResPsychic = 0]
+[h:ResRadiant = 0]
+[h:ResThunder = 0]
+[h:VulnAcid = 0]
+[h:VulnAll = 0]
+[h:VulnCold = 0]
+[h:VulnFire = 0]
+[h:VulnForce = 0]
+[h:VulnLightning = 0]
+[h:VulnNecrotic = 0]
+[h:VulnPoison = 0]
+[h:VulnPsychic = 0]
+[h:VulnRadiant = 0]
+[h:VulnThunder = 0]
+[for(i,0,json.length(arrayJson),1,""), CODE:
 {
-  [h:tmpKey = json.get(arrayJson,i)]
-  [h:tmpVal = json.get(arrayJson,i+1)]
-  [h:propVal = if(length(json.get(propJson,tmpKey)) > 0,json.get(propJson,tmpKey),0)]
-  [h,if(tmpVal > propVal): propJson = json.set(propJson,tmpKey,tmpVal)]
+  [h:mod = json.get(arrayJson, i)]
+  [h:def = json.get(mod, "modDef")]
+  [h:value = json.get(mod, "modValue")]
+  [h:namer = json.get(mod, "modName")]
+  [h,SWITCH(def):
+    case 0: evalMacro(strformat("[h:Res%s = if(value > Res%s,value,Res%s)]",namer,namer,namer));
+    case 1: evalMacro(strformat("[h:Vuln%s = if(value > Vuln%s,value,Vuln%s)]",namer,namer,namer));
+    default: ""
+  ]
 }]
-[h,if(json.equals(propJson,propJson2)!=1): setProperty(propName,propJson,tokenName)]
+[h:updateTargetProperty("TempResAcid", ResAcid, tokenName)]
+[h:updateTargetProperty("TempResAll", ResAll, tokenName)]
+[h:updateTargetProperty("TempResCold", ResCold, tokenName)]
+[h:updateTargetProperty("TempResFire", ResFire, tokenName)]
+[h:updateTargetProperty("TempResForce", ResForce, tokenName)]
+[h:updateTargetProperty("TempResLightning", ResLightning, tokenName)]
+[h:updateTargetProperty("TempResNecrotic", ResNecrotic, tokenName)]
+[h:updateTargetProperty("TempResPoison", ResPoison, tokenName)]
+[h:updateTargetProperty("TempResPsychic", ResPsychic, tokenName)]
+[h:updateTargetProperty("TempResRadiant", ResRadiant, tokenName)]
+[h:updateTargetProperty("TempResThunder", ResThunder, tokenName)]
+[h:updateTargetProperty("TempVulnAcid", VulnAcid, tokenName)]
+[h:updateTargetProperty("TempVulnAll", VulnAll, tokenName)]
+[h:updateTargetProperty("TempVulnCold", VulnCold, tokenName)]
+[h:updateTargetProperty("TempVulnFire", VulnFire, tokenName)]
+[h:updateTargetProperty("TempVulnForce", VulnForce, tokenName)]
+[h:updateTargetProperty("TempVulnLightning", VulnLightning, tokenName)]
+[h:updateTargetProperty("TempVulnNecrotic", VulnNecrotic, tokenName)]
+[h:updateTargetProperty("TempVulnPoison", VulnPoison, tokenName)]
+[h:updateTargetProperty("TempVulnPsychic", VulnPsychic, tokenName)]
+[h:updateTargetProperty("TempVulnRadiant", VulnRadiant, tokenName)]
+[h:updateTargetProperty("TempVulnThunder", VulnThunder, tokenName)]

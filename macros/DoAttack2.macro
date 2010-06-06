@@ -62,60 +62,11 @@
 
 <!-- Apply Vulns/Resists -->
 [h:useTotalDamage       = totalDamage]
-[h:propTempVulnerable   = TempVulnerable]
-[h,if(length(propTempVulnerable) == 0): propTempVulnerable = emptyObjectJson]
-[h:propInnateVulnerable = InnateVulnerable]
-[h:propTempResist       = TempResist]
-[h,if(length(propTempResist) == 0): propTempResist = emptyObjectJson]
-[h:propInnateResist     = InnateResist]
-[h:pVuln="{}"]
-[h:pResist="{}"]
-[h:tmpList=json.toList(json.intersection(propTempVulnerable,propInnateVulnerable))]
-[h,foreach(key,tmpList): 
-  pVuln = json.set(pVuln,key,if(json.get(propTempVulnerable,key) > json.get(propInnateVulnerable,key),
-                                json.get(propTempVulnerable,key),
-                                json.get(propInnateVulnerable,key)
-                               )
-                  )
-]
-[h:tmpList=json.toList(json.difference(json.union(propTempVulnerable,propInnateVulnerable),
-                                       json.intersection(propTempVulnerable,propInnateVulnerable)
-))]
-[h,foreach(key,tmpList):
-  pVuln = json.set(pVuln,key,if(json.contains(propTempVulnerable,key),
-                                json.get(propTempVulnerable,key),
-                                json.get(propInnateVulnerable,key)
-                               )
-                  )
-] 
-[h:tmpList=json.toList(json.intersection(propTempResist,propInnateResist))]
-[h,foreach(key,tmpList): 
-  pResist = json.set(pResist,key,if(json.get(propTempResist,key)>json.get(propInnateResist,key),
-                                    json.get(propTempResist,key),
-                                    json.get(propInnateResist,key)
-                                   )
-                    )
-]
-[h:tmpList=json.toList(json.difference(json.union(propTempResist,propInnateResist),
-                                       json.intersection(propTempResist,propInnateResist)
-))]
-[h,foreach(key,tmpList):
-  pResist = json.set(pResist,key,if(json.contains(propTempResist,key),
-                                    json.get(propTempResist,key),
-                                    json.get(propInnateResist,key)
-                                   )
-                    )
-] 
-[h,foreach(item,damageTypes): useTotalDamage = useTotalDamage + if(json.contains(pVuln,item),json.get(pVuln,item),0)]
-[h:tmpSubset = json.equals(json.fromList(damageTypes),json.intersection(json.fields(pResist,"json"),json.fromList(damageTypes)))]
-[h,if(tmpSubset != 1): damageTypes=""]
-[h:minResist = 999]
-[h,foreach(typ,damageTypes): minResist = if(if(json.contains(pResist,typ),json.get(pResist,typ),999) < minResist,json.get(pResist,typ),minResist)]
-[h:useTotalDamage = useTotalDamage - if(minResist != 999,minResist,0)]
-[h:useTotalDamage = useTotalDamage 
-                     + if(json.contains(pVuln,"All"),json.get(pVuln,"All"),0) 
-                     - if(json.contains(pResist,"All"),json.get(pResist,"All"),0) 
-]
+[h,foreach(item,damageTypes): useTotalDamage = useTotalDamage + max(getProperty("TempVuln"+item),getProperty("InnateVuln"+item))]
+[h,if(TempVulnAll > 0 || InnateVulnAll > 0): useTotalDamage = useTotalDamage + max(TempVulnAll,InnateVulnAll)]
+[h,if(listCount(damageTypes) == 0): pRes = 0; pRes = 999]
+[h,foreach(item,damageTypes): pRes = min(max(getProperty("TempRes"+item),getProperty("InnateRes"+item)),pRes)]
+[h:useTotalDamage = useTotalDamage - max(getProperty("TempResAll"),getProperty("InnateResAll"),pRes)]
 [h,if(useTotalDamage<0):useTotalDamage=0]
 
 <!-- Check Swarm -->
@@ -180,12 +131,20 @@
 
 <!-- apply Resists/Vulns to Target/Self -->
 [h,SWITCH(resu):
-  case 0: decodeVulnResistJson(if(length(json.get(vulnResistJson,"0"))>0,json.get(vulnResistJson,"0"),emptyObjectJson),targetName,resu);
-  case 1: decodeVulnResistJson(if(length(json.get(vulnResistJson,"0"))>0,json.get(vulnResistJson,"0"),emptyObjectJson),targetName,resu);
-  case 2: decodeVulnResistJson(if(length(json.get(vulnResistJson,"1"))>0,json.get(vulnResistJson,"1"),emptyObjectJson),targetName,resu);
-  case 3: decodeVulnResistJson(if(length(json.get(vulnResistJson,"2"))>0,json.get(vulnResistJson,"2"),emptyObjectJson),targetName,resu)
+  case 0: decodeVulnResistJson(json.get(vulnResistJson,"0"),targetName);
+  case 1: decodeVulnResistJson(json.get(vulnResistJson,"0"),targetName);
+  case 2: decodeVulnResistJson(json.get(vulnResistJson,"1"),targetName);
+  case 3: decodeVulnResistJson(json.get(vulnResistJson,"2"),targetName)
 ]
-[h:decodeVulnResistJson(if(length(json.get(vulnResistJson,"3"))>0,json.get(vulnResistJson,"3"),emptyObjectJson),targetName,resu)]
+[h:decodeVulnResistJson(json.get(vulnResistJson,"3"),targetName)]
+[h:localApplyResistVuln = getProperty("ApplyResistVuln")]
+[h,SWITCH(resu):
+  case 0: decodeVulnResistJson(json.get(localApplyResistVuln,"0"),targetName);
+  case 1: decodeVulnResistJson(json.get(localApplyResistVuln,"0"),targetName);
+  case 2: decodeVulnResistJson(json.get(localApplyResistVuln,"1"),targetName);
+  case 3: decodeVulnResistJson(json.get(localApplyResistVuln,"2"),targetName)
+]
+[h:decodeVulnResistJson(json.get(localApplyResistVuln,"3"),targetName)]
 
 [h,SWITCH(resu):
   case 0: decodeModDefenseJson(if(length(json.get(modDefenseJson,"0"))>0,json.get(modDefenseJson,"0"),emptyObjectJson),targetName);

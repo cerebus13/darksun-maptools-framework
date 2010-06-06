@@ -106,14 +106,54 @@ TargetMark:[]
 *MarkedBy
 MarkPenalty:-2
 -------------RESIST AND VULNERABILITY-------------
-InnateResist:{}
-InnateVulnerable:{}
-*TempResist (Resist)
-*TempVulnerable (Vuln)
-ApplyVulnTarget:{}
-ApplyVulnSelf:{}
-ApplyResistTarget:{}
-ApplyResistSelf:{}
+*TempResist (Resist):{strformat("%s%s%s%s%s%s%s%s%s%s%s",if(TempResAcid != 0,"Acid = " + TempResAcid,""),if(TempResAll != 0," All = " + TempResAll,""),if(TempResCold != 0," Cold = " + TempResCold,""),if(TempResFire != 0," Fire = " + TempResFire,""),if(TempResForce != 0," Force = " + TempResForce,""),if(TempResLightning != 0," Lightning = " + TempResLightning,""),if(TempResNecrotic != 0," Necrotic = " + TempResNecrotic,""),if(TempResPoison != 0," Poison = " + TempResPoison,""),if(TempResPsychic != 0," Psychic = " + TempResPsychic,""),if(TempResRadiant != 0," Radiant = " + TempResRadiant,""),if(TempResThunder != 0," Thunder = " + TempResThunder,""))}
+*TempVulnerable (Vuln):{strformat("%s%s%s%s%s%s%s%s%s%s%s",if(TempVulnAcid != 0,"Acid = " + TempVulnAcid,""),if(TempVulnAll != 0," All = " + TempVulnAll,""),if(TempVulnCold != 0," Cold = " + TempVulnCold,""),if(TempVulnFire != 0," Fire = " + TempVulnFire,""),if(TempVulnForce != 0," Force = " + TempVulnForce,""),if(TempVulnLightning != 0," Lightning = " + TempVulnLightning,""),if(TempVulnNecrotic != 0," Necrotic = " + TempVulnNecrotic,""),if(TempVulnPoison != 0," Poison = " + TempVulnPoison,""),if(TempVulnPsychic != 0," Psychic = " + TempVulnPsychic,""),if(TempVulnRadiant != 0," Radiant = " + TempVulnRadiant,""),if(TempVulnThunder != 0," Thunder = " + TempVulnThunder,""))}
+TempResVuln (ResVuln)
+ApplyResistVuln:{}
+InnateResAcid:0
+InnateResAll:0
+InnateResCold:0
+InnateResFire:0
+InnateResForce:0
+InnateResLightning:0
+InnateResNecrotic:0
+InnateResPoison:0
+InnateResPsychic:0
+InnateResRadiant:0
+InnateResThunder:0
+TempResAcid:0
+TempResAll:0
+TempResCold:0
+TempResFire:0
+TempResForce:0
+TempResLightning:0
+TempResNecrotic:0
+TempResPoison:0
+TempResPsychic:0
+TempResRadiant:0
+TempResThunder:0
+InnateVulnAcid:0
+InnateVulnAll:0
+InnateVulnCold:0
+InnateVulnFire:0
+InnateVulnForce:0
+InnateVulnLightning:0
+InnateVulnNecrotic:0
+InnateVulnPoison:0
+InnateVulnPsychic:0
+InnateVulnRadiant:0
+InnateVulnThunder:0
+TempVulnAcid:0
+TempVulnAll:0
+TempVulnCold:0
+TempVulnFire:0
+TempVulnForce:0
+TempVulnLightning:0
+TempVulnNecrotic:0
+TempVulnPoison:0
+TempVulnPsychic:0
+TempVulnRadiant:0
+TempVulnThunder:0
 Insubstantial:0
 Swarm:0
 -------------WEAPON DICE-------------
