@@ -8,12 +8,7 @@
 [h: TempHP=THP]
 [h: MaxHP=MHP]
 [h: setProperty("Healing Surges", THS)]
-[h,if(CHP<=MHP/2),code: 
-{
-  [state.Bloodied=1]
-  [if(json.get(AttackBonuses,"Bloody")!=1): AttackBonuses = json.set(AttackBonuses,"Bloody",1)]
-};{
-  [state.Bloodied=0]
-  [if(json.get(AttackBonuses,"Bloody")==1): AttackBonuses = json.remove(AttackBonuses,"Bloody")]
-}]
-[abort(0)]
+[h, IF(CHP<=MHP/2), code:
+{[h: state.Bloodied=1]};
+{[h: state.Bloodied=0]}
+]

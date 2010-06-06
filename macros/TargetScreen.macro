@@ -108,6 +108,8 @@
         getState("GrantingCA",targ)):
           caState = 1; caState = 0
   ]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Melee") > -1): caState = 1]
   [h,if(caState && CA == 0): atkVal = atkVal + "+2"]
   [h,if(caState && CA == 0): atkText = atkText + " + CA(2)"]
   [h,if(getState("Unconscious",targ)): atkVal = atkVal + "+5"]

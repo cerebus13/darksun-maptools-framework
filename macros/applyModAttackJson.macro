@@ -22,5 +22,5 @@
 }]
 [h: propHitTargetJson = json.merge(HitModifier, AllModifier)]
 [h: propDamageTargetJson = json.merge(DamageModifier, AllModifier)]
-[h: updateTargetProperty("AttackBonuses", propHitTargetJson, tokenName)]
-[h: updateTargetProperty("DamageBonuses", propDamageTargetJson, tokenName)]
+[h,if(json.isEmpty(propHitTargetJson)): propHitTargetJson = "";updateTargetProperty("AttackBonuses", propHitTargetJson, tokenName)]
+[h,if(json.isEmpty(propDamageTargetJson)): propDamageTargetJson = "";updateTargetProperty("DamageBonuses", propDamageTargetJson, tokenName)]
