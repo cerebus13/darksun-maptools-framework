@@ -4,22 +4,22 @@
 [h,if(json.length(names)!=1): abort(0)]
 [h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
 
-[h,foreach(index,getMacroGroup("Encounter Attacks")), code: 
+[h,foreach(index,getMacroGroup("3. Encounter Attacks")), code: 
 {
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
-[h,foreach(index,getMacroGroup("Encounter Utilities")), code: 
+[h,foreach(index,getMacroGroup("4. Encounter Utilities")), code: 
 {
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
-[h,foreach(index,getMacroGroup("Daily Attacks")), code: 
+[h,foreach(index,getMacroGroup("5. Daily Attacks")), code: 
 {
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
-[h,foreach(index,getMacroGroup("Daily Utilities")), code: 
+[h,foreach(index,getMacroGroup("6. Daily Utilities")), code: 
 {
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
