@@ -5,6 +5,7 @@
 [h: AllModifier = "{}"]
 [h: HitModifier = "{}"]
 [h: DamageModifier = "{}"]
+[h: Total = 0]
 
 [for(i,0,json.length(arrayJson),1,""), CODE:
 {
@@ -13,6 +14,7 @@
   [h:value = json.get(mod, "modValue")]
   [h:modName = json.get(mod, "modName")]
   [h:modJson = '{'+modName+':'+value+'}']
+  [h: Total = Total + value]
   [h,SWITCH(attack):
     case 0: AllModifier = json.merge(AllModifier, modJson);
     case 1: HitModifier = json.merge(HitModifier, modJson);
@@ -20,6 +22,22 @@
     default: ""
   ]
 }]
+[h, if(Total < 0), CODE:
+{
+[updateTargetState("MinusToHit",1,tokenName)]
+[updateTargetState("PlusToHit",0,tokenName)]
+};
+{
+[h, if(Total > 0), CODE:
+{
+[updateTargetState("MinusToHit",0,tokenName)]
+[updateTargetState("PlusToHit",1,tokenName)]
+};
+{
+[updateTargetState("MinusToHit",0,tokenName)]
+[updateTargetState("PlusToHit",0,tokenName)]
+};]
+};]
 [h: propHitTargetJson = json.merge(HitModifier, AllModifier)]
 [h: propDamageTargetJson = json.merge(DamageModifier, AllModifier)]
 [h,if(json.isEmpty(propHitTargetJson)): propHitTargetJson = ""]
