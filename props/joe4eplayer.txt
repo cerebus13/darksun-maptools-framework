@@ -39,7 +39,7 @@ Willpower (Will):{WillBase+WillMod+AllDefMod}
 WillBase:0
 WillMod:0
 -------------LIMITED USES-------------
-*Uses (AP|Luck|Magic):{strformat("%s | %s | %s",ActionPoints,LuckPoints,MagicItemUses)}
+*Uses (AP|Magic):{strformat("%s | %s",ActionPoints,MagicItemUses)}
 ActionPoints (AP):0
 LuckPoints (Luck):0
 MagicItemUses (Magic):0
