@@ -1,0 +1,16 @@
+<!-- Add all NPC to Initiative Macro -->
+
+[h:targetFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "npc", 1)]
+
+[h:initGroup = getTokenNames("json", targetFilter)]
+
+[foreach(token,initGroup,""),CODE:
+{
+  [token(token),CODE:
+  {       
+    [h:addToInitiative()]
+    [h:dieRoll=eval("1d20")]
+    [h:token.init=dieRoll+if(getProperty("Initiative")=="",0,getProperty("Initiative"))]
+  }]
+}]
+All NPCs added to Initiative!

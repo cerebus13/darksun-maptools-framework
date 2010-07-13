@@ -1,13 +1,12 @@
-[h: HS = getProperty("Healing Surges")]
 [h: cancel = input("CHP|"+CurrentHP+"|Current HP",
 "THP|"+TempHP+"|Temporary HP",
 "MHP|"+MaxHP+"|Maximum HP",
-"THS|"+HS+"|Healing Surges")]
+"THS|"+CurrentSurge+"|Healing Surges")]
 [h: Abort(cancel)]
-[h: CurrentHP=CHP]
-[h: TempHP=THP]
-[h: MaxHP=MHP]
-[h: setProperty("Healing Surges", THS)]
+[h: CurrentHP = CHP]
+[h: TempHP = THP]
+[h: MaxHP = MHP]
+[h: CurrentSurge = THS]
 [h, IF(CHP<=MHP/2), code:
 {[h: state.Bloodied=1]};
 {[h: state.Bloodied=0]}

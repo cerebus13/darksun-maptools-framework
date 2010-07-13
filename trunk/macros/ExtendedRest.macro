@@ -29,6 +29,7 @@
   [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
   [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
 }]
+[h:setHalo("None")]
 [h:setAllStates(0)]
 [h:updateProperty("MarkedBy","")]
 [h:CurrentHP = MaxHP]
