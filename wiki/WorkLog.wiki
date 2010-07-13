@@ -5,6 +5,14 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===07/12/2010===
+
+  * Fixed CallHP to stop breaking properties.
+  * Fixed Skill check macros.
+  * Updated global initiative macros to speed up combat starts a bit.
+  * Removed Luck points from properties.
+  * Added some auto removal of Halos, and auto remove NPCs from init when they die.
+
 ===06/05/2010===
 
   * Redid Vulns and Resists to work very similar to how Sam had done attack/defense modifiers.  Involved making 40+ new properties for each resist/vuln combination, but this method will make it a lot easier to use and should be speedier.
