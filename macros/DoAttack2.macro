@@ -95,11 +95,14 @@
   {
     [h:state.Unconscious=1]
     [h:state.Prone=1]
+    [h:setHalo("None")]
     [h:CurrentHP = 0]
   };{}]
   [h,if(CurrentHP<=0 && isNPC()),code:
   {
+    [h:removeFromInitiative()]
     [h:updateProperty("MarkedBy","")]
+    [h:setHalo("None")]
     [h:setAllStates(0)]
     [h:state.Dead=1]
   };{}]
