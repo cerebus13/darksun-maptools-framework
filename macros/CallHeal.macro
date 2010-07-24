@@ -8,7 +8,7 @@
 )]
 [h:Abort(cancel)]
 [h,if(heal<=0 && tmp <=0 && surge==0 && surgeHeal==0): abort(0)]
-[h,if(heal>0 || surgeHeal): CHP = CurrentHP+heal+if(surgeHeal,SurgeValue,0)]
+[h,if(heal>0 || surgeHeal): CHP = CurrentHP+heal+if(surgeHeal,SurgeValue,0);CHP = CurrentHP]
 [h,if(tmp>0 && tmp>TempHP): TempHP = tmp]
 [h,if(CHP>MaxHP/2): state.Bloodied=0]
 [h,if(CHP>MaxHP): CurrentHP = MaxHP;CurrentHP = CHP]
