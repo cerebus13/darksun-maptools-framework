@@ -12,4 +12,4 @@ Add your content here.  Format your content with:
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
 
-<wiki:gadget url="http://iplay4e.appspot.com/googleGadget?key=agdpcGxheTRlchALEghDYW1wYWlnbhjTqCcM />
+<wiki:gadget url="http://iplay4e.appspot.com/googleGadget?key=agdpcGxheTRlchALEghDYW1wYWlnbhjTqCcM" width="1000" />
