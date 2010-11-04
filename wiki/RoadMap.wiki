@@ -5,6 +5,47 @@
 
 This is just a rough road map of what I plan to code up for the Dark Sun campaign.  Some will not go out with the initial release of the framework because I want to get some playtesting in first to determine if I should waste the time for certain features or not.
 
+= Tokenmaker Plans =
+
+== Main list ==
+
+  ## Get the source building on home machine with either Eclipse or NetBeans Java IDEs.  (partially done)
+  ## Integrate source code into this SVN repository.
+  ## Integrate source code from this SVN with chosen Java IDE if possible, otherwise can use manual checkin/checkout from windows explorer.
+  ## Add a dropdown to filter Compendium searches based on source book/magazine.  
+   * Hopefully pre-populate this list programmatically from the Compendium itself but can hardcode it otherwise and update periodically as books are released that we want to parse.
+   * Be sure that once the filter is working that you can search for <blank> name in a book to return ALL creatures from that book.
+  ## Implement a "spider" command to perform some action on each creature card/page returned from a search.
+   * The ultimate goal being to grab an entire book and be able to parse every creature from that to make grabbing new content easier.
+   * Should be trivial to allow this to work on any sort of filter set up, for example: levels 1-6 creatures from MM3 or something.
+  ## Add an option to choose either to dump to the original author's token type, or to dump to our token type.
+   * This also entails figuring out how to format stuff to fit our campaign properties, power macro format, default macros and so on.
+   * We may have to make some sacrifices for the sake of being able to parse powers better.  The concept of WeaponDice abstracted over all of your melee weapon powers doesn't really work with NPCs from the compendium.  However, if I can get the XML input parser to work we could to this: spider compendium for monster Bob, export Bob to XML in Monster Builder format, manually edit Bob's XML to change from a "1d8" string for longsword damage to instead be "getProperty("WeaponDice1")" or something similar, import that editted XML, export as our token.
+  ## Add XML export to file(s), or to text area.
+   * The text area export should not work if you are spidering, and when spidering it should probably create an XML file for each creature in a destination folder.
+  ## Allow multiple types of export to happen at the same time to save on the amount of spidering required.
+   * In theory could dump any/all combination of: XML, our token, his token, HTML.
+
+== Future list ==
+
+  ## Implement a plain text parser for creature cards using either copied text from the Compendium, a PDF, or manually typed text.
+   * This will future-proof the Tokenmaker in case Wizards drops the compendium, we stop subscribing to the compendium, or if they break the webcode so badly that you can't spider it anymore.
+  ## XML parser that can either read 1 file, a folder of files, or XML pasted into a text area.
+   * Monster Builder format is probably the one we should adopt so that Masterplan can read it easily.
+  ## Add an option to the PlayerToken maker to export to our player token, or his.
+  ## HTML export using whatever goofy format Masterplan likes for its Statblocks.
+   * Formats will differ between NPCs, Magic Items, Traps and so on.
+  ## Add a raw Compendium HTML file dump to allow the spider to run once and always have all of the various pages related to your query.
+  ## Allow import of locally saved Compendium HTML file(s) from a folder or a single pick.
+
+= Masterplan =
+
+  ## Code a quick add-in to import all XML creature files from a folder into X-named library.
+  ## Extend this add-in to mass import HTML files if we ever get to the point that we can parse other stuff such as: Templates, Traps, Skill Challenges, or Magic Items.
+  ## Add NPCs for Dark Sun Campaign Guide and Creature manual, and MM3.
+  ## Add NPCs for Gamma World.
+  ## Add other content as wanted.
+
 = Details =
 
 TODO list: (strikethrough means it is finished)
