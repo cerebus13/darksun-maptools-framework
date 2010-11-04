@@ -1,4 +1,4 @@
-#summary Road map of code planned for Dark Sun campaign.
+#summary Road map of code planned for the Dark Sun campaign.
 #labels roadmap,darksun
 
 = Introduction =
@@ -46,9 +46,9 @@ This is just a rough road map of what I plan to code up for the Dark Sun campaig
   ## Add NPCs for Gamma World.
   ## Add other content as wanted.
 
-= Details =
+= Maptools =
 
-TODO list: (strikethrough means it is finished)
+(strikethrough means it is finished)
 
   ## (PHASE 2) make a power creation macro that will set up a power and comment it.  this will ONLY create powers, not edit them so people will need to refer to comments to edit powers later if needed
   ## create a template PC and NPC token for my campaign
