@@ -103,6 +103,7 @@ This is just a rough road map of what I plan to code up for the Dark Sun campaig
   ## ~~Second Wind power macro so players know when they have used it, and have it do all of the various state setting and healing in 1 click.~~ *(r60)*
   ## Implement latest version of macroIO (v1.2) from aliasmask.
    * Test to see how it handles comments and if it cleanly removes them from the actual macro you import to it may be worth it to start saving all of our macro code using his format so we can insert flipping comments into it.
+  ## Integrate group movement macro stuff from here: http://forums.rptools.net/viewtopic.php?f=46&t=13280
 
 DONE:
 
