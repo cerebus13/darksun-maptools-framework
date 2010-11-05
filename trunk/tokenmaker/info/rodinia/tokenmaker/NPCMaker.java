@@ -27,6 +27,7 @@ public class NPCMaker extends JFrame {
     private JButton exitButton;
     private JComboBox roleBox;
     private JComboBox typeBox;
+    private JComboBox sourceBox;
 
     public static void main(String[] args) {
 	TokenMaker.loadState();
@@ -54,7 +55,7 @@ public class NPCMaker extends JFrame {
 
 	// Add a search panel in the top
 	JPanel northPanel = new JPanel();
-	northPanel.setLayout(new GridLayout(4, 1));
+	northPanel.setLayout(new GridLayout(5, 1));
 
 	JPanel namePanel = new JPanel();
 	JLabel nameLabel = new JLabel("Name:");
@@ -97,6 +98,14 @@ public class NPCMaker extends JFrame {
 	typePanel.add(typeLabel);
 	typePanel.add(typeBox);
 	northPanel.add(typePanel);
+	
+	JPanel sourcePanel = new JPanel();
+	JLabel sourceLabel = new JLabel("Source:");
+	String[] sources = { "", "Dark Sun Campaign Setting", "Monster Manual", "Monster Manual 2", "Monster Manual 3" };
+	sourceBox = new JComboBox(sources);
+	sourcePanel.add(sourceLabel);
+	sourcePanel.add(sourceBox);
+	northPanel.add(sourcePanel);
 
 	add(northPanel, BorderLayout.NORTH);
 
@@ -104,10 +113,11 @@ public class NPCMaker extends JFrame {
 	JPanel centerPanel = new JPanel();
 
 	npcList = new JList();
-	npcList.addMouseListener(new ActionJList(npcList));
+	//npcList.addMouseListener(new ActionJList(npcList));
 	npcList.addListSelectionListener(listListener);
 	npcList.addFocusListener(focusListener);
 	npcList.addKeyListener(keyListener);
+	//npcList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 	JScrollPane npcScrollPane = new JScrollPane(npcList);
 	npcScrollPane.setPreferredSize(new Dimension(350, 350));
@@ -159,8 +169,20 @@ public class NPCMaker extends JFrame {
 	String type = (String) typeBox.getSelectedItem();
 	if (type.equals(""))
 	    type = "null";
+	// Wizards uses integers to represent their books so we have to parse ALL of them from text into their correct number
+	String source = (String) sourceBox.getSelectedItem();
+	if (source.equals(""))
+	    source = "null";
+	else if (source.equals("Dark Sun Campaign Setting"))
+	    source = "203";
+	else if (source.equals("Monster Manual"))
+	    source = "2";
+	else if (source.equals("Monster Manual 2"))
+	    source = "18";
+	else if (source.equals("Monster Manual 3"))
+	    source = "201";
 	npcs = (ArrayList<NPC>) CompendiumSearcher.getNPCs(nameText.getText(),
-		levelMin, levelMax, role, type);
+		levelMin, levelMax, role, type, source);
 	npcList.setListData(npcs.toArray());
 	setCursor(Cursor.DEFAULT_CURSOR);
 	buildButton.setEnabled(false);
@@ -172,9 +194,19 @@ public class NPCMaker extends JFrame {
     private void buildNPC() {
 	if (npcList.getSelectedIndex() == -1)
 	    return; // nothing selected - do nothing.
-	NPC nPC = (NPC) npcList.getSelectedValue();
-	NPCBuilder npcDiag = new NPCBuilder(nPC);
-	npcDiag.setVisible(true);
+	
+	// single selection
+	if (npcList.getSelectedIndices().length == 1)
+	{
+	    NPC nPC = (NPC) npcList.getSelectedValue();
+	    NPCBuilder npcDiag = new NPCBuilder(nPC);
+	    npcDiag.setVisible(true);
+	}
+	else 
+	{
+	    NPCBuilder npcDiag = new NPCBuilder(npcList.getSelectedValues());
+	    npcDiag.setVisible(true);
+	}
     }
 
     /**
@@ -232,7 +264,7 @@ public class NPCMaker extends JFrame {
 	    } else if (e.getSource() == buildButton) {
 		buildNPC();
 	    } else if (e.getSource() == npcList) {
-		buildNPC();
+		//buildNPC();
 	    }
 
 	}

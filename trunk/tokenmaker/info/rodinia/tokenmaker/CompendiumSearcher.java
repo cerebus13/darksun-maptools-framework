@@ -79,7 +79,7 @@ public class CompendiumSearcher {
      * @param pattern - the name we are going to search for.
      * @return a List of NPCs who have a name that matches.
      */
-    public static List<NPC> getNPCs(String pattern, int levelMin, int levelMax, String mainRole, String groupRole) {
+    public static List<NPC> getNPCs(String pattern, int levelMin, int levelMax, String mainRole, String groupRole, String source) {
 	// use defaults to fill in the spaces
 	return getNPCs(pattern, levelMin, levelMax, keyword, mainRole, groupRole, xpMin, xpMax, source);
     }
