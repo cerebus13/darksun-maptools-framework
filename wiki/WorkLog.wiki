@@ -5,6 +5,14 @@
 
 A simple journal detailing the coding work I've gotten done on a given day.
 
+===11/04/2010===
+
+  * Grabbed Tokenmaker code from the other googlecode page.
+  * Installed Eclipse as a Java IDE and was able to wrestle the program into working on it.
+  * Downloaded an SVN plugin for Eclipse and was finally able to integrate code checkin/out functionality, then checked in the Tokenmaker code so I could start making changes.
+  * Figured out how to add Source to the search functionality with Tokenmaker, but discovered that Wizards uses a short integer (like 203) to represent your choice rather than the string of the book name.  Will have to go through and get all of the book numbers later but for now I'll just use the Dark Sun stuff and the 3 monster manuals.
+  * Got some good progress with r129
+
 ===07/12/2010===
 
   * Fixed CallHP to stop breaking properties.
