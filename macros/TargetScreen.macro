@@ -24,7 +24,7 @@
 };{
 [targList = "[]"]
 }]
-[dialog("Power Options", "input=1; width=400; height=500"):
+[dialog("Power Options", "input=1; width=425; height=500"):
 {
   <html>
   <body>
