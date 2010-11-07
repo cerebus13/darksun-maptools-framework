@@ -1,0 +1,120 @@
+[h: args = macro.args]
+
+[h:selectedButton = json.get(args, "SubmitButton")]
+[h,if(selectedButton == "Cancel"): abort(0)]
+
+[h:atkKey          = json.get(args, "atkKey")]
+[h:atkName         = json.get(args, "atkName")]
+[h:atkMod          = json.get(args, "atkMod")]
+[h:damMod          = json.get(args, "damMod")]
+[h:damRoll         = json.get(args, "damRoll")]
+[h:critDamRoll     = json.get(args, "critDamRoll")]
+[h:targetDefense   = json.get(args, "targetDefense")]
+[h:friendlyFire    = json.get(args, "friendlyFire")]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:missDamageRoll  = json.get(args, "missDamageRoll")] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(args, "targetStateJson")] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(args, "markJson")] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(args, "vulnResistJson")] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(args, "modDefenseJson")]
+[h:modAttackJson   = json.get(args, "modAttackJson")]
+[h:keywords        = json.get(args, "keywords")]
+[h:damageTypes     = json.get(args, "damageTypes")]
+[h:powaStr     	   = json.get(args, "powaStr")]
+
+
+
+[h:CA=0]
+[h:charge=0]
+[h:cover=0]
+[h:longRange=0]
+[h:miscAtk=0]
+[h:miscDam=0]
+[h:status=1]
+[h:conceal=0]
+[h:useDetail=0]
+[h:yesDamRoll=1]
+[h:rerollAttack=0]
+
+
+[h:targJson = json.get(args, "targList")]
+[h:miscAtk = eval(string(json.get(args, "damageMods")))]
+[h:miscDam = eval(string(json.get(args, "attackMods")))]
+[h,if(json.contains(args, "charge")): Charge = 1]
+[h,if(json.get(args, "defOverride") != "N/A"): defense = json.get(args, "defOverride")]
+
+[h:atkText=""]
+[h:atkVal=""]
+[h:inputAJson="{}"]
+[h,if(useDetail == 0): bonusTargetScreen()]
+
+[h:tableJson="[]"]
+[h:origAtkText = atkText]
+[h:origAtkVal  = atkVal]
+[h:origDamText = damText]
+[h:origDamVal  = damVal]
+[h:defCA = CA]
+[h:defCharge = charge]
+[h:defCover = cover]
+[h:defConceal = conceal]
+[h:defLongRange = longRange]
+[h:defMiscAtk = miscAtk]
+[h:defMiscDam = miscDam]
+[h:defYesDamRoll = yesDamRoll]
+[h:defRerollAttack = rerollAttack]
+[h:myName     = getName()]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [thisAttMod = json.get(args, "amodTarget"+roll.count)]
+  [h,if(thisAttMod != 0): atkVal = atkVal + "+" + thisAttMod]
+  [h,if(thisAttMod != 0): atkText = atkText + " + TargetMiscMod(" + thisAttMod + ")"]
+
+
+  [h:thisDmgMod = json.get(args, "dmodTarget"+roll.count)]
+  [h,if(thisDmgMod != 0): damVal = damVal + "+" + thisDmgMod]
+  [h,if(thisDmgMod != 0): damText = damText + " + TargetMiscMod(" + thisDmgMod + ")"]
+  
+  [h:adjacentJson = getTokenNames("json", json.set("{}", "current", 1, "range", json.set("{}", "from", 0, "upto", 1, "distancePerCell", "false", "metric", "ONE_ONE_ONE", "token", targ)))]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Ranged") > -1 && 
+        json.contains(adjacentJson,myName) == 0): atkVal = atkVal + "-2"]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Ranged") > -1 && 
+        json.contains(adjacentJson,myName) == 0): atkText = atkText + " + TargProne(-2)"] 
+  [h,if(getState("Dazed",targ) || 
+        getState("Helpless",targ) || 
+        getState("Restrained",targ) || 
+        getState("Stunned",targ) || 
+        getState("Surprised",targ) || 
+        getState("Unconscious",targ) ||
+        getState("GrantingCA",targ)):
+          caState = 1; caState = 0
+  ]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Melee") > -1): caState = 1]
+  [h,if(caState || json.contains(args, "acaTarget"+roll.count)): atkVal = atkVal + "+2"]
+  [h,if(caState || json.contains(args, "acaTarget"+roll.count)): atkText = atkText + " + CA(2)"]
+  [h,if(getState("Unconscious",targ)): atkVal = atkVal + "+5"]
+  [h,if(getState("Unconscious",targ)): atkText = atkText + " + Unconscious(5)"]
+  [h,if(getState("Weakened")): damText = damText + " + Weakened(1/2 damage)"]
+  [h,if(targ != MarkedBy && length(MarkedBy) > 0): useMarkPen = getProperty("MarkPenalty",MarkedBy); useMarkPen = 0]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
+      json.get(retu,0),
+      targ,
+      if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+  [h:atkText = origAtkText]
+  [h:atkVal  = origAtkVal]
+  [h:damText = origDamText]
+  [h:damVal  = origDamVal]
+}]
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+[macro("PrintAttackTable@"+UseLib): tableJson]

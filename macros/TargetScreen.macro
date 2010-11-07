@@ -1,133 +1,83 @@
-<!-- TargetScreen macro -->
-<!-- Pops up the targetting GUI that has targets in dropdown lists, and modifications to apply to the attack such as CA -->
-
-<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
-<!-- 1 = Single/Multi -->
-<!-- 2 = Single/Multi No Damage -->
-<!-- 3 = Single/Multi No Attack -->
-<!-- 4 = AOE -->
-<!-- 5 = AOE No Damage -->
-<!-- 6 = AOE No Attack -->
-<!-- 7 = Single/Multi heal -->
-<!-- 8 = AOE heal -->
-<!-- 20 = Utility -->
-[h:atkKey          = json.get(macro.args, 0)]
-[h:atkName         = json.get(macro.args, 1)]
-[h:atkMod          = json.get(macro.args, 2)]
-[h:damMod          = json.get(macro.args, 3)]
-[h:damRoll         = json.get(macro.args, 4)]
-[h:critDamRoll     = json.get(macro.args, 5)]
-[h:maxRange        = json.get(macro.args, 6)]
-[h:numTargets      = json.get(macro.args, 7)]
-[h:targetDefense   = json.get(macro.args, 8)]
-[h:friendlyFire    = json.get(macro.args, 9)]  <!-- 0 NPC, 1 PC, 2 Both -->
-[h:otherSource     = json.get(macro.args, 10)] <!-- name of other token to use as source for figuring targets based on range -->
-[h:missDamageRoll  = json.get(macro.args, 11)] <!-- damage to roll on a miss, will not apply to minions -->
-[h:targetStateJson = json.get(macro.args, 12)] <!-- Json holding states to be applied to target with this power -->
-[h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
-[h:markJson        = json.get(macro.args, 14)] <!-- Json array telling when to apply Mark to target -->
-[h:vulnResistJson  = json.get(macro.args, 15)] <!-- Json object of when to apply a resist/vuln to target/self -->
-[h:modDefenseJson  = json.get(macro.args, 16)]
-[h:modAttackJson   = json.get(macro.args, 17)]
-[h:keywords        = json.get(macro.args, 18)]
-[h:damageTypes     = json.get(macro.args, 19)]
-
-[h:CA=0]
-[h:charge=0]
-[h:cover=0]
-[h:longRange=0]
-[h:miscAtk=0]
-[h:miscDam=0]
-[h:status=1]
-
-[h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
-[h,if(maxRange>-1): targetJson = macro.return]
-[h:targetImageList = "None,"]
-[h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
-
-[h:inputJson = json.append("[]",
-    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
-    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
-)]
-[h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
-[h:inputJson = json.append(inputJson,
-    "CA|0|Combat Advantage vs. Targets (All)|CHECK",
-    "charge|0|Charge Attack vs. Targets (All)|CHECK",
-    "cover|None,Regular(-2),Superior(-5)|Cover vs. Targets (All)|RADIO|ORIENT=H",
-    "conceal|None,Regular(-2),Total(-5)|Concealment vs. Targets (All)|RADIO|ORIENT=H",
-    "longRange|0|Long Range vs. Targets (All)|CHECK",
-    "miscAtk|0|<html>Miscellaneous <b>modifier</b> to attack</html>",
-    "miscDam|0|<html>Miscellaneous <b>modifier</b> to damage</html>",
-    "useDetail|0|Use Detailed targetting screens?|CHECK"
-)]
-[h:yesDamRoll=1]
-[h,if(atkKey==1 || atkKey==4): inputJson = json.append(inputJson,"yesDamRoll|1|Roll damage? |CHECK")]
-[h:rerollAttack=0]
-[h,if(atkKey==1 || atkKey==2 || atkKey==4 || atkKey==5): inputJson = json.append(inputJson,"rerollAttack|0|Reroll d20 for attack and take highest? |CHECK")]
-[h:status = input(json.toList(inputJson,"##"))]
-[h:abort(status)]
-[h:targJson="[]"]
-[h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
-[h,if(numTargets<=0): targJson = targetJson]
-
-<!-- Skip attack portion on attack 3 and 6 -->
-[h:atkText=""]
-[h:atkVal=""]
-[h:inputAJson="{}"]
-[h,if(useDetail == 0): bonusTargetScreen()]
-
-[h:tableJson="[]"]
-[h:origAtkText = atkText]
-[h:origAtkVal  = atkVal]
-[h:defCA = CA]
-[h:defCharge = charge]
-[h:defCover = cover]
-[h:defConceal = conceal]
-[h:defLongRange = longRange]
-[h:defMiscAtk = miscAtk]
-[h:defMiscDam = miscDam]
-[h:defYesDamRoll = yesDamRoll]
-[h:defRerollAttack = rerollAttack]
-[h:myName     = getName()]
-[h,foreach(targ,json.toList(targJson),""),code: 
+[h:targetArgs = macro.args]
+[h:atkKey          = json.get(targetArgs, 0)]
+[h:atkName         = json.get(targetArgs, 1)]
+[h:atkMod          = json.get(targetArgs, 2)]
+[h:damMod          = json.get(targetArgs, 3)]
+[h:damRoll         = json.get(targetArgs, 4)]
+[h:critDamRoll     = json.get(targetArgs, 5)]
+[h:targetDefense   = json.get(targetArgs, 6)]
+[h:friendlyFire    = json.get(targetArgs, 7)]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:missDamageRoll  = json.get(targetArgs, 8)] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(targetArgs, 9)] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(targetArgs, 10)] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(targetArgs, 11)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(targetArgs, 12)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(targetArgs, 13)]
+[h:modAttackJson   = json.get(targetArgs, 14)]
+[h:keywords        = json.get(targetArgs, 15)]
+[h:damageTypes     = json.get(targetArgs, 16)]
+[h:token     	   = json.get(targetArgs, 17)]
+[h:powaStr     	   = json.get(targetArgs, 18)]
+[h:targList = getSelectedNames("json")]
+[h,if(!json.isEmpty(targList)),CODE:
 {
-  [h,if(useDetail): detailTargetScreen()]
-  [h:adjacentJson = getTokenNames("json", json.set("{}", "current", 1, "range", json.set("{}", "from", 0, "upto", 1, "distancePerCell", "false", "metric", "ONE_ONE_ONE", "token", targ)))]
-  [h,if(getState("Prone",targ) && 
-        listFind(keywords,"Ranged") > -1 && 
-        json.contains(adjacentJson,myName) == 0): atkVal = atkVal + "-2"]
-  [h,if(getState("Prone",targ) && 
-        listFind(keywords,"Ranged") > -1 && 
-        json.contains(adjacentJson,myName) == 0): atkText = atkText + " + TargProne(-2)"] 
-  [h,if(getState("Dazed",targ) || 
-        getState("Helpless",targ) || 
-        getState("Restrained",targ) || 
-        getState("Stunned",targ) || 
-        getState("Surprised",targ) || 
-        getState("Unconscious",targ) ||
-        getState("GrantingCA",targ)):
-          caState = 1; caState = 0
-  ]
-  [h,if(getState("Prone",targ) && 
-        listFind(keywords,"Melee") > -1): caState = 1]
-  [h,if(caState && CA == 0): atkVal = atkVal + "+2"]
-  [h,if(caState && CA == 0): atkText = atkText + " + CA(2)"]
-  [h,if(getState("Unconscious",targ)): atkVal = atkVal + "+5"]
-  [h,if(getState("Unconscious",targ)): atkText = atkText + " + Unconscious(5)"]
-  [h,if(getState("Weakened")): damText = damText + " + Weakened(1/2 damage)"]
-  [h,if(targ != MarkedBy && length(MarkedBy) > 0): useMarkPen = getProperty("MarkPenalty",MarkedBy); useMarkPen = 0]
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
-
-  [h:retu=macro.return]
-  [h:nextRowJson = json.append("[]",
-      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
-      json.get(retu,0),
-      targ,
-      if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
-    )
-  ]
-  [h:tableJson = json.append(tableJson,nextRowJson))]
-  [h:atkText = origAtkText]
-  [h:atkVal  = origAtkVal]
+};{
+[targList = "[]"]
 }]
-[macro("PrintAttackTable@"+UseLib): tableJson]
+[dialog("Power Options", "input=1; width=400; height=500"):
+{
+  <html>
+  <body>
+  <link rel='onChangeSelection' type='macro' href='[r:macroLinkText("TargetScreen@this", "none", targetArgs, "")]'></link>
+   <form name='powerOptions' method='json' action='[r:macroLinkText("ExecutePower@this", "all", "", token)]'>
+  [r:powaStr]<hr>
+  <table width='350'>
+   <tr><td><b><u>Targets</u></b></td><td><b><u>Combat Adv.</u></b></td><td><b><u>Attack &plusmn;</u></b></td><td><b><u>Damage &plusmn;</u></b></td></tr>
+  [r,foreach(targId, targList, ""),code:
+  {
+     <tr>
+	 <td><b>[r:targId]:</b></td>
+	<td align='center'><input name='[r:strformat("acaTarget%{roll.count}")]' type='checkbox'></input></td>
+	 <td><input name='[r:strformat("amodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 <td><input name='[r:strformat("dmodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 </tr>
+  }]
+  
+  </table>
+   <hr>
+ <table>
+<tr><td>One creature, <b>two attacks</b></td><td><input type='checkbox' name='onetwo'></input></td></tr>
+ <tr><td>I am <b>Charging</b></td><td><input type='checkbox' name='charge'></input></td></tr>
+ <tr><td><span title='These attack modifiers apply to all attacks'>Enter any <b>overall attack</b> modifiers:</span></td><td><input type='text' size='5' name='attackMods' value='0'></input></td></tr>
+ <tr><td><span title='These damage modifiers apply to all attacks'>Enter any <b>overall damage</b> modifiers:</td><td><input type='text' size='5' name='damageMods' value='0'></input></td></tr>
+<tr><td>Roll <b>twice</b> and take the...</td><td><select name='rollTwice'><option value='N/A'>N/A</option><option value='highest'>Highest</option><option value='lowest'>Lowest</option></select></td></tr>
+<tr><td><b>Override</b> the power default and target...</td><td><select name='defOverride'><option value='N/A'>N/A</option><option value='AC'>AC</option><option value='Fort'>Fortitude</option><option value='Ref'>Reflex</option><option value='Will'>Will</option></select></td></tr>
+ </table>
+  <hr>
+  <table>
+ <tr><td align='center'><input type='submit' name='SubmitButton' value='Attack'></input>&nbsp;<input type='submit' name='SubmitButton' value='Cancel'></input></td></tr>
+ </table>
+  <input type='hidden' name='atkKey' value='[r:atkKey]'></input>
+  <input type='hidden' name='atkName' value='[r:atkName]'></input>
+  <input type='hidden' name='atkMod' value='[r:atkMod]'></input>
+  <input type='hidden' name='damMod' value='[r:damMod]'></input>
+  <input type='hidden' name='damRoll' value='[r:damRoll]'></input>
+  <input type='hidden' name='critDamRoll' value='[r:critDamRoll]'></input>
+  <input type='hidden' name='targetDefense' value='[r:targetDefense]'></input>
+  <input type='hidden' name='friendlyFire' value='[r:friendlyFire]'></input>
+  <input type='hidden' name='missDamageRoll' value='[r:missDamageRoll]'></input>
+  <input type='hidden' name='targetStateJson' value='[r:targetStateJson]'></input>
+  <input type='hidden' name='selfStateJson' value='[r:selfStateJson]'></input>
+  <input type='hidden' name='markJson' value='[r:markJson]'></input>
+  <input type='hidden' name='vulnResistJson' value='[r:vulnResistJson]'></input>
+  <input type='hidden' name='modDefenseJson' value='[r:modDefenseJson]'></input>
+  <input type='hidden' name='modAttackJson' value='[r:modAttackJson]'></input>
+  <input type='hidden' name='keywords' value='[r:keywords]'></input>
+  <input type='hidden' name='damageTypes' value='[r:damageTypes]'></input>
+  <input type='hidden' name='targList' value='[r:targList]'></input>
+  <input type='hidden' name='powaStr' value='[r:powaStr]'></input>
+  </form>
+  </body>
+  </html>
+}]
+[h:abort(0)]

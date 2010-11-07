@@ -1,2 +1,2 @@
-[h: output = strformat('<span style="background:#EEEEEE" title="%s">%s</span>',arg(0),arg(1))]
+[h: output = strformat("<span style='background:#EEEEEE' title='%s'>%s</span>",arg(0),arg(1))]
 {output}
