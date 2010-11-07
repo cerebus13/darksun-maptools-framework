@@ -115,7 +115,6 @@
   ]
   [h:tableJson = json.append(tableJson,nextRowJson))]
     [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
-  [h:atkText = atkText + " vs. " + targetDefense]
 
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
