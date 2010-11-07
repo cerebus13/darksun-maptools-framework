@@ -50,8 +50,8 @@
  <tr><td>I am <b>Charging</b></td><td><input type='checkbox' name='charge'></input></td></tr>
  <tr><td><span title='These attack modifiers apply to all attacks'>Enter any <b>overall attack</b> modifiers:</span></td><td><input type='text' size='5' name='attackMods' value='0'></input></td></tr>
  <tr><td><span title='These damage modifiers apply to all attacks'>Enter any <b>overall damage</b> modifiers:</td><td><input type='text' size='5' name='damageMods' value='0'></input></td></tr>
-<tr><td>Roll <b>twice</b> and take the...</td><td><select name='rollTwice'><option value='N/A'>N/A</option><option value='highest'>Highest</option><option value='lowest'>Lowest</option></select></td></tr>
-<tr><td><b>Override</b> the power default and target...</td><td><select name='defOverride'><option value='N/A'>N/A</option><option value='AC'>AC</option><option value='Fort'>Fortitude</option><option value='Ref'>Reflex</option><option value='Will'>Will</option></select></td></tr>
+<tr><td>Roll <b>twice</b> and take the higher result</td><td><input type='checkbox' name='rollTwice'></input></td></tr>
+<tr><td><b>Override</b> the power default and target...</td><td><select name='defOverride'><option value='N/A'>N/A</option><option value='AC'>AC</option><option value='Fortitude'>Fortitude</option><option value='Reflex'>Reflex</option><option value='Willpower'>Will</option></select></td></tr>
  </table>
   <hr>
   <table>
