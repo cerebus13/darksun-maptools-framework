@@ -5,6 +5,7 @@
 <!-- 7 = Single/Multi heal -->
 <!-- 8 = AOE heal -->
 <!-- 9 = Self only heal -->
+[h:targetArgs = macro.args]
 [h:atkKey          = json.get(macro.args, 0)]
 [h:atkName         = json.get(macro.args, 1)]
 [h:yesHeal         = json.get(macro.args, 2)]
@@ -23,58 +24,54 @@
 [h:modAttackJson   = json.get(macro.args, 15)]
 [h:includeSelf     = json.get(macro.args, 16)]
 [h:bloodyOnly      = json.get(macro.args, 17)]
-
-[h:targetJson="[]"]
-[h:selfName = getName()]
-[h,if(maxRange>-1): evalMacro('[macro("GetTargets@"+UseLib): json.append("[]", maxRange, friendlyFire, otherSource)]')]
-[h,if(maxRange>-1): targetJson = macro.return]
-[h,if(includeSelf && json.contains(targetJson,selfName) == 0): targetJson = json.append(targetJson, selfName)]
-[h,if(bloodyOnly): bloodyJson = targetJson;bloodyJson = "[]"]
-[h,if(bloodyOnly): bloodyJson2 = ""]
-[h,foreach(item,json.toList(bloodyJson)): bloodyJson2 = if(getProperty("CurrentHP",item) > getProperty("BloodyValue",item),bloodyJson2,bloodyJson2 + item + ",")]
-[h,if(bloodyOnly): targetJson = json.fromList(bloodyJson2)]
-
-[h:targetImageList = "None,"]
-[h,foreach(item,json.toList(targetJson)): targetImageList = strformat("%s%s",targetImageList,strformat("%s %s,",item,getTokenImageById(item)),"")]
-
-[h:inputJson = json.append("[]",
-    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
-    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE"
-)]
-[h,count(numTargets,""): inputJson = json.append(inputJson,strformat("targ%d|%s|Choose target #%d|LIST|ICON=TRUE ICONSIZE=30",roll.count+1,targetImageList,roll.count+1))]
-[h,if(yesHeal): inputJson = json.append(inputJson,"miscHeal|0|<html>Miscellaneous <b>modifier</b> to heal</html>")]
-[h,if(yesTempHP): inputJson = json.append(inputJson,"miscTempHP|0|<html>Miscellaneous <b>modifier</b> to temp HP granted</html>")]
-[h:status = input(json.toList(inputJson,"##"))]
-[h:abort(status)]
-[h:targJson="[]"]
-[h,count(numTargets,""): evalMacro(strformat("[h,if(targ%d>0): targJson = json.append(targJson, json.get(targetJson,targ%d-1))]",roll.count+1,roll.count+1))]
-[h,if(numTargets<=0 && atkKey != 9): targJson = targetJson]
-[h,if(atkKey == 9): targJson = json.append("[]", getName())]
-
-[h,if(yesHeal): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", healMod, "HealBonuses", miscHeal, "{}")]')]
-[h,if(yesHeal): healText = json.get(macro.return, 0);healText="0"]
-[h,if(yesHeal): healVal = json.get(macro.return, 1);healVal="0"]
-
-[h,if(yesTempHP): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", tempHPMod, "TempHPBonuses", miscTempHP, "{}")]')]
-[h,if(yesTempHP): tempHPText = json.get(macro.return, 0);tempHPText="0"]
-[h,if(yesTempHP): tempHPVal = json.get(macro.return, 1);tempHPVal="0"]
-
-<!-- AOE heal applies the same roll to all targets -->
-[h,if(atkKey==8): useHeal=eval(healRoll); useHeal=healRoll]
-[h,if(atkKey==8): useTempHP=eval(tempHPRoll); useTempHP=tempHPRoll]
-
-[h:tableJson="[]"]
-[h,foreach(targ,json.toList(targJson),""),code: 
+[h:token     	   = json.get(targetArgs, 18)]
+[h:powaStr     	   = json.get(targetArgs, 19)]
+[h:targList = getSelectedNames("json")]
+[h,if(!json.isEmpty(targList)),CODE:
 {
-  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson,modAttackJson)]
-  [h:retu=macro.return]
-  [h:nextRowJson = json.append("[]",
-      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),
-      -1,
-      targ,
-      if(yesTempHP,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",tempHPRoll,json.get(retu,2),tempHPText),strformat("Temp HP: <b>%s</b>",json.get(retu,3))),"")
-    )
-  ]
-  [h:tableJson = json.append(tableJson,nextRowJson))]
+};{
+[targList = "[]"]
 }]
-[macro("PrintAttackTable@"+UseLib): tableJson]
+[dialog("Power Options", "input=1; width=400; height=500"):
+{
+  <html>
+  <body>
+  <link rel='onChangeSelection' type='macro' href='[r:macroLinkText("HealTargetScreen@this", "none", targetArgs, "")]'></link>
+   <form name='powerOptions' method='json' action='[r:macroLinkText("ExecuteHeal@this", "all", "", token)]'>
+  [r:powaStr]<hr>
+  <table width='350'>
+   <tr><td><b><u>Targets</u></b></td><td><b><u>Heal Mod. &plusmn;</u></b></td><td><b><u>Temp HP Mod. &plusmn;</u></b></td></tr>
+  [r,foreach(targId, targList, ""),code:
+  {
+     <tr>
+	 <td><b>[r:targId]:</b></td>
+	 <td><input name='[r:strformat("healmodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 <td><input name='[r:strformat("tempmodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 </tr>
+  }]
+  
+  </table>
+   <hr>
+  <hr>
+  <table>
+ <tr><td align='center'><input type='submit' name='SubmitButton' value='Attack'></input>&nbsp;<input type='submit' name='SubmitButton' value='Cancel'></input></td></tr>
+ </table>
+  <input type='hidden' name='atkKey' value='[r:atkKey]'></input>
+  <input type='hidden' name='atkName' value='[r:atkName]'></input>
+  <input type='hidden' name='yesHeal' value='[r:yesHeal]'></input>
+  <input type='hidden' name='healMod' value='[r:healMod]'></input>
+  <input type='hidden' name='healRoll' value='[r:healRoll]'></input>
+  <input type='hidden' name='yesTempHP' value='[r:yesTempHP]'></input>
+  <input type='hidden' name='tempHPMod' value='[r:tempHPMod]'></input>
+  <input type='hidden' name='tempHPRoll' value='[r:tempHPRoll]'></input>
+  <input type='hidden' name='useSurge' value='[r:useSurge]'></input>
+  <input type='hidden' name='selfStateJson' value='[r:selfStateJson]'></input>
+  <input type='hidden' name='modDefenseJson' value='[r:modDefenseJson]'></input>
+  <input type='hidden' name='modAttackJson' value='[r:modAttackJson]'></input>
+  <input type='hidden' name='targList' value='[r:targList]'></input>
+  <input type='hidden' name='powaStr' value='[r:powaStr]'></input>
+  </form>
+  </body>
+  </html>
+}]
+[h:abort(0)]

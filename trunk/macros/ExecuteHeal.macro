@@ -1,0 +1,53 @@
+[h: args = macro.args]
+
+[h:selectedButton = json.get(args, "SubmitButton")]
+[h,if(selectedButton == "Cancel"): abort(0)]
+
+[h:atkKey          = json.get(args, "atkKey")]
+[h:atkName         = json.get(args, "atkName")]
+[h:yesHeal         = json.get(args, "yesHeal")]
+[h:healMod         = json.get(args, "healMod")]
+[h:healRoll        = json.get(args, "healRoll")]
+[h:yesTempHP         = json.get(args, "yesTempHP")]
+[h:tempHPMod       = json.get(args, "tempHPMod")]
+[h:tempHPRoll      = json.get(args, "tempHPRoll")]
+[h:useSurge         = json.get(args, "useSurge")]
+[h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(args, "modDefenseJson")]
+[h:modAttackJson   = json.get(args, "modAttackJson")]
+[h:powaStr     	   = json.get(args, "powaStr")]
+[h:targJson = json.get(args, "targList")]
+
+<!-- AOE heal applies the same roll to all targets -->
+[h,if(atkKey==8): useHeal=eval(healRoll); useHeal=healRoll]
+[h,if(atkKey==8): useTempHP=eval(tempHPRoll); useTempHP=tempHPRoll]
+
+[h:tableJson="[]"]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h: miscHeal = json.get(args, "healmodTarget"+roll.count)]
+  [h: evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", healMod, "HealBonuses", miscHeal, "{}")]')]
+  [h: healText = json.get(macro.return, 0)]
+  [h: healVal = json.get(macro.return, 1)]
+
+
+  [h: miscTempHP = json.get(args, "tempmodTarget"+roll.count)]
+  [h: evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", tempHPMod, "TempHPBonuses", miscTempHP, "{}")]')]
+  [h: tempHPText = json.get(macro.return, 0)]
+  [h: tempHPVal = json.get(macro.return, 1)]
+  
+  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson,modAttackJson)]
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),
+      -1,
+      targ,
+      if(yesTempHP,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",tempHPRoll,json.get(retu,2),tempHPText),strformat("Temp HP: <b>%s</b>",json.get(retu,3))),"")
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+}]
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+[macro("PrintAttackTable@"+UseLib): tableJson]

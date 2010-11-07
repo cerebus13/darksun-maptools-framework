@@ -1,0 +1,27 @@
+[h: args = macro.args]
+
+[h:selectedButton = json.get(args, "SubmitButton")]
+[h,if(selectedButton == "Cancel"): abort(0)]
+
+[h:atkKey          = json.get(args, "atkKey")]
+[h:atkName         = json.get(args, "atkName")]
+[h:targetStateJson = json.get(args, "targetStateJson")] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(args, "markJson")] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(args, "vulnResistJson")] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(args, "modDefenseJson")]
+[h:modAttackJson   = json.get(args, "modAttackJson")]
+[h:powaStr     	   = json.get(args, "powaStr")]
+
+
+[h:targJson = json.get(args, "targList")]
+[h:affectedTargs = ""]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h,macro("DoSecondary@"+UseLib): json.append("[]",targ,targetStateJson,selfStateJson,markJson,vulnResistJson,modDefenseJson,modAttackJson)]
+  [h:affectedTargs = strformat("%s%s, ",affectedTargs,targ)]
+}]
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+<br><span title=""><font color='black'><b>Affected: </b> {affectedTargs}</font></span>
