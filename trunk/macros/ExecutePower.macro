@@ -103,8 +103,6 @@
   
   [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
   [h:atkText = atkText + " vs. " + targetDefense]
-[h, if(onetwo), CODE:
-{
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
       if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
@@ -114,7 +112,10 @@
     )
   ]
   [h:tableJson = json.append(tableJson,nextRowJson))]
-    [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+  
+  [h, if(onetwo), CODE:
+{
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
 
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
