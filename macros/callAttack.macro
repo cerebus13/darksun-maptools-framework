@@ -89,12 +89,12 @@
   case 2: tableBG="#FF0000";
   case 3: tableBG="#000000"
 ]
-[h,if(length(useKeywords)!=0): useKeywords=strformat("<tr><td align=left><b>%s</b></td></tr>",useKeywords); useKeywords=""]
-[h,if(length(rangeText)!=0): rangeText=strformat("<td align=right><b>%s</b></td>",rangeText); rangeText=""]
-[h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat("<td align=right><b>Attack:</b> %s vs. %s</td>",hitStatAdded,targetDefense); versusStr=""]
-[h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat("<td align=right><b>Attack:</b>vs. %s</td>",targetDefense)]
-[h,if(length(effectText)!=0): effectText=strformat("<tr bgcolor=#D6D6C2><td align=left colspan=2>%s</td></tr>",effectText); effectText=""]
-[h:powaStr=strformat('<table width=400><tr bgcolor=%s><td style="padding:0px 5px"align=left><font color=#FFFFFF><b>%s</b></font></td><td align=right><font color=#FFFFFF><b>%s</b></font></td></tr>%s<tr><td align=left><b>%s</b></td>%s</tr><tr><td align=left><b>Target:</b> %s</td>%s</tr>%s</table>',
+[h,if(length(useKeywords)!=0): useKeywords=strformat('<tr><td style="padding:0px 5px" align=left><b>%s</b></td></tr>',useKeywords); useKeywords=""]
+[h,if(length(rangeText)!=0): rangeText=strformat('<td style="padding:0px 5px" align=right><b>%s</b></td>',rangeText); rangeText=""]
+[h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat('<td style="padding:0px 5px" align=right><b>Attack:</b> %s vs. %s</td>',hitStatAdded,targetDefense); versusStr=""]
+[h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat('<td style="padding:0px 5px" align=right><b>Attack:</b>vs. %s</td>',targetDefense)]
+[h,if(length(effectText)!=0): effectText=strformat('<tr bgcolor="#D6D6C2"><td style="padding:0px 5px" align=left colspan="2">%s</td></tr>',effectText); effectText=""]
+[h:powaStr=strformat('<table width=400><tr bgcolor=%s><td style="padding:0px 5px"align=left><font color=#FFFFFF><b>%s</b></font></td><td style="padding:0px 5px" align=right><font color=#FFFFFF><b>%s</b></font></td></tr>%s<tr><td style="padding:0px 5px" align=left><b>%s</b></td>%s</tr><tr><td style="padding:0px 5px" align=left><b>Target:</b> %s</td>%s</tr>%s</table>',
 tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,versusStr,effectText)]
 
 [h:macroTT=json.get(getMacroProps(getMacroButtonIndex(),"json"),"tooltip")]
