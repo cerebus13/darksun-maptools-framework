@@ -13,9 +13,9 @@ import info.rodinia.tokenmaker.TokenMaker.Skill;
  * PCDataAccessor deals with reading in a PC's data from a file outside the
  * program. It could be overridden to provide a new method of getting PC data
  * into the program.
- * 
+ *
  * @author Blakey, Summer 2010
- * 
+ *
  */
 public class PCDataAccessor {
 
@@ -26,7 +26,7 @@ public class PCDataAccessor {
      * contents of the file. The file is assumed to be a DDi Character Builder
      * save file but this function could be overridden to provide access to a
      * different form of input file.
-     * 
+     *
      * @param file
      *            - the file we are loading
      * @return the PC we have built from the file.
@@ -510,16 +510,49 @@ public class PCDataAccessor {
 		// get the Power element
 		Element el = (Element) nl.item(i);
 		String equipCount = el.getAttribute("equip-count");
-		if (equipCount.equals("0")) {
-		    continue;
-		} else {
-		    Element e = (Element) el.getElementsByTagName(
-			    "RulesElement").item(0);
-		    String name = e.getAttribute("name");
-		    String url = e.getAttribute("url");
-		    Equipment item = new Equipment(name);
-		    item.setUrl(url);
-		    equipment.add(item);
+		String lootCount = el.getAttribute("count");
+
+		/**
+		 * How it used to work - only showing equipped items if
+		 * (equipCount.equals("0")) { continue; } else { NodeList list =
+		 * el.getElementsByTagName("RulesElement"); if (list != null &&
+		 * list.getLength() > 0) { for (int j = 0; j < list.getLength();
+		 * j++) { Element e = (Element) list.item(j); String name =
+		 * e.getAttribute("name"); String url = e.getAttribute("url");
+		 * Equipment item = new Equipment(name); item.setUrl(url);
+		 * equipment.add(item);
+		 *
+		 * } } }
+		 ***/
+
+		// How it works now - showing ALL equipment which match the
+		// criteria below
+		if (!lootCount.equals("0")) {	// only show those items we still own
+		    NodeList list = el.getElementsByTagName("RulesElement");
+		    if (list != null && list.getLength() > 0) {
+			for (int j = 0; j < list.getLength(); j++) {
+			    Element e = (Element) list.item(j);
+			    String name = e.getAttribute("name");
+			    String url = e.getAttribute("url");
+			    String type = e.getAttribute("type");
+			    Equipment item = new Equipment(name);
+			    // differentiate equipped and stashed for separation on the sheet.
+			    if (Integer.parseInt(equipCount) > 0) {
+				item.setEquipped(true);
+			    } else {
+				item.setEquipped(false);
+			    }
+			    item.setUrl(url);
+
+			    // Only display:
+			    if (type.equals("Magic Item")
+				    || type.equals("Armor")
+				    || type.equals("Weapon")) {
+				equipment.add(item);
+			    }
+
+			}
+		    }
 		}
 	    }
 	}
@@ -797,7 +830,7 @@ public class PCDataAccessor {
 
     /**
      * Count the number of times this power comes up in the "Usage" text.
-     * 
+     *
      * @param name
      * @return
      */
@@ -839,6 +872,7 @@ public class PCDataAccessor {
 		if (p.getName().equals("Healing Word")
 			|| p.getName().equals("Inspiring Word")
 			|| p.getName().equals("Rune of Mending")
+			|| p.getName().equals("Ardent Surge")
 			|| p.getName().equals("Majestic Word")) {
 		    for (int j = 1; j <= countUsage(p.getName()); j++) {
 			Power newp = new Power(p);

@@ -7,21 +7,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
+import org.apache.commons.lang.ArrayUtils;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Token models a MapTool token. It is a superclass which is specialised by
  * {@link NPCToken} and {@link PCToken}.
- * 
+ *
  * @author Blakey, Summer 2010
- * 
+ *
  */
 public class Token {
 
     // map tool version we are making these tokens for.
-    private static final String mapToolVersion = "1.3.b66";
+    private static final String mapToolVersion = "1.3.b76";
     /**
      * this is my special macro which allows a token to display it's HTML
      * formatted character sheet inside MapTool
@@ -69,6 +69,7 @@ public class Token {
     private boolean isFlippedX = false;
     private boolean isFlippedY = false;
     private boolean hasSight = true;
+    protected String gmName = null;
 
     // portrait info
     private File md5KeyFile;
@@ -76,29 +77,32 @@ public class Token {
     private File myPortrait;
 
     // token file info
-    private String tokenName = null;
-    private File tokenFile;
+    protected String tokenName = null;
+    protected File tokenFile;
 
     // underlying character
     protected Character me;
-    
-    public Token() {
-	this("token"); // default name
+
+    // is a Joe formatted token?
+    protected boolean isJoe = true;
+
+    public Token(boolean isJoe) {
+        this("token",isJoe); // default name
     }
 
-    public Token(String name) {
-	this.tokenName = name;
+    public Token(String name, boolean isJoe) {
+        this.tokenName = name;
+        this.isJoe = isJoe;
     }
 
-
-    public Token(Character me) {
-	this.me = me;
+    public Token(Character me, boolean isJoe) {
+        this.me = me;
+        this.isJoe = isJoe;
     }
-    
-    
+
     /**
      * Allow a caller to set up the source portrait file for this token.
-     * 
+     *
      * @param port
      *            - the file you want to use as this token's portrait file
      */
@@ -129,9 +133,15 @@ public class Token {
 	tokenName = name;
     }
 
-    // allow a caller to set up the name of the PC/NPC
+    // allow a caller to set up the name/gmName of the PC/NPC
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
+        this.gmName = name;
+    }
+
+    // allow a caller to set up the propertyType of the PC/NPC
+    public void setPropertyType(String pt) {
+        this.propertyType = pt;
     }
 
     /**
@@ -140,15 +150,15 @@ public class Token {
      * file to disk.
      */
     public void save() {
-	if (tokenName == null || tokenFile == null)
-	    return;
-	makeTokenDir();
-	saveAssets();
-	saveContentXML();
-	savePropertiesXML();
-	createThumbnail();
-	makeZip();
-	deleteDir(new File(tokenName));
+        if (tokenName == null || tokenFile == null)
+            return;
+        makeTokenDir();
+        saveAssets();
+        saveContentXML();
+        savePropertiesXML();
+        createThumbnail();
+        makeZip();
+        deleteDir(new File(tokenName));
     }
 
     // recursively zip up a directory
@@ -366,7 +376,20 @@ public class Token {
 		    + "</propertyType>\n");
 	    writer.write("  <isFlippedX>" + isFlippedX + "</isFlippedX>\n");
 	    writer.write("  <isFlippedY>" + isFlippedY + "</isFlippedY>\n");
+        // Sight type
+        if (me.getSenses().toLowerCase().contains("lowlight") || me.getSenses().toLowerCase().contains("low-light"))
+            writer.write("  <sightType>Lowlight</sightType>\n");
+        else if (me.getSenses().toLowerCase().contains("darkvision"))
+            writer.write("  <sightType>Darkvision</sightType>\n");
+        else
+            writer.write("  <sightType>Normal</sightType>\n");
 	    writer.write("  <hasSight>" + hasSight + "</hasSight>\n");
+        writer.write("  <notes>Equipment:" + me.getEquipmentSimple() + "</notes>\n");
+        // gmNotes have a bunch of stuff: Alignment, Languages, Immunities, etc...
+        String gmNotes = "Alignment: " + me.getAlignment() + "\nLanguages: " + me.getLanguages() + "\nImmunities: " + me.getImmune() +
+                         (me.getRealDescription().length() > 0 ? "\nDescription: " + me.getRealDescription() : "");
+        writer.write("  <gmNotes>" + gmNotes + "</gmNotes>\n");
+        writer.write("  <gmName>" + gmName + "</gmName>\n");
 	    writer.write("  <state/>\n");
 
 	    writePropertyMap(writer);
@@ -424,238 +447,316 @@ public class Token {
 	    writer.write("  <propertyMap>\n");
 	    writer.write("    <store>\n");
 
-	    // Level
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>level</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Level</key>\n");
-	    writer.write("          <value class=\"string\">" + me.getLevel()
-		    + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+        if (this.propertyType.equals("Joe 4e Monster"))
+        {
+            // Level
+            propMapXMLwrite(writer, "Level", String.valueOf(me.getLevel()));
 
-	    // SaveBonus
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>savebonus</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>SaveBonus</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getSavingThrows() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // Role
+            propMapXMLwrite(writer, "Role", me.getCombatRole());
 
-	    // Initiative
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>initiative</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Initiative</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getInitiative() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>initrolls</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>InitRolls</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getInitRolls() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // XP
+            propMapXMLwrite(writer, "XP", String.valueOf(me.getXp()));
 
-	    // APs
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>aps</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>APs</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getActionPoints() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // Initiative
+            propMapXMLwrite(writer, "Initiative", String.valueOf(me.getInitiative()));
 
-	    // Hit Points
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>currenthp</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>CurrentHP</key>\n");
-	    writer.write("          <value class=\"string\">" + me.getHP()
-		    + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>maxhp</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>MaxHP</key>\n");
-	    writer.write("          <value class=\"string\">" + me.getHP()
-		    + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // Senses
+            propMapXMLwrite(writer, "Senses", me.getSenses());
+   
+            // CurrentHP
+            propMapXMLwrite(writer, "CurrentHP", String.valueOf(me.getHP()));
 
-	    // Defences
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>ac</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>AC</key>\n");
-	    writer.write("          <value class=\"string\">" + me.getAC()
-		    + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>fortitude</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Fortitude</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getFortitude() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>reflex</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Reflex</key>\n");
-	    writer.write("          <value class=\"string\">" + me.getReflex()
-		    + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>will</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Will</key>\n");
-	    writer.write("          <value class=\"string\">" + me.getWill()
-		    + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // MaxHP
+            propMapXMLwrite(writer, "MaxHP", String.valueOf(me.getHP()));
 
-	    // Attributes
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>attributes</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Attributes</key>\n");
+            // ActionPoints
+            if (me.getActionPoints() > 0)
+                propMapXMLwrite(writer, "ActionPoints", String.valueOf(me.getActionPoints()));
 
-	    writer.write("          <value class=\"string\">"
-		    + me.getAttributesList() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // ACBase
+            propMapXMLwrite(writer, "ACBase", String.valueOf(me.getAC()));
 
-	    // Skills
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>skills</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>Skills</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getSkillsList() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // FortBase
+            propMapXMLwrite(writer, "FortBase", String.valueOf(me.getFortitude()));
 
-	    // Daily Items Usage
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>dailyitems</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>DailyItems</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getItemUsage() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // RefBase
+            propMapXMLwrite(writer, "RefBase", String.valueOf(me.getReflex()));
+            
+            // WillBase
+            propMapXMLwrite(writer, "WillBase", String.valueOf(me.getWill()));
 
-	    // Healing Surges
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>maxsurges</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>MaxSurges</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getHealingSurges() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>currentsurges</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>CurrentSurges</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getHealingSurges() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // Movement
+            propMapXMLwrite(writer, "Movement", String.valueOf(me.getSpeed()));
 
-	    // Healing Surge Value
-	    writer.write("      <entry>\n");
-	    writer.write("        <string>extrasurgevalue</string>\n");
-	    writer
-		    .write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("          <key>ExtraSurgeValue</key>\n");
-	    writer.write("          <value class=\"string\">"
-		    + me.getHealingSurgeValue() + "</value>\n");
-	    writer
-		    .write("          <outer-class reference=\"../../../..\"/>\n");
-	    writer
-		    .write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
-	    writer.write("      </entry>\n");
+            // Lore
+            String lore = "";
+            String lowerDesc = me.getDescription().toLowerCase();
+            if (lowerDesc.contains("elemental") || lowerDesc.contains("fey") || lowerDesc.contains("shadow"))
+                lore += " Arcana";
+            if (lowerDesc.contains("aberrant"))
+                lore += " Dungeoneering";
+            if (lowerDesc.contains("natural"))
+                lore += " Nature";
+            if (lowerDesc.contains("immortal") || lowerDesc.contains("undead"))
+                lore += " Religion";
+            if (lore.substring(0,1).equals(" "))
+                lore = lore.substring(1);
+            propMapXMLwrite(writer, "Lore", lore);
+ 
+            // Elevation
+            propMapXMLwrite(writer, "Elevation", "0");
+
+            // Strength
+            propMapXMLwrite(writer, "Strength", String.valueOf(me.getAttributes().get(Attribute.Strength)));
+
+            // Constitution
+            propMapXMLwrite(writer, "Constitution", String.valueOf(me.getAttributes().get(Attribute.Constitution)));
+
+            // Dexterity
+            propMapXMLwrite(writer, "Dexterity", String.valueOf(me.getAttributes().get(Attribute.Dexterity)));
+
+            // Intelligence
+            propMapXMLwrite(writer, "Intelligence", String.valueOf(me.getAttributes().get(Attribute.Intelligence)));
+
+            // Wisdom
+            propMapXMLwrite(writer, "Wisdom", String.valueOf(me.getAttributes().get(Attribute.Wisdom)));
+
+            // Charisma
+            propMapXMLwrite(writer, "Charisma", String.valueOf(me.getAttributes().get(Attribute.Charisma)));
+            
+            // SaveBonus
+            propMapXMLwrite(writer, "SaveBonus", String.valueOf(me.getSavingThrows()));
+
+            // Skills
+            propMapXMLwrite(writer, "Skills", me.getSkillsList());
+
+            // Weaknesses/Vulnerabilities
+            for (String vulns : me.getVulnerable().split(", "))
+            {
+                // clean up the vuln name a bit
+                vulns = vulns.replace(";", "");
+                vulns = vulns.trim();
+                if (vulns.length() == 0)
+                    continue;
+                String[] vulnSplit = vulns.split(" ");
+                propMapXMLwrite(writer, "InnateVuln" + vulnSplit[1].substring(0, 1).toUpperCase() + vulnSplit[1].substring(1), vulnSplit[0]);
+            }
+
+            // Resistances (note: Immunities can apply here, to fudge it I'll set an Immune to a Resist 999)
+            for (String resists : me.getResistances().split(", "))
+            {
+                // clean up the resist name a bit
+                resists = resists.replace(";", "");
+                resists = resists.trim();
+                if (resists.length() == 0)
+                    continue;
+                String[] resistSplit = resists.split(" ");
+                if (resistSplit.length > 1)
+                    propMapXMLwrite(writer, "InnateRes" + resistSplit[1].substring(0, 1).toUpperCase() + resistSplit[1].substring(1), resistSplit[0]);
+                else if (resistSplit.length == 1) // Sometimes a monster has their Immune stats accidentally renamed to Resist, so there are no values.  Assume 999 instead.
+                    propMapXMLwrite(writer, "InnateRes" + resists.substring(0, 1).toUpperCase() + resists.substring(1), "999");
+            }
+            for (String immunes : me.getImmune().split(", "))
+            {
+                // clean up the immunes name a bit
+                immunes = immunes.replace(";", "");
+                immunes = immunes.trim();
+                if (immunes.length() == 0 || !ArrayUtils.contains(TokenMaker.Elements, immunes))
+                    continue;
+                propMapXMLwrite(writer, "InnateRes" + immunes.substring(0, 1).toUpperCase() + immunes.substring(1), "999");
+            }
+
+            // UseLib property - unique to Joe's campaign to track which library token to use for versioning updates
+            propMapXMLwrite(writer, "UseLib", "Lib:PlayerStomp3");
+        }
+        else // blakey's property set
+        {
+            // Level
+            writer.write("      <entry>\n");
+            writer.write("        <string>level</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Level</key>\n");
+            writer.write("          <value class=\"string\">" + me.getLevel() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // SaveBonus
+            writer.write("      <entry>\n");
+            writer.write("        <string>savebonus</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>SaveBonus</key>\n");
+            writer.write("          <value class=\"string\">" + me.getSavingThrows() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Initiative
+            writer.write("      <entry>\n");
+            writer.write("        <string>initiative</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Initiative</key>\n");
+            writer.write("          <value class=\"string\">" + me.getInitiative() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+            writer.write("      <entry>\n");
+            writer.write("        <string>initrolls</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>InitRolls</key>\n");
+            writer.write("          <value class=\"string\">" + me.getInitRolls() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // APs
+            writer.write("      <entry>\n");
+            writer.write("        <string>aps</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>APs</key>\n");
+            writer.write("          <value class=\"string\">" + me.getActionPoints() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Hit Points
+            writer.write("      <entry>\n");
+            writer.write("        <string>currenthp</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>CurrentHP</key>\n");
+            writer.write("          <value class=\"string\">" + me.getHP() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+            writer.write("      <entry>\n");
+            writer.write("        <string>maxhp</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>MaxHP</key>\n");
+            writer.write("          <value class=\"string\">" + me.getHP() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Defences
+            writer.write("      <entry>\n");
+            writer.write("        <string>ac</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>AC</key>\n");
+            writer.write("          <value class=\"string\">" + me.getAC() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+            writer.write("      <entry>\n");
+            writer.write("        <string>fortitude</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Fortitude</key>\n");
+            writer.write("          <value class=\"string\">" + me.getFortitude() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+            writer.write("      <entry>\n");
+            writer.write("        <string>reflex</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Reflex</key>\n");
+            writer.write("          <value class=\"string\">" + me.getReflex() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+            writer.write("      <entry>\n");
+            writer.write("        <string>will</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Will</key>\n");
+            writer.write("          <value class=\"string\">" + me.getWill() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Attributes
+            writer.write("      <entry>\n");
+            writer.write("        <string>attributes</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Attributes</key>\n");
+            writer.write("          <value class=\"string\">" + me.getAttributesList() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Skills
+            writer.write("      <entry>\n");
+            writer.write("        <string>skills</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>Skills</key>\n");
+            writer.write("          <value class=\"string\">" + me.getSkillsList() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Daily Items Usage
+            writer.write("      <entry>\n");
+            writer.write("        <string>dailyitems</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>DailyItems</key>\n");
+            writer.write("          <value class=\"string\">" + me.getItemUsage() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Healing Surges
+            writer.write("      <entry>\n");
+            writer.write("        <string>maxsurges</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>MaxSurges</key>\n");
+            writer.write("          <value class=\"string\">" + me.getHealingSurges() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+            writer.write("      <entry>\n");
+            writer.write("        <string>currentsurges</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>CurrentSurges</key>\n");
+            writer.write("          <value class=\"string\">" + me.getHealingSurges() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+
+            // Healing Surge Value
+            writer.write("      <entry>\n");
+            writer.write("        <string>extrasurgevalue</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>ExtraSurgeValue</key>\n");
+            writer.write("          <value class=\"string\">" + me.getHealingSurgeValue() + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+        }
 
 	    writer.write("    </store>\n");
 	    writer.write("  </propertyMap>\n");
-	} catch (Exception e) {
-	    System.err.println("Error writing property map: " + e);
-	}
+        } catch (Exception e) {
+            System.err.println("Error writing property map: " + e + "\nStack Track: ");
+            e.printStackTrace();
+        }
+    } // end of writePropertyMap
+
+    // propMapXMLwrite - shortcut function to re-use some XML writing code
+    private void propMapXMLwrite(BufferedWriter writer, String prop, String concater)
+    {
+        try
+        {
+            writer.write("      <entry>\n");
+            writer.write("        <string>" + prop.toLowerCase() + "</string>\n");
+            writer.write("        <net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("          <key>" + prop + "</key>\n");
+            writer.write("          <value class=\"string\">" + concater + "</value>\n");
+            writer.write("          <outer-class reference=\"../../../..\"/>\n");
+            writer.write("        </net.rptools.CaseInsensitiveHashMap_-KeyValue>\n");
+            writer.write("      </entry>\n");
+        }
+        catch (Exception e)
+        {
+            System.err.println("Error writing propMapXMLwrite: " + e);
+        }
     }
 
     protected String buildHtml() {
@@ -686,7 +787,11 @@ public class Token {
 
 	html += "; <b>[r:macroLink(\"Bloodied\", \"hpLose@Lib:Blakey\", \"all\", \"\", currentToken())]</b> "
 		+ (me.getHP() / 2);
-	html += "; <b>[r:macroLink(\"Surges\", \"secondWind@Lib:Blakey\", \"all\", \"\", currentToken())]</b> [R: currentSurges] / [R:maxSurges]<br/>\n";
+    if (me instanceof PC)
+    {
+        html += "; <b>[r:macroLink(\"Surges\", \"secondWind@Lib:Blakey\", \"all\", \"\", currentToken())]</b> [R: currentSurges] / [R:maxSurges]";
+    }
+    html += "<br/>\n";
 
 	if (me.getRegeneration() != "")
 	    html += "<b>Regeneration</b> " + me.getRegeneration() + " <br/>\n";
@@ -713,18 +818,9 @@ public class Token {
 	if (me.getItemUsage() != 0)
 	    html += "<b>[r:macroLink(\"Dailies\", \"spendDailyItem@Lib:Blakey\", \"all\", \"\", currentToken())]</b> [R: DailyItems]</p>\n\n";
 
-	// now the powers
-	// do them in Usage order...
-	for (Power p : me.getPowers()) {
-	    if (p.getActionType().toLowerCase().contains("trait")) {
-		html += buildPowerHtml(p) + "\n\n";
-	    }
-	}
-	for (Power p : me.getPowers()) {
-	    if (p.getActionType().toLowerCase().contains("triggered")) {
-		html += buildPowerHtml(p) + "\n\n";
-	    }
-	}
+	// now the power
+ /*	// do them in Usage order...
+
 	for (Power p : me.getPowers()) {
 	    if (p.getUsage().toLowerCase().contains("at-will")) {
 		html += buildPowerHtml(p) + "\n\n";
@@ -745,14 +841,30 @@ public class Token {
 		html += buildPowerHtml(p) + "\n\n";
 	    }
 	}
+	for (Power p : me.getPowers()) {
+	    if ((p.getActionType().toLowerCase().contains("trait")) ||
+		 (p.getActionType().equals(""))){
+		html += buildPowerHtml(p) + "\n\n";
+	    }
+	}
+	for (Power p : me.getPowers()) {
+	    if (p.getActionType().toLowerCase().contains("triggered")) {
+		html += buildPowerHtml(p) + "\n\n";
+	    }
+	}
 
+  */
+    // Do the powers in the same order as they are in the Compendium
+    for (Power p : me.getPowers()) {
+        html += buildPowerHtml(p) + "\n\n";
+    }
+    
 	html += "\n\n";
 	html += "<p style=\"font:aerial;display: block;padding: 2px 15px;margin: 0;background: #c3c6ad;\" class=\"flavor alt\"><b>Alignment</b> "
 		+ me.getAlignment()
 		+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Languages</b> "
 		+ me.getLanguages() + "<br/>\n";
-	html += "<b>Skills</b> "
-		+ me.getSkillsHtml() + "<br/>\n\n";
+	html += "<b>Skills</b> " + me.getSkillsHtml() + "<br/>\n\n";
 
 	int str = me.getAttributes().get(Attribute.Strength);
 	int dex = me.getAttributes().get(Attribute.Dexterity);
@@ -840,6 +952,12 @@ public class Token {
 	    }
 	    html += "</p>\n\n";
 	}
+    else
+    {	// monsters get their GMNotes added
+        html += "<b>GM Notes:</b><br/>\n";
+        html += "[R:getGMNotes()]";
+        html += "</p>\n\n";
+    }
 	// Special Section for Actions
 	html += "<b>Actions to Perform</b><br/>\n";
 	html += "[r:macroLink(\"Take a Rest\", \"chooseRestTask@Lib:Blakey\", \"all\", \"\", currentToken())]<br/>\n";
@@ -905,7 +1023,7 @@ public class Token {
 	if (p.isInSpellbook()) {
 	    html += " - in Spellbook";
 	}
-	
+
 	html += "</p>";
 
 	// get all the weapons equipped
@@ -914,45 +1032,18 @@ public class Token {
 	    int count = 0;
 	    String bonusHealing = "";
 	    for (PowerWeapon pw : p.getWeapons()) {
-		if (!pw.getName().equals("Unarmed")) {
-		    if (count > 0)
-			html += ", ";
-		    count++;
-		    html += buildPowerWeaponHtml(pw);
-		}
-		else {
-		    	// see if there is any healing to remember
-			if (pw.getHealing() != "") {
-			    Pattern pattern = Pattern
-				    .compile(".*regain an additional (\\d+) hit points.*");
-			    Matcher matcher = pattern.matcher(pw.getHealing());
-			    if (matcher.find()) {
-				bonusHealing = matcher.group(1);
-			    }
-			}
-		}
-	    }
+		if (count > 0)
+		    html += ", ";
+		count++;
+		html += buildPowerWeaponHtml(pw);
 
-	    // if by this stage we haven't put out a weapon, then put out a
-	    // "Use Power" option
-	    if (count == 0) {
-		
-		html += "[r:macroLink(\"Use Power\", \"UsePower@Lib:Blakey\", \"all\", \"Power="
-			+ p.getName().replace(" ", "+")
-			+ ";Usage="
-			+ p.getUsage().replace(" ", "+");
-		
-		if (!bonusHealing.equals("")) html += ";BonusHealing=" + bonusHealing; 
-		html += "\", currentToken())];";
 	    }
-
 	} else {
 	    html += "[r:macroLink(\"Use Power\", \"UsePower@Lib:Blakey\", \"all\", \"Power="
 		    + p.getName().replace(" ", "+")
 		    + ";Usage="
 		    + p.getUsage().replace(" ", "+") + "\", currentToken())];";
 	}
-	
 
 	return html;
     }
@@ -973,14 +1064,17 @@ public class Token {
 		+ ";Power=" + pw.getPower().getName().replace(" ", "+")
 		+ ";Usage=" + pw.getPower().getUsage().replace(" ", "+");
 
-	// Special Case for Sneak Attack.
+	// Special Case for Striker Features
 	if (pw.getConditions() != "") {
 	    Pattern pattern = Pattern
-		    .compile(".*\\+(\\dd\\d) to damage once per round.*");
+		    .compile(".*\\+(\\dd\\d) (to damage once per.*) (\\(.+\\))");
 	    Matcher matcher = pattern.matcher(pw.getConditions());
 	    if (matcher.find()) {
-		String sneakAttack = matcher.group(1);
-		html += ";SneakAttack=" + sneakAttack;
+		String strikerDamage = matcher.group(1);
+		String strikerString = matcher.group(2);
+		String strikerFeature = matcher.group(3);
+		html += ";StrikerDamage=" + strikerDamage + ";StrikerString=" + strikerString +
+			";StrikerFeature=" + strikerFeature;
 	    }
 	}
 
@@ -999,7 +1093,6 @@ public class Token {
 	    // power
 	    html += ";BolsteringBlood=true";
 	}
-
 
 	// Add the damage portion.
 	if (!pw.getDamageString().equals("")) {
@@ -1021,149 +1114,291 @@ public class Token {
     }
 
     protected void writeMacros(BufferedWriter writer) {
-	try {
-	    // get the base HTML for the token
-	    String html = buildHtml();
+        try {
+            // get the base HTML for the token
+            String html = buildHtml();
 
-	    // holder method that writes nothing - should be overridden by
-	    // subclass.
-	    writer.write("  <macroPropertiesMap>\n");
-	    int idx = 1;
+            // holder method that writes nothing - should be overridden by
+            // subclass.
+            writer.write("  <macroPropertiesMap>\n");
+            int idx = 1;
 
-	    // write all the power macros out
-	    for (Power p : me.getPowers()) {
-		writePowerMacro(writer, p, idx++);
-	    }
+            // write all the power macros out
+            for (Power p : me.getPowers()) {
+                writePowerMacro(writer, p, idx++);
+            }
 
-	    // write all the feat, ritual and equipment macros out
-	    if (me instanceof PC) {
-		for (Feat f : ((PC) me).getFeats()) {
-		    writeFeatMacro(writer, f, idx++);
-		}
-		for (Ritual r : ((PC) me).getRituals()) {
-		    writeRitualMacro(writer, r, idx++);
-		}
-		for (Equipment e : ((PC) me).getEquipment()) {
-		    writeEquipmentMacro(writer, e, idx++);
-		}
-	    }
+            // write out an Aura macro
+            if (this.isJoe)
+                writeAuraMacro(writer, idx);
 
-	    // now create a 'Character Sheet' macro
-	    Power displayStats = new Power(characterSheet);
-	    String macro = "[frame(\"Character Sheet\"): {" + html + "}]";
-	    displayStats.setDetail(macro);
-	    writePowerMacro(writer, displayStats, idx++);
+            // write all the feat, ritual and equipment macros out
+            if (me instanceof PC) {
+                for (Feat f : ((PC) me).getFeats()) {
+                    writeFeatMacro(writer, f, idx++);
+                }
+                for (Ritual r : ((PC) me).getRituals()) {
+                    writeRitualMacro(writer, r, idx++);
+                }
+                for (Equipment e : ((PC) me).getEquipment()) {
+                    writeEquipmentMacro(writer, e, idx++);
+                }
 
-	    writer.write("  </macroPropertiesMap>\n");
+                // now create a 'Character Sheet' macro
+                Power displayStats = new Power(characterSheet);
+                String macro = "[frame(\"Character Sheet\"): {" + html + "}]";
+                displayStats.setDetail(macro);
+                writePowerMacro(writer, displayStats, idx++);
+            }
 
-	} catch (Exception e) {
-	    System.err.println("Error writing power macros: " + e);
-	}
+            writer.write("  </macroPropertiesMap>\n");
+
+        } catch (Exception e) {
+            System.err.println("Error writing power macros: " + e);
+        }
     }
 
     protected String getPowerText(Power p) {
-	return p.getHTML();
+        return p.getHTML();
     }
 
     protected void writePowerMacro(BufferedWriter writer, Power p, int idx) {
 
-	if (p.getName().equals("Melee Basic Attack")
-		|| p.getName().equals("Ranged Basic Attack"))
-	    return;
+        if (p.getName().equals("Melee Basic Attack")
+            || p.getName().equals("Ranged Basic Attack"))
+            return;
 
-	String hotkey = "None";
-	if (!p.getName().equals(characterSheet)) {
-	    // get the HTML for the power from the compendium
-	    String html = getPowerText(p);
+        String hotkey = "None";
+        if (!p.getName().equals(characterSheet)) {
+            // get the HTML for the power from the compendium
+            String html = getPowerText(p);
 
-	    // convert the HTML to nice tokens that wont phase XML it's inside.
-	    html = StringEscapeUtils.escapeHtml(html);
-	    // convert stuff that MapTool coughs over.
-	    html = html.replace("&ndash;", "-");
-	    html = html.replace("&mdash;", " - ");
-	    html = html.replace("&bull;", " - ");
-	    html = html.replace("&rsquo;", "");
-	    html = html.replace("&ldquo;", "\"");
-	    html = html.replace("&rdquo;", "\"");
-	    html = html.replace("'", "");
-	    html = html.replace("[W]", "W");
+            // convert the HTML to nice tokens that wont phase XML it's inside.
+            html = StringEscapeUtils.escapeHtml(html);
+            // convert stuff that MapTool coughs over.
+            html = html.replace("&ndash;", "-");
+            html = html.replace("&mdash;", " - ");
+            html = html.replace("&bull;", " - ");
+            html = html.replace("&rsquo;", "");
+            html = html.replace("&ldquo;", "\"");
+            html = html.replace("&rdquo;", "\"");
+            html = html.replace("'", "");
+            html = html.replace("[W]", "W");
+            html = html.replace("[", "(");
+            html = html.replace("]", ")");
 
-	    // finally build a frame for the html to live in.
-	    String command = "[frame(\"Compendium\"): {" + html + "}]";
-	    p.setDetail(command);
-	} else {
-	    hotkey = "F12";
-	}
+            // finally build a frame for the html to live in.
+            String command;
+            if (this.isJoe)
+            {
+                String usage = p.getUsage();
+                int atkType = 4;
+                if (usage.equals("at-will"))
+                {
+                    usage = "At-Will";
+                    atkType = 1;
+                }
+                else if (usage.equals("encounter"))
+                {
+                    usage = "Encounter";
+                    atkType = 2;
+                }
+                else if (usage.equals("daily"))
+                {
+                    usage = "Daily";
+                    atkType = 3;
+                }
+                else if (usage.contains("recharge"))
+                {
+                    usage = "Recharge";
+                    atkType = 2;
+                }
+                else
+                    usage = "Other";
 
-	// ditch quotes from name
-	String powerName = p.getName().replace("'", "").replace("\"", "");
+                String action = p.getActionType();
+                if (action.contains("standard"))
+                    action = "Standard Action";
+                else if (action.contains("free"))
+                    action = "Free Action";
+                else if (action.contains("move") || action.contains("movement"))
+                    action = "Move Action";
+                else if (action.contains("immediate action"))
+                    action = "Immediate Action";
+                else if (action.contains("immediate reaction"))
+                    action = "Immediate Reaction";
+                else if (action.contains("no action"))
+                    action = "No Action";
+                else if (action.contains("opportunity action"))
+                    action = "Opportunity Action";
 
-	String colorKey = "blue";
-	String fontColorKey = "white";
+                String defense = "AC";
+                if (html.contains("Fortitude"))
+                    defense = "Fortitude";
+                else if (html.contains("Willpower"))
+                    defense = "Willpower";
+                else if (html.contains("Reflex"))
+                    defense = "Reflex";
 
-	if (p.getUsage() != null
-		&& p.getUsage().toLowerCase().contains("at-will")) {
-	    colorKey = "green";
-	    fontColorKey = "black";
-	}
-	if (p.getUsage() != null
-		&& p.getUsage().toLowerCase().contains("encounter")) {
-	    colorKey = "red";
-	    fontColorKey = "white";
-	}
-	if (p.getUsage() != null
-		&& p.getUsage().toLowerCase().contains("daily")) {
-	    colorKey = "black";
-	    fontColorKey = "white";
-	}
-	if (p.getUsage() != null
-		&& p.getUsage().toLowerCase().contains("recharge")) {
-	    colorKey = "magenta";
-	    fontColorKey = "white";
-	}
+                String damTypes = "";
+                String nonDamTypes = "";
+                for(String s : p.getKeywords().split(", "))
+                {
+                    if (ArrayUtils.contains(TokenMaker.Elements, s))
+                        damTypes += ", " + s;
+                    else
+                        nonDamTypes += ", " + s;
+                }
+                // strip the leading ", " off
+                damTypes = damTypes.substring(2);
+                nonDamTypes = nonDamTypes.substring(2);
 
-	try {
-	    writer.write("    <entry>\n");
-	    writer.write("      <int>" + idx + "</int>\n");
-	    writer
-		    .write("      <net.rptools.maptool.model.MacroButtonProperties>\n");
-	    writer.write("        <saveLocation>Token</saveLocation>\n");
-	    writer.write("        <index>" + idx + "</index>\n");
-	    writer.write("        <colorKey>" + colorKey + "</colorKey>\n");
-	    writer.write("        <hotKey>" + hotkey + "</hotKey>\n");
-	    writer.write("        <command>" + p.getDetail() + "</command>\n");
-	    writer.write("        <label>" + powerName + "</label>\n");
-	    writer.write("        <group>" + p.getUsage() + "</group>\n");
-	    writer.write("        <sortby>" + p.getLevel() + "</sortby>\n");
-	    writer.write("        <autoExecute>true</autoExecute>\n");
-	    writer.write("        <includeLabel>false</includeLabel>\n");
-	    writer.write("        <applyToTokens>false</applyToTokens>\n");
-	    writer.write("        <fontColorKey>" + fontColorKey
-		    + "</fontColorKey>\n");
-	    writer.write("        <fontSize>1.00em</fontSize>\n");
-	    writer.write("        <minWidth>133</minWidth>\n");
-	    writer.write("        <maxWidth></maxWidth>\n");
-	    writer.write("        <allowPlayerEdits>true</allowPlayerEdits>\n");
-	    writer.write("        <toolTip></toolTip>\n");
-	    writer.write("        <commonMacro>false</commonMacro>\n");
-	    writer.write("        <compareGroup>true</compareGroup>\n");
-	    writer
-		    .write("        <compareSortPrefix>true</compareSortPrefix>\n");
-	    writer.write("        <compareCommand>true</compareCommand>\n");
-	    writer
-		    .write("        <compareIncludeLabel>true</compareIncludeLabel>\n");
-	    writer
-		    .write("        <compareAutoExecute>true</compareAutoExecute>\n");
-	    writer
-		    .write("        <compareApplyToSelectedTokens>true</compareApplyToSelectedTokens>\n");
-	    writer
-		    .write("      </net.rptools.maptool.model.MacroButtonProperties>\n");
-	    writer.write("    </entry>\n");
-	} catch (Exception e) {
-	    System.err.println("Error writing power macros to content file: "
-		    + e);
-	}
-    }
+                command = "[macro(\"CallAttack@\"+UseLib):\n" +
+                          "    json.set\n" +
+                          "    (\n" +
+                          "    \"{}\",\n" +
+                          "    \"atkKey\", 20,\n" +
+                          "    \"atkName\", \"" + p.getName() + "\",\n" +
+                          "    \"atkType\", " + atkType + ",\n" +
+                          "    \"atkTypeName\", \"" + usage + "\",\n" +
+                          "    \"keywords\", \"" + nonDamTypes + "\",\n" + /* Weapon, Melee, Area, Ranged - may not always parse right */
+                          "    \"damageTypes\", \"" + damTypes + "\",\n" +
+                          "    \"actionType\", \"" + action + "\",\n" +
+                          "    \"targetDefense\", \"" + defense + "\",\n" +
+                          "    \"rangeText\", \"Melee Weapon\",\n" +
+                          "    \"numTargetsText\", \"One Creature\",\n" +
+                          "    \"atkMod\", '{\"Bonus\":0}',\n" +
+                          "    \"damMod\", '{\"Bonus\":0}',\n" +
+                          "    \"damRoll\", \"0d0\",\n" +
+                          "    \"critDamRoll\", \"0\",\n" +
+                          "    \"effectText\", \"" + html + "\"\n" +
+                          "    )\n" +
+                          "]";
+                if (p.getUsage().toLowerCase().contains("recharge"))
+                    command += "\n[h:updateMacroLabel(\" (Recharge " + p.getUsage().substring(p.getUsage().length() - 1) + ")\")]";
+                if (atkType == 2 || atkType == 3)
+                    command += "\n[h:updateMacroLabel(\" (Used)\")]";
+            }
+            else
+            {
+                command = "[frame(\"Compendium\"): {" + html + "}]";
+            }
+            p.setDetail(command);
+        } else {
+            hotkey = "F12";
+        }
+
+        // ditch quotes from name
+        String powerName = p.getName().replace("'", "").replace("\"", "");
+
+        String colorKey = "blue";
+        String fontColorKey = "white";
+
+        if (p.getUsage() != null
+            && p.getUsage().toLowerCase().contains("at-will")) {
+            colorKey = "green";
+            fontColorKey = "black";
+        }
+        if (p.getUsage() != null
+            && p.getUsage().toLowerCase().contains("encounter")) {
+            colorKey = "red";
+            fontColorKey = "white";
+        }
+        if (p.getUsage() != null
+            && p.getUsage().toLowerCase().contains("daily")) {
+            colorKey = "black";
+            fontColorKey = "white";
+        }
+        if (p.getUsage() != null
+            && p.getUsage().toLowerCase().contains("recharge")) {
+            colorKey = "magenta";
+            fontColorKey = "white";
+        }
+
+        try {
+            writer.write("    <entry>\n");
+            writer.write("      <int>" + idx + "</int>\n");
+            writer.write("      <net.rptools.maptool.model.MacroButtonProperties>\n");
+            writer.write("        <saveLocation>Token</saveLocation>\n");
+            writer.write("        <index>" + idx + "</index>\n");
+            writer.write("        <colorKey>" + colorKey + "</colorKey>\n");
+            writer.write("        <hotKey>" + hotkey + "</hotKey>\n");
+            writer.write("        <command>" + p.getDetail() + "</command>\n");
+            writer.write("        <label>" + powerName + "</label>\n");
+            writer.write("        <group>" + p.getUsage() + "</group>\n");
+            writer.write("        <sortby>" + p.getLevel() + "</sortby>\n");
+            writer.write("        <autoExecute>true</autoExecute>\n");
+            writer.write("        <includeLabel>false</includeLabel>\n");
+            writer.write("        <applyToTokens>false</applyToTokens>\n");
+            writer.write("        <fontColorKey>" + fontColorKey + "</fontColorKey>\n");
+            writer.write("        <fontSize>1.00em</fontSize>\n");
+            writer.write("        <minWidth>133</minWidth>\n");
+            writer.write("        <maxWidth></maxWidth>\n");
+            writer.write("        <allowPlayerEdits>true</allowPlayerEdits>\n");
+            writer.write("        <toolTip></toolTip>\n");
+            writer.write("        <commonMacro>false</commonMacro>\n");
+            writer.write("        <compareGroup>true</compareGroup>\n");
+            writer.write("        <compareSortPrefix>true</compareSortPrefix>\n");
+            writer.write("        <compareCommand>true</compareCommand>\n");
+            writer.write("        <compareIncludeLabel>true</compareIncludeLabel>\n");
+            writer.write("        <compareAutoExecute>true</compareAutoExecute>\n");
+            writer.write("        <compareApplyToSelectedTokens>true</compareApplyToSelectedTokens>\n");
+            writer.write("      </net.rptools.maptool.model.MacroButtonProperties>\n");
+            writer.write("    </entry>\n");
+        } catch (Exception e) {
+            System.err.println("Error writing power macros to content file: " + e);
+        }
+    } // end of writePowerMacro()
+
+    // Stripped down version of writePowerMacro to write out any Aura related to the token
+    protected void writeAuraMacro(BufferedWriter writer, int idx)
+    {
+        if (me.getAura().isEmpty())
+            return;
+        String hotkey = "None";
+        
+        String auraName = cleanMTString(me.getAura());
+        String auraDesc = cleanMTString(me.getAuraDescription());
+        
+        String colorKey = "orange";
+        String fontColorKey = "black";
+
+        try {
+            writer.write("    <entry>\n");
+            writer.write("      <int>" + idx + "</int>\n");
+            writer.write("      <net.rptools.maptool.model.MacroButtonProperties>\n");
+            writer.write("        <saveLocation>Token</saveLocation>\n");
+            writer.write("        <index>" + idx + "</index>\n");
+            writer.write("        <colorKey>" + colorKey + "</colorKey>\n");
+            writer.write("        <hotKey>" + hotkey + "</hotKey>\n");
+            writer.write("        <command>" + auraDesc + "</command>\n");
+            writer.write("        <label>" + auraName + 
+                                  (me.getAuraKeywords() != null ? " (" + me.getAuraKeywords() + ")" : "")
+                                  + " (Range " + me.getAuraRange() + ")</label>\n");
+            writer.write("        <group>Aura</group>\n");
+            writer.write("        <sortby>0</sortby>\n");
+            writer.write("        <autoExecute>true</autoExecute>\n");
+            writer.write("        <includeLabel>false</includeLabel>\n");
+            writer.write("        <applyToTokens>false</applyToTokens>\n");
+            writer.write("        <fontColorKey>" + fontColorKey + "</fontColorKey>\n");
+            writer.write("        <fontSize>1.00em</fontSize>\n");
+            writer.write("        <minWidth>133</minWidth>\n");
+            writer.write("        <maxWidth></maxWidth>\n");
+            writer.write("        <allowPlayerEdits>true</allowPlayerEdits>\n");
+            writer.write("        <toolTip>" + auraDesc + "</toolTip>\n");
+            writer.write("        <commonMacro>false</commonMacro>\n");
+            writer.write("        <compareGroup>true</compareGroup>\n");
+            writer.write("        <compareSortPrefix>true</compareSortPrefix>\n");
+            writer.write("        <compareCommand>true</compareCommand>\n");
+            writer.write("        <compareIncludeLabel>true</compareIncludeLabel>\n");
+            writer.write("        <compareAutoExecute>true</compareAutoExecute>\n");
+            writer.write("        <compareApplyToSelectedTokens>true</compareApplyToSelectedTokens>\n");
+            writer.write("      </net.rptools.maptool.model.MacroButtonProperties>\n");
+            writer.write("    </entry>\n");
+        } catch (Exception e) {
+            System.err.println("Error writing aura macro to content file: " + e);
+        }
+    } // end of writeAuraMacro()
 
     protected String getFeatText(Feat f) {
 	return f.getHTML();
@@ -1372,4 +1607,25 @@ public class Token {
 		    + ex);
 	}
     }
+    
+    // Cleans up a string so Maptools won't choke on it
+    protected String cleanMTString(String s)
+    {
+        String ret = s;
+
+        ret = StringEscapeUtils.escapeHtml(ret);
+        // convert stuff that MapTool coughs over.
+        ret = ret.replace("&ndash;", "-");
+        ret = ret.replace("&mdash;", " - ");
+        ret = ret.replace("&bull;", " - ");
+        ret = ret.replace("&rsquo;", "");
+        ret = ret.replace("&ldquo;", "\"");
+        ret = ret.replace("&rdquo;", "\"");
+        ret = ret.replace("'", "");
+        ret = ret.replace("[W]", "W");
+        ret = ret.replace("[", "(");
+        ret = ret.replace("]", ")");
+
+        return ret;
+    } // end of cleanMTString
 }

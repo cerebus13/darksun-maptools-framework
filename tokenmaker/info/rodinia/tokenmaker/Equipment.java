@@ -2,8 +2,8 @@ package info.rodinia.tokenmaker;
 
 import java.util.ArrayList;
 
-/** 
- * Equipment models D&D 4E equipment.  
+/**
+ * Equipment models D&D 4E equipment.
  * All I'm really doing here is keeping an HTML representation of the equipment on the token for ease of look up during the game.
  * @author Blakey - Summer 2010
  *
@@ -15,6 +15,7 @@ public class Equipment {
     private String name = "";
     private String detail = "";
     private String url = "";
+    private boolean equipped = false;
 
     public Equipment(String name) {
 	this.name = name;
@@ -28,6 +29,14 @@ public class Equipment {
 	    html = com.getHTML();
 	}
 	return html;
+    }
+
+    public boolean isEquipped() {
+        return equipped;
+    }
+
+    public void setEquipped(boolean equipped) {
+        this.equipped = equipped;
     }
 
     public String toString() {

@@ -27,6 +27,8 @@ import java.io.*;
  * 
  * @author Blakey, Summer 2010.
  *
+ * Last Blakey update: r72
+ *
  */
 public class TokenMaker {
     /**
@@ -40,13 +42,18 @@ public class TokenMaker {
     public enum Attribute {
 	Strength, Constitution, Dexterity, Intelligence, Wisdom, Charisma
     }
-    
+
+    public static final String[] Elements = {"acid", "cold", "fire", "force", "lightning", "necrotic", "poison", "psychic", "radiant", "thunder"};
+    public static final String[] Roles = {"artillery", "brute", "controller", "lurker", "skirmisher", "soldier", "leader"};
+    public static final String[] AtkIcons = {"S1.gif", "S2.gif", "S3.gif", "S4.gif", "Z1a.gif", "Z2a.gif", "Z3a.gif", "Z4a.gif"};
+
     public static String npcImagePath = null;
     public static String npcSavePath = null;
     public static String pcImagePath = null;
     public static String pcLoadPath = null;
     public static String pcSavePath = null;
-    public static final String homeDir = System.getenv("USERPROFILE")
+    //public static final String homeDir = System.getenv("USERPROFILE")
+    public static final String homeDir = System.getProperty("user.home")
 	    + "/.tokenmaker";
     public static final String statusFile = homeDir + "/.status";
     public static final String ddiFile = homeDir + "/ddi.dat";

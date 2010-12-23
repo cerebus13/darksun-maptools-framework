@@ -1,8 +1,6 @@
 package info.rodinia.tokenmaker;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Power models D&D 4E powers, both those used by players and monsters
@@ -23,6 +21,18 @@ public class Power {
     private ArrayList<PowerWeapon> weapons = new ArrayList<PowerWeapon>();
     private String detail = "";
     private boolean inSpellbook = false;
+    private String keywords = "";
+    private boolean isJunkAura = false; // Blakey's parser doesn't do MM3 auras well, but it is hard to skip them
+                                        // so instead I'll let them fly and just flag this true if the word "Aura" shows
+                                        // up and then skip adding it as a power
+    private boolean isBasicAtk = false;
+    private String icon = "";
+    private String range = "";
+    private String requires = "";
+    private int atkBonus = 0;
+    private String atkDefense = "";
+    private String immunes = "";
+    private String effect = "";
 
     // the HTML we'll put out to the stat card
     private String statCard = null;
@@ -67,6 +77,7 @@ public class Power {
 	return html;
     }
 
+    @Override
     public String toString() {
 	String result = name + " (" + actionType + ", " + usage + ")";
 	// if (weapons.size() != 0) result += weapons.get(0);
@@ -139,5 +150,105 @@ public class Power {
 
     public void setDetail(String detail) {
 	this.detail = detail;
+    }
+
+    public String getKeywords()
+    {
+        return keywords;
+    }
+
+    public void setKeywords(String s)
+    {
+        keywords = s;
+    }
+
+    public boolean getIsJunkAura()
+    {
+        return isJunkAura;
+    }
+
+    public void setIsJunkAura(Boolean b)
+    {
+        isJunkAura = b;
+    }
+
+    public boolean getIsBasicAtk()
+    {
+        return isBasicAtk;
+    }
+
+    public void setIsBasicAtk(Boolean b)
+    {
+        isBasicAtk = b;
+    }
+
+    public String getIcon()
+    {
+        return icon;
+    }
+
+    public void setIcon(String s)
+    {
+        icon = s;
+    }
+
+    public String getRange()
+    {
+        return range;
+    }
+
+    public void setRange(String s)
+    {
+        range = s;
+    }
+
+    public String getRequires()
+    {
+        return requires;
+    }
+
+    public void setRequires(String s)
+    {
+        requires = s;
+    }
+
+    public int getAtkBonus()
+    {
+        return atkBonus;
+    }
+
+    public void setAtkBonus(int i)
+    {
+        atkBonus = i;
+    }
+
+    public String getAtkDefense()
+    {
+        return atkDefense;
+    }
+
+    public void setAtkDefense(String s)
+    {
+        atkDefense = s;
+    }
+
+    public String getImmunes()
+    {
+        return immunes;
+    }
+
+    public void setImmunes(String s)
+    {
+        immunes = s;
+    }
+
+    public String getEffect()
+    {
+        return effect;
+    }
+
+    public void setEffect(String s)
+    {
+        effect = s;
     }
 }

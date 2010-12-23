@@ -23,7 +23,7 @@ public class WeaponCompendiumEntry extends CompendiumEntry {
     public String getGroup() {
 	String group = "";
 	// Parse HTML for group string
-	//<b>Group</b>: <br/>Axe
+	// <b>Group</b>: <br/>Axe
 	Pattern pattern = Pattern.compile(".*?<b>Group</b>: <br/>(.+?)\\(.*");
 	Matcher matcher = pattern.matcher(myHTML);
 	if (matcher.find()) {
@@ -31,8 +31,29 @@ public class WeaponCompendiumEntry extends CompendiumEntry {
 	}
 	return group;
     }
-    
+
     public boolean isHighCrit() {
 	return myHTML.contains("High Crit");
+    }
+
+    @Override
+    protected void formatHTML() {
+	super.formatHTML(); // make sure we do the generic stuff
+
+	// add full path to the images
+	myHTML = myHTML
+		.replace("<img src=\"images/",
+			"<img src=\"http://www.wizards.com/dndinsider/compendium/images/");
+
+	// add some formatting codes
+	myHTML = myHTML
+		.replace(
+			"class=\"magicitem\"",
+			"style=\"font:aerial;font-size:1.35em;font-weight: bold;line-height:2;padding-left:15px;margin:0;color:white;background: #d8941d;\" class=\"magicitem\"");
+	myHTML = myHTML
+		.replace(
+			"class=\"player\"",
+			"style=\"font:aerial;font-size:1.35em;font-weight: bold;line-height:2;padding-left:15px;margin:0;color:white;background: #1d3d5e;\" class=\"player\"");
+
     }
 }

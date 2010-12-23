@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 public class PCToken extends Token {
 
     public PCToken(PC newPC) {
-	super(newPC);
+	super(newPC, false);
 	setTokenType("PC");
 	setPortrait(newPC.getPortrait());
 	setName(me.getName());
