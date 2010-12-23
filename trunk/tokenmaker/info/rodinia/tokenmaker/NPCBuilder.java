@@ -22,7 +22,7 @@ import javax.swing.text.html.HTMLEditorKit;
  *   
  * @author Blakey, Summer 2010
  */
-public class NPCBuilder extends JFrame {
+public class NPCBuilder extends JDialog {
 
     private NPC myNPC = null;
     private Object[] myNPCarray = null;
@@ -31,14 +31,18 @@ public class NPCBuilder extends JFrame {
     private File portraitFile;
     private JButton portraitButton;
     private ImageIcon myPortrait = null;
+    private JRadioButton blakeyRadio;
+    private JRadioButton joeRadio;
+    private JRadioButton xmlRadio;
 
     /**
      * We construct this frame from a base NPC object.
      * 
      * @param npc - the NPC to build.
      */
-    public NPCBuilder(NPC npc) {
-	super(npc.getName());
+    public NPCBuilder(NPC npc)
+    {
+        this.setTitle(npc.getName());
 
 	//System.setProperty("http.proxyHost","212.118.224.147") ;
 	//System.setProperty("http.proxyPort", "80") ;
@@ -93,6 +97,18 @@ public class NPCBuilder extends JFrame {
 
 	    // Create a panel to deal with building
 	    JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridLayout(2, 3));
+        ButtonGroup radioGroup = new ButtonGroup();
+        joeRadio = new JRadioButton("Joe token");
+        blakeyRadio = new JRadioButton("Blakey token");
+        xmlRadio = new JRadioButton("Monster XML");
+        radioGroup.add(joeRadio);
+        radioGroup.add(blakeyRadio);
+        radioGroup.add(xmlRadio);
+        joeRadio.setSelected(true);
+        southPanel.add(joeRadio);
+        southPanel.add(blakeyRadio);
+        southPanel.add(xmlRadio);
 	    saveButton = new JButton("Save");
 	    saveButton.addActionListener(buttonListener);
 	    saveButton.addKeyListener(keyListener);
@@ -116,7 +132,7 @@ public class NPCBuilder extends JFrame {
      * @param npc - the NPC array to build.
      */
     public NPCBuilder(Object[] npc) {
-	super("Multiple NPCs");
+        this.setTitle("Multiple NPCs");
 	
 	myNPCarray = npc;
 	try {
@@ -152,6 +168,18 @@ public class NPCBuilder extends JFrame {
 
 	    // Create a panel to deal with building
 	    JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridLayout(2, 3));
+        ButtonGroup radioGroup = new ButtonGroup();
+        joeRadio = new JRadioButton("Joe token");
+        blakeyRadio = new JRadioButton("Blakey token");
+        xmlRadio = new JRadioButton("Monster XML");
+        radioGroup.add(joeRadio);
+        radioGroup.add(blakeyRadio);
+        radioGroup.add(xmlRadio);
+        joeRadio.setSelected(true);
+        southPanel.add(joeRadio);
+        southPanel.add(blakeyRadio);
+        southPanel.add(xmlRadio);
 	    saveButton = new JButton("Save");
 	    saveButton.addActionListener(buttonListener);
 	    saveButton.addKeyListener(keyListener);
@@ -192,57 +220,91 @@ public class NPCBuilder extends JFrame {
     }
 
     private void closeBuilder() {
-	setVisible(false);
+        setVisible(false);
     }
 
     private void saveNPC() {
-	try {
-	    if (myNPCarray == null)
-	    {
-        	    JFileChooser chooser = new JFileChooser(TokenMaker.npcSavePath);
-        	    chooser.addChoosableFileFilter(new FileNameExtensionFilter(
-        		    "MapTool Token", "rptok"));
-        	    int returnVal = chooser.showOpenDialog(this);
-        	    if (returnVal == JFileChooser.APPROVE_OPTION) 
-        	    {
-        		File saveFile = chooser.getSelectedFile();
-        		if (!saveFile.getName().endsWith(".rptok")) {
-        		    saveFile = new File(saveFile.getAbsolutePath() + ".rptok");
-        		}
-        		NPCToken token = new NPCToken(myNPC);
-        		token.setPortrait(portraitFile);
-        		token.setTokenFile(saveFile);
-        		token.setTokenName(saveFile.getName().replace(".rptok", ""));
-        		token.save();
-        		TokenMaker.npcSavePath = chooser.getCurrentDirectory()
-        			.getAbsolutePath();
-        	    }
-	    }
-	    else
-	    {
-		JFileChooser chooser = new JFileChooser(TokenMaker.npcSavePath);
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
-    	    	int returnVal = chooser.showOpenDialog(this);
-    	    	if (returnVal == JFileChooser.APPROVE_OPTION)
-    	    	{
-    	    	    File saveFolder = chooser.getSelectedFile();
-    	    	    for (Object n : myNPCarray)
-    	    	    {
-    	    		NPC myN = (NPC) n;
-    	    		File saveFile = new File(saveFolder.getAbsolutePath() + "\\" + myN.getName() + ".rptok");
-    	    		NPCToken token = new NPCToken(myN);
-        	    	token.setPortrait(portraitFile);
-            	    	token.setTokenFile(saveFile);
-            	    	token.setTokenName(myN.getName());
-            	    	token.save();
-    	    	    }
-    	    	    TokenMaker.npcSavePath = chooser.getCurrentDirectory().getAbsolutePath();
-    	    	}
-    	    	closeBuilder();
-	    }
-	} catch (Exception e) {
-	    System.err.println("Error saving your NPC(s): " + e);
-	}
+        try
+        {
+            int returnVal = JFileChooser.CANCEL_OPTION;
+            if (myNPCarray == null)
+            {
+                JFileChooser chooser = new JFileChooser(TokenMaker.npcSavePath);
+                String suffix;
+                if (!xmlRadio.isSelected())
+                {
+                    suffix = ".rptok";
+                    chooser.addChoosableFileFilter(new FileNameExtensionFilter("MapTool Token", "rptok"));
+                }
+                else
+                {
+                    suffix = ".monster";
+                    chooser.addChoosableFileFilter(new FileNameExtensionFilter("Monster XML", "monster"));
+                }
+                returnVal = chooser.showOpenDialog(this);
+                if (returnVal == JFileChooser.APPROVE_OPTION)
+                {
+                    File saveFile = chooser.getSelectedFile();
+                    if (!saveFile.getName().endsWith(suffix)) {
+                        saveFile = new File(saveFile.getAbsolutePath() + suffix);
+                    }
+                    String pt = "Basic";
+                    if (joeRadio.isSelected())
+                        pt = "Joe 4e Monster";
+                    else if (xmlRadio.isSelected())
+                        pt = "XML";
+                    NPCToken token = new NPCToken(myNPC,pt,joeRadio.isSelected());
+                    token.setPortrait(portraitFile);
+                    token.setTokenFile(saveFile);
+                    token.setTokenName(saveFile.getName().replace(suffix, ""));
+                    if (xmlRadio.isSelected())
+                        token.saveXML();
+                    else
+                        token.save();
+                    TokenMaker.npcSavePath = chooser.getCurrentDirectory().getAbsolutePath();
+                }
+            }
+            else
+            {
+                String suffix;
+                JFileChooser chooser = new JFileChooser(TokenMaker.npcSavePath);
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                returnVal = chooser.showOpenDialog(this);
+                if (returnVal == JFileChooser.APPROVE_OPTION)
+                {
+                    File saveFolder = chooser.getSelectedFile();
+                    for (Object n : myNPCarray)
+                    {
+                        NPC myN = (NPC) n;
+                        if (xmlRadio.isSelected())
+                            suffix = ".monster";
+                        else
+                            suffix = ".rptok";
+                        File saveFile = new File(saveFolder.getAbsolutePath() + "\\" + myN.getName() + suffix);
+                        String pt = "Basic";
+                        if (joeRadio.isSelected())
+                            pt = "Joe 4e Monster";
+                        else if (xmlRadio.isSelected())
+                            pt = "XML";
+                        NPCToken token = new NPCToken(myN,pt,joeRadio.isSelected());
+                        token.setPortrait(portraitFile);
+                        token.setTokenFile(saveFile);
+                        token.setTokenName(myN.getName());
+                        if (xmlRadio.isSelected())
+                            token.saveXML();
+                        else
+                            token.save();
+                    }
+                    TokenMaker.npcSavePath = chooser.getCurrentDirectory().getAbsolutePath();
+                }
+                closeBuilder();
+            }
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+                JOptionPane.showMessageDialog(this, "Done building!");
+        }
+        catch (Exception e) {
+            System.err.println("Error saving your NPC(s): " + e);
+        }
     }
 
     class MyButtonListener implements ActionListener {

@@ -6,7 +6,6 @@ import info.rodinia.tokenmaker.TokenMaker.Skill;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -39,6 +38,8 @@ public class Character {
     protected String senses = "";
     protected String aura = "";
     protected String auraDescription = "";
+    protected int auraRange = 1;
+    protected String auraKeywords = "";
     protected int HP = 0;
     protected int bloodied = 0;
     protected String regeneration = "";
@@ -52,9 +53,11 @@ public class Character {
     protected int savingThrows = 0;
     protected String speed = "6";
     protected int actionPoints = 0;
-    protected String alignment = "Unalgined";
+    protected String alignment = "Unaligned";
+    protected String equipment = "";
     protected String languages = "";
     protected String description = "";
+    protected String realDescription = "";
 
     protected TreeMap<Skill, Integer> skills = new TreeMap<Skill, Integer>();
     protected TreeMap<Attribute, Integer> attributes = new TreeMap<Attribute, Integer>();
@@ -77,6 +80,26 @@ public class Character {
 
     public void setAuraDescription(String auraDescription) {
         this.auraDescription = auraDescription;
+    }
+
+    public int getAuraRange()
+    {
+        return auraRange;
+    }
+
+    public void setAuraRange(int r)
+    {
+        this.auraRange = r;
+    }
+
+    public String getAuraKeywords()
+    {
+        return auraKeywords;
+    }
+
+    public void setAuraKeywords(String s)
+    {
+        this.auraKeywords = s;
     }
 
     public void setDescription(String description) {
@@ -297,12 +320,30 @@ public class Character {
         this.alignment = alignment;
     }
 
+    public String getEquipmentSimple() {
+        return equipment;
+    }
+
+    public void setEquipmentSimple(String equipment) {
+        this.equipment = equipment;
+    }
+
     public String getLanguages() {
         return languages;
     }
 
     public void setLanguages(String languages) {
         this.languages = languages;
+    }
+
+    public String getRealDescription()
+    {
+        return realDescription;
+    }
+
+    public void setRealDescription(String s)
+    {
+        this.realDescription = s;
     }
 
     public TreeMap<Skill, Integer> getSkills() {

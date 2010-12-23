@@ -14,6 +14,7 @@ import javax.swing.text.html.HTMLEditorKit.ParserCallback;
 import javax.swing.text.html.parser.ParserDelegator;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * NPC holds all the info about an NPC/Monster. It is designed to model all the
@@ -30,9 +31,10 @@ public class NPC extends Character {
     private int id = 0;
 
     // private String senses;
-    private String improvedSkills;
+    private String improvedSkills = "";
     private StatBlock statBlock = StatBlock.MM1;
     private String actionType = "";
+    private String atkIcon = "";
 
     /**
      * State is used for parsing HTML of a monster entry. It tells us what tag
@@ -40,7 +42,7 @@ public class NPC extends Character {
      * found.
      */
     private enum State {
-	NONE, POWERTYPE, NAME, LEVEL, XP, TYPE, STATS, INITIATIVE, SENSES, HP, BLOODIED, REGENERATION, AC, FORTITUDE, REFLEX, WILL, IMMUNE, RESIST, VULNERABLE, SAVINGTHROWS, SPEED, ACTIONPOINTS, POWERNAME, POWERUSAGE, POWERDETAIL, POWERRECHARGE, ALIGNMENT, LANGUAGES, SKILLS, STRENGTH, CONSTITUTION, DEXTERITY, INTELLIGENCE, WISDOM, CHARISMA
+        NONE, POWERTYPE, NAME, LEVEL, XP, TYPE, STATS, INITIATIVE, SENSES, HP, BLOODIED, REGENERATION, AC, FORTITUDE, REFLEX, WILL, IMMUNE, RESIST, VULNERABLE, SAVINGTHROWS, SPEED, ACTIONPOINTS, POWERNAME, POWERUSAGE, POWERDETAIL, POWERRECHARGE, POWERKEYWORDS1, POWERKEYWORDS2, ALIGNMENT, EQUIPMENT, LANGUAGES, SKILLS, STRENGTH, CONSTITUTION, DEXTERITY, INTELLIGENCE, WISDOM, CHARISMA, DESCRIPTION
     }
 
     private enum StatBlock {
@@ -99,17 +101,75 @@ public class NPC extends Character {
     }
 
     public String getSenses() {
-	return senses;
+        return senses;
     }
 
-    public void addPower(Power p) {
-	powers.add(p);
+    public String getImprovedSkills()
+    {
+        return improvedSkills;
     }
+
+    public void addPower(Power p)
+    {
+        parseDetail(p);
+        powers.add(p);
+    }
+
+    // Parses the possibly complicated Detail information for the power into
+    // various areas
+    private void parseDetail(Power p)
+    {
+        String d = p.getDetail();
+        if (d.isEmpty())
+            return;
+        // MM1 - Requires <thing>; R|reach; range, area, or targets; <dudes> are immune; attack bonus vs. target defense; effect. Miss: effect (if any). Secondary attack or effect.
+        // ordering of requires/reach/range seems to be interchangable
+        // Can only have one of reach or ranged descriptions
+//        Area Burst N within N
+//        Close Blast N
+//        Close Burst N
+//        Melee
+//        Melee N
+//        Melee Touch
+//        Melee Weapon
+//        Ranged N
+        //Ranged N/N
+        //Range N
+        //Range N/N
+        //Melee or Ranged N
+        //melee N or ranged N/N
+//        Reach N
+        if (statBlock == StatBlock.MM1)
+        {
+            Pattern pattern = Pattern.compile("(?:(?:; )?(area burst \\d+ within \\d+|close (:?blast|burst) \\d+|melee(?: (?:\\d+|touch|weapon))?|ranged? \\d+(?:/\\d+)?|reach \\d+|melee (?:\\d+ )?or ranged \\d+(?:/\\d+)?);)?(?:\\s?requires ([^;]+);)?(?:(area burst \\d+ within \\d+|close (:?blast|burst) \\d+|melee(?: (?:\\d+|touch|weapon))?|ranged? \\d+(?:/\\d+)?|reach \\d+|melee (?:\\d+ )?or ranged \\d+(?:/\\d+)?);)?(?:\\s?([^;]+?) are immune;\\)?)?(?:\\s?\\+(\\d+) vs\\.? (ac|reflex|fortitude|will);)?\\s?([^;]+$)",Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(d);
+            if (matcher.find())
+            {
+                p.setRange(matcher.group(1) == null ? "" : matcher.group(1));
+                p.setRequires(matcher.group(2) == null ? "" : matcher.group(2));
+                p.setRange(matcher.group(3) == null ? p.getRange() : matcher.group(3)); // set range twice because it can sometimes swap spots with Requires
+                p.setImmunes(matcher.group(4) == null ? "" : matcher.group(4));
+                p.setAtkBonus(matcher.group(5) == null ? 0 : Integer.parseInt(matcher.group(5)));
+                if (matcher.group(6) != null)
+                {
+                    if (matcher.group(6).toLowerCase().equals("ac"))
+                        p.setAtkDefense("AC");
+                    else if (matcher.group(6).toLowerCase().equals("fortitude"))
+                        p.setAtkDefense("Fortitude");
+                    else if (matcher.group(6).toLowerCase().equals("reflex"))
+                        p.setAtkDefense("Reflex");
+                    else if (matcher.group(6).toLowerCase().equals("will"))
+                        p.setAtkDefense("Willpower");
+                }
+                p.setEffect(matcher.group(7) == null ? "" : matcher.group(7));
+            }
+        }
+    } // end of parseDetail()
 
     @Override
-    public String toString() {
-	return name + " (Level " + level + " " + groupRole + " " + combatRole
-		+ ")";
+    public String toString()
+    {
+        return name + " (Level " + level + " " + groupRole + " " + combatRole + ")";
     }
 
     /**
@@ -118,98 +178,116 @@ public class NPC extends Character {
      * that are explicitly set on the monster's web page.
      */
     private void setupSkills() {
-	// work out default bonuses based on level and attributes
-	int strBonus = (level / 2)
-		+ ((attributes.get(Attribute.Strength) - 10) / 2);
-	int conBonus = (level / 2)
-		+ ((attributes.get(Attribute.Constitution) - 10) / 2);
-	int dexBonus = (level / 2)
-		+ ((attributes.get(Attribute.Dexterity) - 10) / 2);
-	int intBonus = (level / 2)
-		+ ((attributes.get(Attribute.Intelligence) - 10) / 2);
-	int wisBonus = (level / 2)
-		+ ((attributes.get(Attribute.Wisdom) - 10) / 2);
-	int chaBonus = (level / 2)
-		+ ((attributes.get(Attribute.Charisma) - 10) / 2);
+        // work out default bonuses based on level and attributes
+    //	int strBonus = (level / 2)
+    //		+ ((attributes.get(Attribute.Strength) - 10) / 2);
+    //	int conBonus = (level / 2)
+    //		+ ((attributes.get(Attribute.Constitution) - 10) / 2);
+    //	int dexBonus = (level / 2)
+    //		+ ((attributes.get(Attribute.Dexterity) - 10) / 2);
+    //	int intBonus = (level / 2)
+    //		+ ((attributes.get(Attribute.Intelligence) - 10) / 2);
+    //	int wisBonus = (level / 2)
+    //		+ ((attributes.get(Attribute.Wisdom) - 10) / 2);
+    //	int chaBonus = (level / 2)
+    //		+ ((attributes.get(Attribute.Charisma) - 10) / 2);
 
-	// these are the NPCs base skills
-	skills.put(Skill.Acrobatics, dexBonus);
-	skills.put(Skill.Arcana, intBonus);
-	skills.put(Skill.Athletics, strBonus);
-	skills.put(Skill.Bluff, chaBonus);
-	skills.put(Skill.Diplomacy, chaBonus);
-	skills.put(Skill.Dungeoneering, wisBonus);
-	skills.put(Skill.Endurance, conBonus);
-	skills.put(Skill.Heal, wisBonus);
-	skills.put(Skill.History, intBonus);
-	skills.put(Skill.Insight, wisBonus);
-	skills.put(Skill.Intimidate, chaBonus);
-	skills.put(Skill.Nature, wisBonus);
-	skills.put(Skill.Perception, wisBonus);
-	skills.put(Skill.Religion, wisBonus);
-	skills.put(Skill.Stealth, dexBonus);
-	skills.put(Skill.Streetwise, chaBonus);
-	skills.put(Skill.Thievery, dexBonus);
+        // these are the NPCs base skills
+        // override these for Joe's tokens
+    //	skills.put(Skill.Acrobatics, dexBonus);
+    //	skills.put(Skill.Arcana, intBonus);
+    //	skills.put(Skill.Athletics, strBonus);
+    //	skills.put(Skill.Bluff, chaBonus);
+    //	skills.put(Skill.Diplomacy, chaBonus);
+    //	skills.put(Skill.Dungeoneering, wisBonus);
+    //	skills.put(Skill.Endurance, conBonus);
+    //	skills.put(Skill.Heal, wisBonus);
+    //	skills.put(Skill.History, intBonus);
+    //	skills.put(Skill.Insight, wisBonus);
+    //	skills.put(Skill.Intimidate, chaBonus);
+    //	skills.put(Skill.Nature, wisBonus);
+    //	skills.put(Skill.Perception, wisBonus);
+    //	skills.put(Skill.Religion, wisBonus);
+    //	skills.put(Skill.Stealth, dexBonus);
+    //	skills.put(Skill.Streetwise, chaBonus);
+    //	skills.put(Skill.Thievery, dexBonus);
+        skills.put(Skill.Acrobatics, 0);
+        skills.put(Skill.Arcana, 0);
+        skills.put(Skill.Athletics, 0);
+        skills.put(Skill.Bluff, 0);
+        skills.put(Skill.Diplomacy, 0);
+        skills.put(Skill.Dungeoneering, 0);
+        skills.put(Skill.Endurance, 0);
+        skills.put(Skill.Heal, 0);
+        skills.put(Skill.History, 0);
+        skills.put(Skill.Insight, 0);
+        skills.put(Skill.Intimidate, 0);
+        skills.put(Skill.Nature, 0);
+        skills.put(Skill.Perception, 0);
+        skills.put(Skill.Religion, 0);
+        skills.put(Skill.Stealth, 0);
+        skills.put(Skill.Streetwise, 0);
+        skills.put(Skill.Thievery, 0);
 
-	// if we have some 'improved skills', override them now
-	if (improvedSkills != null) {
-	    int start;
-	    if ((start = improvedSkills.indexOf("Acrobatics")) != -1)
-		skills.put(Skill.Acrobatics, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Arcana")) != -1)
-		skills.put(Skill.Arcana, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Athletics")) != -1)
-		skills.put(Skill.Athletics, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Bluff")) != -1)
-		skills.put(Skill.Bluff, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Diplomacy")) != -1)
-		skills.put(Skill.Diplomacy, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Dungeoneering")) != -1)
-		skills.put(Skill.Dungeoneering, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Endurance")) != -1)
-		skills.put(Skill.Endurance, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Heal")) != -1)
-		skills.put(Skill.Heal, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("History")) != -1)
-		skills.put(Skill.History, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Insight")) != -1)
-		skills.put(Skill.Insight, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Intimidate")) != -1)
-		skills.put(Skill.Intimidate, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Nature")) != -1)
-		skills.put(Skill.Nature, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Perception")) != -1)
-		skills.put(Skill.Perception, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Religion")) != -1)
-		skills.put(Skill.Religion, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Stealth")) != -1)
-		skills.put(Skill.Stealth, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Streetwise")) != -1)
-		skills.put(Skill.Streetwise, stringToInt(improvedSkills
-			.substring(start)));
-	    if ((start = improvedSkills.indexOf("Thievery")) != -1)
-		skills.put(Skill.Thievery, stringToInt(improvedSkills
-			.substring(start)));
+        // if we have some 'improved skills', override them now
+        if (improvedSkills != null) {
+            int start;
+            if ((start = improvedSkills.indexOf("Acrobatics")) != -1)
+            skills.put(Skill.Acrobatics, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Arcana")) != -1)
+            skills.put(Skill.Arcana, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Athletics")) != -1)
+            skills.put(Skill.Athletics, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Bluff")) != -1)
+            skills.put(Skill.Bluff, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Diplomacy")) != -1)
+            skills.put(Skill.Diplomacy, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Dungeoneering")) != -1)
+            skills.put(Skill.Dungeoneering, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Endurance")) != -1)
+            skills.put(Skill.Endurance, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Heal")) != -1)
+            skills.put(Skill.Heal, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("History")) != -1)
+            skills.put(Skill.History, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Insight")) != -1)
+            skills.put(Skill.Insight, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Intimidate")) != -1)
+            skills.put(Skill.Intimidate, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Nature")) != -1)
+            skills.put(Skill.Nature, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Perception")) != -1)
+            skills.put(Skill.Perception, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Religion")) != -1)
+            skills.put(Skill.Religion, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Stealth")) != -1)
+            skills.put(Skill.Stealth, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Streetwise")) != -1)
+            skills.put(Skill.Streetwise, stringToInt(improvedSkills
+                .substring(start)));
+            if ((start = improvedSkills.indexOf("Thievery")) != -1)
+            skills.put(Skill.Thievery, stringToInt(improvedSkills
+                .substring(start)));
 
-	}
-	// Perception should be got from senses
-	skills.put(Skill.Perception, stringToInt(senses));
-    }
+        }
+        // Perception should be got from senses
+        skills.put(Skill.Perception, stringToInt(senses));
+    } // end of setupSkills()
 
     /**
      * Helper function which takes a string which should contain an Integer but
@@ -227,13 +305,17 @@ public class NPC extends Character {
     }
 
     private void parseAura() {
-	Pattern pattern = Pattern
-		.compile("<b>(.+)</b>((.+)aura(\\s+)(\\d+)(.+))<br/>");
-	Matcher matcher = pattern.matcher(html);
-	if (matcher.find()) {
-	    aura = matcher.group(1);
-	    auraDescription = matcher.group(2);
-	}
+        //.compile("<b>(.+)</b>((.+)aura(\\s+)(\\d+)(.+))<br/>");
+        Pattern pattern = Pattern.compile("<b>([^<]+)</b>\\s*(?:\\(([^)]+)\\))?\\s*aura\\s+(\\d+);\\s*([^<]+)<br/>");
+        if (statBlock == StatBlock.MM3)
+            pattern = Pattern.compile("<b>([^<]+)</b>\\s*(?:\\(([^)]+)\\))?\\s*<img[^x]*x\\.gif[^<]*<b>Aura</b>\\s+(\\d+)</p>\\s*<p[^>]*>([^<]+)</p>");
+        Matcher matcher = pattern.matcher(html);
+        if (matcher.find()) {
+            aura = matcher.group(1);
+            auraKeywords = matcher.group(2);
+            auraRange = Integer.parseInt(matcher.group(3));
+            auraDescription = matcher.group(4);
+        }
     }
 
     /**
@@ -328,21 +410,62 @@ public class NPC extends Character {
 
 	}
 
-	public void handleSimpleTag(Tag tag, MutableAttributeSet attrSet,
-		int pos) {
+	public void handleSimpleTag(Tag tag, MutableAttributeSet attrSet, int pos)
+    {
 	    // If we are in 'recharge' mode and see an image
-	    if (tag == Tag.IMG && state == state.POWERRECHARGE) {
-		String src = (String) attrSet.getAttribute(HTML.Attribute.SRC);
-		src = src.replace("http://www.wizards.com/dnd/images/symbol/",
-			"");
-		src = src.replace("a.gif", "");
-		myPower.setUsage("recharge " + src);
-		if (statBlock == StatBlock.MM1) {
-		    myPower.setActionType(myPower.getActionType() + " " + src
-			    + ")"); // eg "(standard, recharge 4)"
-		}
-		state = state.NONE;
+        if (tag == Tag.IMG && state == state.POWERRECHARGE)
+        {
+            String src = (String) attrSet.getAttribute(HTML.Attribute.SRC);
+            src = src.replace("http://www.wizards.com/dnd/images/symbol/","");
+            src = src.replace("a.gif", "");
+            myPower.setUsage("recharge " + src);
+            if (statBlock == StatBlock.MM1)
+            {
+                myPower.setActionType(myPower.getActionType() + " " + src + ")"); // eg "(standard, recharge 4)"
+            }
+            state = state.NONE;
 	    }
+        else if (tag == Tag.IMG && state == state.POWERNAME)
+        {
+            // basic attacks
+//            if (src.contains("/S1.gif"))
+//            {
+//                // close
+//            }
+//            else if (src.contains("/S2.gif"))
+//            {
+//                // melee
+//            }
+//            else if (src.contains("/S3.gif"))
+//            {
+//                // ranged
+//            }
+//            else if (src.contains("/S4.gif"))
+//            {
+//                // area
+//            }
+//            else if (src.contains("/Z1a.gif"))
+//            {
+//
+//            }
+//            else if (src.contains("/Z2a.gif"))
+//            {
+//
+//            }
+//            else if (src.contains("/Z3a.gif"))
+//            {
+//
+//            }
+//            else if (src.contains("/Z4a.gif"))
+//            {
+//
+//            }
+            String src = (String) attrSet.getAttribute(HTML.Attribute.SRC);
+            if (src.length() > 0 && src.contains("/"))
+                src = src.substring(src.lastIndexOf("/") + 1);
+            if (ArrayUtils.contains(TokenMaker.AtkIcons, src))
+                atkIcon = src;
+        }
 	}
 
 	/**
@@ -387,89 +510,91 @@ public class NPC extends Character {
 		xp = stringToInt(str);
 		break;
 	    case POWERTYPE:
-		actionType = str;
-		break;
+            actionType = str;
+            break;
 	    // if State == STATS, we are about to get a Label
 	    // so gobble it up and set the state based on what it said.
 	    case STATS:
-		if (str.equals("Alignment")) {
-		    state = State.ALIGNMENT; // process end stats
-		}
-		if (str.equals("Equipment")) {
-		    state = State.NONE;
-		}
-		if (str.equals("Languages")) {
-		    state = State.LANGUAGES; // process end stats
-		}
-		if (str.equals("Initiative")) {
-		    state = State.INITIATIVE;
-		}
-		if (str.equals("Perception")) {
-		    state = State.SENSES;
-		}
-		if (str.equals("Senses")) {
-		    state = State.SENSES;
-		}
-		if (str.equals("HP")) {
-		    state = State.HP;
-		}
-		if (str.equals("Bloodied")) {
-		    state = State.BLOODIED;
-		}
-		if (str.equals("Regeneration")) {
-		    state = State.REGENERATION;
-		}
-		if (str.equals("AC")) {
-		    state = State.AC;
-		}
-		if (str.equals("Fortitude")) {
-		    state = State.FORTITUDE;
-		}
-		if (str.equals("Reflex")) {
-		    state = State.REFLEX;
-		}
-		if (str.equals("Will")) {
-		    state = State.WILL;
-		}
-		if (str.equals("Immune")) {
-		    state = State.IMMUNE;
-		}
-		if (str.equals("Resist")) {
-		    state = State.RESIST;
-		}
-		if (str.equals("Vulnerable")) {
-		    state = State.VULNERABLE;
-		}
-		if (str.equals("Saving Throws")) {
-		    state = State.SAVINGTHROWS;
-		}
-		if (str.equals("Speed")) {
-		    state = State.SPEED;
-		}
-		if (str.equals("Action Points")) {
-		    state = State.ACTIONPOINTS;
-		}
-		if (str.equals("Skills")) {
-		    state = State.SKILLS;
-		}
-		if (str.equals("Str")) {
-		    state = State.STRENGTH;
-		}
-		if (str.equals("Con")) {
-		    state = State.CONSTITUTION;
-		}
-		if (str.equals("Dex")) {
-		    state = State.DEXTERITY;
-		}
-		if (str.equals("Int")) {
-		    state = State.INTELLIGENCE;
-		}
-		if (str.equals("Wis")) {
-		    state = State.WISDOM;
-		}
-		if (str.equals("Cha")) {
-		    state = State.CHARISMA;
-		}
+            if (str.equals("Alignment")) {
+                state = State.ALIGNMENT; // process end stats
+            }
+            if (str.equals("Equipment")) {
+                state = State.EQUIPMENT;
+            }
+            if (str.equals("Languages")) {
+                state = State.LANGUAGES; // process end stats
+            }
+            if (str.equals("Initiative")) {
+                state = State.INITIATIVE;
+            }
+            if (str.equals("Perception")) {
+                state = State.SENSES;
+            }
+            if (str.equals("Senses")) {
+                state = State.SENSES;
+            }
+            if (str.equals("HP")) {
+                state = State.HP;
+            }
+            if (str.equals("Bloodied")) {
+                state = State.BLOODIED;
+            }
+            if (str.equals("Regeneration")) {
+                state = State.REGENERATION;
+            }
+            if (str.equals("AC")) {
+                state = State.AC;
+            }
+            if (str.equals("Fortitude")) {
+                state = State.FORTITUDE;
+            }
+            if (str.equals("Reflex")) {
+                state = State.REFLEX;
+            }
+            if (str.equals("Will")) {
+                state = State.WILL;
+            }
+            if (str.equals("Immune")) {
+                state = State.IMMUNE;
+            }
+            if (str.equals("Resist")) {
+                state = State.RESIST;
+            }
+            if (str.equals("Vulnerable")) {
+                state = State.VULNERABLE;
+            }
+            if (str.equals("Saving Throws")) {
+                state = State.SAVINGTHROWS;
+            }
+            if (str.equals("Speed")) {
+                state = State.SPEED;
+            }
+            if (str.equals("Action Points")) {
+                state = State.ACTIONPOINTS;
+            }
+            if (str.equals("Skills")) {
+                state = State.SKILLS;
+            }
+            if (str.equals("Str")) {
+                state = State.STRENGTH;
+            }
+            if (str.equals("Con")) {
+                state = State.CONSTITUTION;
+            }
+            if (str.equals("Dex")) {
+                state = State.DEXTERITY;
+            }
+            if (str.equals("Int")) {
+                state = State.INTELLIGENCE;
+            }
+            if (str.equals("Wis")) {
+                state = State.WISDOM;
+            }
+            if (str.equals("Cha")) {
+                state = State.CHARISMA;
+            }
+            if (str.equals("Description:"))
+                state = State.DESCRIPTION;
 		break;
 	    case INITIATIVE:
 		initiative = stringToInt(str);
@@ -564,85 +689,128 @@ public class NPC extends Character {
 		state = State.STATS;
 		break;
 	    case ALIGNMENT:
-		alignment = StringEscapeUtils.escapeHtml(str).replace("&nbsp;",
-			"");
-		state = State.STATS;
-		break;
+            alignment = StringEscapeUtils.escapeHtml(str).replace("&nbsp;",
+                "");
+            state = State.STATS;
+            break;
+        case EQUIPMENT:
+            if (str.trim().equals(":")) // skip the colon
+                break;
+            equipment += " " + StringEscapeUtils.escapeHtml(str).replace("&nbsp;","").trim();
+            break;
 	    case LANGUAGES:
-		languages = str;
-		state = State.STATS;
-		break;
+            languages = str;
+            state = State.STATS;
+            break;
+        case DESCRIPTION:
+            realDescription = str;
+            state = State.STATS;
+            break;
 	    case POWERNAME:
-		// if we are already building a power and we get a new one, add
-		// the one we were building
-		if (statBlock == StatBlock.MM3 && myPower != null) {
-		    addPower(myPower);
-		    myPower = null;
-		}
-		// Alignment and Equipment appear to be on the same tag as
-		// Powers.
-		if (str.equals("Alignment")) {
-		    state = State.ALIGNMENT; // process end stats
-		    break;
-		}
-		if (str.equals("Equipment")) {
-		    state = State.NONE;
-		    return;
-		}
-		if (str.equals("Skills")) {
-		    state = State.SKILLS;
-		    return;
-		}
-		if (str.equals("Str")) {
-		    state = State.STATS;
-		    return;
-		}
-		myPower = new Power(str);
-		state = State.POWERUSAGE;
-		break;
+            // if we are already building a power and we get a new one, add
+            // the one we were building
+            if (statBlock == StatBlock.MM3 && myPower != null) {
+                if (!myPower.getIsJunkAura())
+                    addPower(myPower);
+                myPower = null;
+            }
+            // Alignment and Equipment appear to be on the same tag as
+            // Powers.
+            if (str.equals("Alignment")) {
+                state = State.ALIGNMENT; // process end stats
+                break;
+            }
+            if (str.equals("Equipment")) {
+                state = State.EQUIPMENT;
+                return;
+            }
+            if (str.equals("Skills")) {
+                state = State.SKILLS;
+                return;
+            }
+            if (str.equals("Str")) {
+                state = State.STATS;
+                return;
+            }
+            myPower = new Power(str);
+            myPower.setIcon(atkIcon);
+            if (atkIcon.contains("S"))
+                myPower.setIsBasicAtk(true);
+            if (statBlock == StatBlock.MM3)
+                state = State.POWERKEYWORDS2;
+            else
+                state = State.POWERUSAGE;
+            break;
 	    case POWERUSAGE:
-		if (statBlock == StatBlock.MM3) {
-		    String action = actionType.substring(0,
-			    actionType.length() - 1);
-		    myPower.setActionType(action);
-		    myPower.setUsage(str);
-		    if (str.contains("Recharge")) {
-			state = state.POWERRECHARGE;
-		    }
-		    break;
-		}
+            if (statBlock == StatBlock.MM3) {
+                if (str.equals("Aura"))
+                    myPower.setIsJunkAura(true);
+                String action = actionType.substring(0,
+                    actionType.length() - 1);
+                myPower.setActionType(action);
+                myPower.setUsage(str);
+                if (str.contains("Recharge")) {
+                state = state.POWERRECHARGE;
+                }
+                break;
+            }
 
-		// Remember all this string as the ActionType
-		myPower.setActionType(str);
+            // Remember all this string as the ActionType
+            myPower.setActionType(str);
 
-		// set up power usage
-		if (str.contains("at-will"))
-		    myPower.setUsage("at-will");
-		if (str.contains("encounter"))
-		    myPower.setUsage("encounter");
-		// deal with recharging
-		if (str.contains("recharge")) {
-		    if (str.contains("recharges ")) {
-			int idx = str.indexOf("recharges ");
-			myPower.setUsage(str.substring(idx));
-		    } else {
-			state = state.POWERRECHARGE;
-		    }
-		}
-		if (str.contains("daily"))
-		    myPower.setUsage("daily");
-		if (state != state.POWERRECHARGE)
-		    state = State.NONE;
-		break;
+            // set up power usage
+            if (str.contains("at-will"))
+                myPower.setUsage("at-will");
+            if (str.contains("encounter"))
+                myPower.setUsage("encounter");
+            // deal with recharging
+            if (str.contains("recharge"))
+            {
+                if (str.contains("recharges "))
+                {
+                    int idx = str.indexOf("recharges ");
+                    myPower.setUsage(str.substring(idx));
+                } 
+                else
+                {
+                    state = state.POWERRECHARGE;
+                }
+            }
+            if (str.contains("daily"))
+                myPower.setUsage("daily");
+            if (myPower.getUsage().equals(""))
+                myPower.setUsage("utility");
+            if (state != state.POWERRECHARGE && statBlock != StatBlock.MM3)
+                state = State.POWERKEYWORDS1;
+            else
+                state = State.NONE;
+            break;
 	    case POWERDETAIL:
-		if (statBlock == StatBlock.MM3) {
-		    myPower.setDetail(myPower.getDetail() + " " + str);
-		    break;
-		}
-		myPower.setDetail(str);
-		addPower(myPower);
-		state = State.NONE;
+            if (statBlock == StatBlock.MM3) {
+                myPower.setDetail(myPower.getDetail() + " " + str);
+                break;
+            }
+            myPower.setDetail(str);
+            if (!myPower.getIsJunkAura())
+                addPower(myPower);
+            state = State.NONE;
 		break;
+        case POWERKEYWORDS1:
+            // takes 2 rotations to get to the keywords if they exist
+            state = State.POWERKEYWORDS2;
+            break;
+        case POWERKEYWORDS2:
+            if (statBlock == StatBlock.MM3)
+            {
+                if (str.contains("(") && str.contains(")"))
+                    myPower.setKeywords(str.replace("(","").replace(")",""));
+                state = State.POWERUSAGE;
+                break;
+            }
+            if (!str.isEmpty())
+                myPower.setKeywords(str);
+            state = State.NONE;
+            break;
 	    default:
 		break;
 	    }

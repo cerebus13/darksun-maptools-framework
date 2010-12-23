@@ -29,10 +29,11 @@ public class NPCMaker extends JFrame {
     private JComboBox typeBox;
     private JComboBox sourceBox;
 
-    public static void main(String[] args) {
-	TokenMaker.loadState();
-	NPCMaker frame = new NPCMaker();
-	TokenMaker.saveState();
+    public static void main(String[] args)
+    {
+        TokenMaker.loadState();
+        NPCMaker frame = new NPCMaker();
+        TokenMaker.saveState();
     }
 
     /**
@@ -101,7 +102,7 @@ public class NPCMaker extends JFrame {
 	
 	JPanel sourcePanel = new JPanel();
 	JLabel sourceLabel = new JLabel("Source:");
-	String[] sources = { "", "Dark Sun Campaign Setting", "Monster Manual", "Monster Manual 2", "Monster Manual 3" };
+	String[] sources = { "", "Dark Sun Creature Catalog", "Dark Sun Campaign Setting", "Monster Manual", "Monster Manual 2", "Monster Manual 3" };
 	sourceBox = new JComboBox(sources);
 	sourcePanel.add(sourceLabel);
 	sourcePanel.add(sourceBox);
@@ -181,6 +182,8 @@ public class NPCMaker extends JFrame {
 	    source = "18";
 	else if (source.equals("Monster Manual 3"))
 	    source = "201";
+    else if (source.equals("Dark Sun Creature Catalog"))
+        source = "202";
 	npcs = (ArrayList<NPC>) CompendiumSearcher.getNPCs(nameText.getText(),
 		levelMin, levelMax, role, type, source);
 	npcList.setListData(npcs.toArray());
@@ -192,21 +195,23 @@ public class NPCMaker extends JFrame {
      * Build us an NPC based on the selected entry in the list.
      */
     private void buildNPC() {
-	if (npcList.getSelectedIndex() == -1)
-	    return; // nothing selected - do nothing.
-	
-	// single selection
-	if (npcList.getSelectedIndices().length == 1)
-	{
-	    NPC nPC = (NPC) npcList.getSelectedValue();
-	    NPCBuilder npcDiag = new NPCBuilder(nPC);
-	    npcDiag.setVisible(true);
-	}
-	else 
-	{
-	    NPCBuilder npcDiag = new NPCBuilder(npcList.getSelectedValues());
-	    npcDiag.setVisible(true);
-	}
+        if (npcList.getSelectedIndex() == -1)
+            return; // nothing selected - do nothing.
+
+        // single selection
+        if (npcList.getSelectedIndices().length == 1)
+        {
+            NPC nPC = (NPC) npcList.getSelectedValue();
+            NPCBuilder npcDiag = new NPCBuilder(nPC);
+            npcDiag.setModal(true);
+            npcDiag.setVisible(true);
+        }
+        else // multi-selection
+        {
+            NPCBuilder npcDiag = new NPCBuilder(npcList.getSelectedValues());
+            npcDiag.setModal(true);
+            npcDiag.setVisible(true);
+        }
     }
 
     /**
