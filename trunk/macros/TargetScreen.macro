@@ -1,3 +1,5 @@
+@@ @TargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
 [h:targetArgs = macro.args]
 [h:atkKey          = json.get(targetArgs, 0)]
 [h:atkName         = json.get(targetArgs, 1)]
@@ -81,3 +83,5 @@
   </html>
 }]
 [h:abort(0)]
+
+!!

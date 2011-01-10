@@ -1,3 +1,5 @@
+@@ @ExecutePower
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
 [h: args = macro.args]
 
 [h:selectedButton = json.get(args, "SubmitButton")]
@@ -22,8 +24,6 @@
 [h:damageTypes     = json.get(args, "damageTypes")]
 [h:powaStr     	   = json.get(args, "powaStr")]
 
-
-
 [h:CA=0]
 [h:charge=0]
 [h:cover=0]
@@ -35,7 +35,6 @@
 [h:useDetail=0]
 [h:yesDamRoll=1]
 [h:rerollAttack=0]
-
 
 [h:targJson = json.get(args, "targList")]
 [h:miscAtk = eval(string(json.get(args, "damageMods")))]
@@ -89,7 +88,7 @@
         getState("Stunned",targ) || 
         getState("Surprised",targ) || 
         getState("Unconscious",targ) ||
-        getState("GrantingCA",targ)) ||
+        getState("GrantingCA",targ) ||
         getState("Blinded",targ)):
           caState = 1; caState = 0
   ]
@@ -138,3 +137,5 @@
 [h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 [macro("PrintAttackTable@"+UseLib): tableJson]
+
+!!
