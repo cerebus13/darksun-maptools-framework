@@ -20,6 +20,7 @@ Dexterity (Dex)
 Intelligence (Int)
 Wisdom (Wis)
 Charisma (Cha)
+SaveBonus:0
 -------------STATS-------------
 StrMod:{floor((Strength-10)/2)}
 ConMod:{floor((Constitution-10)/2)}
