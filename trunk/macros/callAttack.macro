@@ -87,7 +87,8 @@
 [h,SWITCH(atkType):
   case 1: tableBG="#00CC00";
   case 2: tableBG="#FF0000";
-  case 3: tableBG="#000000"
+  case 3: tableBG="#000000";
+  case 4: tableBG="#0000FF"
 ]
 [h,if(length(useKeywords)!=0): useKeywords=strformat('<tr><td style="padding:0px 5px" align=left><b>%s</b></td></tr>',useKeywords); useKeywords=""]
 [h,if(length(rangeText)!=0): rangeText=strformat('<td style="padding:0px 5px" align=right><b>%s</b></td>',rangeText); rangeText=""]
