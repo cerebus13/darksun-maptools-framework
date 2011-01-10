@@ -15,8 +15,9 @@
 )]
 [h:abort(status)]
 
-[h:dieRoll=eval("1d20")+misc]
-[h:customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll))]
+[h:saveBon = getProperty("SaveBonus")]
+[h:dieRoll=eval("1d20")+saveBon+misc]
+[h:customTooltip(strformat("d20(%d) %s%s",dieRoll - saveBon - misc,if(saveBon != 0,strformat("+ SaveBonus(%d) ",saveBon),""),if(misc != 0,strformat("+ misc(%d) ",misc),"")),string(dieRoll))]
 [h,if(Choice!=0): stateChoice=substring(listGet(imageList,Choice),0,indexOf(listGet(imageList,Choice)," ")); stateChoice="None"]
 [h,if(Choice!=0): imgLink=strformat(" <img src='%s' align='middle'></img>",getStateImage(stateChoice,30)); imgLink=""]
 
