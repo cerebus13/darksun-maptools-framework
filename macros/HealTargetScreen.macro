@@ -1,4 +1,5 @@
-<!-- HealTargetScreen macro -->
+@@ @HealTargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
 <!-- Pops up the targetting GUI that has targets in dropdown lists, and modifications to apply to the heal if applicable -->
 
 <!-- atkKey = Integer switch used to determine which roll combinations to use: -->
@@ -75,3 +76,5 @@
   </html>
 }]
 [h:abort(0)]
+
+!!

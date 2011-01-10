@@ -1,3 +1,5 @@
+@@ @ExecuteHeal
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
 [h: args = macro.args]
 
 [h:selectedButton = json.get(args, "SubmitButton")]
@@ -51,3 +53,5 @@
 [h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 [macro("PrintAttackTable@"+UseLib): tableJson]
+
+!!

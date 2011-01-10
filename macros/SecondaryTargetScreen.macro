@@ -1,4 +1,5 @@
-<!-- SecondaryTargetScreen macro -->
+@@ @SecondaryTargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
 <!-- Pops up the targetting GUI that has targets in dropdown lists -->
 
 <!-- atkKey = Integer switch used to determine which roll combinations to use: -->
@@ -58,3 +59,5 @@
   </html>
 }]
 [h:abort(0)]
+
+!!

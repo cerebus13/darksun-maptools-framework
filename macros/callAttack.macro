@@ -1,3 +1,5 @@
+@@ @CallAttack
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
 <!-- CallAttack macro -->
 
 <!-- Process parameters -->
@@ -110,3 +112,5 @@ tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,vers
 [h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 }]
+
+!!
