@@ -41,7 +41,6 @@ WillMod:0
 -------------LIMITED USES-------------
 *Uses (AP|Magic):{strformat("%s | %s",ActionPoints,MagicItemUses)}
 ActionPoints (AP):0
-LuckPoints (Luck):0
 MagicItemUses (Magic):0
 -------------OTHER STATISTICS-------------
 *Elevation (Elev)
@@ -54,6 +53,7 @@ Skills (Skl):Acrobatics=0 ; Arcana=0 ; Athletics=0 ; Bluff=0 ; Diplomacy=0 ; Dun
 Miscellaneous (Misc)
 Milestone:0
 UseLib
+SaveBonus:0
 -------------STATIC ATTACK, DAMAGE, HEAL, TEMP HP MODIFIERS-------------
 AllAtkModList (AllAtk)
 *AttackBonuses (ABon)
