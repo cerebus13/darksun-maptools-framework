@@ -1,0 +1,2491 @@
+@@ @onCampaignLoad
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:defineFunction("rangeError", "rangeError@"+getMacroLocation())]
+[h:defineFunction("pause", "pause@"+getMacroLocation(), 1, 0 ) ] 
+[h:defineFunction("customTooltip", "customTooltip@"+getMacroLocation(), 0, 0 ) ]
+[h:defineFunction("updateMacroLabel", "updateMacroLabel@"+getMacroLocation(), 1, 0 ) ]
+[h:defineFunction("getTokenImageById", "getTokenImageById@"+getMacroLocation(), 0, 0 ) ]
+[h:defineFunction("setJsonStates", "setJsonStates@"+getMacroLocation(), 1, 1 ) ]
+[h:defineFunction("updateProperty", "updateProperty@"+getMacroLocation(), 1, 1 ) ]
+[h:defineFunction("updateTargetProperty", "updateTargetProperty@"+getMacroLocation(), 1, 1 ) ]
+[h:defineFunction("updateState", "updateState@"+getMacroLocation(), 1, 1 ) ]
+[h:defineFunction("updateTargetState", "updateTargetState@"+getMacroLocation(), 1, 1 ) ]
+[h:defineFunction("decodeVulnResistJson", "decodeVulnResistJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("applyVulnResistJson", "applyVulnResistJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("decodeModDefenseJson", "decodeModDefenseJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("applyModDefenseJson", "applyModDefenseJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("decodeModAttackJson", "decodeModAttackJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("applyModAttackJson", "applyModAttackJson@"+getMacroLocation(), 1 ) ]
+[h:defineFunction("detailTargetScreen", "detailTargetScreen@"+getMacroLocation(), 1, 0 ) ]
+[h:defineFunction("bonusTargetScreen", "bonusTargetScreen@"+getMacroLocation(), 1, 0 ) ]
+
+!!
+@@ @AddAllNPCToInitiative
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+<!-- Add all NPC to Initiative Macro -->
+
+[h:targetFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "npc", 1)]
+
+[h:initGroup = getTokenNames("json", targetFilter)]
+
+[foreach(token,initGroup,""),CODE:
+{
+  [token(token),CODE:
+  {       
+    [h:addToInitiative()]
+    [h:dieRoll=eval("1d20")]
+    [h:token.init=dieRoll+if(getProperty("Initiative")=="",0,getProperty("Initiative"))]
+  }]
+}]
+All NPCs added to Initiative!
+
+!!
+@@ @AddAllPCToInitiative
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+<!-- Add all PC to Initiative Macro -->
+[h: initGroup = getPCNames()]
+[foreach(token,initGroup,""),CODE:
+{
+  [token(token),CODE:
+  {       
+    [h:addToInitiative()]
+    [h:dieRoll=eval("1d20")]
+    [h:token.init=dieRoll+if(getProperty("Initiative")=="",0,getProperty("Initiative"))]
+  }]
+}]
+All PCs added to Initiative!
+
+!!
+@@ @AllPCMilestone
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+<!-- AllPCMilestone Macro -->
+[h: allPCs = getPCNames()]
+[h,foreach(tkn,allPCs),CODE: 
+{ 
+  [h:switchToken(tkn)]
+  [h:ActionPoints = ActionPoints + 1]
+  [h,if(getPropertyType()=="Joe 4e Player"),code: {
+    [h,if(Milestone != 1 ): Milestone = 1]
+  };{""}]
+}]
+Milestone has been reached!
+
+!!
+@@ @GMInnerUpdatePropMods
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+<!-- GMInnerUpdatePropMods macro -->
+<!-- Parameters: 8 -->
+<!-- 0 : Radio button result for attack -->
+<!-- 1 : Text entry for attack -->
+<!-- 2 : Radio button result for damage -->
+<!-- 3 : Text entry for damage -->
+<!-- 4 : Radio button result for resist -->
+<!-- 5 : Text entry for resist -->
+<!-- 6 : Radio button result for vuln -->
+<!-- 7 : Text entry for vuln -->
+<!-- 8 : Token name -->
+<!-- Called by GMUpdatePropMods macro to avoid large nested code: block -->
+
+[h:atkRadio         = json.get(macro.args, 0)]
+[h:atkText          = json.get(macro.args, 1)]
+[h:damRadio         = json.get(macro.args, 2)]
+[h:damText          = json.get(macro.args, 3)]
+[h:resistRadio      = json.get(macro.args, 4)]
+[h:resistText       = json.get(macro.args, 5)]
+[h:vulnRadio        = json.get(macro.args, 6)]
+[h:vulnText         = json.get(macro.args, 7)]
+[h:tName            = json.get(macro.args, 8)]
+
+[h:switchToken(tName)]
+
+[h,switch(atkRadio),code:
+  case 0: {""};
+  case 1: { [h:atkText = strformat("{%s}",atkText)]
+            [h,foreach(item,json.fields(atkText)): AttackBonuses = json.set(AttackBonuses,item,json.get(atkText,item))] };
+  case 2: { [h,foreach(item,json.toList(atkText)): AttackBonuses = json.remove(AttackBonuses,item)] };
+  default: {""}
+]
+[h,switch(damRadio),code:
+  case 0: {""};
+  case 1: { [h:damText = strformat("{%s}",damText)]
+            [h,foreach(item,json.fields(damText)): DamageBonuses = json.set(DamageBonuses,item,json.get(damText,item))] };
+  case 2: { [h,foreach(item,json.toList(damText)): DamageBonuses = json.remove(DamageBonuses,item)] };
+  default: {""}
+]
+[h,switch(resistRadio),code:
+  case 0: {""};
+  case 1: { [h:resistText = strformat("{%s}",resistText)]
+            [h,foreach(item,json.fields(resistText)): TempResist = json.set(TempResist,item,json.get(resistText,item))] };
+  case 2: { [h,foreach(item,json.toList(resistText)): TempResist = json.remove(TempResist,item)] };
+  default: {""}
+]
+[h,switch(vulnRadio),code:
+  case 0: {""};
+  case 1: { [h:vulnText = strformat("{%s}",vulnText)]
+            [h,foreach(item,json.fields(vulnText)): TempVulnerable = json.set(TempVulnerable,item,json.get(vulnText,item))] };
+  case 2: { [h,foreach(item,json.toList(vulnText)): TempVulnerable = json.remove(TempVulnerable,item)] };
+  default: {""}
+]
+
+!!
+@@ @GMUpdatePropMods
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+<!-- GMUpdatePropMods macro -->
+<!-- Intended to be called as a Global macro allows the user to Add/Update/Remove entries to the Attack, DamageBonuses properties -->
+<!-- and the TempVuln/Resist properties of any number of selected tokens.  If Remove is selected an array of names is all that is needed. -->
+
+[h:listSelected = getSelected()]
+[h:abort(listCount(listSelected))]
+[h:status = input(
+    '.|Example Text-> CA:2,Cover:-5 or Blah,Durp (to remove)||LABEL|SPAN=TRUE',
+    '.|No spaces allowed in Name, use underscores if needed||LABEL|SPAN=TRUE',
+    '.|Use exact words for Resist/Vuln (Cold, Acid...), "All" is valid||LABEL|SPAN=TRUE',
+    "atkRadio|Skip,Add/Update,Remove|<html><b>Attack</b> Modifiers</html>|RADIO|ORIENT=H",
+    "atkText||Attack Entry",
+    "damRadio|Skip,Add/Update,Remove|<html><b>Damage</b> Modifiers</html>|RADIO|ORIENT=H",
+    "damText||Damage Entry",
+    "resistRadio|Skip,Add/Update,Remove|<html><b>Resistance</b> Modifiers</html>|RADIO|ORIENT=H",
+    "resistText||Resistance Entry",
+    "vulnRadio|Skip,Add/Update,Remove|<html><b>Vulnerability</b> Modifiers</html>|RADIO|ORIENT=H",
+    "vulnText||Vulnerability Entry"
+)]
+[h:abort(status)]
+[h,if(atkRadio==0 && damRadio==0 && resistRadio==0 && vulnRadio==0): abort(0)]
+
+[h,foreach(item,listSelected): evalMacro(strformat('[h,macro("GMInnerUpdatePropMods@%s"): json.append("[]",atkRadio,atkText,damRadio,damText,resistRadio,resistText,vulnRadio,vulnText,item)]',getMacroLocation()))]
+
+[abort(0)]
+
+!!
+@@ @RechargePowers
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+<!-- RechargePowers macro -->
+<!-- scans all macros on current token for "Recharge" -->
+<!-- rolls a 1d6 against each macro and if it beats "#" then sets the label to drop the " (Recharge #)" -->
+[h,foreach(m,getMacros(),""), code: 
+{
+  [h:index=getMacroIndexes(m)]
+  [h,if(isNumber(index)): propJson=getMacroProps(index,"json");propJson = '{}']
+  [h:label=json.get(propJson, "label")]
+  [h,if(matches(label,".*Recharge.*")),code:
+  {
+    [h: chargeRoll = eval("1d6")]
+    [h: chargeNumber = number(substring(label,length(label)-2,length(label)-1))]
+    [h,if(chargeRoll>=chargeNumber): setMacroProps(index, "label="+replace(label, " \\(Recharge "+chargeNumber+"\\)", ""))]
+  };{[h: ""]}]
+}]
+[g:"Recharge Powers run!"]
+
+!!
+@@ @applyModAttackJson
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:arrayJson       = arg(0)]
+[h:tokenName       = arg(1)]
+
+[h: updateTargetProperty("AllAtkModList",arrayJson,tokenName)]
+[h: AllModifier = "{}"]
+[h: HitModifier = "{}"]
+[h: DamageModifier = "{}"]
+[h: Total = 0]
+
+[for(i,0,json.length(arrayJson),1,""), CODE:
+{
+  [h:mod = json.get(arrayJson, i)]
+  [h:attack = json.get(mod, "modAtk")]
+  [h:value = json.get(mod, "modValue")]
+  [h:modName = json.get(mod, "modName")]
+  [h:modJson = '{'+modName+':'+value+'}']
+  [h: Total = Total + value]
+  [h,SWITCH(attack):
+    case 0: AllModifier = json.merge(AllModifier, modJson);
+    case 1: HitModifier = json.merge(HitModifier, modJson);
+    case 2: DamageModifier = json.merge(DamageModifier, modJson);
+    default: ""
+  ]
+}]
+[h, if(Total < 0), CODE:
+{
+[updateTargetState("MinusToHit",1,tokenName)]
+[updateTargetState("PlusToHit",0,tokenName)]
+};
+{
+[h, if(Total > 0), CODE:
+{
+[updateTargetState("MinusToHit",0,tokenName)]
+[updateTargetState("PlusToHit",1,tokenName)]
+};
+{
+[updateTargetState("MinusToHit",0,tokenName)]
+[updateTargetState("PlusToHit",0,tokenName)]
+};]
+};]
+[h: propHitTargetJson = json.merge(HitModifier, AllModifier)]
+[h: propDamageTargetJson = json.merge(DamageModifier, AllModifier)]
+[h,if(json.isEmpty(propHitTargetJson)): propHitTargetJson = ""]
+[h: updateTargetProperty("AttackBonuses", propHitTargetJson, tokenName)]
+[h,if(json.isEmpty(propDamageTargetJson)): propDamageTargetJson = ""]
+[h: updateTargetProperty("DamageBonuses", propDamageTargetJson, tokenName)]
+
+!!
+@@ @applyModDefenseJson
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:arrayJson       = arg(0)]
+[h:tokenName       = arg(1)]
+
+[h: updateTargetProperty("AllDefModList",arrayJson,tokenName)]
+[h: AllModifier = 0]
+[h: ACModifier = 0]
+[h: FortModifier = 0]
+[h: RefModifier = 0]
+[h: WillModifier = 0]
+[h: Total = 0]
+[for(i,0,json.length(arrayJson),1,""), CODE:
+{
+  [h:mod = json.get(arrayJson, i)]
+  [h:defense = json.get(mod, "modDef")]
+  [h:value = json.get(mod, "modValue")]
+  [h,SWITCH(defense):
+    case 0: AllModifier = AllModifier + value;
+    case 1: ACModifier = ACModifier + value;
+    case 2: FortModifier = FortModifier + value;
+    case 3: RefModifier = RefModifier + value;
+    case 4: WillModifier = WillModifier + value;
+    default: ""
+  ]
+  [h: Total = Total + value]
+}]
+[h, if(Total < 0), CODE:
+{
+[updateTargetState("MinusToAC",1,tokenName)]
+[updateTargetState("PlusToAC",0,tokenName)]
+};
+{
+[h, if(Total > 0), CODE:
+{
+[updateTargetState("MinusToAC",0,tokenName)]
+[updateTargetState("PlusToAC",1,tokenName)]
+};
+{
+[updateTargetState("MinusToAC",0,tokenName)]
+[updateTargetState("PlusToAC",0,tokenName)]
+};]
+};]
+[h:updateTargetProperty("AllDefMod", AllModifier, tokenName)]
+[h:updateTargetProperty("ACMod", ACModifier, tokenName)]
+[h:updateTargetProperty("FortMod", FortModifier, tokenName)]
+[h:updateTargetProperty("RefMod", RefModifier, tokenName)]
+[h:updateTargetProperty("WillMod", WillModifier, tokenName)]
+
+!!
+@@ @applyVulnResistJson
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- applyVulnResistJson user defined function -->
+[h:arrayJson       = arg(0)]
+[h:tokenName       = arg(1)]
+
+[h:updateTargetProperty("TempResVuln",arrayJson,tokenName)]
+[h:ResAcid = 0]
+[h:ResAll = 0]
+[h:ResCold = 0]
+[h:ResFire = 0]
+[h:ResForce = 0]
+[h:ResLightning = 0]
+[h:ResNecrotic = 0]
+[h:ResPoison = 0]
+[h:ResPsychic = 0]
+[h:ResRadiant = 0]
+[h:ResThunder = 0]
+[h:VulnAcid = 0]
+[h:VulnAll = 0]
+[h:VulnCold = 0]
+[h:VulnFire = 0]
+[h:VulnForce = 0]
+[h:VulnLightning = 0]
+[h:VulnNecrotic = 0]
+[h:VulnPoison = 0]
+[h:VulnPsychic = 0]
+[h:VulnRadiant = 0]
+[h:VulnThunder = 0]
+[for(i,0,json.length(arrayJson),1,""), CODE:
+{
+  [h:mod = json.get(arrayJson, i)]
+  [h:def = json.get(mod, "modDef")]
+  [h:value = json.get(mod, "modValue")]
+  [h:namer = json.get(mod, "modName")]
+  [h,SWITCH(def):
+    case 0: evalMacro(strformat("[h:Res%s = if(value > Res%s,value,Res%s)]",namer,namer,namer));
+    case 1: evalMacro(strformat("[h:Vuln%s = if(value > Vuln%s,value,Vuln%s)]",namer,namer,namer));
+    default: ""
+  ]
+}]
+[h:updateTargetProperty("TempResAcid", ResAcid, tokenName)]
+[h:updateTargetProperty("TempResAll", ResAll, tokenName)]
+[h:updateTargetProperty("TempResCold", ResCold, tokenName)]
+[h:updateTargetProperty("TempResFire", ResFire, tokenName)]
+[h:updateTargetProperty("TempResForce", ResForce, tokenName)]
+[h:updateTargetProperty("TempResLightning", ResLightning, tokenName)]
+[h:updateTargetProperty("TempResNecrotic", ResNecrotic, tokenName)]
+[h:updateTargetProperty("TempResPoison", ResPoison, tokenName)]
+[h:updateTargetProperty("TempResPsychic", ResPsychic, tokenName)]
+[h:updateTargetProperty("TempResRadiant", ResRadiant, tokenName)]
+[h:updateTargetProperty("TempResThunder", ResThunder, tokenName)]
+[h:updateTargetProperty("TempVulnAcid", VulnAcid, tokenName)]
+[h:updateTargetProperty("TempVulnAll", VulnAll, tokenName)]
+[h:updateTargetProperty("TempVulnCold", VulnCold, tokenName)]
+[h:updateTargetProperty("TempVulnFire", VulnFire, tokenName)]
+[h:updateTargetProperty("TempVulnForce", VulnForce, tokenName)]
+[h:updateTargetProperty("TempVulnLightning", VulnLightning, tokenName)]
+[h:updateTargetProperty("TempVulnNecrotic", VulnNecrotic, tokenName)]
+[h:updateTargetProperty("TempVulnPoison", VulnPoison, tokenName)]
+[h:updateTargetProperty("TempVulnPsychic", VulnPsychic, tokenName)]
+[h:updateTargetProperty("TempVulnRadiant", VulnRadiant, tokenName)]
+[h:updateTargetProperty("TempVulnThunder", VulnThunder, tokenName)]
+
+!!
+@@ @bonusTargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- bonusTargetScreen user-defined function -->
+
+[h,if(CA): inputAJson = json.set(inputAJson,"CA",2)]
+[h,if(charge): inputAJson = json.set(inputAJson,"charge",1)]
+[h,if(cover>0): inputAJson = json.set(inputAJson,"cover",if(cover==1,-2,-5))]
+[h,if(conceal>0): inputAJson = json.set(inputAJson,"concealment",if(conceal==1,-2,-5))]
+[h,if(longRange): inputAJson = json.set(inputAJson,"range",-2)]
+[h,if(miscAtk!=0): inputAJson = json.set(inputAJson,"misc",miscAtk)]
+[h,if(getState("Restrained")): inputAJson = json.set(inputAJson,"Restrained",-2)]
+[h,if(getState("Prone")): inputAJson = json.set(inputAJson,"SelfProne",-2)]
+[h,if(getState("Blinded") && listFind(keywords,"Area") == -1): inputAJson = json.set(inputAJson,"concealment",-5)]
+[h,if(atkKey!=3 && atkKey!=6): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", atkMod, "AttackBonuses", miscAtk, inputAJson)]')]
+[h,if(atkKey!=3 && atkKey!=6): atkText=json.get(macro.return, 0)]
+[h,if(atkKey!=3 && atkKey!=6): atkVal=json.get(macro.return, 1)]
+<!-- Skip damage portion on attacks 2 and 5 -->
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", damMod, "DamageBonuses", miscDam, "{}")]')]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damText=json.get(macro.return, 0);damText="0"]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damVal=json.get(macro.return, 1);damVal="0"]
+
+[h,if(yesDamRoll==0): useDam="0"]
+[h,if(yesDamRoll==0): useCritDam="0"]
+[h,if(atkKey>3 && yesDamRoll): useDam=eval(string(damRoll)); useDam=damRoll]
+[h,if(atkKey>3 && yesDamRoll): useCritDam=eval(string(critDamRoll)); useCritDam=critDamRoll]
+
+!!
+@@ @customTooltip
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h: output = strformat("<span style='background:#EEEEEE' title='%s'>%s</span>",arg(0),arg(1))]
+{output}
+
+!!
+@@ @decodeModAttackJson
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:modAttackJson       = arg(0)]
+[h:targetName           = arg(1)]
+[h:selfName             = getName()]
+[h: propAttackTargetJson = getProperty("AllAtkModList", targetName)]
+[h: propAttackSelfJson = getProperty("AllAtkModList", selfName)]
+[h: newAttackTargetJson = json.get(modAttackJson, "0")]
+[h: newAttackSelfJson = json.get(modAttackJson, "1")]
+
+[h, if(json.isEmpty(newAttackSelfJson)), CODE:
+{};
+{[h, if(json.isEmpty(propAttackSelfJson)), CODE:
+{[h: applyModAttackJson(newAttackSelfJson, selfName)]};
+{[h: applyModAttackJson(json.unique(json.merge(propAttackSelfJson, newAttackSelfJson)), selfName)]}]};]
+
+[h, if(json.isEmpty(newAttackTargetJson)), CODE:
+{};
+{[h, if(json.isEmpty(propAttackTargetJson)), CODE:
+{[h: applyModAttackJson(newAttackTargetJson, targetName)]};
+{[h: applyModAttackJson(json.unique(json.merge(propAttackTargetJson, newAttackTargetJson)), TargetName)]}]};]
+
+!!
+@@ @decodeModDefenseJson
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:modDefenseJson       = arg(0)]
+[h:targetName           = arg(1)]
+[h:selfName             = getName()]
+[h: propDefenseTargetJson = getProperty("AllDefModList", targetName)]
+[h: propDefenseSelfJson = getProperty("AllDefModList", selfName)]
+[h: newDefenseTargetJson = json.get(modDefenseJson, "0")]
+[h: newDefenseSelfJson = json.get(modDefenseJson, "1")]
+
+[h, if(json.isEmpty(newDefenseSelfJson)), CODE:
+{};
+{[h, if(json.isEmpty(propDefenseSelfJson)), CODE:
+{[h: applyModDefenseJson(newDefenseSelfJson, selfName)]};
+{[h: applyModDefenseJson(json.unique(json.merge(propDefenseSelfJson, newDefenseSelfJson)), selfName)]}]};]
+
+[h, if(json.isEmpty(newDefenseTargetJson)), CODE:
+{};
+{[h, if(json.isEmpty(propDefenseTargetJson)), CODE:
+{[h: applyModDefenseJson(newDefenseTargetJson, targetName)]};
+{[h: applyModDefenseJson(json.unique(json.merge(propDefenseTargetJson, newDefenseTargetJson)), TargetName)]}]};]
+
+!!
+@@ @decodeVulnResistJson
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- decodeVulnResistJson user defined function -->
+[h:VRJson       = arg(0)]
+[h:targetName           = arg(1)]
+[h:selfName             = getName()]
+[h: propVulnResistTargetJson = getProperty("TempResVuln", targetName)]
+[h: propVulnResistSelfJson = getProperty("TempResVuln", selfName)]
+[h,if(json.isEmpty(VRJson)): newVulnResistTargetJson = "{}"; newVulnResistTargetJson = json.get(VRJson, "0")]
+[h,if(json.isEmpty(VRJson)): newVulnResistSelfJson = "{}"; newVulnResistSelfJson = json.get(VRJson, "1")]
+
+[h, if(json.isEmpty(newVulnResistSelfJson)), CODE:
+{};
+{[h, if(json.isEmpty(propVulnResistSelfJson)), CODE:
+{[h: applyVulnResistJson(newVulnResistSelfJson, selfName)]};
+{[h: applyVulnResistJson(json.unique(json.merge(propVulnResistSelfJson, newVulnResistSelfJson)), selfName)]}]};]
+
+[h, if(json.isEmpty(newVulnResistTargetJson)), CODE:
+{};
+{[h, if(json.isEmpty(propVulnResistTargetJson)), CODE:
+{[h: applyVulnResistJson(newVulnResistTargetJson, targetName)]};
+{[h: applyVulnResistJson(json.unique(json.merge(propVulnResistTargetJson, newVulnResistTargetJson)), targetName)]}]};]
+
+!!
+@@ @detailTargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- detailTargetScreen user-defined function -->
+
+[h:inputJson = json.append("[]",
+    strformat("junk|<html><b>Power Name: %s</b></html>||LABEL|SPAN=TRUE",atkName),
+    strformat("junk|<html><b>Target Name: %s</b></html>||LABEL|SPAN=TRUE",targ),
+    ".|---------------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE",
+    strformat("CA|%d|Combat Advantage vs. Target|CHECK",defCa),
+    strformat("charge|%d|Charge Attack vs. Target|CHECK",defCharge),
+    strformat("cover|None,Regular(-2),Superior(-5)|Cover vs. Target|RADIO|ORIENT=H SELECT=%d",defCover),
+    strformat("conceal|None,Regular(-2),Total(-5)|Concealment vs. Target|RADIO|ORIENT=H SELECT=%d",defConceal),
+    strformat("longRange|%d|Long Range vs. Target|CHECK",defLongRange),
+    strformat("miscAtk|%d|<html>Miscellaneous <b>modifier</b> to attack</html>",defMiscAtk),
+    strformat("miscDam|%d|<html>Miscellaneous <b>modifier</b> to damage</html>",defMiscDam)
+)]
+[h,if(atkKey==1 || atkKey==4): inputJson = json.append(inputJson,strformat("yesDamRoll|%d|Roll damage? |CHECK",defYesDamRoll))]
+[h,if(atkKey==1 || atkKey==2 || atkKey==4 || atkKey==5): inputJson = json.append(inputJson,strformat("rerollAttack|%d|Reroll d20 for attack and take highest? |CHECK",defRerollAttack))]
+[h:status = input(json.toList(inputJson,"##"))]
+[h:abort(status)]
+
+<!-- Skip attack portion on attack 3 and 6 -->
+[h:inputAJson="{}"]
+[h,if(CA): inputAJson = json.set(inputAJson,"CA",2)]
+[h,if(charge): inputAJson = json.set(inputAJson,"charge",1)]
+[h,if(cover>0): inputAJson = json.set(inputAJson,"cover",if(cover==1,-2,-5))]
+[h,if(conceal>0): inputAJson = json.set(inputAJson,"concealment",if(conceal==1,-2,-5))]
+[h,if(longRange): inputAJson = json.set(inputAJson,"range",-2)]
+[h,if(miscAtk!=0): inputAJson = json.set(inputAJson,"misc",miscAtk)]
+[h,if(getState("Restrained")): inputAJson = json.set(inputAJson,"Restrained",-2)]
+[h,if(getState("Prone")): inputAJson = json.set(inputAJson,"SelfProne",-2)]
+[h,if(getState("Blinded") && listFind(keywords,"Area") == -1): inputAJson = json.set(inputAJson,"concealment",-5)]
+[h,if(atkKey!=3 && atkKey!=6): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", atkMod, "AttackBonuses", miscAtk, inputAJson)]')]
+[h,if(atkKey!=3 && atkKey!=6): atkText=json.get(macro.return, 0)]
+[h,if(atkKey!=3 && atkKey!=6): atkVal=json.get(macro.return, 1)]
+<!-- Skip damage portion on attacks 2 and 5 -->
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", damMod, "DamageBonuses", miscDam, "{}")]')]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damText=json.get(macro.return, 0);damText="0"]
+[h,if(atkKey!=2 && atkKey!=5 && yesDamRoll): damVal=json.get(macro.return, 1);damVal="0"]
+
+[h,if(yesDamRoll==0): useDam="0"]
+[h,if(yesDamRoll==0): useCritDam="0"]
+
+[h,if(atkKey>3 && yesDamRoll): useDam=eval(string(damRoll)); useDam=damRoll]
+[h,if(atkKey>3 && yesDamRoll): useCritDam=eval(string(critDamRoll)); useCritDam=critDamRoll]
+
+!!
+@@ @getTokenImageById
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,token(arg(0)): output=getTokenImage(30)]
+{output}
+
+!!
+@@ @pause
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[ toolkit.DebugVariableCount = argCount() ]
+[ toolkit.DebugVariableArray = macro.args ]
+[ toolkit.DebugInputParameter = ".|<html>" +
+    "<table cellspacing='2' cellpadding='0' style='background-color:#595751'>" +
+    "<tr><td>" +
+    "<table width='300px' cellspacing='0' cellpadding='2' style='background-color:#FAF9F5;'>" +
+    "%{toolkit.DebugVariableRows}</table></td></tr></html>" +
+    "|Debugger|LABEL|SPAN=TRUE"
+]
+[ toolkit.DebugVariableRow = "<tr %{toolkit.DebugVariableRowStyle}><td>" +
+    "<b>%{toolkit.DebugVariableName}</b></td><td>%{toolkit.DebugVariableContent}" +
+    "</td></tr>"
+]
+[ toolkit.DebugVariableRows = "<tr style='background-color:#E0DDD5; font-size:1.1em;'><td><b>Variable</b></td><td><b>Value</b></td></tr>" ]
+[ count( toolkit.DebugVariableCount ), code:
+{
+    [ toolkit.DebugVariableRowStyle = "" ]
+    [ toolkit.DebugVariableName = json.get( toolkit.DebugVariableArray, roll.count ) ]
+    [ toolkit.DebugVariableContent = eval( toolkit.DebugVariableName ) ]    <!-- this may not be compatible with a custom eval function (which would overwrite macro.args) -->
+    [ if( floor( roll.count/2 ) == roll.count/2 ), code:
+    {
+        [ toolkit.DebugVariableRowStyle = "style='background-color:#EDECE8;'" ]
+    } ]
+    [ toolkit.DebugVariableRows = toolkit.DebugVariableRows +
+        strformat( toolkit.DebugVariableRow )
+    ]
+} ]
+[ if( toolkit.DebugVariableCount == 0 ), code:
+{
+    [ toolkit.DebugVariableRows = "<tr><td style='font-size: 1.4em' align='center'><b>Pause</b></td></tr>" ]
+} ]
+
+[ toolkit.DebugBreak = input( strformat( toolkit.DebugInputParameter ) )]
+[ abort( toolkit.DebugBreak ) ]
+
+!!
+@@ @rangeError
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:input(".|<html><b>There are no targets in range</b></html>||LABEL|SPAN=TRUE")]
+[h:returnVal = ""]
+[returnVal]
+
+!!
+@@ @setJsonStates
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- setJsonStates user defined function -->
+<!-- takes in 2 arguments: -->
+<!-- arg0 - a Json array of state names to apply -->
+<!-- arg1 - token id -->
+
+[h:states=arg(0)]
+[h:target=arg(1)]
+[h,foreach(st,json.toList(states)): updateTargetState(st,1,target)]
+
+!!
+@@ @updateMacroLabel
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- updateMacroLabel user defined function -->
+<!-- takes in 1 argument: text to append to the macro label, it only does this if the text is not already on the end -->
+
+[h:argu=arg(0)]
+[h:macroStr=json.get(getMacroProps(getMacroButtonIndex(),"json"),"label")]
+[h,if(endsWith(macroStr,argu)!=1): setMacroProps(getMacroButtonIndex(),strformat("label=%s%s",macroStr,argu))]
+
+!!
+@@ @updateProperty
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- updateProperty user defined function -->
+<!-- takes in 2 arguments: (1) is property to be set, (2) is value to set property to -->
+<!-- checks that property doesn't already have the value passed before setting it -->
+
+[h:prop=arg(0)]
+[h:val=arg(1)]
+[h:check = getProperty(prop)]
+[h,if(string(check) != string(val)): setProperty(prop,val)]
+
+!!
+@@ @updateState
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- updateState user defined function -->
+<!-- takes in 2 arguments: (1) is state to be set, (2) is value to set state to, 1 = on, 0 = off -->
+<!-- checks that property doesn't already have the state setting passed before setting it -->
+
+[h:stater=arg(0)]
+[h:val=arg(1)]
+[h,if(getState(stater)!=val): setState(stater,val)]
+
+!!
+@@ @updateTargetProperty
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- updateTargetProperty user defined function -->
+<!-- takes in 3 arguments: (1) is property to be set, (2) is value to set property to -->
+<!-- (3) token id to use -->
+<!-- checks that property doesn't already have the value passed before setting it -->
+
+[h:prop=arg(0)]
+[h:val=arg(1)]
+[h:targ = arg(2)]
+[h:check = getProperty(prop,targ)]
+[h,if(string(check) != string(val)): setProperty(prop,val,targ)]
+
+!!
+@@ @updateTargetState
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- updateTargetState user defined function -->
+<!-- takes in 3 arguments: (1) is state to be set, (2) is value to set state to, 1 = on, 0 = off -->
+<!-- (3) is token id -->
+<!-- checks that property doesn't already have the state setting passed before setting it -->
+
+[h:stater=arg(0)]
+[h:val=arg(1)]
+[h:targ=arg(2)]
+[h,if(getState(stater,targ)!=val): setState(stater,val,targ)]
+
+!!
+@@ @ApplyMark
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- ApplyMark macro -->
+<!-- Returns: none -->
+<!-- Parameters: 1 -->
+<!-- 0 : Target name -->
+<!-- called only if a attack parameter or token property indicates that a Mark is to be applied as part of an attack -->
+
+<!-- Halo #RRGGBB values: Blue = #0000FF, Cyan = #00FFFF, Green = #00FF00, Orange = #FF9C00, Red = #FF0000, Yellow = #FFFF00 -->
+[h:targetName = json.get(macro.args, 0)]
+
+[h:mJson=getTokenStates("json","Mark")]
+[h:haloz = getHalo()]
+[h,switch(haloz):
+  case "#0000ff": haloz="blue";
+  case "#00ffff": haloz="cyan";
+  case "#00ff00": haloz="green";
+  case "#ff9c00": haloz="orange";
+  case "#ff0000": haloz="red";
+  case "#ffff00": haloz="yellow";
+  default: haloz=""
+]
+[h,if(getProperty("MarkedBy",targetName) != getName() && length(haloz) == 0): callFind = 1;callFind = 0]
+[h,if(callFind): evalMacro('[h,macro("FindMark@"+UseLib): ""]')]
+[h,if(callFind): setHalo(macro.return)]
+[h,if(callFind): updateTargetState("Marked_"+macro.return,1,targetName); updateTargetState("Marked_"+haloz,1,targetName)]
+[h:updateTargetProperty("MarkedBy",getName(),targetName)]
+
+!!
+@@ @BonusTotal
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- BonusTotal macro -->
+
+[h:modJson     = json.get(macro.args, 0)]
+[h:propName    = json.get(macro.args, 1)]
+[h:miscMod     = json.get(macro.args, 2)]
+[h:otherJson   = json.get(macro.args, 3)]
+
+[h:localProp = getProperty(propName)]
+[h:mainJson=json.merge(modJson,if(json.isEmpty(localProp),"{}",localProp),otherJson)]
+[h,if(miscMod != 0): mainJson = json.set(mainJson,"misc",miscMod)]
+
+[h:mainFields=json.fields(mainJson)]
+[h:mainText=""]
+[h,foreach(val,mainFields): mainText=concat(mainText,strformat(" + %s(%s)",val,json.get(mainJson,val)))]
+[h:mainVal=""]
+[h,foreach(val,mainFields): mainVal=listAppend(mainVal,json.get(mainJson,val))]
+[h:mainVal=listFormat(mainVal, "%list", "%item", "+")]
+
+[h:macro.return=json.append("[]", mainText, if(mainVal == "",0,mainVal))]
+
+!!
+@@ @DeleteModifier
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- Delete Modifier -->
+[macro.args]
+[h: ModifierForm = json.get(macro.args, "ModifierForm")]
+[h: propSelfJson = json.get(macro.args, "propSelfJson")]
+[h: propLength = json.get(macro.args, "propLength")]
+[h: selfName = json.get(macro.args, "selfName")]
+[h: removed = 0]
+[c(propLength),code:{
+[h, if(json.get(macro.args, "mod"+roll.count) == "on"), CODE:
+{[propSelfJson = json.remove(propSelfJson, (roll.count-removed))];
+[removed = removed+1];}]}]
+[h, if(ModifierForm == "Delete Defense"): applyModDefenseJson(propSelfJson, selfName)]
+[h, if(ModifierForm == "Delete Attack"): applyModAttackJson(propSelfJson, selfName)]
+[h, if(ModifierForm == "Delete Resist/Vuln"): applyVulnResistJson(propSelfJson, selfName)]
+[h: closeDialog("Modifiers")]
+[macro("ModifierDialog@"+getMacroLocation()):""]
+[abort(0)]
+
+!!
+@@ @DoAttack
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- DoAttack2 macro -->
+<!-- Returns: 4 -->
+<!-- 1 : Result of attack roll.  0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+<!-- 2 : Actual attack roll 1-20 -->
+<!-- 3 : Rolled damage -->
+<!-- 4 : Total damage of rolled + modifiers -->
+<!-- 5 : String of multiple attack rolls if rerollAttack = 1 -->
+<!-- Parameters: 14 -->
+<!-- 12 : Integer boolean to reroll attack 1 time and use higher value -->
+<!-- 13 : Json object of when to apply a resist/vuln to target/self -->
+<!-- 14 : Keyword list from attack -->
+<!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
+<!-- Apply damage/effects to target on hit/miss and return values depending on result -->
+
+[h:targetName      = json.get(macro.args, 0)]
+[h:targetDefense   = json.get(macro.args, 1)]
+[h:atkMod          = json.get(macro.args, 2)]
+[h:damRoll         = json.get(macro.args, 3)]
+[h:critDamRoll     = json.get(macro.args, 4)]
+[h:damMod          = json.get(macro.args, 5)]
+[h:autoHit         = json.get(macro.args, 6)]
+[h:missDamageRoll  = json.get(macro.args, 7)]  <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(macro.args, 8)]  <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(macro.args, 9)]  <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(macro.args, 10)] <!-- Json array telling when to apply Mark to target -->
+[h:rerollAttack    = json.get(macro.args, 11)] <!-- Integer boolean to reroll attack 1 time and use higher value -->
+[h:vulnResistJson  = json.get(macro.args, 12)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(macro.args, 13)]
+[h:modAttackJson   = json.get(macro.args, 14)]
+[h:keywords        = json.get(macro.args, 15)]
+[h:damageTypes     = json.get(macro.args, 16)]
+
+[h:propTargetStatesJson = getProperty("TargetStates")]
+[h:propSelfStatesJson   = getProperty("SelfStates")]
+[h:propMarkJson         = getProperty("TargetMark")]
+[h:selfName             = getName()]
+[h:isWeakened           = getState("Weakened")]
+[h:emptyObjectJson="{}"]
+[h:switchToken(targetName)]
+[h:def = if(length(targetDefense) > 0,getProperty(targetDefense),0)]
+
+[h:atkRoll=eval("1d20")]
+<!-- Reroll the attack roll once, take highest -->
+[h:atkRolls=""]
+[h,if(rerollAttack): atkRoll2=eval("1d20")]
+[h,if(rerollAttack): atkRolls=strformat("(%d,%d)",atkRoll,atkRoll2)]
+[h,if(rerollAttack): atkRoll=if(atkRoll2>atkRoll,atkRoll2,atkRoll)]
+
+[h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
+[h:totalDamage=damage+eval(string(damMod))]
+[h,if(totalDamage<0):totalDamage=0]
+[h:atkRollMod = atkRoll + eval(string(atkMod))]
+[h,if(atkRollMod >= def): resu=2; resu=1]
+[h,if(atkRoll==20): resu=3]
+[h,if(atkRoll==1):  resu=0]
+[h,if(autoHit):     resu=2]
+
+<!-- set damage to missDamageRoll if attack will not hit -->
+[h,if(resu<=1 && missDamageRoll!=-1 && MaxHP>1): applyMissDam=1;applyMissDam=0]
+[h,if(applyMissDam && missDamageRoll!=-2): totalDamage = eval(string(missDamageRoll))]
+[h,if(applyMissDam && missDamageRoll==-2): totalDamage = floor(totalDamage/2)] 
+
+<!-- Apply Vulns/Resists -->
+[h:useTotalDamage       = totalDamage]
+[h,foreach(item,damageTypes): useTotalDamage = useTotalDamage + max(getProperty("TempVuln"+item),getProperty("InnateVuln"+item))]
+[h,if(TempVulnAll > 0 || InnateVulnAll > 0): useTotalDamage = useTotalDamage + max(TempVulnAll,InnateVulnAll)]
+[h,if(listCount(damageTypes) == 0): pRes = 0; pRes = 999]
+[h,foreach(item,damageTypes): pRes = min(max(getProperty("TempRes"+item),getProperty("InnateRes"+item)),pRes)]
+[h:useTotalDamage = useTotalDamage - max(getProperty("TempResAll"),getProperty("InnateResAll"),pRes)]
+[h,if(useTotalDamage<0):useTotalDamage=0]
+
+<!-- Check Swarm -->
+[h,if(Swarm && listFind(keywords,"Area") == -1): useTotalDamage = floor(useTotalDamage/2)]
+[h,if(Swarm && listFind(keywords,"Area") != -1): useTotalDamage = useTotalDamage + SwarmVuln]
+
+<!-- Check Insubstantial -->
+[h,if(Insubstantial): useTotalDamage = floor(useTotalDamage/2)]
+
+<!-- Check Weakened -->
+[h,if(isWeakened): useTotalDamage = floor(useTotalDamage/2)]
+
+<!-- apply damage to target if needed -->
+[h,if(resu>1 || applyMissDam),code:
+{
+  [h,if(TempHP>=useTotalDamage), code:
+  {
+    [h: TempHP = TempHP - useTotalDamage]
+  };{
+    [h: useTotalDamage = useTotalDamage - TempHP]
+    [h: TempHP = 0]
+    [h: CurrentHP = CurrentHP - useTotalDamage]
+    [h,if(CurrentHP<=floor(MaxHP/2) && CurrentHP+useTotalDamage>floor(MaxHP/2)): state.Bloodied=1]
+  }]
+  [h,if(CurrentHP<=0 && isPC()),code:
+  {
+    [h:state.Unconscious=1]
+    [h:state.Prone=1]
+    [h:setHalo("None")]
+    [h:CurrentHP = 0]
+  };{}]
+  [h,if(CurrentHP<=0 && isNPC()),code:
+  {
+    [h:removeFromInitiative()]
+    [h:updateProperty("MarkedBy","")]
+    [h:setHalo("None")]
+    [h:setAllStates(0)]
+    [h:state.Dead=1]
+  };{}]
+};{}]
+
+[h:switchToken(selfName)]
+
+[h:emptyJson="[]"]
+<!-- apply states to Target -->
+[h,SWITCH(resu):
+  case 0: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
+  case 1: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,0))>0,json.get(propTargetStatesJson,0),emptyJson),if(length(json.get(targetStateJson,0))>0,json.get(targetStateJson,0),emptyJson)),targetName);
+  case 2: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,1))>0,json.get(propTargetStatesJson,1),emptyJson),if(length(json.get(targetStateJson,1))>0,json.get(targetStateJson,1),emptyJson)),targetName);
+  case 3: setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,2))>0,json.get(propTargetStatesJson,2),emptyJson),if(length(json.get(targetStateJson,2))>0,json.get(targetStateJson,2),emptyJson)),targetName);
+]
+[h:setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,3))>0,json.get(propTargetStatesJson,3),emptyJson),if(length(json.get(targetStateJson,3))>0,json.get(targetStateJson,3),emptyJson)),targetName)]
+
+<!-- apply states to Self -->
+[h,SWITCH(resu):
+  case 0: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,0))>0,json.get(propSelfStatesJson,0),emptyJson),if(length(json.get(selfStateJson,0))>0,json.get(selfStateJson,0),emptyJson)),selfName);
+  case 1: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,0))>0,json.get(propSelfStatesJson,0),emptyJson),if(length(json.get(selfStateJson,0))>0,json.get(selfStateJson,0),emptyJson)),selfName);
+  case 2: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,1))>0,json.get(propSelfStatesJson,1),emptyJson),if(length(json.get(selfStateJson,1))>0,json.get(selfStateJson,1),emptyJson)),selfName);
+  case 3: setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,2))>0,json.get(propSelfStatesJson,2),emptyJson),if(length(json.get(selfStateJson,2))>0,json.get(selfStateJson,2),emptyJson)),selfName);
+]
+[h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),selfName)]
+
+<!-- apply Marks to target -->
+[h:useMarkJson=json.unique(json.merge(propMarkJson,markJson))]
+[h,if(json.indexOf(useMarkJson,resu-1)!=-1 || json.indexOf(useMarkJson,3)!=-1): tmpBool=1;tmpBool=0]
+[h,if(json.length(useMarkJson)>0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",targetName)]')]
+
+<!-- apply Resists/Vulns to Target/Self -->
+[h,SWITCH(resu):
+  case 0: decodeVulnResistJson(json.get(vulnResistJson,"0"),targetName);
+  case 1: decodeVulnResistJson(json.get(vulnResistJson,"0"),targetName);
+  case 2: decodeVulnResistJson(json.get(vulnResistJson,"1"),targetName);
+  case 3: decodeVulnResistJson(json.get(vulnResistJson,"2"),targetName)
+]
+[h:decodeVulnResistJson(json.get(vulnResistJson,"3"),targetName)]
+[h:localApplyResistVuln = getProperty("ApplyResistVuln")]
+[h,SWITCH(resu):
+  case 0: decodeVulnResistJson(json.get(localApplyResistVuln,"0"),targetName);
+  case 1: decodeVulnResistJson(json.get(localApplyResistVuln,"0"),targetName);
+  case 2: decodeVulnResistJson(json.get(localApplyResistVuln,"1"),targetName);
+  case 3: decodeVulnResistJson(json.get(localApplyResistVuln,"2"),targetName)
+]
+[h:decodeVulnResistJson(json.get(localApplyResistVuln,"3"),targetName)]
+
+[h,SWITCH(resu):
+  case 0: decodeModDefenseJson(if(length(json.get(modDefenseJson,"0"))>0,json.get(modDefenseJson,"0"),emptyObjectJson),targetName);
+  case 1: decodeModDefenseJson(if(length(json.get(modDefenseJson,"0"))>0,json.get(modDefenseJson,"0"),emptyObjectJson),targetName);
+  case 2: decodeModDefenseJson(if(length(json.get(modDefenseJson,"1"))>0,json.get(modDefenseJson,"1"),emptyObjectJson),targetName);
+  case 3: decodeModDefenseJson(if(length(json.get(modDefenseJson,"2"))>0,json.get(modDefenseJson,"2"),emptyObjectJson),targetName)
+]
+[h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3"))>0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
+
+[h,SWITCH(resu):
+  case 0: decodeModAttackJson(if(length(json.get(modAttackJson,"0"))>0,json.get(modAttackJson,"0"),emptyObjectJson),targetName);
+  case 1: decodeModAttackJson(if(length(json.get(modAttackJson,"0"))>0,json.get(modAttackJson,"0"),emptyObjectJson),targetName);
+  case 2: decodeModAttackJson(if(length(json.get(modAttackJson,"1"))>0,json.get(modAttackJson,"1"),emptyObjectJson),targetName);
+  case 3: decodeModAttackJson(if(length(json.get(modAttackJson,"2"))>0,json.get(modAttackJson,"2"),emptyObjectJson),targetName)
+]
+[h:decodeModAttackJson(if(length(json.get(modAttackJson,"3"))>0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
+
+[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage,atkRolls)]
+
+!!
+@@ @DoAttack_stomp
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- DoAttack macro (used in Stomp's game) -->
+<!-- Returns: 4 -->
+<!-- 1 : Result of attack roll.  0 = fumble, 1 = miss, 2 = hit, 3 = crit -->
+<!-- 2 : Actual attack roll 1-20 -->
+<!-- 3 : Rolled damage -->
+<!-- 4 : Total damage of rolled + modifiers -->
+<!-- 5 : String of multiple attack rolls if rerollAttack = 1 -->
+<!-- Parameters: 12 (9 - 11 are ignored) -->
+<!-- 12 : Integer boolean to reroll attack 1 time and use higher value -->
+<!-- This macro takes in a single target and information to make a roll to see if the target is hit -->
+<!-- Apply damage/effects to target on hit/miss and return values depending on result -->
+
+[h:targetName     = json.get(macro.args, 0)]
+[h:targetDefense  = json.get(macro.args, 1)]
+[h:atkMod         = json.get(macro.args, 2)]
+[h:damRoll        = json.get(macro.args, 3)]
+[h:critDamRoll    = json.get(macro.args, 4)]
+[h:damMod         = json.get(macro.args, 5)]
+[h:autoHit        = json.get(macro.args, 6)]
+[h:missDamageRoll = json.get(macro.args, 7)] <!-- damage to roll on a miss -->
+[h:rerollAttack   = json.get(macro.args, 11)]
+
+[h:atkRoll=eval("1d20")]
+<!-- Reroll the attack roll once, take highest -->
+[h:atkRolls=""]
+[h,if(rerollAttack): atkRoll2=eval("1d20")]
+[h,if(rerollAttack): atkRolls=strformat("(%d,%d)",atkRoll,atkRoll2)]
+[h,if(rerollAttack): atkRoll=if(atkRoll2>atkRoll,atkRoll2,atkRoll)]
+
+[h,if(atkRoll==20 && autoHit!=1): damage=eval(string(critDamRoll)); damage=eval(string(damRoll))]
+[h,if(missDamageRoll!=-1 && missDamageRoll!=-2): totalDamage = eval(string(missDamageRoll));totalDamage=0]
+[h,if(missDamageRoll==-2): totalDamage = floor((damage+eval(string(damMod)))/2)] 
+[h:resu=-1]
+[h,if(atkRoll==20): resu=3]
+[h,if(atkRoll==1):  resu=0]
+[h,if(autoHit):     resu=2]
+
+[h:macro.return = json.append("[]",resu,atkRoll,damage,totalDamage,atkRolls)]
+
+!!
+@@ @DoHeal
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- DoHeal2 macro -->
+<!-- Returns: 4 -->
+<!-- Parameters: 7 -->
+<!-- This macro takes in a single target and information to resolve healing on that target -->
+
+[h:targetName      = json.get(macro.args, 0)]
+[h:healRoll        = json.get(macro.args, 1)]
+[h:healVal         = json.get(macro.args, 2)]
+[h:tempHPRoll      = json.get(macro.args, 3)]
+[h:tempHPVal       = json.get(macro.args, 4)]
+[h:useSurge        = json.get(macro.args, 5)]
+[h:selfStateJson   = json.get(macro.args, 6)]  <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(macro.args, 7)]
+[h:modAttackJson  = json.get(macro.args, 8)]
+
+[h:emptyObjectJson="{}"]
+[h:emptyJson="[]"]
+[h:propSelfStatesJson   = getProperty("SelfStates")]
+[h:selfName = getName()]
+[h:switchToken(targetName)]
+
+[h:healing = eval(string(healRoll))]
+[h:totalHeal = healing + eval(string(healVal))]
+[h:tmping = eval(string(tempHPRoll))]
+[h:totalTemp = tmping + eval(string(tempHPVal))]
+
+<!-- apply healing to target -->
+[h:CHP = CurrentHP + totalHeal + if(useSurge,SurgeValue,0)]
+[h,if(totalTemp>0 && totalTemp>TempHP):TempHP = totalTemp]
+[h,if(CHP>MaxHP/2):state.Bloodied=0]
+[h,if(CHP>MaxHP):CurrentHP = MaxHP;CurrentHP = CHP]
+[h,if(useSurge):CurrentSurge = CurrentSurge-1]
+
+[h:switchToken(selfName)]
+
+<!-- apply states to Self -->
+[h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),selfName)]
+
+<!-- Apply only the Always mods to defense, type "3" -->
+[h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3")) > 0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
+[h:decodeModAttackJson(if(length(json.get(modAttackJson,"3")) > 0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
+
+[h:macro.return = json.append("[]",healing,totalHeal,tmping,totalTemp)]
+
+!!
+@@ @DoHeal_stomp
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- DoHeal macro -->
+<!-- Returns: 4 -->
+<!-- Parameters: 6 -->
+<!-- This macro takes in a single target and information to resolve healing on that target -->
+
+[h:targetName      = json.get(macro.args, 0)]
+[h:healRoll        = json.get(macro.args, 1)]
+[h:healVal         = json.get(macro.args, 2)]
+[h:tempHPRoll      = json.get(macro.args, 3)]
+[h:tempHPVal       = json.get(macro.args, 4)]
+
+[h:switchToken(targetName)]
+
+[h:healing = eval(string(healRoll))]
+[h:totalHeal = healing + eval(string(healVal))]
+[h:tmping = eval(string(tempHPRoll))]
+[h:totalTemp = tmping + eval(string(tempHPVal))]
+
+[h:macro.return = json.append("[]",healing,totalHeal,tmping,totalTemp)]
+
+!!
+@@ @DoSecondary
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- DoSecondary2 macro -->
+<!-- Returns: 0 -->
+<!-- Parameters: 6 -->
+<!-- Apply effects to target -->
+
+[h:targetName      = json.get(macro.args, 0)]
+[h:targetStateJson = json.get(macro.args, 1)]  <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(macro.args, 2)]  <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(macro.args, 3)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(macro.args, 4)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(macro.args, 5)]
+[h:modAttackJson   = json.get(macro.args, 6)]
+
+[h:propTargetStatesJson = getProperty("TargetStates")]
+[h:propSelfStatesJson   = getProperty("SelfStates")]
+[h:propMarkJson         = getProperty("TargetMark")]
+[h:emptyObjectJson="{}"]
+[h:emptyJson="[]"]
+
+<!-- apply states to Target -->
+[h:setJsonStates(json.merge(if(length(json.get(propTargetStatesJson,3))>0,json.get(propTargetStatesJson,3),emptyJson),if(length(json.get(targetStateJson,3))>0,json.get(targetStateJson,3),emptyJson)),targetName)]
+
+<!-- apply states to Self -->
+[h:setJsonStates(json.merge(if(length(json.get(propSelfStatesJson,3))>0,json.get(propSelfStatesJson,3),emptyJson),if(length(json.get(selfStateJson,3))>0,json.get(selfStateJson,3),emptyJson)),getName())]
+
+<!-- apply Marks to target -->
+[h:useMarkJson=json.unique(json.merge(propMarkJson,markJson))]
+[h,if(json.contains(useMarkJson,3)): tmpBool=1;tmpBool=0]
+[h,if(json.length(useMarkJson) > 0 && tmpBool): evalMacro('[h,macro("ApplyMark@"+UseLib): json.append("[]",targetName)]')]
+
+<!-- apply Resists/Vulns to Target/Self -->
+[h:decodeVulnResistJson(if(length(json.get(vulnResistJson,"3"))>0,json.get(vulnResistJson,"3"),emptyObjectJson),targetName,-1)]
+
+<!-- Apply only the Always mods to defense, type "3" -->
+[h:decodeModDefenseJson(if(length(json.get(modDefenseJson,"3"))>0,json.get(modDefenseJson,"3"),emptyObjectJson),targetName)]
+[h:decodeModAttackJson(if(length(json.get(modAttackJson,"3"))>0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
+
+!!
+@@ @ExecuteHeal
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+[h: args = macro.args]
+
+[h:selectedButton = json.get(args, "SubmitButton")]
+[h,if(selectedButton == "Cancel"): abort(0)]
+
+[h:atkKey          = json.get(args, "atkKey")]
+[h:atkName         = json.get(args, "atkName")]
+[h:yesHeal         = json.get(args, "yesHeal")]
+[h:healMod         = json.get(args, "healMod")]
+[h:healRoll        = json.get(args, "healRoll")]
+[h:yesTempHP         = json.get(args, "yesTempHP")]
+[h:tempHPMod       = json.get(args, "tempHPMod")]
+[h:tempHPRoll      = json.get(args, "tempHPRoll")]
+[h:useSurge         = json.get(args, "useSurge")]
+[h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(args, "modDefenseJson")]
+[h:modAttackJson   = json.get(args, "modAttackJson")]
+[h:powaStr     	   = json.get(args, "powaStr")]
+[h:targJson = json.get(args, "targList")]
+
+<!-- AOE heal applies the same roll to all targets -->
+[h,if(atkKey==8): useHeal=eval(healRoll); useHeal=healRoll]
+[h,if(atkKey==8): useTempHP=eval(tempHPRoll); useTempHP=tempHPRoll]
+
+[h:tableJson="[]"]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h: miscHeal = json.get(args, "healmodTarget"+roll.count)]
+  [h: evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", healMod, "HealBonuses", miscHeal, "{}")]')]
+  [h: healText = json.get(macro.return, 0)]
+  [h: healVal = json.get(macro.return, 1)]
+
+  [h: miscTempHP = json.get(args, "tempmodTarget"+roll.count)]
+  [h: evalMacro('[h,macro("BonusTotal@"+UseLib): json.append("[]", tempHPMod, "TempHPBonuses", miscTempHP, "{}")]')]
+  [h: tempHPText = json.get(macro.return, 0)]
+  [h: tempHPVal = json.get(macro.return, 1)]
+  
+  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson,modAttackJson)]
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),
+      -1,
+      targ,
+      if(yesTempHP,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",tempHPRoll,json.get(retu,2),tempHPText),strformat("Temp HP: <b>%s</b>",json.get(retu,3))),"")
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+}]
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+[macro("PrintAttackTable@"+UseLib): tableJson]
+
+!!
+@@ @ExecutePower
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+[h: args = macro.args]
+
+[h:selectedButton = json.get(args, "SubmitButton")]
+[h,if(selectedButton == "Cancel"): abort(0)]
+
+[h:atkKey          = json.get(args, "atkKey")]
+[h:atkName         = json.get(args, "atkName")]
+[h:atkMod          = json.get(args, "atkMod")]
+[h:damMod          = json.get(args, "damMod")]
+[h:damRoll         = json.get(args, "damRoll")]
+[h:critDamRoll     = json.get(args, "critDamRoll")]
+[h:targetDefense   = json.get(args, "targetDefense")]
+[h:friendlyFire    = json.get(args, "friendlyFire")]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:missDamageRoll  = json.get(args, "missDamageRoll")] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(args, "targetStateJson")] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(args, "markJson")] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(args, "vulnResistJson")] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(args, "modDefenseJson")]
+[h:modAttackJson   = json.get(args, "modAttackJson")]
+[h:keywords        = json.get(args, "keywords")]
+[h:damageTypes     = json.get(args, "damageTypes")]
+[h:powaStr     	   = json.get(args, "powaStr")]
+
+[h:CA=0]
+[h:charge=0]
+[h:cover=0]
+[h:longRange=0]
+[h:miscAtk=0]
+[h:miscDam=0]
+[h:status=1]
+[h:conceal=0]
+[h:useDetail=0]
+[h:yesDamRoll=1]
+[h:rerollAttack=0]
+
+[h:targJson = json.get(args, "targList")]
+[h:miscAtk = eval(string(json.get(args, "damageMods")))]
+[h:miscDam = eval(string(json.get(args, "attackMods")))]
+[h,if(json.contains(args, "charge")): Charge = 1]
+[h,if(json.contains(args, "rollTwice")): rerollAttack = 1]
+[h,if(json.get(args, "defOverride") != "N/A"): targetDefense = json.get(args, "defOverride")]
+[h,if(json.contains(args, "onetwo")): onetwo = 1; onetwo = 0]
+
+[h:atkText=""]
+[h:atkVal=""]
+[h:inputAJson="{}"]
+[h,if(useDetail == 0): bonusTargetScreen()]
+
+[h:tableJson="[]"]
+[h:origAtkText = atkText]
+[h:origAtkVal  = atkVal]
+[h:origDamText = damText]
+[h:origDamVal  = damVal]
+[h:defCA = CA]
+[h:defCharge = charge]
+[h:defCover = cover]
+[h:defConceal = conceal]
+[h:defLongRange = longRange]
+[h:defMiscAtk = miscAtk]
+[h:defMiscDam = miscDam]
+[h:defYesDamRoll = yesDamRoll]
+[h:defRerollAttack = rerollAttack]
+[h:myName     = getName()]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [thisAttMod = json.get(args, "amodTarget"+roll.count)]
+  [h,if(thisAttMod != 0): atkVal = atkVal + "+" + thisAttMod]
+  [h,if(thisAttMod != 0): atkText = atkText + " + TargetMiscMod(" + thisAttMod + ")"]
+
+  [h:thisDmgMod = json.get(args, "dmodTarget"+roll.count)]
+  [h,if(thisDmgMod != 0): damVal = damVal + "+" + thisDmgMod]
+  [h,if(thisDmgMod != 0): damText = damText + " + TargetMiscMod(" + thisDmgMod + ")"]
+  
+  [h:adjacentJson = getTokenNames("json", json.set("{}", "current", 1, "range", json.set("{}", "from", 0, "upto", 1, "distancePerCell", "false", "metric", "ONE_ONE_ONE", "token", targ)))]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Ranged") > -1 && 
+        json.contains(adjacentJson,myName) == 0): atkVal = atkVal + "-2"]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Ranged") > -1 && 
+        json.contains(adjacentJson,myName) == 0): atkText = atkText + " + TargProne(-2)"] 
+  [h,if(getState("Dazed",targ) || 
+        getState("Helpless",targ) || 
+        getState("Restrained",targ) || 
+        getState("Stunned",targ) || 
+        getState("Surprised",targ) || 
+        getState("Unconscious",targ) ||
+        getState("GrantingCA",targ) ||
+        getState("Blinded",targ)):
+          caState = 1; caState = 0
+  ]
+  [h,if(getState("Prone",targ) && 
+        listFind(keywords,"Melee") > -1): caState = 1]
+  [h,if(caState || json.contains(args, "acaTarget"+roll.count)): atkVal = atkVal + "+2"]
+  [h,if(caState || json.contains(args, "acaTarget"+roll.count)): atkText = atkText + " + CA(2)"]
+  [h,if(getState("Unconscious",targ)): atkVal = atkVal + "+5"]
+  [h,if(getState("Unconscious",targ)): atkText = atkText + " + Unconscious(5)"]
+  [h,if(getState("Weakened")): damText = damText + " + Weakened(1/2 damage)"]
+  [h,if(targ != MarkedBy && length(MarkedBy) > 0): useMarkPen = getProperty("MarkPenalty",MarkedBy); useMarkPen = 0]
+  
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+  [h:atkText = atkText + " vs. " + targetDefense]
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
+      json.get(retu,0),
+      targ,
+      if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+  
+  [h, if(onetwo), CODE:
+{
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+
+  [h:retu=macro.return]
+  [h:nextRowJson = json.append("[]",
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
+      json.get(retu,0),
+      targ,
+      if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
+    )
+  ]
+  [h:tableJson = json.append(tableJson,nextRowJson))]
+ }]
+  
+  [h:atkText = origAtkText]
+  [h:atkVal  = origAtkVal]
+  [h:damText = origDamText]
+  [h:damVal  = origDamVal]
+}]
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+[macro("PrintAttackTable@"+UseLib): tableJson]
+
+!!
+@@ @ExecuteSecondary
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+[h: args = macro.args]
+
+[h:selectedButton = json.get(args, "SubmitButton")]
+[h,if(selectedButton == "Cancel"): abort(0)]
+
+[h:atkKey          = json.get(args, "atkKey")]
+[h:atkName         = json.get(args, "atkName")]
+[h:targetStateJson = json.get(args, "targetStateJson")] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(args, "markJson")] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(args, "vulnResistJson")] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(args, "modDefenseJson")]
+[h:modAttackJson   = json.get(args, "modAttackJson")]
+[h:powaStr     	   = json.get(args, "powaStr")]
+
+[h:targJson = json.get(args, "targList")]
+[h:affectedTargs = ""]
+[h,foreach(targ,json.toList(targJson),""),code: 
+{
+  [h,macro("DoSecondary@"+UseLib): json.append("[]",targ,targetStateJson,selfStateJson,markJson,vulnResistJson,modDefenseJson,modAttackJson)]
+  [h:affectedTargs = strformat("%s%s, ",affectedTargs,targ)]
+}]
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+<br><span title=""><font color='black'><b>Affected: </b> {affectedTargs}</font></span>
+
+!!
+@@ @FindMark
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- FindMark macro -->
+<!-- Returns: color of Mark state that should be used next -->
+<!-- Parameters: 0 -->
+<!-- scans all visible tokens on the map for Marks to determine what next in the list of Marks is open -->
+<!-- asserts an error message if all Marks are taken (and then we need to make new Mark states) -->
+
+[h:mJson=getTokenStates("json","Mark")]
+[h:foundJson = "[]"]
+[h:i=0]
+[h,while(i < json.length(mJson)): i = if(json.length(getWithState(json.get(mJson,i),"json"))>0,i+1,i+json.length(mJson)+1)]
+[h:assert(i!=json.length(mJson),"All Mark states have been used, please make new Mark states and try again.")]
+[h:mark=json.get(mJson,i-json.length(mJson)-1)]
+[h:macro.return=substring(mark,7)]
+
+!!
+@@ @GetTargets
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- GetTargets macro -->
+
+<!-- Display all valid targets within range, choose only a Single one of them -->
+
+[h:maxRange=json.get(macro.args, 0)]
+[h:friendlyFire=json.get(macro.args, 1)]
+[h:otherSource=json.get(macro.args, 2)]
+[h,if(friendlyFire==0):hitNPC=1;hitNPC=0]
+[h,if(friendlyFire==1):hitPC=1;hitPC=0]
+[h,if(maxRange==0): abort(0)]
+
+[h:rangeFilter = json.set("{}", "from", 0, "upto", maxRange, "distancePerCell", "false", "metric", "ONE_ONE_ONE")]
+[h,if(length(otherSource)>0): rangeFilter = json.set(rangeFilter,"token",otherSource)]
+[h:targetFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "range", rangeFilter)]
+[h,if(hitNPC): targetFilter = json.set(targetFilter,"npc",1)]
+[h,if(hitPC): targetFilter = json.set(targetFilter,"pc",1)]
+
+[h:targetJson = getTokenNames("json", targetFilter)]
+
+[h,if(length(targetJson)==0):assert(0, rangeError(), 0)]
+
+[h:macro.return=targetJson]
+
+!!
+@@ @HealTargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- Pops up the targetting GUI that has targets in dropdown lists, and modifications to apply to the heal if applicable -->
+
+<!-- atkKey = Integer switch used to determine which roll combinations to use: -->
+<!-- 7 = Single/Multi heal -->
+<!-- 8 = AOE heal -->
+<!-- 9 = Self only heal -->
+[h:targetArgs = macro.args]
+[h:atkKey          = json.get(macro.args, 0)]
+[h:atkName         = json.get(macro.args, 1)]
+[h:yesHeal         = json.get(macro.args, 2)]
+[h:healMod         = json.get(macro.args, 3)]
+[h:healRoll        = json.get(macro.args, 4)]
+[h:yesTempHP       = json.get(macro.args, 5)]
+[h:tempHPMod       = json.get(macro.args, 6)]
+[h:tempHPRoll      = json.get(macro.args, 7)]
+[h:maxRange        = json.get(macro.args, 8)]
+[h:numTargets      = json.get(macro.args, 9)]
+[h:friendlyFire    = json.get(macro.args, 10)]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource     = json.get(macro.args, 11)]  <!-- name of other token to use as source for figuring targets based on range -->
+[h:useSurge        = json.get(macro.args, 12)]
+[h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(macro.args, 14)]
+[h:modAttackJson   = json.get(macro.args, 15)]
+[h:includeSelf     = json.get(macro.args, 16)]
+[h:bloodyOnly      = json.get(macro.args, 17)]
+[h:token     	   = json.get(targetArgs, 18)]
+[h:powaStr     	   = json.get(targetArgs, 19)]
+[h:targList = getSelectedNames("json")]
+[h,if(!json.isEmpty(targList)),CODE:
+{
+};{
+[targList = "[]"]
+}]
+[dialog("Power Options", "input=1; width=400; height=500"):
+{
+  <html>
+  <body>
+  <link rel='onChangeSelection' type='macro' href='[r:macroLinkText("HealTargetScreen@this", "none", targetArgs, "")]'></link>
+   <form name='powerOptions' method='json' action='[r:macroLinkText("ExecuteHeal@this", "all", "", token)]'>
+  [r:powaStr]<hr>
+  <table width='350'>
+   <tr><td><b><u>Targets</u></b></td><td><b><u>Heal Mod. &plusmn;</u></b></td><td><b><u>Temp HP Mod. &plusmn;</u></b></td></tr>
+  [r,foreach(targId, targList, ""),code:
+  {
+     <tr>
+	 <td><b>[r:targId]:</b></td>
+	 <td><input name='[r:strformat("healmodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 <td><input name='[r:strformat("tempmodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 </tr>
+  }]
+  
+  </table>
+   <hr>
+  <hr>
+  <table>
+ <tr><td align='center'><input type='submit' name='SubmitButton' value='Attack'></input>&nbsp;<input type='submit' name='SubmitButton' value='Cancel'></input></td></tr>
+ </table>
+  <input type='hidden' name='atkKey' value='[r:atkKey]'></input>
+  <input type='hidden' name='atkName' value='[r:atkName]'></input>
+  <input type='hidden' name='yesHeal' value='[r:yesHeal]'></input>
+  <input type='hidden' name='healMod' value='[r:healMod]'></input>
+  <input type='hidden' name='healRoll' value='[r:healRoll]'></input>
+  <input type='hidden' name='yesTempHP' value='[r:yesTempHP]'></input>
+  <input type='hidden' name='tempHPMod' value='[r:tempHPMod]'></input>
+  <input type='hidden' name='tempHPRoll' value='[r:tempHPRoll]'></input>
+  <input type='hidden' name='useSurge' value='[r:useSurge]'></input>
+  <input type='hidden' name='selfStateJson' value='[r:selfStateJson]'></input>
+  <input type='hidden' name='modDefenseJson' value='[r:modDefenseJson]'></input>
+  <input type='hidden' name='modAttackJson' value='[r:modAttackJson]'></input>
+  <input type='hidden' name='targList' value='[r:targList]'></input>
+  <input type='hidden' name='powaStr' value='[r:powaStr]'></input>
+  </form>
+  </body>
+  </html>
+}]
+[h:abort(0)]
+
+!!
+@@ @ModifierDialog
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- Modifier Dialog -->
+
+[h:selfName             = getName()]
+[h: propDefenseSelfJson = getProperty("AllDefModList", selfName)]
+[h, if(length(propDefenseSelfJson) > 0): propLength = json.length(propDefenseSelfJson); propLength = 0]
+[h: propAttackSelfJson = getProperty("AllAtkModList", selfName)]
+[h, if(length(propAttackSelfJson) > 0): propLength2 = json.length(propAttackSelfJson); propLength2 = 0]
+[h: propVulnResistSelfJson = getProperty("TempResVuln", selfName)]
+[h, if(length(propVulnResistSelfJson) > 0): propLength3 = json.length(propVulnResistSelfJson); propLength3 = 0]
+[r, if(propLength > 0 || propLength2 > 0 || propLength3 > 0), code:
+{[dialog("Modifiers"): {
+  <html>
+    <head>
+      <title>Modifiers on [r: selfName]</title>
+    </head>
+    <body>
+     <table style="text-align:center" border="1">
+	 <tr>
+     <td style="text-align:center">
+	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")] border="1">
+	  [c(propLength,'<BR>'),code:{[h: propDefenseJsonObject= json.get(propDefenseSelfJson, roll.count)]
+	  <input type="checkbox" name=[r: "mod"+roll.count] />
+	  <span style="color:blue; font-size:12">[r: json.get(propDefenseJsonObject, "modName")]: [r, if(json.get(propDefenseJsonObject, "modValue")>0): "+"][r: json.get(propDefenseJsonObject, "modValue")] to 
+	  [r, switch(json.get(propDefenseJsonObject, "modDef")):
+	  case 0: "All";
+	  case 1: "AC";
+	  case 2: "Fortitude";
+	  case 3: "Reflex";
+	  case 4: "Willpower";]
+	   by [r: json.get(propDefenseJsonObject, "modOwner")]
+	  </span> }]
+	  <br>
+	  <input type="hidden" name="propSelfJson" value='[r: propDefenseSelfJson]'></input>
+	  <input type="hidden" name="propLength" value='[r: propLength]'></input>
+	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
+	  <input type="submit" value="Delete Defense" />
+	 </form>
+	 </td>
+	 </tr>
+	 <tr>
+     <td style="text-align:center">
+	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
+	  [c(propLength2,'<BR>'),code:{[h: propAttackJsonObject= json.get(propAttackSelfJson, roll.count)]
+	  <input type="checkbox" name=[r: "mod"+roll.count] />
+	  <span style="color:blue; font-size:12">[r: json.get(propAttackJsonObject, "modName")]: [r, if(json.get(propAttackJsonObject, "modValue")>0): "+"][r: json.get(propAttackJsonObject, "modValue")] to 
+	  [r, switch(json.get(propAttackJsonObject, "modAtk")):
+	  case 0: "All";
+	  case 1: "Hit";
+	  case 2: "Damage";]
+	   by [r: json.get(propAttackJsonObject, "modOwner")]
+	  </span> }]
+	  <br>
+	  <input type="hidden" name="propSelfJson" value='[r: propAttackSelfJson]'></input>
+	  <input type="hidden" name="propLength" value='[r: propLength2]'></input>
+	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
+	  <input type="submit" value="Delete Attack" />
+	 </form>
+	 </td>
+	 </tr>
+	 <tr>
+     <td style="text-align:center">
+	 <form name ="ModifierForm" method = "json" action = [r: macroLinkText("DeleteModifier@"+getMacroLocation(), "self", "", "selected")]>
+	  [c(propLength3,'<BR>'),code:{[h: propVulnResistJsonObject= json.get(propVulnResistSelfJson, roll.count)]
+	  <input type="checkbox" name=[r: "mod"+roll.count] />
+	  <span style="color:blue; font-size:12">
+	  [r, switch(json.get(propVulnResistJsonObject, "modDef")):
+	  case 0: "Resist";
+	  case 1: "Vulnerable";] [r: json.get(propVulnResistJsonObject, "modValue")] [r: json.get(propVulnResistJsonObject, "modName")] by [r: json.get(propVulnResistJsonObject, "modOwner")]
+	  </span> }]
+	  <br>
+	  <input type="hidden" name="propSelfJson" value='[r: propVulnResistSelfJson]'></input>
+	  <input type="hidden" name="propLength" value='[r: propLength3]'></input>
+	  <input type="hidden" name="selfName" value='[r: selfName]'></input>
+	  <input type="submit" value="Delete Resist/Vuln" />
+	 </form>
+     </td>
+	 </tr>
+     </table>
+    </body>
+  </html>
+}]}]
+[abort(0)]
+
+!!
+@@ @PrintAttackTable
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- PrintAttackTable macro -->
+<!-- takes in a Json similar to this: attack,result,target,damage , attack,result,target,damage -->
+<!-- each nested Json array is a row in the table to be displayed -->
+
+[h:argle=macro.args]
+[h,if(json.length(argle)<1): abort(0)]
+<table border="0" width="400">
+[count(json.length(argle),""),code: 
+{
+  [h:row=json.get(argle,roll.count)]
+  <tr>
+    <td style="padding:2px 0px;" align=left>
+      [h:output=json.get(row,0)]
+      {output}
+    </td>
+    <td style="padding:2px 0px;" align=left>
+      [h,switch(json.get(row,1)):
+        case 0: output="<font color='red'>FUMBLE</font>";
+        case 1: output="<font color='magenta'>MISS</font>";
+        case 2: output="HIT";
+        case 3: output="<font color='green'>CRITICAL</font>";
+        default: output="";
+      ]
+      [h:output=strformat("%s vs. %s",output,json.get(row,2))]
+      {output}
+    </td>
+    <td style="padding:2px 0px;" align=left>
+      [h:output=json.get(row,3)]
+      {output}
+    </td>
+  </tr>
+}]
+</table>
+
+!!
+@@ @SecondaryTargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- Pops up the targetting GUI that has targets in dropdown lists -->
+
+<!-- atkKey = Integer switch used to determine which roll combinations to use: -->
+<!-- 15 = Single/Multi Secondary -->
+<!-- 16 = AOE Secondary -->
+<!-- 17 = Self only Secondary -->
+[h:targetArgs = macro.args]
+[h:atkKey          = json.get(targetArgs, 0)]
+[h:atkName         = json.get(targetArgs, 1)]
+[h:targetStateJson = json.get(targetArgs, 2)] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(targetArgs, 3)] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(targetArgs, 4)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(targetArgs, 5)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(targetArgs, 6)]
+[h:modAttackJson   = json.get(targetArgs, 7)]
+[h:token     	   = json.get(targetArgs, 8)]
+[h:powaStr     	   = json.get(targetArgs, 9)]
+[h:targList = getSelectedNames("json")]
+[h,if(!json.isEmpty(targList)),CODE:
+{
+};{
+[targList = "[]"]
+}]
+[dialog("Power Options", "input=1; width=400; height=500"):
+{
+  <html>
+  <body>
+  <link rel='onChangeSelection' type='macro' href='[r:macroLinkText("SecondaryTargetScreen@this", "none", targetArgs, "")]'></link>
+   <form name='powerOptions' method='json' action='[r:macroLinkText("ExecuteSecondary@this", "all", "", token)]'>
+  [r:powaStr]<hr>
+  <table width='350'>
+  [r,foreach(targId, targList, ""),code:
+  {
+     <tr>
+	 <td><b>[r:targId]</b></td>
+	 </tr>
+  }]
+  
+  </table>
+   <hr>
+  <hr>
+  <table>
+ <tr><td align='center'><input type='submit' name='SubmitButton' value='Attack'></input>&nbsp;<input type='submit' name='SubmitButton' value='Cancel'></input></td></tr>
+ </table>
+  <input type='hidden' name='atkKey' value='[r:atkKey]'></input>
+  <input type='hidden' name='atkName' value='[r:atkName]'></input>
+  <input type='hidden' name='targetStateJson' value='[r:targetStateJson]'></input>
+  <input type='hidden' name='selfStateJson' value='[r:selfStateJson]'></input>
+  <input type='hidden' name='markJson' value='[r:markJson]'></input>
+  <input type='hidden' name='vulnResistJson' value='[r:vulnResistJson]'></input>
+  <input type='hidden' name='modDefenseJson' value='[r:modDefenseJson]'></input>
+  <input type='hidden' name='modAttackJson' value='[r:modAttackJson]'></input>
+  <input type='hidden' name='targList' value='[r:targList]'></input>
+  <input type='hidden' name='powaStr' value='[r:powaStr]'></input>
+  </form>
+  </body>
+  </html>
+}]
+[h:abort(0)]
+
+!!
+@@ @StateListToggle
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- StateListToggle macro -->
+
+[h: tokens = getSelected()]
+[h: tokencount = listCount(tokens)]
+
+[h: conditionStates = "Blinded, Bloodied, Dazed, Dead, Deafened, Dominated, Dying, Helpless"]
+[h: conditionStates2 = "Insubstantial,Invisible,Light,Oath,Stunned,Surprised,Unconscious,Weakened"]
+
+[h: movementStates = "Fly,Grabbed,Haste,Immobilized,Levitate"]
+[h: movementStates2 = "Petrified,Prone,Restrained,Slowed"]
+
+[h: combatStates = "FightingDefense,GrantingCA,GrantingPartialCA,MinusToAC, MinusToHit,PlusToAC,PlusToHit,Rage,TotalDefense"]
+[h: combatStates2 = "UsedAP, UsedCurse, UsedImmediate, UsedMinor, UsedMove, UsedQuarry, UsedSecondWind, UsedSneakAttack, UsedStandard"]
+   
+[H:allNumConditions = eval(""+listCount(conditionStates))]
+[H:allNumConditions2 = eval(""+listCount(conditionStates2))]
+[H:allNumMovement = eval(""+listCount(movementStates))]
+[H:allNumMovement2 = eval(""+listCount(movementStates2))]
+[H:allNumCombat = eval(""+listCount(combatStates))]
+[H:allNumCombat2 = eval(""+listCount(combatStates2))]
+   
+[frame("Marks/Ongoing"): {
+  <html>
+    <head>
+      <title>Marks/Ongoing</title>
+    </head>
+    <body>
+     <table style="text-align:center" border="1">
+	 <tr>
+     <td style="text-align:center">
+     <span style="color:#000000">
+	 <form name ="FormTest" method = "json" action = "[r: macroLinkText("decodeState@"+getMacroLocation(), "self", "", "selected")]">
+      <select name="myDropdown">
+	  <option>Blue</option>
+	  <option>Cyan</option>
+	  <option>Green</option>
+	  <option>Orange</option>
+	  <option>Red</option>
+	  <option>Yellow</option>
+	  </select>
+	  <br>	  
+	  <input id="Marked" type="image" name="Marked" value="Marked" src = '[r:tableImage("smallStateImages", 1)]'></input>
+	  <input id="Curse" type="image" name="Curse" value="Curse" src = '[r: tableImage("smallStateImages", 2)]'></input>
+	  <input id="Quarry" type="image" name="Quarry" value="Quarry" src = '[r: tableImage("smallStateImages", 3)]'></input>
+	 </form>
+	 </span>
+     </td>
+	 </tr>
+     </table>
+	 <table style="text-align:center" border="1">
+	 <tr>
+     <td style="text-align:center">
+     <span style="color:#000000">
+	 <form name ="FormTest2" method = "json" action = "[r: macroLinkText("decodeState@"+getMacroLocation(), "self", "", "selected")]">
+	  <select name="myDropdown">
+	  <option value="acid">Acid</option>
+	  <option value="cold">Cold</option>
+	  <option value="fire">Fire</option>
+	  <option value="force">Force</option>
+	  <option value="lightning">Lightning</option>
+	  <option value="necrotic">Necrotic</option>
+	  <option value="poison">Poison</option>
+	  <option value="psychic">Psychic</option>
+	  <option value="radiant">Radiant</option>
+	  <option value="thunder">Thunder</option>
+	  <option value="damage">Generic</option>
+	  </select>
+	  <br>
+	  <input id="Ongoing" type="image" name="Ongoing" title="Test" value="Ongoing" src = '[r:tableImage("smallStateImages", 4)]'></input>
+	  <input id="Vuln" type="image" name="Vuln" value="Vuln" src = '[r: tableImage("smallStateImages", 5)]'></input>
+	  <input id="Resist" type="image" name="Resist" value="Resist" src = '[r: tableImage("smallStateImages", 6)]'></input>
+	 </form>
+		 </span>
+         </td>
+		 </tr>
+      </table>
+    </body>
+  </html>
+}]   
+
+   
+[frame("Conditions"): {
+  <html>
+    <head>
+      <title>Conditions</title>
+    </head>
+    <body>
+      <table style="text-align:center" border="1">
+        <tr>
+          <td style="text-align:center" valign="top">     
+       [c(allNumConditions,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(conditionStates, roll.count),30)+' alt='+listGet(conditionStates, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(conditionStates, roll.count), "selected") ]</span> }]
+         </td>
+		 <td style="text-align:center" valign="top">     
+       [c(allNumConditions2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(conditionStates2, roll.count),30)+' alt='+listGet(conditionStates2, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(conditionStates2, roll.count), "selected") ]</span> }]
+         </td>
+          </tr>
+      </table>
+    </body>
+  </html>
+}]
+
+[frame("Movement"): {
+  <html>
+    <head>
+      <title>Movement</title>
+    </head>
+    <body>
+      <table style="text-align:center" border="1">
+        <tr>
+          <td style="text-align:center" valign="top">
+       [c(allNumMovement,'<BR>'),code:{<span style="color:#AAAAAA">[r:macroLink('<img src='+getStateImage(listGet(movementStates, roll.count),30)+' alt='+listGet(movementStates, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(movementStates, roll.count), "selected") ]</span>}]
+		 </td>
+		 <td style="text-align:center" valign="top">     
+       [c(allNumMovement2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(movementStates2, roll.count),30)+' alt='+listGet(movementStates2, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(movementStates2, roll.count), "selected") ]</span> }]
+         </td>
+          </tr>
+      </table>
+    </body>
+  </html>
+}]
+
+[frame("Combat Mods"): {
+  <html>
+    <head>
+      <title>Combat Mods</title>
+    </head>
+    <body>
+      <table style="text-align:center" border="1">
+        <tr>
+          <td style="text-align:center" valign="top">     
+       [c(allNumCombat,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(combatStates, roll.count),30)+' alt='+listGet(combatStates, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(combatStates, roll.count), "selected") ]</span> }]
+         </td>
+		 <td style="text-align:center" valign="top">     
+       [c(allNumCombat2,'<BR>'),code:{  <span style="color:#000000">[r:macroLink('<img src='+getStateImage(listGet(combatStates2, roll.count),30)+' alt='+listGet(combatStates2, roll.count) +'>' , "StateToggle@"+getMacroLocation(), "self" ,listGet(combatStates2, roll.count), "selected") ]</span> }]
+         </td>
+          </tr>
+      </table>
+    </body>
+  </html>
+}]
+
+[abort(0)]
+
+!!
+@@ @StateToggle
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+<!-- StateToggle macro -->
+
+[H: eval("state." + macro.args + "= band(2^state." + macro.args + ",1)")]
+[h:abort(0)]
+
+!!
+@@ @TargetScreen
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+[h:targetArgs = macro.args]
+[h:atkKey          = json.get(targetArgs, 0)]
+[h:atkName         = json.get(targetArgs, 1)]
+[h:atkMod          = json.get(targetArgs, 2)]
+[h:damMod          = json.get(targetArgs, 3)]
+[h:damRoll         = json.get(targetArgs, 4)]
+[h:critDamRoll     = json.get(targetArgs, 5)]
+[h:targetDefense   = json.get(targetArgs, 6)]
+[h:friendlyFire    = json.get(targetArgs, 7)]  <!-- 0 NPC, 1 PC, 2 Both -->
+[h:missDamageRoll  = json.get(targetArgs, 8)] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(targetArgs, 9)] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(targetArgs, 10)] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(targetArgs, 11)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(targetArgs, 12)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(targetArgs, 13)]
+[h:modAttackJson   = json.get(targetArgs, 14)]
+[h:keywords        = json.get(targetArgs, 15)]
+[h:damageTypes     = json.get(targetArgs, 16)]
+[h:token     	   = json.get(targetArgs, 17)]
+[h:powaStr     	   = json.get(targetArgs, 18)]
+[h:targList = getSelectedNames("json")]
+[h,if(!json.isEmpty(targList)),CODE:
+{
+};{
+[targList = "[]"]
+}]
+[dialog("Power Options", "input=1; width=425; height=500"):
+{
+  <html>
+  <body>
+  <link rel='onChangeSelection' type='macro' href='[r:macroLinkText("TargetScreen@this", "none", targetArgs, "")]'></link>
+   <form name='powerOptions' method='json' action='[r:macroLinkText("ExecutePower@this", "all", "", token)]'>
+  [r:powaStr]<hr>
+  <table width='350'>
+   <tr><td><b><u>Targets</u></b></td><td><b><u>Combat Adv.</u></b></td><td><b><u>Attack &plusmn;</u></b></td><td><b><u>Damage &plusmn;</u></b></td></tr>
+  [r,foreach(targId, targList, ""),code:
+  {
+     <tr>
+	 <td><b>[r:targId]:</b></td>
+	<td align='center'><input name='[r:strformat("acaTarget%{roll.count}")]' type='checkbox'></input></td>
+	 <td><input name='[r:strformat("amodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 <td><input name='[r:strformat("dmodTarget%{roll.count}")]' type='text' value='0' size='5'></input></td>
+	 </tr>
+  }]
+  
+  </table>
+   <hr>
+ <table>
+<tr><td>One creature, <b>two attacks</b></td><td><input type='checkbox' name='onetwo'></input></td></tr>
+ <tr><td>I am <b>Charging</b></td><td><input type='checkbox' name='charge'></input></td></tr>
+ <tr><td><span title='These attack modifiers apply to all attacks'>Enter any <b>overall attack</b> modifiers:</span></td><td><input type='text' size='5' name='attackMods' value='0'></input></td></tr>
+ <tr><td><span title='These damage modifiers apply to all attacks'>Enter any <b>overall damage</b> modifiers:</td><td><input type='text' size='5' name='damageMods' value='0'></input></td></tr>
+<tr><td>Roll <b>twice</b> and take the higher result</td><td><input type='checkbox' name='rollTwice'></input></td></tr>
+<tr><td><b>Override</b> the power default and target...</td><td><select name='defOverride'><option value='N/A'>N/A</option><option value='AC'>AC</option><option value='Fortitude'>Fortitude</option><option value='Reflex'>Reflex</option><option value='Willpower'>Will</option></select></td></tr>
+ </table>
+  <hr>
+  <table>
+ <tr><td align='center'><input type='submit' name='SubmitButton' value='Attack'></input>&nbsp;<input type='submit' name='SubmitButton' value='Cancel'></input></td></tr>
+ </table>
+  <input type='hidden' name='atkKey' value='[r:atkKey]'></input>
+  <input type='hidden' name='atkName' value='[r:atkName]'></input>
+  <input type='hidden' name='atkMod' value='[r:atkMod]'></input>
+  <input type='hidden' name='damMod' value='[r:damMod]'></input>
+  <input type='hidden' name='damRoll' value='[r:damRoll]'></input>
+  <input type='hidden' name='critDamRoll' value='[r:critDamRoll]'></input>
+  <input type='hidden' name='targetDefense' value='[r:targetDefense]'></input>
+  <input type='hidden' name='friendlyFire' value='[r:friendlyFire]'></input>
+  <input type='hidden' name='missDamageRoll' value='[r:missDamageRoll]'></input>
+  <input type='hidden' name='targetStateJson' value='[r:targetStateJson]'></input>
+  <input type='hidden' name='selfStateJson' value='[r:selfStateJson]'></input>
+  <input type='hidden' name='markJson' value='[r:markJson]'></input>
+  <input type='hidden' name='vulnResistJson' value='[r:vulnResistJson]'></input>
+  <input type='hidden' name='modDefenseJson' value='[r:modDefenseJson]'></input>
+  <input type='hidden' name='modAttackJson' value='[r:modAttackJson]'></input>
+  <input type='hidden' name='keywords' value='[r:keywords]'></input>
+  <input type='hidden' name='damageTypes' value='[r:damageTypes]'></input>
+  <input type='hidden' name='targList' value='[r:targList]'></input>
+  <input type='hidden' name='powaStr' value='[r:powaStr]'></input>
+  </form>
+  </body>
+  </html>
+}]
+[h:abort(0)]
+
+!!
+@@ @decodeState
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+[macro.args]
+[h: dropdownReturn = lower(json.get(macro.args, "myDropdown"))]
+[h: Temp=listGet(json.toList(macro.args), 2)]
+[h: Final = substring(Temp, 0, (length(Temp)-2))]
+[H: eval("state." + Final + "_" + dropdownReturn + "= band(2^state." +  Final + "_" + dropdownReturn + ",1)")]
+[h:abort(0)]
+
+!!
+@@ @CallAttack
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallAttack macro -->
+
+<!-- Process parameters -->
+
+<!-- atkKey = Integer switch used to determine which attack/damage roll combination to use: -->
+<!-- 1 = Single/Multi -->
+<!-- 2 = Single/Multi No Damage -->
+<!-- 3 = Single/Multi No Attack -->
+<!-- 4 = AOE -->
+<!-- 5 = AOE No Damage -->
+<!-- 6 = AOE No Attack -->
+<!-- 7 = Single/Multi heal -->
+<!-- 8 = AOE heal -->
+<!-- 9 = Self only heal -->
+<!-- 15 = Single/Multi Secondary -->
+<!-- 16 = AOE Secondary -->
+<!-- 17 = Self only Secondary -->
+<!-- 20 = Utility -->
+[h:atkKey         = json.get(macro.args, "atkKey")]
+[h:atkName        = json.get(macro.args, "atkName")]
+[h:atkType        = json.get(macro.args, "atkType")] <!--  At-Will = 1, Encounter = 2, Daily = 3 -->
+[h:atkTypeName    = json.get(macro.args, "atkTypeName")]
+[h:keywords       = json.get(macro.args, "keywords")]
+[h:damageTypes    = json.get(macro.args, "damageTypes")]
+[h:actionType     = json.get(macro.args, "actionType")]
+[h:targetDefense  = json.get(macro.args, "targetDefense")]
+[h:hitStatAdded   = json.get(macro.args, "hitStatAdded")]
+[h:rangeText      = json.get(macro.args, "rangeText")]
+[h:numTargetsText = json.get(macro.args, "numTargetsText")]
+[h:token = getName()]
+[h,if(json.contains(macro.args,"atkMod")):atkMod         = json.get(macro.args, "atkMod");atkMod = "{}"]
+[h,if(json.contains(macro.args,"damMod")):damMod         = json.get(macro.args, "damMod");damMod = "{}"]
+[h,if(json.contains(macro.args,"damRoll")):damRoll        = json.get(macro.args, "damRoll");damRoll = "0d0"]
+[h,if(json.contains(macro.args,"critDamRoll")):critDamRoll    = json.get(macro.args, "critDamRoll");critDamRoll = "0d0"]
+[h,if(json.contains(macro.args,"maxRange")): maxRange        = json.get(macro.args,"maxRange");maxRange=-1]
+[h,if(json.contains(macro.args,"numTargets")): numTargets      = json.get(macro.args,"numTargets");numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
+[h:effectText      = json.get(macro.args, "effectText")]
+[h:extraRoll       = json.get(macro.args, "extraRoll")]
+[h,if(json.contains(macro.args,"useMagicItem")): useMagicItem    = json.get(macro.args,"useMagicItem");useMagicItem=0]
+[h,if(json.contains(macro.args,"friendlyFire")): friendlyFire    = json.get(macro.args,"friendlyFire");friendlyFire = isNPC()] <!-- 0 NPC, 1 PC, 2 Both -->
+[h:otherSource     = json.get(macro.args,"otherSource")] <!-- name of other token to use as source for figuring targets based on range -->
+[h,if(json.contains(macro.args,"missDamageRoll")): missDamageRoll  = json.get(macro.args,"missDamageRoll");missDamageRoll = -1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
+<!-- targetStateJson: Json with states to apply to target.  In the format of Key:Value, Key = a number 0-3, Value = json of State names -->
+<!-- note: avoid using Marked states, they are covered below -->
+<!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
+[h,if(json.contains(macro.args,"targetStateJson")): targetStateJson = json.get(macro.args,"targetStateJson");targetStateJson="{}"] 
+<!-- selfStateJson: Json with states to apply to self.  In the format of Key:Value, Key = a number 0-3, Value = json of State names-->
+<!-- Keys: 0 = apply state on miss, 1 = apply state on hit, 2 = apply state on crit, 3 = always apply state -->
+[h,if(json.contains(macro.args,"selfStateJson")): selfStateJson   = json.get(macro.args,"selfStateJson");selfStateJson="{}"]
+ <!-- Json array of when to mark target.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
+[h,if(json.contains(macro.args,"markJson")): markJson        = json.get(macro.args,"markJson");markJson="[]"]
+<!-- Json Object of when to apply a resist/vuln to target/self.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
+<!-- Nested Json Object keys: 0 = Vuln to target, 1 = Vuln to self, 2 = Resist to target, 3 = Resist to self -->
+<!-- Alternating array of element type, then value : sqBracket Cold,5,Fire,10,All,15 sqBracket -->
+<!-- comment moved to wiki -->
+<!-- Example: On miss applies Vuln Cold 5 to target and Vuln Cold 5 to self; On hit applies Resist Fire 5 to target; -->
+<!--          On crit applies Resist Fire 5 and Resist Cold 5 to self; On always applies Vuln Fire 5 to target and   -->
+<!--          Resist Fire 5 to target -->
+[h,if(json.contains(macro.args,"vulnResistJson")): vulnResistJson  = json.get(macro.args,"vulnResistJson");vulnResistJson="{}"]
+[h,if(json.contains(macro.args,"modDefenseJson")): modDefenseJson  = json.get(macro.args,"modDefenseJson");modDefenseJson="{}"]
+[h,if(json.contains(macro.args,"modAttackJson")): modAttackJson  = json.get(macro.args,"modAttackJson");modAttackJson="{}"]
+[h,if(json.contains(macro.args,"needMilestone")): needMilestone   = json.get(macro.args,"needMilestone");needMilestone = 0]
+[h,if(json.contains(macro.args,"yesHeal")):yesHeal         = json.get(macro.args, "yesHeal");yesHeal = 0]
+[h,if(json.contains(macro.args,"yesTempHP")):yesTempHP         = json.get(macro.args, "yesTempHP");yesTempHP = 0]
+[h,if(json.contains(macro.args,"healMod")):healMod         = json.get(macro.args, "healMod");healMod = "{}"]
+[h,if(json.contains(macro.args,"healRoll")):healRoll        = json.get(macro.args, "healRoll");healRoll = "0d0"]
+[h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = "{}"]
+[h,if(json.contains(macro.args,"tempHPRoll")):tempHPRoll    = json.get(macro.args, "tempHPRoll");tempHPRoll = "0d0"]
+[h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
+[h,if(json.contains(macro.args,"includeSelf")):includeSelf  = json.get(macro.args,"includeSelf");includeSelf = 0]
+[h,if(json.contains(macro.args,"bloodyOnly")):bloodyOnly  = json.get(macro.args,"bloodyOnly");bloodyOnly = 0]
+
+[h:useKeywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
+
+<!-- Check milestone requirement -->
+[h:status=1]
+[h,if(needMilestone && Milestone==0): status = input("junk|You haven't passed a Milestone yet which is required for this power, do you still want to use it anyway? Click OK if Yes, cancel if No.||LABEL|SPAN=TRUE")]
+[h:abort(status)]
+
+<!-- Deal with magic item uses -->
+[h:status=1]
+[h,if(useMagicItem && MagicItemUses<=0): status = input("junk|Your Magic Item Uses are at 0, do you still want to use power anyway? Click OK if Yes, cancel if No.||LABEL|SPAN=TRUE")]
+[h:abort(status)]
+[h,if(useMagicItem && MagicItemUses>0): MagicItemUses=MagicItemUses-1]
+
+<!-- Print power card -->
+[h,SWITCH(atkType):
+  case 1: tableBG="#00CC00";
+  case 2: tableBG="#FF0000";
+  case 3: tableBG="#000000";
+  case 4: tableBG="#0000FF"
+]
+[h,if(length(useKeywords)!=0): useKeywords=strformat('<tr><td style="padding:0px 5px" align=left><b>%s</b></td></tr>',useKeywords); useKeywords=""]
+[h,if(length(rangeText)!=0): rangeText=strformat('<td style="padding:0px 5px" align=right><b>%s</b></td>',rangeText); rangeText=""]
+[h,if(length(hitStatAdded)!=0 && length(targetDefense)!=0): versusStr=strformat('<td style="padding:0px 5px" align=right><b>Attack:</b> %s vs. %s</td>',hitStatAdded,targetDefense); versusStr=""]
+[h,if(length(hitStatAdded)==0 && length(targetDefense)!=0): versusStr=strformat('<td style="padding:0px 5px" align=right><b>Attack:</b>vs. %s</td>',targetDefense)]
+[h,if(length(effectText)!=0): effectText=strformat('<tr bgcolor="#D6D6C2"><td style="padding:0px 5px" align=left colspan="2">%s</td></tr>',effectText); effectText=""]
+[h:powaStr=strformat('<table width=400><tr bgcolor=%s><td style="padding:0px 5px"align=left><font color=#FFFFFF><b>%s</b></font></td><td style="padding:0px 5px" align=right><font color=#FFFFFF><b>%s</b></font></td></tr>%s<tr><td style="padding:0px 5px" align=left><b>%s</b></td>%s</tr><tr><td style="padding:0px 5px" align=left><b>Target:</b> %s</td>%s</tr>%s</table>',
+tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,versusStr,effectText)]
+
+[h:macroTT=json.get(getMacroProps(getMacroButtonIndex(),"json"),"tooltip")]
+[h,if(length(macroTT) <= 0): setMacroProps(getMacroButtonIndex(),"tooltip="+ "<html><body>" + powaStr + "</body></html>")]
+
+[if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, targetDefense, friendlyFire, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes, token, powaStr)]')]
+[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, modAttackJson, includeSelf, bloodyOnly, token, powaStr)]')]
+[if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, token, powaStr)]')]
+[if(atkKey==20), CODE:
+{
+[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
+{output}
+}]
+
+!!
+@@ @CallClearMark
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallClearMark macro -->
+<!-- Clears the MarkedBy property and all possible Mark statuses from current token -->
+<!-- May possibly run correctly if used on multiple tokens at once -->
+
+[h:setProperty("MarkedBy","")]
+[h,if(getState("Marked_blue")):setState("Marked_blue",0)]
+[h,if(getState("Marked_cyan")):setState("Marked_cyan",0)]
+[h,if(getState("Marked_green")):setState("Marked_green",0)]
+[h,if(getState("Marked_orange")):setState("Marked_orange",0)]
+[h,if(getState("Marked_red")):setState("Marked_red",0)]
+[h,if(getState("Marked_yellow")):setState("Marked_yellow",0)]
+
+!!
+@@ @CallCriticalMiss
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallCriticalMiss Macro -->
+
+[h:dieRoll=eval("1d100")]
+[h,if(dieRoll>0 && dieRoll<=20): output=customTooltip("<html><body><table width='250'><tr><td align='justify'>1 adjacent enemy may make an opportunity attack against you.</td></tr></table></body></html>",strformat("<b>Critical Miss Table</b><br>Guard Down -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>20 && dieRoll<=35): output=customTooltip("You are knocked prone.",strformat("<b>Critical Miss Table</b><br>Off balance/Trip -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>35 && dieRoll<=50): output=customTooltip("<html><table width='250'><tr><td align='justify'>You lose your grip and drop your weapon or implement.  Your weapon flies 2 squares in a random direction determined by d8 roll. You must spend a minor action on your next turn to retrieve it before attacking.</td></tr></table></html>",strformat("<b>Critical Miss Table</b><br>Drop Weapon/Disarmed -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>50 && dieRoll<=65): output=customTooltip("<html><table width='250'><tr><td align='justify'>If you missed on a melee or ranged attack, roll to hit against an adjacent ally or the ally nearest your target. If you hit the ally takes the damage. If you missed on a arcane/divine spell attack, roll to hit against your own defense. If you hit you take the damage.</td></tr></table></html>",strformat("<b>Critical Miss Table</b><br>Wild Attack/Wild Magic -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>65 && dieRoll<=85): output=customTooltip("<html><table width='250'><tr><td align='justify'>Your attack immediately ends and you grant combat advantage until the end of your next turn.</td></tr></table></html>",strformat("<b>Critical Miss Table</b><br>Fumble -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>85): output=customTooltip("No ill effect.",strformat("<b>Critical Miss Table</b><br>Recover -> d100( <b>%d</b> )",dieRoll))]
+<font color='black'>{output}</font>
+[h,if(dieRoll>35 && dieRoll<=50): moreStr = strformat("<br><font color='black'>d8( <b>%d</b> )</font>",eval("1d8")); moreStr=""]
+{moreStr}
+
+!!
+@@ @CallDamage
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallDamage macro -->
+
+[h:cancel = input("dam|0|Damage Taken")]
+[h:Abort(cancel)]
+[h,if(dam<=0): abort(0)]
+[h,if(TempHP>=dam), code:
+{
+  [h: TempHP = TempHP - dam]
+};{
+  [h: dam = dam - TempHP]
+  [h: TempHP = 0]
+  [h: CurrentHP = CurrentHP - dam]
+}]
+[h,if(CurrentHP<=MaxHP/2): state.Bloodied=1]
+[h,if(CurrentHP<=0),code:
+{
+  [h:state.Unconscious=1]
+  [h:state.Prone=1]
+  [h:CurrentHP = 0]
+};{}]
+
+!!
+@@ @CallEditSkills
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+[h: cancel = input("Acrobatics|"+getStrProp(Skills, "Acrobatics")+"|Acrobatics",
+"Arcana|"+getStrProp(Skills, "Arcana")+"|Arcana",
+"Athletics|"+getStrProp(Skills, "Athletics")+"|Athletics",
+"Bluff|"+getStrProp(Skills, "Bluff")+"|Bluff",
+"Diplomacy|"+getStrProp(Skills, "Diplomacy")+"|Diplomacy",
+"Dungeoneering|"+getStrProp(Skills, "Dungeoneering")+"|Dungeoneering",
+"Endurance|"+getStrProp(Skills, "Endurance")+"|Endurance",
+"Heal|"+getStrProp(Skills, "Heal")+"|Heal",
+"History|"+getStrProp(Skills, "History")+"|History",
+"Insight|"+getStrProp(Skills, "Insight")+"|Insight",
+"Intimidate|"+getStrProp(Skills, "Intimidate")+"|Intimidate",
+"Nature|"+getStrProp(Skills, "Nature")+"|Nature",
+"Perception|"+getStrProp(Skills, "Perception")+"|Perception",
+"Religion|"+getStrProp(Skills, "Religion")+"|Religion",
+"Stealth|"+getStrProp(Skills, "Stealth")+"|Stealth",
+"Streetwise|"+getStrProp(Skills, "Streetwise")+"|Streetwise",
+"Thievery|"+getStrProp(Skills, "Thievery")+"|Thievery")]
+
+[Abort(cancel)]
+
+[h: Skills = setStrProp(Skills, "Acrobatics", Acrobatics)]
+[h: Skills = setStrProp(Skills, "Arcana", Arcana)]
+[h: Skills = setStrProp(Skills, "Athletics", Athletics)]
+[h: Skills = setStrProp(Skills, "Bluff", Bluff)]
+[h: Skills = setStrProp(Skills, "Diplomacy", Diplomacy)]
+[h: Skills = setStrProp(Skills, "Dungeoneering", Dungeoneering)]
+[h: Skills = setStrProp(Skills, "Endurance", Endurance)]
+[h: Skills = setStrProp(Skills, "Heal", Heal)]
+[h: Skills = setStrProp(Skills, "History", History)]
+[h: Skills = setStrProp(Skills, "Insight", Insight)]
+[h: Skills = setStrProp(Skills, "Intimidate", Intimidate)]
+[h: Skills = setStrProp(Skills, "Nature", Nature)]
+[h: Skills = setStrProp(Skills, "Perception", Perception)]
+[h: Skills = setStrProp(Skills, "Religion", Religion)]
+[h: Skills = setStrProp(Skills, "Stealth", Stealth)]
+[h: Skills = setStrProp(Skills, "Streetwise", Streetwise)]
+[h: Skills = setStrProp(Skills, "Thievery", Thievery)]
+[abort(0)]
+
+!!
+@@ @CallHP
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+[h: cancel = input("CHP|"+CurrentHP+"|Current HP",
+"THP|"+TempHP+"|Temporary HP",
+"MHP|"+MaxHP+"|Maximum HP",
+"THS|"+CurrentSurge+"|Healing Surges")]
+[h: Abort(cancel)]
+[h: CurrentHP = CHP]
+[h: TempHP = THP]
+[h: MaxHP = MHP]
+[h: CurrentSurge = THS]
+[h, IF(CHP<=MHP/2), code:
+{[h: state.Bloodied=1]};
+{[h: state.Bloodied=0]}
+]
+
+!!
+@@ @CallHeal
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallHeal Macro -->
+
+[h:cancel = input(
+  "heal|0|Extra Healing Done",
+  "tmp|0|Temp HP Gained",
+  "surge|0|Spend a Healing Surge?|CHECK",
+  "surgeHeal|0|Heal your Surge Value?|CHECK"
+)]
+[h:Abort(cancel)]
+[h,if(heal<=0 && tmp <=0 && surge==0 && surgeHeal==0): abort(0)]
+[h,if(heal>0 || surgeHeal): CHP = CurrentHP+heal+if(surgeHeal,SurgeValue,0);CHP = CurrentHP]
+[h,if(tmp>0 && tmp>TempHP): TempHP = tmp]
+[h,if(CHP>MaxHP/2): state.Bloodied=0]
+[h,if(CHP>MaxHP): CurrentHP = MaxHP;CurrentHP = CHP]
+[h,if(surge): CurrentSurge = CurrentSurge-1]
+
+!!
+@@ @CallInjuryTable
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallInjuryTable Macro -->
+
+[h:dieRoll=eval("1d100")]
+[h,if(dieRoll>0 && dieRoll<=25): output=customTooltip("<html><b>Effect:</b> Target takes a -2 penalty to all attack rolls and athletics checks and loses 1 healing surge until you take an extended rest.<br><b>Bloodied:</b> While bloodied the target is weakened.</html>",strformat("<b>Injury Table</b><br>Arm / Hand Injury -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>25 && dieRoll<=50): output=customTooltip("<html><b>Effect:</b> The targets speed is reduced by 2 and loses 1 healing surges that cannot be regained until you take an extended rest.<br><b>Bloodied:</b> While bloodied the target is slowed.</html>",strformat("<b>Injury Table</b><br>Leg / Foot Injury -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>50 && dieRoll<=75): output=customTooltip("<html><b>Effect:</b> The target loses 1 healing surge and suffers a -4 penalty to Perception checks.<br><b>Bloodied:</b> Each time the target becomes bloodied it is dazed (save ends).</html>",strformat("<b>Injury Table</b><br>Head Injury -> d100( <b>%d</b> )",dieRoll))]
+[h,if(dieRoll>75 && dieRoll<=100): output=customTooltip("<html><b>Effect:</b> The target loses 2 healing surges.<br><b>Bloodied:</b> Each time the target becomes bloodied it takes ongoing (5 heroic / 10 paragon / 15 epic) damage (save ends).</html>",strformat("<b>Injury Table</b><br>Body Injury -> d100( <b>%d</b> )",dieRoll))]
+<font color='black'>{output}</font>
+
+!!
+@@ @CallMoveGUI
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallMoveGUI macro -->
+<!-- pops an Input form that has a dropdown list with all player visible NPCs in it -->
+<!-- below is a radio button list of all 8 cardinal directions -->
+<!-- user picks a name from the list, and a direction and the token will move there -->
+
+<!-- get all NPC names -->
+[h:npcFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "npc", 1)]
+[h:npcJson = getTokenNames("json", npcFilter)]
+[h:npcJson = json.sort(npcJson)]
+[h:npcInputList = strformat("npcList|%s|Choose NPC|LIST|VALUE=STRING",json.toList(npcJson))]
+
+[h: status = input(
+  ".|<html><b>NPC MOVER</b></html>||LABEL|SPAN=TRUE",
+  npcInputList,
+  ".|---------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE",
+  "rad | North,Northeast,East,Southeast,South,Southwest,West,Northwest | Choose Direction | RADIO |"
+)]
+
+[abort(status)]
+
+[h: currentX = getTokenX(0, npcList)]
+[h: currentY = getTokenY(0, npcList)]
+[h,switch(rad):
+  case 0: newX = currentX + 0;
+  case 1: newX = currentX + 1;
+  case 2: newX = currentX + 1;
+  case 3: newX = currentX + 1;
+  case 4: newX = currentX + 0;
+  case 5: newX = currentX - 1;
+  case 6: newX = currentX - 1;
+  case 7: newX = currentX - 1
+]
+[h,switch(rad):
+  case 0: newY = currentY - 1;
+  case 1: newY = currentY - 1;
+  case 2: newY = currentY + 0;
+  case 3: newY = currentY + 1;
+  case 4: newY = currentY + 1;
+  case 5: newY = currentY + 1;
+  case 6: newY = currentY + 0;
+  case 7: newY = currentY - 1
+]
+[h: moveToken(newX, newY, 0, npcList)]
+
+[abort(0)]
+
+!!
+@@ @CallNpcSkillCheck
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallNpcSkillCheck macro -->
+
+[h: SkillNames = "Acrobatics, Arcana, Athletics, Bluff, Diplomacy, Dungeoneering, Endurance, Heal, History, Insight, Intimidate, Nature, Perception, Religion, Stealth, Streetwise, Thievery"]
+[h: status=input(
+  strformat("Choice|%s|Skill|LIST|VALUE=STRING",SkillNames),
+  "ArmorCheck|0|Armor Check Penalty?|Check",
+  "ShieldCheck|0|Heavy Shield Check Penalty?|Check",
+  "Temp|0|Temp Bonus"
+)]
+[h: abort(status)]
+[h: Skill=getStrProp(Skills, Choice)]
+[h: Armor=ArmorCheck*-1]
+[h: Shield=ShieldCheck*-2]
+[h:armorPenalized="Acrobatics,Athletics,Endurance,Stealth,Thievery"]
+[h:statNameJson=json.fromStrProp("Acrobatics=Dex;Arcana=Int;Athletics=Str;Bluff=Cha;Diplomacy=Cha;Dungeoneering=Wis;Endurance=Con;Heal=Wis;History=Int;Insight=Wis;Intimidate=Cha;Nature=Wis;Perception=Wis;Religion=Wis;Stealth=Dex;Streetwise=Cha;Thievery=Dex")]
+[h:statValJson =json.fromStrProp(strformat("Acrobatics=%{DexMod};Arcana=%{IntMod};Athletics=%{StrMod};Bluff=%{ChaMod};Diplomacy=%{ChaMod};Dungeoneering=%{WisMod};Endurance=%{ConMod};Heal=%{WisMod};History=%{IntMod};Insight=%{WisMod};Intimidate=%{ChaMod};Nature=%{WisMod};Perception=%{WisMod};Religion=%{WisMod};Stealth=%{DexMod};Streetwise=%{ChaMod};Thievery=%{DexMod}"))]
+
+<b>{Choice} Check:</b><br>
+[h:dieRoll=1d20]
+[h,if(Skill <= 0): output=customTooltip(strformat("d20(%d) + Level(%d) + %s(%d)%s%s%s%s",dieRoll,HalfLevel,json.get(statNameJson,Choice),json.get(statValJson,Choice),if(Skill!=0,strformat(" + Skill(%d)",Skill),""),if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),""),if(Temp != 0,strformat(" + Temp(%d)",Temp),"")),dieRoll+HalfLevel+json.get(statValJson,Choice)+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0)+Temp) ; 
+                   output=customTooltip(strformat("d20(%d) + Bonus(%d) + %s%s%s",dieRoll,Skill,if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),""),if(Temp != 0,strformat(" + Temp(%d)",Temp),"")),dieRoll+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0)+Temp)
+]
+{output}
+
+!!
+@@ @CallSave
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallSave macro -->
+
+<!-- The assumption is made that all States in campaign do not have spaces in their name, otherwise code will break -->
+
+[h:stateJson = getTokenStates("json", "Conditions")]
+[h:stateJson1 = getTokenStates("json", "OngoingDamage")]
+[h:stateJson2 = getTokenStates("json", "Vuln")]
+[h:stateJson = json.merge(stateJson,stateJson1,stateJson2)]
+[h:imageList = "None,"]
+[h,foreach(item,json.toList(stateJson)): imageList = strformat("%s%s",imageList,if(getState(item),strformat("%s %s,",item,getStateImage(item)),""))]
+
+[h: status=input(
+  strformat("Choice|%s|State to Save against|LIST|ICON=TRUE ICONSIZE=30",imageList),
+  "misc|0|<html>Miscellaneous <b>modifier</b> to save</html>"
+)]
+[h:abort(status)]
+
+[h:dieRoll=eval("1d20")+misc]
+[h,if(Choice!=0): stateChoice=substring(listGet(imageList,Choice),0,indexOf(listGet(imageList,Choice)," ")); stateChoice="None"]
+[h,if(Choice!=0): imgLink=strformat(" <img src='%s' align='middle'></img>",getStateImage(stateChoice,30)); imgLink=""]
+
+[h,if(dieRoll>=10): 
+  output=strformat("Save <font color='green'>SUCCESS</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)));
+  output=strformat("Save <font color='red'>FAILED</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)))
+]
+<p>{output}</p>
+[h,if(dieRoll>=10 && Choice != 0): setState(stateChoice,0)]
+
+!!
+@@ @CallSkillCheck
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallSkillCheck macro -->
+
+[h: SkillNames = "Acrobatics, Arcana, Athletics, Bluff, Diplomacy, Dungeoneering, Endurance, Heal, History, Insight, Intimidate, Nature, Perception, Religion, Stealth, Streetwise, Thievery"]
+[h: status=input(
+  strformat("Choice|%s|Skill|LIST|VALUE=STRING",SkillNames),
+  "ArmorCheck|0|Armor Check Penalty?|Check",
+  "ShieldCheck|0|Heavy Shield Check Penalty?|Check",
+  "Temp|0|Temp Bonus"
+)]
+[h: abort(status)]
+[h: Skill=getStrProp(Skills, Choice)]
+[h: Armor=ArmorCheck*-1]
+[h: Shield=ShieldCheck*-2]
+[h:armorPenalized="Acrobatics,Athletics,Endurance,Stealth,Thievery"]
+[h:statNameJson=json.fromStrProp("Acrobatics=Dex;Arcana=Int;Athletics=Str;Bluff=Cha;Diplomacy=Cha;Dungeoneering=Wis;Endurance=Con;Heal=Wis;History=Int;Insight=Wis;Intimidate=Cha;Nature=Wis;Perception=Wis;Religion=Wis;Stealth=Dex;Streetwise=Cha;Thievery=Dex")]
+[h:statValJson =json.fromStrProp(strformat("Acrobatics=%{DexMod};Arcana=%{IntMod};Athletics=%{StrMod};Bluff=%{ChaMod};Diplomacy=%{ChaMod};Dungeoneering=%{WisMod};Endurance=%{ConMod};Heal=%{WisMod};History=%{IntMod};Insight=%{WisMod};Intimidate=%{ChaMod};Nature=%{WisMod};Perception=%{WisMod};Religion=%{WisMod};Stealth=%{DexMod};Streetwise=%{ChaMod};Thievery=%{DexMod}"))]
+
+<b>{Choice} Check:</b><br>
+[h:dieRoll=1d20]
+[h:output=customTooltip(strformat("d20(%d) + Level(%d) + %s(%d)%s%s%s%s",dieRoll,HalfLevel,json.get(statNameJson,Choice),json.get(statValJson,Choice),if(Skill!=0,strformat(" + Skill(%d)",Skill),""),if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),""),if(Temp != 0,strformat(" + Temp(%d)",Temp),"")),dieRoll+HalfLevel+json.get(statValJson,Choice)+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0)+Temp)]
+{output}
+[if(dieRoll==20): '<br><font color="red">***CRITICAL SUCCESS***</font>']
+
+!!
+@@ @CallStatusGUI
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallStatusGUI macro -->
+<!-- pops a Tabbed Input form that lists all player visible PC and NPCs -->
+<!-- other tabs contain various conditions/resists/vulns/etc in categories -->
+<!-- any conditions that are checked will be toggled for all PC/NPCs that are checked -->
+
+<!-- get all NPC names -->
+[h:npcFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "visible", 1, "npc", 1)]
+[h:npcJson = getTokenNames("json", npcFilter)]
+[h:npcJson = json.sort(npcJson)]
+[h:npcInputJson = "[]"]
+[h,foreach(n,json.toList(npcJson)): npcInputJson = 
+  json.append(npcInputJson,
+    strformat("c%s|0|%s|CHECK",findToken(n),n)
+  )
+]
+
+<!-- get all PC names -->
+[h:pcFilter = json.set("{}", "unsetStates", json.append("[]", "Dead", "Reticle"), "pc", 1)]
+[h:pcJson = getTokenNames("json", pcFilter)]
+[h:pcJson = json.sort(pcJson)]
+[h:pcInputJson = "[]"]
+[h,foreach(n,json.toList(pcJson)): pcInputJson = 
+  json.append(pcInputJson,
+    strformat("c%s|0|%s|CHECK",findToken(n),n)
+  )
+]
+
+<!-- condition names -->
+[h:condJson = json.sort(getTokenStates("json", "Conditions"))]
+[h:condInputJson = "[]"]
+[h,foreach(n,json.toList(condJson)): condInputJson = 
+  json.append(condInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- curse/mark/oath/quarry names -->
+[h:markJson = json.sort(json.merge(getTokenStates("json", "Curse"),getTokenStates("json", "Mark"),getTokenStates("json", "Oath"),getTokenStates("json", "Quarry")))]
+[h:markInputJson = "[]"]
+[h,foreach(n,json.toList(markJson)): markInputJson = 
+  json.append(markInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- ongoing damage names -->
+[h:ongoingJson = json.sort(getTokenStates("json", "OngoingDamage"))]
+[h:ongoingInputJson = "[]"]
+[h,foreach(n,json.toList(ongoingJson)): ongoingInputJson = 
+  json.append(ongoingInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- resist names -->
+[h:resistJson = json.sort(getTokenStates("json", "Resist"))]
+[h:resistInputJson = "[]"]
+[h,foreach(n,json.toList(resistJson)): resistInputJson = 
+  json.append(resistInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+<!-- vuln names -->
+[h:vulnJson = json.sort(getTokenStates("json", "Vuln"))]
+[h:vulnInputJson = "[]"]
+[h,foreach(n,json.toList(vulnJson)): vulnInputJson = 
+  json.append(vulnInputJson,
+    strformat("c%s|0|%s|CHECK",n,n)
+  )
+]
+
+[h: status = input(
+  "tab0 | NPCs || TAB | SELECT=TRUE",
+  ".|---------------------------------------------------------------------------------------------||LABEL|SPAN=TRUE",
+  json.toList(npcInputJson,"##"),
+  "tab1 | PCs || TAB",
+  json.toList(pcInputJson,"##"),
+  "tab2 | Conditions || TAB",
+  json.toList(condInputJson,"##"),
+  "tab3 | Marks || TAB",
+  json.toList(markInputJson,"##"),
+  "tab4 | Ongoing || TAB",
+  json.toList(ongoingInputJson,"##"),
+  "tab5 | Resists || TAB",
+  json.toList(resistInputJson,"##"),
+  "tab6 | Vulns || TAB",
+  json.toList(vulnInputJson,"##")
+)]
+
+[abort(status)]
+
+<!-- assemble Json of checked names -->
+[h:nameJson = "[]"]
+[h:tmpJson = json.merge(npcJson,pcJson)]
+[h,foreach(n,json.toList(tmpJson)): 
+  evalMacro(strformat('[h:nameJson = if(c%s==1,json.append(nameJson,n),nameJson)]',findToken(n)))
+]
+[h,if(json.length(nameJson)<1): abort(0)]
+
+<!-- assemble Json of checked states -->
+[h:stateJson = "[]"]
+[h:tmpJson = json.merge(condJson,markJson,ongoingJson,resistJson,vulnJson)]
+[h,foreach(n,json.toList(tmpJson)): 
+  evalMacro(strformat('[h:stateJson = if(c%s==1,json.append(stateJson,n),stateJson)]',n))
+]
+
+<!-- update states on names in nameJson -->
+[h,foreach(n,json.toList(nameJson)),code:
+{
+  [h:switchToken(n)]
+  [h,foreach(m,json.toList(stateJson)): if(getState(m)==1,setState(m,0),setState(m,1))]
+}]
+
+[abort(0)]
+
+!!
+@@ @CallUpdatePropMods
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- CallUpdatePropMods macro -->
+<!-- When called on a token with correct properties allows the user to Add/Update/Remove entries to the Attack, DamageBonuses properties -->
+<!-- and the TempVuln/Resist properties.  If Remove is selected an array of names is all that is needed. -->
+<!-- If multiple tokens are selected and this macro is shared among them can update any amount at the same time -->
+
+[h:status = input(
+    '.|Example Text-> CA:2,Cover:-5 or Blah,Durp (to remove)||LABEL|SPAN=TRUE',
+    '.|No spaces allowed in Name, use underscores if needed||LABEL|SPAN=TRUE',
+    '.|Use exact words for Resist/Vuln (Cold, Acid...), "All" is valid||LABEL|SPAN=TRUE',
+    "atkRadio|Skip,Add/Update,Remove|<html><b>Attack</b> Modifiers</html>|RADIO|ORIENT=H",
+    "atkText||Attack Entry",
+    "damRadio|Skip,Add/Update,Remove|<html><b>Damage</b> Modifiers</html>|RADIO|ORIENT=H",
+    "damText||Damage Entry",
+    "resistRadio|Skip,Add/Update,Remove|<html><b>Resistance</b> Modifiers</html>|RADIO|ORIENT=H",
+    "resistText||Resistance Entry",
+    "vulnRadio|Skip,Add/Update,Remove|<html><b>Vulnerability</b> Modifiers</html>|RADIO|ORIENT=H",
+    "vulnText||Vulnerability Entry"
+)]
+[h:abort(status)]
+[h,if(atkRadio==0 && damRadio==0 && resistRadio==0 && vulnRadio==0): abort(0)]
+
+[h,switch(atkRadio),code:
+  case 0: {""};
+  case 1: { [h:atkText = strformat("{%s}",atkText)]
+            [h,foreach(item,json.fields(atkText)): AttackBonuses = json.set(AttackBonuses,item,json.get(atkText,item))] };
+  case 2: { [h,foreach(item,json.toList(atkText)): AttackBonuses = json.remove(AttackBonuses,item)] };
+  default: {""}
+]
+[h,switch(damRadio),code:
+  case 0: {""};
+  case 1: { [h:damText = strformat("{%s}",damText)]
+            [h,foreach(item,json.fields(damText)): DamageBonuses = json.set(DamageBonuses,item,json.get(damText,item))] };
+  case 2: { [h,foreach(item,json.toList(damText)): DamageBonuses = json.remove(DamageBonuses,item)] };
+  default: {""}
+]
+[h,switch(resistRadio),code:
+  case 0: {""};
+  case 1: { [h:resistText = strformat("{%s}",resistText)]
+            [h,foreach(item,json.fields(resistText)): TempResist = json.set(TempResist,item,json.get(resistText,item))] };
+  case 2: { [h,foreach(item,json.toList(resistText)): TempResist = json.remove(TempResist,item)] };
+  default: {""}
+]
+[h,switch(vulnRadio),code:
+  case 0: {""};
+  case 1: { [h:vulnText = strformat("{%s}",vulnText)]
+            [h,foreach(item,json.fields(vulnText)): TempVulnerable = json.set(TempVulnerable,item,json.get(vulnText,item))] };
+  case 2: { [h,foreach(item,json.toList(vulnText)): TempVulnerable = json.remove(TempVulnerable,item)] };
+  default: {""}
+]
+
+!!
+@@ @ClearAtkDamMods
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- ClearAtkDamMods macro -->
+
+[h: applyModAttackJson("{}", getName())]
+
+!!
+@@ @ClearDefMods
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- ClearDefMods macro -->
+
+[h,if(getState("MinusToAC")):setState("MinusToAC", 0)]
+[h,if(getState("FightingDefense")): setState("FightingDefense",0)]
+[h,if(getState("TotalDefense")): setState("TotalDefense",0)]
+[h,if(ACMod!=0):ACMod=0]
+[h,if(FortMod!=0):FortMod=0]
+[h,if(WillMod!=0):WillMod=0]
+[h,if(RefMod!=0):RefMod=0]
+[h,if(AllDefMod!=0):AllDefMod=0]
+[h,if(length(AllDefModList) != 0):AllDefModList = ""]
+
+!!
+@@ @ClearVulnResist
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- ClearVulnResist macro -->
+
+[h: applyVulnResistJson("{}", getName())]
+
+!!
+@@ @ExtendedRest
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- Extended Rest macro -->
+
+[h: names = getSelectedNames("json")]
+[h,if(json.length(names)!=1): abort(0)]
+[h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
+
+[h,foreach(index,getMacroGroup("3. Encounter Attacks")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("4. Encounter Utilities")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("5. Daily Attacks")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("6. Daily Utilities")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("Healing/Damage")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h:setHalo("None")]
+[h:setAllStates(0)]
+[h:updateProperty("MarkedBy","")]
+[h:CurrentHP = MaxHP]
+[h:TempHP = 0]
+[h,macro("ClearDefMods@"+UseLib): ""]
+[h:CurrentSurge = MaxSurge]
+[h:MagicItemUses = 1]
+[h:ActionPoints = 1]
+[h,if(length(AttackBonuses)>0): AttackBonuses = ""]
+[h,if(length(DamageBonuses)>0): DamageBonuses = ""]
+[h,macro("ClearVulnResist@"+UseLib): ""]
+[h,macro("ClearAtkDamMods@"+UseLib): ""]
+
+[abort(0)]
+
+!!
+@@ @ShortRest
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- Short Rest macro -->
+
+[h: names = getSelectedNames("json")]
+[h,if(json.length(names)!=1): abort(0)]
+[h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
+
+[h,foreach(index,getMacroGroup("3. Encounter Attacks")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("4. Encounter Utilities")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h,foreach(index,getMacroGroup("Healing/Damage")), code: 
+{
+  [h:macroStr=json.get(getMacroProps(index,"json"),"label")]
+  [h,if(endsWith(macroStr,"(Used)")): setMacroProps(index, "label="+replace(macroStr, " \\(Used\\)", ""))]
+}]
+[h:setAllStates(0)]
+[h:setHalo("None")]
+[h:updateProperty("MarkedBy","")]
+[h:TempHP = 0]
+[h,macro("ClearDefMods@"+UseLib): ""]
+[h,if(length(AttackBonuses)>0): AttackBonuses = ""]
+[h,if(length(DamageBonuses)>0): DamageBonuses = ""]
+[h,macro("ClearVulnResist@"+UseLib): ""]
+[h,macro("ClearAtkDamMods@"+UseLib): ""]
+
+[abort(0)]
+
+!!
+@@ @ViewDefenseModifier
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
+<!-- View Defense Modifier for tokens-->
+
+[macro("ModifierDialog@"+UseLib):""]
+[abort(0)]
+
+!!
