@@ -1129,8 +1129,12 @@ public class Token {
             }
 
             // write out an Aura macro
+            if (this.isJoe && !me.getAura().isEmpty())
+                writeAuraMacro(writer, idx++);
+
+            // write out generic macros all NPCs should have
             if (this.isJoe)
-                writeAuraMacro(writer, idx);
+                writeGenericMacro(writer, idx++);
 
             // write all the feat, ritual and equipment macros out
             if (me instanceof PC) {
@@ -1193,22 +1197,22 @@ public class Token {
             {
                 String usage = p.getUsage();
                 int atkType = 4;
-                if (usage.equals("at-will"))
+                if (usage.toLowerCase().equals("at-will"))
                 {
                     usage = "At-Will";
                     atkType = 1;
                 }
-                else if (usage.equals("encounter"))
+                else if (usage.toLowerCase().equals("encounter"))
                 {
                     usage = "Encounter";
                     atkType = 2;
                 }
-                else if (usage.equals("daily"))
+                else if (usage.toLowerCase().equals("daily"))
                 {
                     usage = "Daily";
                     atkType = 3;
                 }
-                else if (usage.contains("recharge"))
+                else if (usage.toLowerCase().contains("recharge"))
                 {
                     usage = "Recharge";
                     atkType = 2;
@@ -1217,25 +1221,25 @@ public class Token {
                     usage = "Other";
 
                 String action = p.getActionType();
-                if (action.contains("standard"))
+                if (action.toLowerCase().contains("standard"))
                     action = "Standard Action";
-                else if (action.contains("free"))
+                else if (action.toLowerCase().contains("free"))
                     action = "Free Action";
-                else if (action.contains("move") || action.contains("movement"))
+                else if (action.toLowerCase().contains("move") || action.contains("movement"))
                     action = "Move Action";
-                else if (action.contains("immediate action"))
+                else if (action.toLowerCase().contains("immediate action"))
                     action = "Immediate Action";
-                else if (action.contains("immediate reaction"))
+                else if (action.toLowerCase().contains("immediate reaction"))
                     action = "Immediate Reaction";
-                else if (action.contains("no action"))
+                else if (action.toLowerCase().contains("no action"))
                     action = "No Action";
-                else if (action.contains("opportunity action"))
+                else if (action.toLowerCase().contains("opportunity action"))
                     action = "Opportunity Action";
 
                 String defense = "AC";
                 if (html.contains("Fortitude"))
                     defense = "Fortitude";
-                else if (html.contains("Willpower"))
+                else if (html.contains("Will"))
                     defense = "Willpower";
                 else if (html.contains("Reflex"))
                     defense = "Reflex";
@@ -1250,30 +1254,32 @@ public class Token {
                         nonDamTypes += ", " + s;
                 }
                 // strip the leading ", " off
-                damTypes = damTypes.substring(2);
-                nonDamTypes = nonDamTypes.substring(2);
+                if (!damTypes.isEmpty())
+                    damTypes = (damTypes.substring(0, 1).equals(", ") ? damTypes.substring(2) : damTypes);
+                if (!nonDamTypes.isEmpty())
+                    nonDamTypes = (nonDamTypes.startsWith(", ") ? nonDamTypes.substring(2) : nonDamTypes);
 
-                command = "[macro(\"CallAttack@\"+UseLib):\n" +
-                          "    json.set\n" +
-                          "    (\n" +
-                          "    \"{}\",\n" +
-                          "    \"atkKey\", 20,\n" +
-                          "    \"atkName\", \"" + p.getName() + "\",\n" +
-                          "    \"atkType\", " + atkType + ",\n" +
-                          "    \"atkTypeName\", \"" + usage + "\",\n" +
-                          "    \"keywords\", \"" + nonDamTypes + "\",\n" + /* Weapon, Melee, Area, Ranged - may not always parse right */
-                          "    \"damageTypes\", \"" + damTypes + "\",\n" +
-                          "    \"actionType\", \"" + action + "\",\n" +
-                          "    \"targetDefense\", \"" + defense + "\",\n" +
-                          "    \"rangeText\", \"Melee Weapon\",\n" +
-                          "    \"numTargetsText\", \"One Creature\",\n" +
-                          "    \"atkMod\", '{\"Bonus\":0}',\n" +
-                          "    \"damMod\", '{\"Bonus\":0}',\n" +
-                          "    \"damRoll\", \"0d0\",\n" +
-                          "    \"critDamRoll\", \"0\",\n" +
-                          "    \"effectText\", \"" + html + "\"\n" +
-                          "    )\n" +
-                          "]";
+                command = "\n          [macro(\"CallAttack@\"+UseLib):\n" +
+                          "                 json.set\n" +
+                          "                 (\n" +
+                          "                 \"{}\",\n" +
+                          "                 \"atkKey\", 20,\n" +
+                          "                 \"atkName\", \"" + p.getName() + "\",\n" +
+                          "                 \"atkType\", " + atkType + ",\n" +
+                          "                 \"atkTypeName\", \"" + usage + "\",\n" +
+                          "                 \"keywords\", \"" + nonDamTypes + "\",\n" + /* Weapon, Melee, Area, Ranged - may not always parse right */
+                          "                 \"damageTypes\", \"" + damTypes + "\",\n" +
+                          "                 \"actionType\", \"" + action + "\",\n" +
+                          "                 \"targetDefense\", \"" + defense + "\",\n" +
+                          "                 \"rangeText\", \"Melee Weapon\",\n" +
+                          "                 \"numTargetsText\", \"One Creature\",\n" +
+                          "                 \"atkMod\", '{\"Bonus\":" + p.getAtkDefense() + "}',\n" +
+                          "                 \"damMod\", '{\"Bonus\":0}',\n" +
+                          "                 \"damRoll\", \"0d0\",\n" +
+                          "                 \"critDamRoll\", \"0\",\n" +
+                          "                 \"effectText\", \"" + html + "\"\n" +
+                          "                 )\n" +
+                          "             ]\n";
                 if (p.getUsage().toLowerCase().contains("recharge"))
                     command += "\n[h:updateMacroLabel(\" (Recharge " + p.getUsage().substring(p.getUsage().length() - 1) + ")\")]";
                 if (atkType == 2 || atkType == 3)
@@ -1323,7 +1329,8 @@ public class Token {
             writer.write("        <index>" + idx + "</index>\n");
             writer.write("        <colorKey>" + colorKey + "</colorKey>\n");
             writer.write("        <hotKey>" + hotkey + "</hotKey>\n");
-            writer.write("        <command>" + p.getDetail() + "</command>\n");
+            writer.write("        <command>" + p.getDetail());
+            writer.write("        </command>\n");
             writer.write("        <label>" + powerName + "</label>\n");
             writer.write("        <group>" + p.getUsage() + "</group>\n");
             writer.write("        <sortby>" + p.getLevel() + "</sortby>\n");
@@ -1399,6 +1406,177 @@ public class Token {
             System.err.println("Error writing aura macro to content file: " + e);
         }
     } // end of writeAuraMacro()
+
+    // Stripped down version of writePowerMacro to write out the generic macros every NPC has
+    protected void writeGenericMacro(BufferedWriter writer, int idx)
+    {
+        String colorKey = "";
+        String command = "";
+        String label = "";
+        String group = "";
+        String fontColorKey = "";
+        for(int i = 1; i < 13; i++)
+        {
+            switch(i)
+            {
+                case 1: // Bull Rush
+                    colorKey = "green";
+                    command = "\n          [macro(\"CallAttack@\"+UseLib):\n" +
+                              "                 json.set\n" +
+                              "                 (\n" +
+                              "                 \"{}\",\n" +
+                              "                 \"atkKey\", 20,\n" +
+                              "                 \"atkName\", \"Bull Rush\",\n" +
+                              "                 \"atkType\", 1,\n" +
+                              "                 \"atkTypeName\", \"At-Will\",\n" +
+                              "                 \"keywords\", \"\",\n" + 
+                              "                 \"damageTypes\", \"\",\n" +
+                              "                 \"actionType\", \"Standard Action\",\n" +
+                              "                 \"targetDefense\", \"Fortitude\",\n" +
+                              "                 \"hitStatAdded\", \"Strength\",\n" +
+                              "                 \"rangeText\", \"Melee Weapon\",\n" +
+                              "                 \"numTargetsText\", \"One Creature\",\n" +
+                              "                 \"atkMod\", strformat('{\"Bonus\":%d}',HalfLevel+StrMod),\n" +
+                              "                 \"damMod\", '{\"Bonus\":0}',\n" +
+                              "                 \"damRoll\", \"0d0\",\n" +
+                              "                 \"critDamRoll\", \"0\",\n" +
+                              "                 \"effectText\", \"<b>On Hit:</b> Push target 1 square, shift into the vacated space.\"\n" +
+                              "                 )\n" +
+                              "             ]\n";
+                    label = "Bull Rush";
+                    group = "at-will";
+                    fontColorKey = "black";
+                    break;
+                case 2: // Ability Check
+                    colorKey = "default";
+                    command = "\n          [h: status=input(\n" +
+                              "                              \"Choice|Strength,Constitution,Dexterity,Intelligence,Wisdom,Charisma|Ability|LIST|VALUE=STRING\",\n" +
+                              "                              \"Temp|0|Temp Bonus\"\n" +
+                              "          )]\n" +
+                              "          [h: abort(status)]\n" +
+                              "          [h: bLevel=floor(Level/2)]\n" +
+                              "          [h: Ability=floor((eval(Choice)-10)/2)]\n" +
+                              "          <b>[r: Choice] Check: </b>[1d20+Ability+bLevel+Temp]\n";
+                    label = "Ability Check";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 3: // CallUpdatePropMods
+                    colorKey = "default";
+                    command = "\n          [macro(\"CallUpdatePropMods@\"+UseLib): \"\"]\n";
+                    label = "CallUpdatePropMods";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 4: // Clear Defense Mods
+                    colorKey = "default";
+                    command = "\n          [macro(\"ClearDefMods@\"+UseLib): \"\"]\n" +
+                              "          [abort(0)]\n";
+                    label = "Clear Defense Mods";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 5: // Clear Mark
+                    colorKey = "default";
+                    command = "\n          [macro(\"CallClearMark@\"+UseLib): \"\"]\n" +
+                              "          [abort(0)]\n";
+                    label = "Clear Marks";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 6: // NPC Skill Check
+                    colorKey = "default";
+                    command = "\n          [macro(\"CallNpcSkillCheck@\"+UseLib): \"\"]\n";
+                    label = "Skill Check";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 7: // Init
+                    colorKey = "magenta";
+                    command = "\n          [H: addToInitiative()]<b>Initiative:</b> [token.init=1d20+Initiative]\n";
+                    label = "Init";
+                    group = "General";
+                    fontColorKey = "white";
+                    break;
+                case 8: // Saving Throw
+                    colorKey = "magenta";
+                    command = "\n          [macro(\"CallSave@\"+UseLib): \"\"]\n";
+                    label = "Saving Throw";
+                    group = "General";
+                    fontColorKey = "white";
+                    break;
+                case 9: // View Modifiers
+                    colorKey = "yellow";
+                    command = "\n          [macro(\"ModifierDialog@\"+UseLib): \"\"]\n" +
+                              "          [abort(0)]\n";
+                    label = "View Modifiers";
+                    group = "General";
+                    fontColorKey = "black";
+                    break;
+                case 10: // Manual HP Adjust
+                    colorKey = "magenta";
+                    command = "\n          [macro(\"CallHP@\"+UseLib): \"\"]\n";
+                    label = "Manual HP Adjust";
+                    group = "Healing/Damage";
+                    fontColorKey = "white";
+                    break;
+                case 11: // Self Damage
+                    colorKey = "magenta";
+                    command = "\n          [macro(\"CallDamage@\"+UseLib): \"\"]\n";
+                    label = "Self Damage";
+                    group = "Healing/Damage";
+                    fontColorKey = "white";
+                    break;
+                case 12: // Self Heal
+                    colorKey = "magenta";
+                    command = "\n          [macro(\"CallHeal@\"+UseLib): \"\"]\n";
+                    label = "Self Heal";
+                    group = "Healing/Damage";
+                    fontColorKey = "white";
+                    break;
+                default:
+                    break;
+            }
+            try {
+                writer.write("    <entry>\n");
+                writer.write("      <int>" + idx + "</int>\n");
+                writer.write("      <net.rptools.maptool.model.MacroButtonProperties>\n");
+                writer.write("        <saveLocation>Token</saveLocation>\n");
+                writer.write("        <index>" + idx + "</index>\n");
+                writer.write("        <colorKey>" + colorKey + "</colorKey>\n");
+                writer.write("        <hotKey>None</hotKey>\n");
+                writer.write("        <command>" + command);
+                writer.write("        </command>\n");
+                writer.write("        <label>" + label + "</label>\n");
+                writer.write("        <group>" + group + "</group>\n");
+                writer.write("        <sortby>0</sortby>\n");
+                writer.write("        <autoExecute>true</autoExecute>\n");
+                writer.write("        <includeLabel>false</includeLabel>\n");
+                writer.write("        <applyToTokens>false</applyToTokens>\n");
+                writer.write("        <fontColorKey>" + fontColorKey + "</fontColorKey>\n");
+                writer.write("        <fontSize>1.00em</fontSize>\n");
+                writer.write("        <minWidth>133</minWidth>\n");
+                writer.write("        <maxWidth></maxWidth>\n");
+                writer.write("        <allowPlayerEdits>false</allowPlayerEdits>\n");
+                writer.write("        <toolTip></toolTip>\n");
+                writer.write("        <commonMacro>false</commonMacro>\n");
+                writer.write("        <compareGroup>true</compareGroup>\n");
+                writer.write("        <compareSortPrefix>true</compareSortPrefix>\n");
+                writer.write("        <compareCommand>true</compareCommand>\n");
+                writer.write("        <compareIncludeLabel>true</compareIncludeLabel>\n");
+                writer.write("        <compareAutoExecute>true</compareAutoExecute>\n");
+                writer.write("        <compareApplyToSelectedTokens>true</compareApplyToSelectedTokens>\n");
+                writer.write("      </net.rptools.maptool.model.MacroButtonProperties>\n");
+                writer.write("    </entry>\n");
+                idx++;
+            } 
+            catch (Exception e)
+            {
+                System.err.println("Error writing generic macro to content file: " + e);
+            }
+
+        }
+    }
 
     protected String getFeatText(Feat f) {
 	return f.getHTML();

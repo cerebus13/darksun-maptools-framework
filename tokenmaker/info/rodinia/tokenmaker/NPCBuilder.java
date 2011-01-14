@@ -276,6 +276,7 @@ public class NPCBuilder extends JDialog {
                     for (Object n : myNPCarray)
                     {
                         NPC myN = (NPC) n;
+                        myN.getHtml();
                         if (xmlRadio.isSelected())
                             suffix = ".monster";
                         else

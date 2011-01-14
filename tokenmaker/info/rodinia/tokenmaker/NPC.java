@@ -141,7 +141,7 @@ public class NPC extends Character {
 //        Reach N
         if (statBlock == StatBlock.MM1)
         {
-            Pattern pattern = Pattern.compile("(?:(?:; )?(area burst \\d+ within \\d+|close (:?blast|burst) \\d+|melee(?: (?:\\d+|touch|weapon))?|ranged? \\d+(?:/\\d+)?|reach \\d+|melee (?:\\d+ )?or ranged \\d+(?:/\\d+)?);)?(?:\\s?requires ([^;]+);)?(?:(area burst \\d+ within \\d+|close (:?blast|burst) \\d+|melee(?: (?:\\d+|touch|weapon))?|ranged? \\d+(?:/\\d+)?|reach \\d+|melee (?:\\d+ )?or ranged \\d+(?:/\\d+)?);)?(?:\\s?([^;]+?) are immune;\\)?)?(?:\\s?\\+(\\d+) vs\\.? (ac|reflex|fortitude|will);)?\\s?([^;]+$)",Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("(?:(?:; )?(area burst \\d+ within \\d+|close (?:blast|burst) \\d+|melee(?: (?:\\d+|touch|weapon))?|ranged \\d+(?:/\\d+)?|reach \\d+|melee (?:\\d+ )?or ranged \\d+(?:/\\d+)?);)?(?:\\s?requires ([^;]+);)?(?:(area burst \\d+ within \\d+|close (?:blast|burst) \\d+|melee(?: (?:\\d+|touch|weapon))?|ranged? \\d+(?:/\\d+)?|reach \\d+|melee (?:\\d+ )?or ranged \\d+(?:/\\d+)?);)?(?:\\s?([^;]+?) are immune;\\)?)?(?:\\s?\\+(\\d+) vs\\.? (ac|reflex|fortitude|will);)?\\s?([^;]+$)",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(d);
             if (matcher.find())
             {
@@ -162,6 +162,28 @@ public class NPC extends Character {
                         p.setAtkDefense("Willpower");
                 }
                 p.setEffect(matcher.group(7) == null ? "" : matcher.group(7));
+            }
+        }
+        else // MM3 statblock
+        {
+            Pattern pattern = Pattern.compile("Attack[^:]*: ([^;]+); \\+(\\d+)\\s+vs\\. (AC|Fortitude|Reflex|Will)",Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(d);
+            if (matcher.find())
+            {
+                p.setRange(matcher.group(1) == null ? "" : matcher.group(1));               
+                p.setAtkBonus(matcher.group(2) == null ? 0 : Integer.parseInt(matcher.group(2)));
+                if (matcher.group(3) != null)
+                {
+                    if (matcher.group(3).toLowerCase().equals("ac"))
+                        p.setAtkDefense("AC");
+                    else if (matcher.group(3).toLowerCase().equals("fortitude"))
+                        p.setAtkDefense("Fortitude");
+                    else if (matcher.group(3).toLowerCase().equals("reflex"))
+                        p.setAtkDefense("Reflex");
+                    else if (matcher.group(3).toLowerCase().equals("will"))
+                        p.setAtkDefense("Willpower");
+                }
+                p.setEffect(d);
             }
         }
     } // end of parseDetail()
@@ -729,7 +751,10 @@ public class NPC extends Character {
                 return;
             }
             if (str.equals("Str")) {
-                state = State.STATS;
+                if (statBlock == StatBlock.MM3)
+                    state = State.STRENGTH;
+                else
+                    state = State.STATS;
                 return;
             }
             myPower = new Power(str);
@@ -812,7 +837,7 @@ public class NPC extends Character {
             state = State.NONE;
             break;
 	    default:
-		break;
+            break;
 	    }
 	}
 

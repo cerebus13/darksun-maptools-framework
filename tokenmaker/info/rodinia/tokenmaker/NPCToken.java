@@ -286,7 +286,7 @@ public class NPCToken extends Token {
             FileWriter w = new FileWriter(tokenFile);
             BufferedWriter writer = new BufferedWriter(w);
             writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-            writer.write("<Monster xsi:type=\"Monste\" xmlns:loader=\"http://www.wizards.com/listloader\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n");
+            writer.write("<Monster xsi:type=\"Monster\" xmlns:loader=\"http://www.wizards.com/listloader\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n");
             // Abilities
             writer.write("  <AbilityScores>\n");
             writer.write("    <Values>\n");
@@ -431,8 +431,9 @@ public class NPCToken extends Token {
             }
             writer.write("  </Languages>\n");
             // Alignment
-            writer.write("  <Alignment>\n");
+            writer.write("  <Alignment id=\"1\">\n");
             writer.write("    <ReferencedObject>\n");
+            writer.write("      <ID>1</ID>\n");
             writer.write("      <Name>" + me.getAlignment() + "</Name>\n");
             writer.write("    </ReferencedObject>\n");
             writer.write("  </Alignment>\n");
@@ -521,11 +522,11 @@ public class NPCToken extends Token {
                     writer.write("      <Keywords>\n");
                     for (String key : p.getKeywords().split(", "))
                     {
-                        writer.write("    <ObjectReference>\n");
-                        writer.write("      <ReferencedObject>\n");
-                        writer.write("        <Name>" + key + "</Name>\n");
-                        writer.write("      </ReferencedObject>\n");
-                        writer.write("    </ObjectReference>\n");
+                        writer.write("        <ObjectReference>\n");
+                        writer.write("          <ReferencedObject>\n");
+                        writer.write("            <Name>" + key + "</Name>\n");
+                        writer.write("          </ReferencedObject>\n");
+                        writer.write("        </ObjectReference>\n");
                     }
                     writer.write("      </Keywords>\n");
                     writer.write("      <Tier>0</Tier>\n");
@@ -547,19 +548,34 @@ public class NPCToken extends Token {
                     writer.write("      <Usage>" + p.getUsage() + "</Usage>\n");
                     writer.write("      <Attacks>\n");
                     writer.write("        <MonsterAttack>\n");
-                    writer.write("          <Hit>\n");
-                    writer.write("           <Name>Hit</Name>\n");
-                    writer.write("           <Description>" + p.getDetail() + "</Description>\n");
-                    writer.write("          </Hit>\n");
-                    writer.write("          <AttackBonuses>\n");
-                    writer.write("            <MonsterPowerAttackNumber FinalValue=\"" + p.getAtkBonus() + "\">\n");
-                    writer.write("              <Defense>\n");
-                    writer.write("                <ReferencedObject>\n");
-                    writer.write("                  <DefenseName>" + p.getAtkDefense() + "</DefenseName>\n");
-                    writer.write("                </ReferencedObject>\n");
-                    writer.write("              </Defense>\n");
-                    writer.write("            </MonsterPowerAttackNumber>\n");
-                    writer.write("          </AttackBonuses>\n");
+                    if (!p.getRange().trim().isEmpty())
+                        writer.write("          <Range>" + p.getRange().trim() + "</Range>\n");
+                    // If there is no target defense print an Effect node with a blank AttackBonuses node
+                    if (p.getAtkDefense().isEmpty())
+                    {
+                        writer.write("          <Effect>\n");
+                        writer.write("            <Name>Effect</Name>\n");
+                        writer.write("            <Description>" + p.getDetail().trim() + "</Description>\n");
+                        writer.write("          </Effect>\n");
+                        writer.write("          <AttackBonuses />\n");
+                    }
+                    else
+                    {
+                        writer.write("          <Hit>\n");
+                        writer.write("            <Name>Hit</Name>\n");
+                        writer.write("            <Description>" + p.getDetail().trim() + "</Description>\n");
+                        writer.write("          </Hit>\n");
+                        writer.write("          <AttackBonuses>\n");
+                        writer.write("            <MonsterPowerAttackNumber FinalValue=\"" + p.getAtkBonus() + "\">\n");
+                        writer.write("              <Defense>\n");
+                        writer.write("                <ReferencedObject>\n");
+                        // Have to write Will instead of Willpower for Masterplan parsing
+                        writer.write("                  <DefenseName>" + (p.getAtkDefense().startsWith("Will") ? "Will" : p.getAtkDefense()) + "</DefenseName>\n");
+                        writer.write("                </ReferencedObject>\n");
+                        writer.write("              </Defense>\n");
+                        writer.write("            </MonsterPowerAttackNumber>\n");
+                        writer.write("          </AttackBonuses>\n");
+                    }
                     writer.write("        </MonsterAttack>\n");
                     writer.write("      </Attacks>\n");
                     writer.write("      <Name>" + p.getName() + "</Name>\n");
@@ -567,11 +583,11 @@ public class NPCToken extends Token {
                     writer.write("      <Keywords>\n");
                     for (String key : p.getKeywords().split(", "))
                     {
-                        writer.write("    <ObjectReference>\n");
-                        writer.write("      <ReferencedObject>\n");
-                        writer.write("        <Name>" + key + "</Name>\n");
-                        writer.write("      </ReferencedObject>\n");
-                        writer.write("    </ObjectReference>\n");
+                        writer.write("        <ObjectReference>\n");
+                        writer.write("          <ReferencedObject>\n");
+                        writer.write("            <Name>" + key + "</Name>\n");
+                        writer.write("          </ReferencedObject>\n");
+                        writer.write("        </ObjectReference>\n");
                     }
                     writer.write("      </Keywords>\n");
                     writer.write("    </MonsterPower>\n");
