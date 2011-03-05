@@ -71,6 +71,7 @@
 [h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
 [h,if(json.contains(macro.args,"includeSelf")):includeSelf  = json.get(macro.args,"includeSelf");includeSelf = 0]
 [h,if(json.contains(macro.args,"bloodyOnly")):bloodyOnly  = json.get(macro.args,"bloodyOnly");bloodyOnly = 0]
+[h,if(json.contains(macro.args,"saveSurge")):saveSurge        = json.get(macro.args,"saveSurge");saveSurge = 0]
 
 [h:useKeywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
 
@@ -104,7 +105,7 @@ tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,vers
 [h,if(length(macroTT) <= 0): setMacroProps(getMacroButtonIndex(),"tooltip="+ "<html><body>" + powaStr + "</body></html>")]
 
 [if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, targetDefense, friendlyFire, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes, token, powaStr)]')]
-[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, modAttackJson, includeSelf, bloodyOnly, token, powaStr)]')]
+[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, modAttackJson, includeSelf, bloodyOnly, token, powaStr, saveSurge)]')]
 [if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, token, powaStr)]')]
 [if(atkKey==20), CODE:
 {
