@@ -39,8 +39,7 @@ Willpower (Will):{WillBase+WillMod+AllDefMod}
 WillBase:0
 WillMod:0
 -------------LIMITED USES-------------
-*Uses (AP|Magic):{strformat("%s | %s",ActionPoints,MagicItemUses)}
-ActionPoints (AP):0
+*ActionPoints (AP):0
 MagicItemUses (Magic):0
 -------------OTHER STATISTICS-------------
 *Elevation (Elev)
