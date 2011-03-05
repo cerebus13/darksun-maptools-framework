@@ -1,5 +1,5 @@
-<!-- Short Rest macro -->
-
+@@ @ShortRest
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
 [h: names = getSelectedNames("json")]
 [h,if(json.length(names)!=1): abort(0)]
 [h,if(json.get(names,0)!=getImpersonatedName()): abort(0)]
@@ -26,7 +26,11 @@
 [h,macro("ClearDefMods@"+UseLib): ""]
 [h,if(length(AttackBonuses)>0): AttackBonuses = ""]
 [h,if(length(DamageBonuses)>0): DamageBonuses = ""]
+[h,if(length(HealBonuses) != 2): HealBonuses = "{}"]
+[h,if(length(TempHPBonuses) != 2): TempHPBonuses = "{}"]
 [h,macro("ClearVulnResist@"+UseLib): ""]
 [h,macro("ClearAtkDamMods@"+UseLib): ""]
 
 [abort(0)]
+
+!!

@@ -1,3 +1,5 @@
+@@ @DoHeal
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
 <!-- DoHeal2 macro -->
 <!-- Returns: 4 -->
 <!-- Parameters: 7 -->
@@ -11,7 +13,8 @@
 [h:useSurge        = json.get(macro.args, 5)]
 [h:selfStateJson   = json.get(macro.args, 6)]  <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(macro.args, 7)]
-[h:modAttackJson  = json.get(macro.args, 8)]
+[h:modAttackJson   = json.get(macro.args, 8)]
+[h:saveSurge       = json.get(macro.args, 9)]
 
 [h:emptyObjectJson="{}"]
 [h:emptyJson="[]"]
@@ -29,7 +32,7 @@
 [h,if(totalTemp>0 && totalTemp>TempHP):TempHP = totalTemp]
 [h,if(CHP>MaxHP/2):state.Bloodied=0]
 [h,if(CHP>MaxHP):CurrentHP = MaxHP;CurrentHP = CHP]
-[h,if(useSurge):CurrentSurge = CurrentSurge-1]
+[h,if(useSurge && saveSurge == 0):CurrentSurge = CurrentSurge-1]
 
 [h:switchToken(selfName)]
 
@@ -41,3 +44,5 @@
 [h:decodeModAttackJson(if(length(json.get(modAttackJson,"3")) > 0,json.get(modAttackJson,"3"),emptyObjectJson),targetName)]
 
 [h:macro.return = json.append("[]",healing,totalHeal,tmping,totalTemp)]
+
+!!
