@@ -25,9 +25,11 @@
 [h:modAttackJson   = json.get(macro.args, 15)]
 [h:includeSelf     = json.get(macro.args, 16)]
 [h:bloodyOnly      = json.get(macro.args, 17)]
-[h:token     	   = json.get(targetArgs, 18)]
+[h:token     	     = json.get(targetArgs, 18)]
 [h:powaStr     	   = json.get(targetArgs, 19)]
 [h:saveSurge       = json.get(targetArgs, 20)]
+[h:myIndex         = json.get(targetArgs, 21)]
+[h:labelAppend     = json.get(targetArgs, 22)]
 [h:targList = getSelectedNames("json")]
 [h,if(!json.isEmpty(targList)),CODE:
 {
@@ -73,6 +75,8 @@
   <input type='hidden' name='targList' value='[r:targList]'></input>
   <input type='hidden' name='powaStr' value='[r:powaStr]'></input>
   <input type='hidden' name='saveSurge' value='[r:saveSurge]'></input>
+  <input type='hidden' name='myIndex' value='[r:myIndex]'></input>
+  <input type='hidden' name='labelAppend' value='[r:labelAppend]'></input>
   </form>
   </body>
   </html>

@@ -10,16 +10,18 @@
 [h:yesHeal         = json.get(args, "yesHeal")]
 [h:healMod         = json.get(args, "healMod")]
 [h:healRoll        = json.get(args, "healRoll")]
-[h:yesTempHP         = json.get(args, "yesTempHP")]
+[h:yesTempHP       = json.get(args, "yesTempHP")]
 [h:tempHPMod       = json.get(args, "tempHPMod")]
 [h:tempHPRoll      = json.get(args, "tempHPRoll")]
-[h:useSurge         = json.get(args, "useSurge")]
+[h:useSurge        = json.get(args, "useSurge")]
 [h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(args, "modDefenseJson")]
 [h:modAttackJson   = json.get(args, "modAttackJson")]
 [h:powaStr     	   = json.get(args, "powaStr")]
 [h:saveSurge       = json.get(args, "saveSurge")]
-[h:targJson = json.get(args, "targList")]
+[h:targJson        = json.get(args, "targList")]
+[h:myIndex         = json.get(args, "myIndex")]
+[h:labelAppend     = json.get(args, "labelAppend")]
 
 <!-- AOE heal applies the same roll to all targets -->
 [h,if(atkKey==8): useHeal=eval(healRoll); useHeal=healRoll]
@@ -54,5 +56,7 @@
 [h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 [macro("PrintAttackTable@"+UseLib): tableJson]
+
+[h,if(length(labelAppend) > 0): updateMacroLabelByIndex(labelAppend,myIndex)]
 
 !!

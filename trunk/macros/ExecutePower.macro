@@ -23,6 +23,8 @@
 [h:keywords        = json.get(args, "keywords")]
 [h:damageTypes     = json.get(args, "damageTypes")]
 [h:powaStr     	   = json.get(args, "powaStr")]
+[h:myIndex     	   = json.get(args, "myIndex")]
+[h:labelAppend     = json.get(args, "labelAppend")]
 
 [h:CA=0]
 [h:charge=0]
@@ -70,7 +72,6 @@
   [h,if(thisAttMod != 0): atkVal = atkVal + "+" + thisAttMod]
   [h,if(thisAttMod != 0): atkText = atkText + " + TargetMiscMod(" + thisAttMod + ")"]
 
-
   [h:thisDmgMod = json.get(args, "dmodTarget"+roll.count)]
   [h,if(thisDmgMod != 0): damVal = damVal + "+" + thisDmgMod]
   [h,if(thisDmgMod != 0): damText = damText + " + TargetMiscMod(" + thisDmgMod + ")"]
@@ -101,11 +102,12 @@
   [h,if(getState("Weakened")): damText = damText + " + Weakened(1/2 damage)"]
   [h,if(targ != MarkedBy && length(MarkedBy) > 0): useMarkPen = getProperty("MarkPenalty",MarkedBy); useMarkPen = 0]
   
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+  
   [h:atkText = atkText + " vs. " + targetDefense]
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
-      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
+      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat(" + Mark(%s)%s",useMarkPen,atkText))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+useMarkPen)))),
       json.get(retu,0),
       targ,
       if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
@@ -114,19 +116,19 @@
   [h:tableJson = json.append(tableJson,nextRowJson))]
   
   [h, if(onetwo), CODE:
-{
-  [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+"+"+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
+  {
+    [h,macro("DoAttack@"+UseLib): json.append("[]",targ,targetDefense,atkVal+useMarkPen,useDam,useCritDam,damVal,if(atkKey==3 || atkKey==6,1,0),missDamageRoll,targetStateJson,selfStateJson,markJson,rerollAttack,vulnResistJson,modDefenseJson,modAttackJson,keywords,damageTypes)]
 
-  [h:retu=macro.return]
-  [h:nextRowJson = json.append("[]",
-      if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat("%s + Mark(%s)",atkText,useMarkPen))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+"+"+useMarkPen)))),
-      json.get(retu,0),
-      targ,
-      if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
-    )
-  ]
-  [h:tableJson = json.append(tableJson,nextRowJson))]
- }]
+    [h:retu=macro.return]
+    [h:nextRowJson = json.append("[]",
+        if(atkKey==3 || atkKey==6,"",customTooltip(strformat("d20(%s)%s%s",json.get(retu,1),json.get(retu,4),if(useMarkPen == 0,atkText,strformat(" + Mark(%s)%s",useMarkPen,atkText))),strformat("Attack: <b>%s</b>",json.get(retu,1)+eval(atkVal+useMarkPen)))),
+        json.get(retu,0),
+        targ,
+        if(atkKey==2 || atkKey==5 || yesDamRoll==0,"",customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",if(json.get(retu,0)==3,critDamRoll,damRoll),json.get(retu,2),damText,if(missDamageRoll!=-1,strformat("<br>Miss Damage -> %s = (%d)",if(missDamageRoll==-2,"Regular Damage / 2",missDamageRoll),json.get(retu,3)),"")),strformat("Damage: <b>%s</b>",json.get(retu,2)+eval(string(damVal)))))
+      )
+    ]
+    [h:tableJson = json.append(tableJson,nextRowJson))]
+  }]
   
   [h:atkText = origAtkText]
   [h:atkVal  = origAtkVal]
@@ -137,5 +139,7 @@
 [h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 [macro("PrintAttackTable@"+UseLib): tableJson]
+
+[h,if(length(labelAppend) > 0): updateMacroLabelByIndex(labelAppend,myIndex)]
 
 !!
