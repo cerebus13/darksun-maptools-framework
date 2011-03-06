@@ -14,7 +14,8 @@
 [h:modDefenseJson  = json.get(args, "modDefenseJson")]
 [h:modAttackJson   = json.get(args, "modAttackJson")]
 [h:powaStr     	   = json.get(args, "powaStr")]
-
+[h:myIndex     	   = json.get(args, "myIndex")]
+[h:labelAppend     = json.get(args, "labelAppend")]
 
 [h:targJson = json.get(args, "targList")]
 [h:affectedTargs = ""]
@@ -23,9 +24,11 @@
   [h,macro("DoSecondary@"+UseLib): json.append("[]",targ,targetStateJson,selfStateJson,markJson,vulnResistJson,modDefenseJson,modAttackJson)]
   [h:affectedTargs = strformat("%s%s, ",affectedTargs,targ)]
 }]
-[h: powaStr = strformat('<html><body>%s</body></html>', powaStr)]
+[h:powaStr = strformat('<html><body>%s</body></html>', powaStr)]
 [h:customTooltip(powaStr,strformat("<font color='black'><b>%s</b></font>",atkName))]
 {output}
 <br><span title=""><font color='black'><b>Affected: </b> {affectedTargs}</font></span>
+
+[h,if(length(labelAppend) > 0): updateMacroLabelByIndex(labelAppend,myIndex)]
 
 !!

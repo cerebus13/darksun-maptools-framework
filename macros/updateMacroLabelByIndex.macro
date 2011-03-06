@@ -1,0 +1,10 @@
+@@ @updateMacroLabelByIndex
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- takes in 2 arguments: text to append to the macro label, it only does this if the text is not already on the end.  And macro button index. -->
+
+[h:argu=arg(0)]
+[h:myIndex=arg(1)]
+[h:macroStr=json.get(getMacroProps(myIndex,"json"),"label")]
+[h,if(endsWith(macroStr,argu)!=1): setMacroProps(myIndex,strformat("label=%s%s",macroStr,argu))]
+
+!!

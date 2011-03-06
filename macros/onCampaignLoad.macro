@@ -1,3 +1,5 @@
+@@ @onCampaignLoad
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
 [h:defineFunction("rangeError", "rangeError@"+getMacroLocation())]
 [h:defineFunction("pause", "pause@"+getMacroLocation(), 1, 0 ) ] 
 [h:defineFunction("customTooltip", "customTooltip@"+getMacroLocation(), 0, 0 ) ]
@@ -16,3 +18,6 @@
 [h:defineFunction("applyModAttackJson", "applyModAttackJson@"+getMacroLocation(), 1 ) ]
 [h:defineFunction("detailTargetScreen", "detailTargetScreen@"+getMacroLocation(), 1, 0 ) ]
 [h:defineFunction("bonusTargetScreen", "bonusTargetScreen@"+getMacroLocation(), 1, 0 ) ]
+[h:defineFunction("updateMacroLabelByIndex", "updateMacroLabelByIndex@"+getMacroLocation(), 1, 0 ) ]
+
+!!
