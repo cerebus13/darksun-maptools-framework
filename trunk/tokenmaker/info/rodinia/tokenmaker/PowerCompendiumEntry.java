@@ -11,7 +11,7 @@ public class PowerCompendiumEntry extends CompendiumEntry {
     Power myPower;
     
     public PowerCompendiumEntry(Power power) {
-	super("http://www.wizards.com/dndinsider/compendium/power.aspx?id="
+	super("http://localhost/ddi/power.php?id="
 		+ power.getId());
 	myPower = power;
 	// stick a new line before the power name - it looks better.
@@ -23,7 +23,7 @@ public class PowerCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://www.wizards.com/dndinsider/compendium/images/");
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
 	
 
 	

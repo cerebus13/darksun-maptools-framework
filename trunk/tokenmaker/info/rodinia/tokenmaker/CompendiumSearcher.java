@@ -26,10 +26,11 @@ import org.xml.sax.SAXException;
 public class CompendiumSearcher {
 
     // Define a bunch of static URLs and strings to help build URLS
-    private static final String mainSearchURL = "http://www.wizards.com/dndinsider/compendium/compendiumsearch.asmx/KeywordSearchWithFilters?Keywords=";
-    private static final String npcSearchURL = "&tab=Monster&NameOnly=true&Filters=";
-    private static final String powerSearchURL = "&tab=Power&NameOnly=true&Filters=";
-    private static final String weaponSearchURL = "&tab=Item&NameOnly=true&Filters=";
+    private static final String mainSearchURL   = "http://localhost/ddi/search.php?Keywords=";
+    private static final String keywordURL      = "&Type=KeywordSearchWithFilters";
+    private static final String npcSearchURL    = "&Tab=Monster&NameOnly=true&Filters=";
+    private static final String powerSearchURL  = "&Tab=Power&NameOnly=true&Filters=";
+    private static final String weaponSearchURL = "&Tab=Item&NameOnly=true&Filters=";
 
     // define the search criteria for monsters
     private static int levelMin = -1;
@@ -168,18 +169,18 @@ public class CompendiumSearcher {
     private static String getNPCSearchURL(String npcName, int levelMin, int levelMax, String keyword, String mainRole, String groupRole,
 	    int xpMin, int xpMax, String source) {
 	npcFilters = levelMin+"|"+levelMax+"|"+mainRole+"|"+groupRole+"|"+keyword+"|"+xpMin+"|"+xpMax+"|"+source;
-	return mainSearchURL + npcName + npcSearchURL + npcFilters;
+	return mainSearchURL + npcName + keywordURL + npcSearchURL + npcFilters;
     }
 
     // Given a full filter, get me the URL to use to search for it.
     private static String getWeaponSearchURL(String weaponName, int enhancement) {
 	weaponFilters = "Weapon|-1|-1|-1|-1|"+enhancement+"|"+enhancement+"|-1";
-	return mainSearchURL + weaponName + weaponSearchURL + weaponFilters;
+	return mainSearchURL + weaponName + keywordURL + weaponSearchURL + weaponFilters;
     }
     
     // Given a power name filter, get me the URL to use to search for it.
     private static String getPowerSearchURL(String powerName) {
-	return mainSearchURL + powerName + powerSearchURL + powerFilters;
+	return mainSearchURL + powerName + keywordURL + powerSearchURL + powerFilters;
     }
 
 

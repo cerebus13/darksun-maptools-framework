@@ -21,7 +21,7 @@ public class CompendiumEntry {
     protected String myHTML;
     protected String myURL;
     private String actionUrl;
-    private static final String baseURL = "http://www.wizards.com/dndinsider/compendium/";
+    private static final String baseURL = "http://localhost/ddi/";
     private String email;
     private String password;
     private NameValuePair[] myPostData = null;

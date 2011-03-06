@@ -11,7 +11,7 @@ public class RitualCompendiumEntry extends CompendiumEntry {
     Ritual myRitual;
 
     public RitualCompendiumEntry(Ritual ritual) {
-	super("http://www.wizards.com/dndinsider/compendium/ritual.aspx?id="
+	super("http://localhost/ddi/ritual.php?id="
 		+ ritual.getId());
 	myRitual = ritual;
     }
@@ -21,7 +21,7 @@ public class RitualCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://www.wizards.com/dndinsider/compendium/images/");
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
 
 	// add some formatting codes
 	myHTML = myHTML
