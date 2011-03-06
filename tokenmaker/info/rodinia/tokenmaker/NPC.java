@@ -438,7 +438,7 @@ public class NPC extends Character {
         if (tag == Tag.IMG && state == state.POWERRECHARGE)
         {
             String src = (String) attrSet.getAttribute(HTML.Attribute.SRC);
-            src = src.replace("http://www.wizards.com/dnd/images/symbol/","");
+            src = src.replace("http://localhost/ddi/images/symbol/","");
             src = src.replace("a.gif", "");
             myPower.setUsage("recharge " + src);
             if (statBlock == StatBlock.MM1)

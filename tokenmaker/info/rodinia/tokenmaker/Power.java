@@ -72,7 +72,7 @@ public class Power {
 	if (html == null) {
 	    PowerCompendiumEntry com = new PowerCompendiumEntry(this);
 	    html = com.getHTML();
-	    html = html.replace("<img src=\"http://www.wizards.com/dndinsider/compendium/images/bullet.gif\" alt=\"\"/>", "-");
+	    html = html.replace("<img src=\"http://localhost/ddi/images/bullet.gif\" alt=\"\"/>", "-");
 	}
 	return html;
     }

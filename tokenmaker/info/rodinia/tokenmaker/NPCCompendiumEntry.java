@@ -26,7 +26,7 @@ public class NPCCompendiumEntry extends CompendiumEntry {
      * I need to redesign this interface.
      */
     public NPCCompendiumEntry(NPC nPC) {
-	super("http://www.wizards.com/dndinsider/compendium/monster.aspx?id="
+	super("http://localhost/ddi/monster.php?id="
 		+ nPC.getId());
     }
     

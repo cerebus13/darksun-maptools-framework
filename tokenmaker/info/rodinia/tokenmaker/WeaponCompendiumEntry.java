@@ -43,7 +43,7 @@ public class WeaponCompendiumEntry extends CompendiumEntry {
 	// add full path to the images
 	myHTML = myHTML
 		.replace("<img src=\"images/",
-			"<img src=\"http://www.wizards.com/dndinsider/compendium/images/");
+			"<img src=\"http://localhost/ddi/images/");
 
 	// add some formatting codes
 	myHTML = myHTML

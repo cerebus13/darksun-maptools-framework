@@ -20,7 +20,7 @@ public class EquipmentCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://www.wizards.com/dndinsider/compendium/images/");
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
 
 	// add some formatting codes
 	myHTML = myHTML
