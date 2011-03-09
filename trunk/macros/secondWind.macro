@@ -1,0 +1,29 @@
+@@ @Second Wind
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=red;playerEditable=false;applyToSelected=false;group=Custom;tooltip=
+[h:status=input(
+  "swSurge|1|Spend a Healing Surge?|CHECK",
+  "swDef|1|Gain +2 defense bonus?|CHECK",
+  "swHeal|0|Extra healing"
+)]
+[h:abort(status)]
+
+<!-- pass self as targetname, it will not be used -->
+[h,if(swDef): decodeModDefenseJson(strformat('{"1":[{"modDef":0, "modName":"Second Wind", "modValue":2, "modOwner":"%s"}]}',getName()),getName())]
+[h:updateState("UsedSecondWind",1)]
+[h:CHP = CurrentHP + swHeal + SurgeValue]
+[h,if(CHP>MaxHP/2): updateState("Bloodied",0)]
+[h,if(CHP>MaxHP): CurrentHP = MaxHP;CurrentHP = CHP]
+[h,if(swSurge): CurrentSurge = CurrentSurge - 1]
+[macro("CallAttack@"+UseLib):
+  json.set
+  (
+    "{}",
+    "atkKey", 20,
+    "atkName", "Second Wind",
+    "atkType", 2,
+    "atkTypeName", "Encounter",
+    "actionType", "Standard Action",
+    "effectText", "<b>Effect:</b> Spend a healing surge to regain hit points.  You gain a +2 bonus to all defenses until the start of your next turn."
+  )
+]
+[h:updateMacroLabel(" (Used)")]
