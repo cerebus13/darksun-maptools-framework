@@ -1,5 +1,5 @@
 @@ @Second Wind
-@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=red;playerEditable=false;applyToSelected=false;group=Custom;tooltip=
+@PROPS@ fontColor=white;autoExecute=true;fontSize=1.00em;sortBy=;color=red;playerEditable=false;applyToSelected=false;group=Healing/Damage;tooltip=
 [h:status=input(
   "swSurge|1|Spend a Healing Surge?|CHECK",
   "swDef|1|Gain +2 defense bonus?|CHECK",
