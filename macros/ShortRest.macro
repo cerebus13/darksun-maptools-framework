@@ -23,6 +23,7 @@
 [h:setHalo("None")]
 [h:updateProperty("MarkedBy","")]
 [h:TempHP = 0]
+[h:PowerPoints = MaxPowerPoints]
 [h,macro("ClearDefMods@"+UseLib): ""]
 [h,if(length(AttackBonuses)>0): AttackBonuses = ""]
 [h,if(length(DamageBonuses)>0): DamageBonuses = ""]

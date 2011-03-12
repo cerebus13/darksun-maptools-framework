@@ -34,13 +34,9 @@
 [h,if(json.contains(macro.args,"damMod")):damMod         = json.get(macro.args, "damMod");damMod = "{}"]
 [h,if(json.contains(macro.args,"damRoll")):damRoll        = json.get(macro.args, "damRoll");damRoll = "0d0"]
 [h,if(json.contains(macro.args,"critDamRoll")):critDamRoll    = json.get(macro.args, "critDamRoll");critDamRoll = "0d0"]
-[h,if(json.contains(macro.args,"maxRange")): maxRange        = json.get(macro.args,"maxRange");maxRange=-1]
-[h,if(json.contains(macro.args,"numTargets")): numTargets      = json.get(macro.args,"numTargets");numTargets=0] <!-- only needed for Single or Multi-attack powers, AOE hits all in a range filtered only by PC/NPC depending -->
 [h:effectText      = json.get(macro.args, "effectText")]
 [h:extraRoll       = json.get(macro.args, "extraRoll")]
-[h,if(json.contains(macro.args,"useMagicItem")): useMagicItem    = json.get(macro.args,"useMagicItem");useMagicItem=0]
-[h,if(json.contains(macro.args,"friendlyFire")): friendlyFire    = json.get(macro.args,"friendlyFire");friendlyFire = isNPC()] <!-- 0 NPC, 1 PC, 2 Both -->
-[h:otherSource     = json.get(macro.args,"otherSource")] <!-- name of other token to use as source for figuring targets based on range -->
+[h,if(json.contains(macro.args,"usePowerPoint")): usePowerPoint    = json.get(macro.args,"usePowerPoint");usePowerPoint=0]
 [h,if(json.contains(macro.args,"missDamageRoll")): missDamageRoll  = json.get(macro.args,"missDamageRoll");missDamageRoll = -1] <!-- damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous -->
 <!-- targetStateJson: Json with states to apply to target.  In the format of Key:Value, Key = a number 0-3, Value = json of State names -->
 <!-- note: avoid using Marked states, they are covered below -->
@@ -69,8 +65,6 @@
 [h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = "{}"]
 [h,if(json.contains(macro.args,"tempHPRoll")):tempHPRoll    = json.get(macro.args, "tempHPRoll");tempHPRoll = "0d0"]
 [h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
-[h,if(json.contains(macro.args,"includeSelf")):includeSelf  = json.get(macro.args,"includeSelf");includeSelf = 0]
-[h,if(json.contains(macro.args,"bloodyOnly")):bloodyOnly  = json.get(macro.args,"bloodyOnly");bloodyOnly = 0]
 [h,if(json.contains(macro.args,"saveSurge")):saveSurge        = json.get(macro.args,"saveSurge");saveSurge = 0]
 [h,if(json.contains(macro.args,"labelAppend")):labelAppend        = json.get(macro.args,"labelAppend");labelAppend = ""]
 
@@ -83,9 +77,9 @@
 
 <!-- Deal with magic item uses -->
 [h:status=1]
-[h,if(useMagicItem && MagicItemUses<=0): status = input("junk|Your Magic Item Uses are at 0, do you still want to use power anyway? Click OK if Yes, cancel if No.||LABEL|SPAN=TRUE")]
+[h,if(usePowerPoint > 0 && PowerPoints<=0): status = input("junk|Your Power Points are at 0, do you still want to use power anyway? Click OK if Yes, cancel if No.||LABEL|SPAN=TRUE")]
 [h:abort(status)]
-[h,if(useMagicItem && MagicItemUses>0): MagicItemUses=MagicItemUses-1]
+[h,if(usePowerPoint > 0 && PowerPoints > 0): PowerPoints=PowerPoints-usePowerPoint]
 
 <!-- Print power card -->
 [h,SWITCH(atkType):
@@ -106,8 +100,8 @@ tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,vers
 [h,if(length(macroTT) <= 0): setMacroProps(getMacroButtonIndex(),"tooltip="+ "<html><body>" + powaStr + "</body></html>")]
 
 [h:MyIndex=getMacroButtonIndex()]
-[if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, targetDefense, friendlyFire, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes, token, powaStr, MyIndex, labelAppend)]')]
-[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, maxRange, numTargets, friendlyFire, otherSource, useSurge, selfStateJson, modDefenseJson, modAttackJson, includeSelf, bloodyOnly, token, powaStr, saveSurge, MyIndex, labelAppend)]')]
+[if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, targetDefense, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes, token, powaStr, MyIndex, labelAppend)]')]
+[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, useSurge, selfStateJson, modDefenseJson, modAttackJson, token, powaStr, saveSurge, MyIndex, labelAppend)]')]
 [if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, token, powaStr, MyIndex, labelAppend)]')]
 [if(atkKey==20), CODE:
 {

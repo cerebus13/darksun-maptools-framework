@@ -8,20 +8,19 @@
 [h:damRoll         = json.get(targetArgs, 4)]
 [h:critDamRoll     = json.get(targetArgs, 5)]
 [h:targetDefense   = json.get(targetArgs, 6)]
-[h:friendlyFire    = json.get(targetArgs, 7)]  <!-- 0 NPC, 1 PC, 2 Both -->
-[h:missDamageRoll  = json.get(targetArgs, 8)] <!-- damage to roll on a miss, will not apply to minions -->
-[h:targetStateJson = json.get(targetArgs, 9)] <!-- Json holding states to be applied to target with this power -->
-[h:selfStateJson   = json.get(targetArgs, 10)] <!-- Json holding states to be applied to self with this power -->
-[h:markJson        = json.get(targetArgs, 11)] <!-- Json array telling when to apply Mark to target -->
-[h:vulnResistJson  = json.get(targetArgs, 12)] <!-- Json object of when to apply a resist/vuln to target/self -->
-[h:modDefenseJson  = json.get(targetArgs, 13)]
-[h:modAttackJson   = json.get(targetArgs, 14)]
-[h:keywords        = json.get(targetArgs, 15)]
-[h:damageTypes     = json.get(targetArgs, 16)]
-[h:token     	     = json.get(targetArgs, 17)]
-[h:powaStr     	   = json.get(targetArgs, 18)]
-[h:myIndex         = json.get(targetArgs, 19)]
-[h:labelAppend     = json.get(targetArgs, 20)]
+[h:missDamageRoll  = json.get(targetArgs, 7)] <!-- damage to roll on a miss, will not apply to minions -->
+[h:targetStateJson = json.get(targetArgs, 8)] <!-- Json holding states to be applied to target with this power -->
+[h:selfStateJson   = json.get(targetArgs, 9)] <!-- Json holding states to be applied to self with this power -->
+[h:markJson        = json.get(targetArgs, 10)] <!-- Json array telling when to apply Mark to target -->
+[h:vulnResistJson  = json.get(targetArgs, 11)] <!-- Json object of when to apply a resist/vuln to target/self -->
+[h:modDefenseJson  = json.get(targetArgs, 12)]
+[h:modAttackJson   = json.get(targetArgs, 13)]
+[h:keywords        = json.get(targetArgs, 14)]
+[h:damageTypes     = json.get(targetArgs, 15)]
+[h:token     	     = json.get(targetArgs, 16)]
+[h:powaStr     	   = json.get(targetArgs, 17)]
+[h:myIndex         = json.get(targetArgs, 18)]
+[h:labelAppend     = json.get(targetArgs, 19)]
 [h:targList = getSelectedNames("json")]
 [h,if(!json.isEmpty(targList)),CODE:
 {
@@ -68,7 +67,6 @@
   <input type='hidden' name='damRoll' value='[r:damRoll]'></input>
   <input type='hidden' name='critDamRoll' value='[r:critDamRoll]'></input>
   <input type='hidden' name='targetDefense' value='[r:targetDefense]'></input>
-  <input type='hidden' name='friendlyFire' value='[r:friendlyFire]'></input>
   <input type='hidden' name='missDamageRoll' value='[r:missDamageRoll]'></input>
   <input type='hidden' name='targetStateJson' value='[r:targetStateJson]'></input>
   <input type='hidden' name='selfStateJson' value='[r:selfStateJson]'></input>

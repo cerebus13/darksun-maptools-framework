@@ -37,6 +37,7 @@
 [h,macro("ClearDefMods@"+UseLib): ""]
 [h:CurrentSurge = MaxSurge]
 [h:ActionPoints = 1]
+[h:PowerPoints = MaxPowerPoints]
 [h,if(length(AttackBonuses)>0): AttackBonuses = ""]
 [h,if(length(DamageBonuses)>0): DamageBonuses = ""]
 [h,if(length(HealBonuses) != 2): HealBonuses = "{}"]

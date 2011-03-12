@@ -15,21 +15,15 @@
 [h:yesTempHP       = json.get(macro.args, 5)]
 [h:tempHPMod       = json.get(macro.args, 6)]
 [h:tempHPRoll      = json.get(macro.args, 7)]
-[h:maxRange        = json.get(macro.args, 8)]
-[h:numTargets      = json.get(macro.args, 9)]
-[h:friendlyFire    = json.get(macro.args, 10)]  <!-- 0 NPC, 1 PC, 2 Both -->
-[h:otherSource     = json.get(macro.args, 11)]  <!-- name of other token to use as source for figuring targets based on range -->
-[h:useSurge        = json.get(macro.args, 12)]
-[h:selfStateJson   = json.get(macro.args, 13)] <!-- Json holding states to be applied to self with this power -->
-[h:modDefenseJson  = json.get(macro.args, 14)]
-[h:modAttackJson   = json.get(macro.args, 15)]
-[h:includeSelf     = json.get(macro.args, 16)]
-[h:bloodyOnly      = json.get(macro.args, 17)]
-[h:token     	     = json.get(targetArgs, 18)]
-[h:powaStr     	   = json.get(targetArgs, 19)]
-[h:saveSurge       = json.get(targetArgs, 20)]
-[h:myIndex         = json.get(targetArgs, 21)]
-[h:labelAppend     = json.get(targetArgs, 22)]
+[h:useSurge        = json.get(macro.args, 8)]
+[h:selfStateJson   = json.get(macro.args, 9)] <!-- Json holding states to be applied to self with this power -->
+[h:modDefenseJson  = json.get(macro.args, 10)]
+[h:modAttackJson   = json.get(macro.args, 11)]
+[h:token     	     = json.get(targetArgs, 12)]
+[h:powaStr     	   = json.get(targetArgs, 13)]
+[h:saveSurge       = json.get(targetArgs, 14)]
+[h:myIndex         = json.get(targetArgs, 15)]
+[h:labelAppend     = json.get(targetArgs, 16)]
 [h:targList = getSelectedNames("json")]
 [h,if(!json.isEmpty(targList)),CODE:
 {

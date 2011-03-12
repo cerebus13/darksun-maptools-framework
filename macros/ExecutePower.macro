@@ -12,7 +12,6 @@
 [h:damRoll         = json.get(args, "damRoll")]
 [h:critDamRoll     = json.get(args, "critDamRoll")]
 [h:targetDefense   = json.get(args, "targetDefense")]
-[h:friendlyFire    = json.get(args, "friendlyFire")]  <!-- 0 NPC, 1 PC, 2 Both -->
 [h:missDamageRoll  = json.get(args, "missDamageRoll")] <!-- damage to roll on a miss, will not apply to minions -->
 [h:targetStateJson = json.get(args, "targetStateJson")] <!-- Json holding states to be applied to target with this power -->
 [h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
