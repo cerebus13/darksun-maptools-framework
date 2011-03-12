@@ -40,7 +40,8 @@ WillBase:0
 WillMod:0
 -------------LIMITED USES-------------
 *ActionPoints (AP):0
-MagicItemUses (Magic):0
+*PowerPoints (PP)
+MaxPowerPoints
 -------------OTHER STATISTICS-------------
 *Elevation (Elev)
 *Senses:Pers {10+WisMod+HalfLevel+0} / Insi {10+WisMod+HalfLevel+0}
