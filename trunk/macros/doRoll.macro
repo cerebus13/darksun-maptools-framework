@@ -1,6 +1,0 @@
-[h,token(arg(0)): output=getTokenImage(30)]
-{output}
-
-[h:damDieRoll=eval(useRoll)]
-[h:evalMacro(strformat("[res = damDieRoll + %s]",damVal))]
-[h,if(res<1): res = 1]
