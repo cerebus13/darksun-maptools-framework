@@ -39,7 +39,6 @@
 [h:emptyObjectJson="{}"]
 [h:switchToken(targetName)]
 [h:def = if(length(targetDefense) > 0,getProperty(targetDefense),0)]
-
 [h:atkRoll=eval("1d20")]
 <!-- Reroll the attack roll once, take highest -->
 [h:atkRolls=""]
