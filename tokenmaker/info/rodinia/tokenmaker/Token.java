@@ -1259,27 +1259,27 @@ public class Token {
                 if (!nonDamTypes.isEmpty())
                     nonDamTypes = (nonDamTypes.startsWith(", ") ? nonDamTypes.substring(2) : nonDamTypes);
 
-                command = "\n          [macro(\"CallAttack@\"+UseLib):\n" +
-                          "                 json.set\n" +
-                          "                 (\n" +
-                          "                 \"{}\",\n" +
-                          "                 \"atkKey\", 20,\n" +
-                          "                 \"atkName\", \"" + p.getName() + "\",\n" +
-                          "                 \"atkType\", " + atkType + ",\n" +
-                          "                 \"atkTypeName\", \"" + usage + "\",\n" +
-                          "                 \"keywords\", \"" + nonDamTypes + "\",\n" + /* Weapon, Melee, Area, Ranged - may not always parse right */
-                          "                 \"damageTypes\", \"" + damTypes + "\",\n" +
-                          "                 \"actionType\", \"" + action + "\",\n" +
-                          "                 \"targetDefense\", \"" + defense + "\",\n" +
-                          "                 \"rangeText\", \"Melee Weapon\",\n" +
-                          "                 \"numTargetsText\", \"One Creature\",\n" +
-                          "                 \"atkMod\", '{\"Bonus\":" + p.getAtkDefense() + "}',\n" +
-                          "                 \"damMod\", '{\"Bonus\":0}',\n" +
-                          "                 \"damRoll\", \"0d0\",\n" +
-                          "                 \"critDamRoll\", \"0\",\n" +
-                          "                 \"effectText\", \"" + html + "\"\n" +
-                          "                 )\n" +
-                          "             ]\n";
+                command = "[macro(\"CallAttack@\"+UseLib):\n" +
+                          "       json.set\n" +
+                          "       (\n" +
+                          "       \"{}\",\n" +
+                          "       \"atkKey\", 20,\n" +
+                          "       \"atkName\", \"" + p.getName() + "\",\n" +
+                          "       \"atkType\", " + atkType + ",\n" +
+                          "       \"atkTypeName\", \"" + usage + "\",\n" +
+                          "       \"keywords\", \"" + nonDamTypes + "\",\n" + /* Weapon, Melee, Area, Ranged - may not always parse right */
+                          "       \"damageTypes\", \"" + damTypes + "\",\n" +
+                          "       \"actionType\", \"" + action + "\",\n" +
+                          "       \"targetDefense\", \"" + defense + "\",\n" +
+                          "       \"rangeText\", \"Melee Weapon\",\n" +
+                          "       \"numTargetsText\", \"One Creature\",\n" +
+                          "       \"atkMod\", '{\"Bonus\":" + p.getAtkBonus() + "}',\n" +
+                          "       \"damMod\", '{\"Bonus\":0}',\n" +
+                          "       \"damRoll\", \"0d0\",\n" +
+                          "       \"critDamRoll\", \"0\",\n" +
+                          "       \"effectText\", \"" + html.trim() + "\"\n" +
+                          "       )\n" +
+                          "]";
                 if (p.getUsage().toLowerCase().contains("recharge"))
                     command += "\n[h:updateMacroLabel(\" (Recharge " + p.getUsage().substring(p.getUsage().length() - 1) + ")\")]";
                 if (atkType == 2 || atkType == 3)
@@ -1415,121 +1415,128 @@ public class Token {
         String label = "";
         String group = "";
         String fontColorKey = "";
-        for(int i = 1; i < 13; i++)
+        for(int i = 1; i < 14; i++)
         {
             switch(i)
             {
                 case 1: // Bull Rush
                     colorKey = "green";
-                    command = "\n          [macro(\"CallAttack@\"+UseLib):\n" +
-                              "                 json.set\n" +
-                              "                 (\n" +
-                              "                 \"{}\",\n" +
-                              "                 \"atkKey\", 20,\n" +
-                              "                 \"atkName\", \"Bull Rush\",\n" +
-                              "                 \"atkType\", 1,\n" +
-                              "                 \"atkTypeName\", \"At-Will\",\n" +
-                              "                 \"keywords\", \"\",\n" + 
-                              "                 \"damageTypes\", \"\",\n" +
-                              "                 \"actionType\", \"Standard Action\",\n" +
-                              "                 \"targetDefense\", \"Fortitude\",\n" +
-                              "                 \"hitStatAdded\", \"Strength\",\n" +
-                              "                 \"rangeText\", \"Melee Weapon\",\n" +
-                              "                 \"numTargetsText\", \"One Creature\",\n" +
-                              "                 \"atkMod\", strformat('{\"Bonus\":%d}',HalfLevel+StrMod),\n" +
-                              "                 \"damMod\", '{\"Bonus\":0}',\n" +
-                              "                 \"damRoll\", \"0d0\",\n" +
-                              "                 \"critDamRoll\", \"0\",\n" +
-                              "                 \"effectText\", \"<b>On Hit:</b> Push target 1 square, shift into the vacated space.\"\n" +
-                              "                 )\n" +
-                              "             ]\n";
+                    command = "[macro(\"CallAttack@\"+UseLib):\n" +
+                              "       json.set\n" +
+                              "       (\n" +
+                              "       \"{}\",\n" +
+                              "       \"atkKey\", 20,\n" +
+                              "       \"atkName\", \"Bull Rush\",\n" +
+                              "       \"atkType\", 1,\n" +
+                              "       \"atkTypeName\", \"At-Will\",\n" +
+                              "       \"keywords\", \"\",\n" +
+                              "       \"damageTypes\", \"\",\n" +
+                              "       \"actionType\", \"Standard Action\",\n" +
+                              "       \"targetDefense\", \"Fortitude\",\n" +
+                              "       \"hitStatAdded\", \"Strength\",\n" +
+                              "       \"rangeText\", \"Melee Weapon\",\n" +
+                              "       \"numTargetsText\", \"One Creature\",\n" +
+                              "       \"atkMod\", strformat('{\"Bonus\":%d}',HalfLevel+StrMod),\n" +
+                              "       \"damMod\", '{\"Bonus\":0}',\n" +
+                              "       \"damRoll\", \"0d0\",\n" +
+                              "       \"critDamRoll\", \"0\",\n" +
+                              "       \"effectText\", \"&lt;b&gt;On Hit:&lt;/b&gt; Push target 1 square, shift into the vacated space.\"\n" +
+                              "       )\n" +
+                              "]";
                     label = "Bull Rush";
                     group = "at-will";
                     fontColorKey = "black";
                     break;
                 case 2: // Ability Check
                     colorKey = "default";
-                    command = "\n          [h: status=input(\n" +
-                              "                              \"Choice|Strength,Constitution,Dexterity,Intelligence,Wisdom,Charisma|Ability|LIST|VALUE=STRING\",\n" +
-                              "                              \"Temp|0|Temp Bonus\"\n" +
-                              "          )]\n" +
-                              "          [h: abort(status)]\n" +
-                              "          [h: bLevel=floor(Level/2)]\n" +
-                              "          [h: Ability=floor((eval(Choice)-10)/2)]\n" +
-                              "          <b>[r: Choice] Check: </b>[1d20+Ability+bLevel+Temp]\n";
+                    command = "[h: status=input(\n" +
+                              "                    \"Choice|Strength,Constitution,Dexterity,Intelligence,Wisdom,Charisma|Ability|LIST|VALUE=STRING\",\n" +
+                              "                    \"Temp|0|Temp Bonus\"\n" +
+                              ")]\n" +
+                              "[h: abort(status)]\n" +
+                              "[h: bLevel=floor(Level/2)]\n" +
+                              "[h: Ability=floor((eval(Choice)-10)/2)]\n" +
+                              "<b>[r: Choice] Check: </b>[1d20+Ability+bLevel+Temp]";
                     label = "Ability Check";
                     group = "custom";
                     fontColorKey = "black";
                     break;
                 case 3: // CallUpdatePropMods
                     colorKey = "default";
-                    command = "\n          [macro(\"CallUpdatePropMods@\"+UseLib): \"\"]\n";
+                    command = "[macro(\"CallUpdatePropMods@\"+UseLib): \"\"]";
                     label = "CallUpdatePropMods";
                     group = "custom";
                     fontColorKey = "black";
                     break;
                 case 4: // Clear Defense Mods
                     colorKey = "default";
-                    command = "\n          [macro(\"ClearDefMods@\"+UseLib): \"\"]\n" +
-                              "          [abort(0)]\n";
+                    command = "[macro(\"ClearDefMods@\"+UseLib): \"\"]\n" +
+                              "[abort(0)]";
                     label = "Clear Defense Mods";
                     group = "custom";
                     fontColorKey = "black";
                     break;
                 case 5: // Clear Mark
                     colorKey = "default";
-                    command = "\n          [macro(\"CallClearMark@\"+UseLib): \"\"]\n" +
-                              "          [abort(0)]\n";
+                    command = "[macro(\"CallClearMark@\"+UseLib): \"\"]\n" +
+                              "[abort(0)]";
                     label = "Clear Marks";
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 6: // NPC Skill Check
+                case 6: // Edit Skills
                     colorKey = "default";
-                    command = "\n          [macro(\"CallNpcSkillCheck@\"+UseLib): \"\"]\n";
+                    command = "[macro(\"CallEditSkills@\"+UseLib): \"\"]";
+                    label = "Edit Skills";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 7: // NPC Skill Check
+                    colorKey = "default";
+                    command = "[macro(\"CallNpcSkillCheck@\"+UseLib): \"\"]";
                     label = "Skill Check";
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 7: // Init
+                case 8: // Init
                     colorKey = "magenta";
-                    command = "\n          [H: addToInitiative()]<b>Initiative:</b> [token.init=1d20+Initiative]\n";
+                    command = "[H: addToInitiative()]<b>Initiative:</b> [token.init=1d20+Initiative]";
                     label = "Init";
                     group = "General";
                     fontColorKey = "white";
                     break;
-                case 8: // Saving Throw
+                case 9: // Saving Throw
                     colorKey = "magenta";
-                    command = "\n          [macro(\"CallSave@\"+UseLib): \"\"]\n";
+                    command = "[macro(\"CallSave@\"+UseLib): \"\"]";
                     label = "Saving Throw";
                     group = "General";
                     fontColorKey = "white";
                     break;
-                case 9: // View Modifiers
+                case 10: // View Modifiers
                     colorKey = "yellow";
-                    command = "\n          [macro(\"ModifierDialog@\"+UseLib): \"\"]\n" +
-                              "          [abort(0)]\n";
+                    command = "[macro(\"ModifierDialog@\"+UseLib): \"\"]\n" +
+                              "[abort(0)]";
                     label = "View Modifiers";
                     group = "General";
                     fontColorKey = "black";
                     break;
-                case 10: // Manual HP Adjust
+                case 11: // Manual HP Adjust
                     colorKey = "magenta";
-                    command = "\n          [macro(\"CallHP@\"+UseLib): \"\"]\n";
+                    command = "[macro(\"CallHP@\"+UseLib): \"\"]";
                     label = "Manual HP Adjust";
                     group = "Healing/Damage";
                     fontColorKey = "white";
                     break;
-                case 11: // Self Damage
+                case 12: // Self Damage
                     colorKey = "magenta";
-                    command = "\n          [macro(\"CallDamage@\"+UseLib): \"\"]\n";
+                    command = "[macro(\"CallDamage@\"+UseLib): \"\"]";
                     label = "Self Damage";
                     group = "Healing/Damage";
                     fontColorKey = "white";
                     break;
-                case 12: // Self Heal
+                case 13: // Self Heal
                     colorKey = "magenta";
-                    command = "\n          [macro(\"CallHeal@\"+UseLib): \"\"]\n";
+                    command = "[macro(\"CallHeal@\"+UseLib): \"\"]";
                     label = "Self Heal";
                     group = "Healing/Damage";
                     fontColorKey = "white";
