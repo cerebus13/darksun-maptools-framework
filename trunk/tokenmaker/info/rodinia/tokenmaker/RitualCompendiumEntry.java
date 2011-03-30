@@ -8,11 +8,13 @@ package info.rodinia.tokenmaker;
  */
 public class RitualCompendiumEntry extends CompendiumEntry {
 
+    public static final String ritualPHP_local  = "http://localhost/ddi/ritual.php?id=";
+    public static final String ritualPHP_remote = "http://www.wizards.com/dndinsider/compendium/ritual.aspx?id=";
+
     Ritual myRitual;
 
     public RitualCompendiumEntry(Ritual ritual) {
-	super("http://localhost/ddi/ritual.php?id="
-		+ ritual.getId());
+	super(((TokenMaker.isRemote) ? ritualPHP_remote : ritualPHP_local) + ritual.getId());
 	myRitual = ritual;
     }
 
@@ -21,7 +23,7 @@ public class RitualCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"" + ((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local));
 
 	// add some formatting codes
 	myHTML = myHTML

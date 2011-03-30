@@ -28,6 +28,8 @@ public class NPCMaker extends JFrame {
     private JComboBox roleBox;
     private JComboBox typeBox;
     private JComboBox sourceBox;
+    private JRadioButton localRadio;
+    private JRadioButton remoteRadio;
 
     public static void main(String[] args)
     {
@@ -56,7 +58,7 @@ public class NPCMaker extends JFrame {
 
 	// Add a search panel in the top
 	JPanel northPanel = new JPanel();
-	northPanel.setLayout(new GridLayout(5, 1));
+	northPanel.setLayout(new GridLayout(7, 1));
 
 	JPanel namePanel = new JPanel();
 	JLabel nameLabel = new JLabel("Name:");
@@ -107,6 +109,18 @@ public class NPCMaker extends JFrame {
 	sourcePanel.add(sourceLabel);
 	sourcePanel.add(sourceBox);
 	northPanel.add(sourcePanel);
+
+    // add a local and remote Compendium execution radio button
+    JPanel radioPanel = new JPanel();
+    ButtonGroup radioGroup = new ButtonGroup();
+    localRadio = new JRadioButton("Local compendium");
+    remoteRadio = new JRadioButton("Remote compendium");
+    radioGroup.add(localRadio);
+    radioGroup.add(remoteRadio);
+    remoteRadio.setSelected(true);
+    radioPanel.add(localRadio);
+    radioPanel.add(remoteRadio);
+    northPanel.add(radioPanel);
 
 	add(northPanel, BorderLayout.NORTH);
 
@@ -222,14 +236,24 @@ public class NPCMaker extends JFrame {
 	    if (event.getSource() == findButton) {
 		performFind();
 	    } else if (event.getSource() == buildButton) {
-		buildNPC();
+            buildNPC();
 	    } else if (event.getSource() == exitButton) {
 		TokenMaker.saveState();
 		System.exit(0);
-	    } else if (event.getSource() == nameText) {
-		if (!event.getActionCommand().equals("")) {
-		    performFind();
-		}
+	    } 
+        else if (event.getSource() == nameText)
+        {
+            if (!event.getActionCommand().equals(""))
+            {
+                performFind();
+            }
+	    }
+        else if (event.getSource() == localRadio || event.getSource() == remoteRadio)
+        {
+            if (remoteRadio.isSelected())
+                TokenMaker.isRemote = true;
+            else if (localRadio.isSelected())
+                TokenMaker.isRemote = false;
 	    }
 	}
     }

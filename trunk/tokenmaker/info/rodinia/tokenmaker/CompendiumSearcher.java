@@ -26,11 +26,17 @@ import org.xml.sax.SAXException;
 public class CompendiumSearcher {
 
     // Define a bunch of static URLs and strings to help build URLS
-    private static final String mainSearchURL   = "http://localhost/ddi/search.php?Keywords=";
-    private static final String keywordURL      = "&Type=KeywordSearchWithFilters";
-    private static final String npcSearchURL    = "&Tab=Monster&NameOnly=true&Filters=";
-    private static final String powerSearchURL  = "&Tab=Power&NameOnly=true&Filters=";
-    private static final String weaponSearchURL = "&Tab=Item&NameOnly=true&Filters=";
+    private static final String mainSearchURL_local    = "http://localhost/ddi/search.php?Keywords=";
+    private static final String keywordURL_local       = "&Type=KeywordSearchWithFilters";
+    private static final String npcSearchURL_local     = "&Tab=Monster&NameOnly=true&Filters=";
+    private static final String powerSearchURL_local   = "&Tab=Power&NameOnly=true&Filters=";
+    private static final String weaponSearchURL_local  = "&Tab=Item&NameOnly=true&Filters=";
+
+    private static final String mainSearchURL_remote   = "http://www.wizards.com/dndinsider/compendium/compendiumsearch.asmx/KeywordSearchWithFilters?Keywords=";
+    private static final String keywordURL_remote      = "";
+    private static final String npcSearchURL_remote    = "&tab=Monster&NameOnly=true&Filters=";
+    private static final String powerSearchURL_remote  = "&tab=Power&NameOnly=true&Filters=";
+    private static final String weaponSearchURL_remote = "&tab=Item&NameOnly=true&Filters=";
 
     // define the search criteria for monsters
     private static int levelMin = -1;
@@ -167,20 +173,33 @@ public class CompendiumSearcher {
 
     // Given a full filter, get me the URL to use to search for it.
     private static String getNPCSearchURL(String npcName, int levelMin, int levelMax, String keyword, String mainRole, String groupRole,
-	    int xpMin, int xpMax, String source) {
-	npcFilters = levelMin+"|"+levelMax+"|"+mainRole+"|"+groupRole+"|"+keyword+"|"+xpMin+"|"+xpMax+"|"+source;
-	return mainSearchURL + npcName + keywordURL + npcSearchURL + npcFilters;
+	    int xpMin, int xpMax, String source)
+    {
+        npcFilters = levelMin+"|"+levelMax+"|"+mainRole+"|"+groupRole+"|"+keyword+"|"+xpMin+"|"+xpMax+"|"+source;
+        return ((TokenMaker.isRemote) ? mainSearchURL_remote : mainSearchURL_local) +
+                npcName +
+                ((TokenMaker.isRemote) ? keywordURL_remote : keywordURL_local) +
+                ((TokenMaker.isRemote) ? npcSearchURL_remote : npcSearchURL_local) +
+                npcFilters;
     }
 
     // Given a full filter, get me the URL to use to search for it.
     private static String getWeaponSearchURL(String weaponName, int enhancement) {
 	weaponFilters = "Weapon|-1|-1|-1|-1|"+enhancement+"|"+enhancement+"|-1";
-	return mainSearchURL + weaponName + keywordURL + weaponSearchURL + weaponFilters;
+        return ((TokenMaker.isRemote) ? mainSearchURL_remote : mainSearchURL_local) +
+                weaponName +
+                ((TokenMaker.isRemote) ? keywordURL_remote : keywordURL_local) +
+                ((TokenMaker.isRemote) ? weaponSearchURL_remote : weaponSearchURL_local) +
+                weaponFilters;
     }
     
     // Given a power name filter, get me the URL to use to search for it.
     private static String getPowerSearchURL(String powerName) {
-	return mainSearchURL + powerName + keywordURL + powerSearchURL + powerFilters;
+        return ((TokenMaker.isRemote) ? mainSearchURL_remote : mainSearchURL_local) +
+                powerName +
+                ((TokenMaker.isRemote) ? keywordURL_remote : keywordURL_local) +
+                ((TokenMaker.isRemote) ? powerSearchURL_remote : powerSearchURL_local) +
+                powerFilters;
     }
 
 

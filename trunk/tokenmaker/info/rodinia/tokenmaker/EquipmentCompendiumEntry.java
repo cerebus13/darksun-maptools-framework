@@ -20,7 +20,7 @@ public class EquipmentCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"" + ((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local));
 
 	// add some formatting codes
 	myHTML = myHTML

@@ -48,6 +48,7 @@ public class TokenMaker {
     public static final String[] AtkIcons = {"S1.gif", "S2.gif", "S3.gif", "S4.gif", "Z1a.gif", "Z2a.gif", "Z3a.gif", "Z4a.gif"};
 
     public static String npcImagePath = null;
+    public static String npcImageFilePath = null;
     public static String npcSavePath = null;
     public static String pcImagePath = null;
     public static String pcLoadPath = null;
@@ -57,6 +58,10 @@ public class TokenMaker {
 	    + "/.tokenmaker";
     public static final String statusFile = homeDir + "/.status";
     public static final String ddiFile = homeDir + "/ddi.dat";
+
+    public static final String imagePath_local  = "http://localhost/ddi/images/";
+    public static final String imagePath_remote = "http://www.wizards.com/dndinsider/compendium/images/";
+    public static boolean isRemote = true;
 
     public static void main(String[] args) {
 
@@ -94,6 +99,7 @@ public class TokenMaker {
 	    writer.write(pcImagePath + "\n");
 	    writer.write(pcLoadPath + "\n");
 	    writer.write(pcSavePath + "\n");
+        writer.write(npcImageFilePath + "\n");
 	    writer.close();
 
 	} catch (Exception e) {
@@ -116,6 +122,7 @@ public class TokenMaker {
 	    pcImagePath = reader.readLine();
 	    pcLoadPath = reader.readLine();
 	    pcSavePath = reader.readLine();
+        npcImageFilePath = reader.readLine();
 	    reader.close();
 	} catch (FileNotFoundException fnf) {
 	    // do nothing as we don't have to have a file at the start.

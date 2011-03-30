@@ -4,7 +4,6 @@ import info.rodinia.tokenmaker.TokenMaker.Attribute;
 import info.rodinia.tokenmaker.TokenMaker.Skill;
 
 import java.io.*;
-import java.util.*;
 import java.util.regex.*;
 
 import javax.swing.text.MutableAttributeSet;
@@ -438,7 +437,7 @@ public class NPC extends Character {
         if (tag == Tag.IMG && state == state.POWERRECHARGE)
         {
             String src = (String) attrSet.getAttribute(HTML.Attribute.SRC);
-            src = src.replace("http://localhost/ddi/images/symbol/","");
+            src = src.replace(((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local) + "symbol/","");
             src = src.replace("a.gif", "");
             myPower.setUsage("recharge " + src);
             if (statBlock == StatBlock.MM1)

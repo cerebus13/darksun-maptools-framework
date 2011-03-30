@@ -27,8 +27,7 @@ public class MagicWeaponCompendiumEntry extends CompendiumEntry {
 
 	// add full path to the images
 	myHTML = myHTML
-		.replace("<img src=\"images/",
-			"<img src=\"http://localhost/ddi/images/");
+		.replace("<img src=\"images/","<img src=\"" + ((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local));
 
 	// add some formatting codes
 	myHTML = myHTML

@@ -8,11 +8,13 @@ package info.rodinia.tokenmaker;
  */
 public class PowerCompendiumEntry extends CompendiumEntry {
 
+    public static final String powerPHP_local  = "http://localhost/ddi/power.php?id=";
+    public static final String powerPHP_remote = "http://www.wizards.com/dndinsider/compendium/power.aspx?id=";
+
     Power myPower;
     
     public PowerCompendiumEntry(Power power) {
-	super("http://localhost/ddi/power.php?id="
-		+ power.getId());
+	super(((TokenMaker.isRemote) ? powerPHP_remote : powerPHP_local) + power.getId());
 	myPower = power;
 	// stick a new line before the power name - it looks better.
 	myHTML = myHTML.replace("</span>"+myPower.getName(),"</span><br/>"+myPower.getName());
@@ -23,9 +25,7 @@ public class PowerCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
-	
-
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"" + ((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local));
 	
 	// add some formatting codes
 	myHTML = myHTML

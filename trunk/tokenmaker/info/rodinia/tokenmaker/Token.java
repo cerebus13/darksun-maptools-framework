@@ -1425,7 +1425,7 @@ public class Token {
                               "       json.set\n" +
                               "       (\n" +
                               "       \"{}\",\n" +
-                              "       \"atkKey\", 20,\n" +
+                              "       \"atkKey\", 2,\n" +
                               "       \"atkName\", \"Bull Rush\",\n" +
                               "       \"atkType\", 1,\n" +
                               "       \"atkTypeName\", \"At-Will\",\n" +

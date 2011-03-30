@@ -6,12 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 /**
@@ -59,25 +56,29 @@ public class NPCBuilder extends JDialog {
 	    // Create a panel to deal with setting up the portrait and save file
 	    // and actually save it
 	    // Portrait
-	    JPanel portraitPanel = new JPanel();
-	    portraitButton = new JButton("Portrait") {
-		@Override
-		public void paintComponent(Graphics g) {
+        File pictureTest = new File(TokenMaker.npcImageFilePath);
+        JPanel portraitPanel = new JPanel();
+        if (!pictureTest.exists())
+        {
+            portraitButton = new JButton("Portrait") {
+            @Override
+            public void paintComponent(Graphics g) {
 
-		    if (myPortrait == null) {
-			super.paintComponent(g);
-			return;
-		    } else {
-			g.drawImage(myPortrait.getImage(), 0, 0, getWidth(),
-				getHeight(), null);
-		    }
-		}
-	    };
-	    portraitPanel.add(portraitButton);
-	    portraitButton.setPreferredSize(new Dimension(100, 100));
-	    portraitButton.addActionListener(buttonListener);
-	    portraitButton.addKeyListener(keyListener);
-	    add(portraitPanel, BorderLayout.NORTH);
+                if (myPortrait == null) {
+                super.paintComponent(g);
+                return;
+                } else {
+                g.drawImage(myPortrait.getImage(), 0, 0, getWidth(),
+                    getHeight(), null);
+                }
+            }
+            };
+            portraitPanel.add(portraitButton);
+            portraitButton.setPreferredSize(new Dimension(100, 100));
+            portraitButton.addActionListener(buttonListener);
+            portraitButton.addKeyListener(keyListener);
+        }
+        add(portraitPanel, BorderLayout.NORTH);
 
 	    // Create an editor pane in the middle
 	    JPanel editorPanel = new JPanel();
@@ -112,7 +113,7 @@ public class NPCBuilder extends JDialog {
 	    saveButton = new JButton("Save");
 	    saveButton.addActionListener(buttonListener);
 	    saveButton.addKeyListener(keyListener);
-	    saveButton.setEnabled(false);
+	    saveButton.setEnabled(pictureTest.exists());
 	    exitButton = new JButton("Exit");
 	    exitButton.addActionListener(buttonListener);
 	    exitButton.addKeyListener(keyListener);
@@ -212,6 +213,7 @@ public class NPCBuilder extends JDialog {
 		portraitButton.setIcon(myPortrait);
 		TokenMaker.npcImagePath = chooser.getCurrentDirectory()
 			.getAbsolutePath();
+        TokenMaker.npcImageFilePath = portraitFile.getAbsolutePath();
 		saveButton.setEnabled(true);
 	    }
 	} catch (Exception e) {
