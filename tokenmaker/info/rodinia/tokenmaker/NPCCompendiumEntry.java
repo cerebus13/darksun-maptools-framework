@@ -1,12 +1,14 @@
 package info.rodinia.tokenmaker;
 
-
 /**
  * NPCCompendiumEntry models a Monster entry in the Wizards online compendium.
  * 
  * @author Blakey, Summer 2010.
  */
 public class NPCCompendiumEntry extends CompendiumEntry {
+
+    public static final String npcPHP_remote = "http://www.wizards.com/dndinsider/compendium/monster.aspx?id=";
+    public static final String npcPHP_local  = "http://localhost/ddi/monster.php?id=";
 
     /**
      * Constructor for NPCCompendiumEntry.
@@ -26,8 +28,7 @@ public class NPCCompendiumEntry extends CompendiumEntry {
      * I need to redesign this interface.
      */
     public NPCCompendiumEntry(NPC nPC) {
-	super("http://localhost/ddi/monster.php?id="
-		+ nPC.getId());
+        super(((TokenMaker.isRemote) ? npcPHP_remote : npcPHP_local) + nPC.getId());
     }
     
     @Override

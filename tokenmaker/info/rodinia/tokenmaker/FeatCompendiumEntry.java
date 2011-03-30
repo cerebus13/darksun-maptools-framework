@@ -8,11 +8,13 @@ package info.rodinia.tokenmaker;
  */
 public class FeatCompendiumEntry extends CompendiumEntry {
 
+    public static final String featPHP_remote = "http://www.wizards.com/dndinsider/compendium/feat.aspx?id=";
+    public static final String featPHP_local = "http://localhost/ddi/feat.php?id=";
+
     Feat myFeat;
 
     public FeatCompendiumEntry(Feat feat) {
-	super("http://localhost/ddi/feat.php?id="
-		+ feat.getId());
+	super(((TokenMaker.isRemote) ? featPHP_remote : featPHP_local) + feat.getId());
 	myFeat = feat;
     }
 
@@ -21,7 +23,7 @@ public class FeatCompendiumEntry extends CompendiumEntry {
 	super.formatHTML();	// make sure we do the generic stuff
 
 	// add full path to the images
-	myHTML = myHTML.replace("<img src=\"images/","<img src=\"http://localhost/ddi/images/");
+	myHTML = myHTML.replace("<img src=\"images/","<img src=\"" + ((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local));
 
 	// add some formatting codes
 	myHTML = myHTML

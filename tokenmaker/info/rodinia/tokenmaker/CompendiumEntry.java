@@ -1,8 +1,6 @@
 package info.rodinia.tokenmaker;
 
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.*;
@@ -21,7 +19,8 @@ public class CompendiumEntry {
     protected String myHTML;
     protected String myURL;
     private String actionUrl;
-    private static final String baseURL = "http://localhost/ddi/";
+    private static final String baseURL_local = "http://localhost/ddi/";
+    private static final String baseURL_remote = "http://www.wizards.com/dndinsider/compendium/";
     private String email;
     private String password;
     private NameValuePair[] myPostData = null;
@@ -221,9 +220,9 @@ public class CompendiumEntry {
      * @TODO - This code should probably be reworked to use RegExps.
      */
     private void parseAction(String source) {
-	int start = source.indexOf("action=");
-	String action = source.substring(start + 8);
-	int end = action.indexOf("\"");
-	actionUrl = baseURL + action.substring(0, end);
+        int start = source.indexOf("action=");
+        String action = source.substring(start + 8);
+        int end = action.indexOf("\"");
+        actionUrl = ((TokenMaker.isRemote) ? baseURL_remote : baseURL_local) + action.substring(0, end);
     }
 }

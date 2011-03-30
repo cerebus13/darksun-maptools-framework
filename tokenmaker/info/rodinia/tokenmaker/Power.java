@@ -72,7 +72,7 @@ public class Power {
 	if (html == null) {
 	    PowerCompendiumEntry com = new PowerCompendiumEntry(this);
 	    html = com.getHTML();
-	    html = html.replace("<img src=\"http://localhost/ddi/images/bullet.gif\" alt=\"\"/>", "-");
+	    html = html.replace("<img src=\"" + ((TokenMaker.isRemote) ? TokenMaker.imagePath_remote : TokenMaker.imagePath_local) + "bullet.gif\" alt=\"\"/>", "-");
 	}
 	return html;
     }
