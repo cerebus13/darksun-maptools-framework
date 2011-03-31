@@ -10,11 +10,11 @@
 [h:healVal         = json.get(macro.args, 2)]
 [h:tempHPRoll      = json.get(macro.args, 3)]
 [h:tempHPVal       = json.get(macro.args, 4)]
-[h:useSurge        = json.get(macro.args, 5)]
+[h:spendSurge      = json.get(macro.args, 5)]
 [h:selfStateJson   = json.get(macro.args, 6)]  <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(macro.args, 7)]
 [h:modAttackJson   = json.get(macro.args, 8)]
-[h:saveSurge       = json.get(macro.args, 9)]
+[h:healSurge       = json.get(macro.args, 9)]
 
 [h:emptyObjectJson="{}"]
 [h:emptyJson="[]"]
@@ -28,11 +28,11 @@
 [h:totalTemp = tmping + eval(string(tempHPVal))]
 
 <!-- apply healing to target -->
-[h:CHP = CurrentHP + totalHeal + if(useSurge,SurgeValue,0)]
+[h:CHP = CurrentHP + totalHeal + if(healSurge,SurgeValue,0)]
 [h,if(totalTemp>0 && totalTemp>TempHP):TempHP = totalTemp]
 [h,if(CHP>MaxHP/2):state.Bloodied=0]
 [h,if(CHP>MaxHP):CurrentHP = MaxHP;CurrentHP = CHP]
-[h,if(useSurge && saveSurge == 0):CurrentSurge = CurrentSurge-1]
+[h,if(spendSurge):CurrentSurge = CurrentSurge-1]
 
 [h:switchToken(selfName)]
 

@@ -13,12 +13,12 @@
 [h:yesTempHP       = json.get(args, "yesTempHP")]
 [h:tempHPMod       = json.get(args, "tempHPMod")]
 [h:tempHPRoll      = json.get(args, "tempHPRoll")]
-[h:useSurge        = json.get(args, "useSurge")]
+[h:spendSurge        = json.get(args, "spendSurge")]
 [h:selfStateJson   = json.get(args, "selfStateJson")] <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(args, "modDefenseJson")]
 [h:modAttackJson   = json.get(args, "modAttackJson")]
 [h:powaStr     	   = json.get(args, "powaStr")]
-[h:saveSurge       = json.get(args, "saveSurge")]
+[h:healSurge       = json.get(args, "healSurge")]
 [h:targJson        = json.get(args, "targList")]
 [h:myIndex         = json.get(args, "myIndex")]
 [h:labelAppend     = json.get(args, "labelAppend")]
@@ -41,10 +41,10 @@
   [h: tempHPText = json.get(macro.return, 0)]
   [h: tempHPVal = json.get(macro.return, 1)]
   
-  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,useSurge,selfStateJson,modDefenseJson,modAttackJson,saveSurge)]
+  [h,macro("DoHeal@"+UseLib): json.append("[]",targ,useHeal,healVal,useTempHP,tempHPVal,spendSurge,selfStateJson,modDefenseJson,modAttackJson,healSurge)]
   [h:retu=macro.return]
   [h:nextRowJson = json.append("[]",
-      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(useSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(useSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),
+      if(yesHeal,customTooltip(strformat("<html>%s = (%s)<br>%s%s</html>",healRoll,json.get(retu,0),if(healSurge,strformat("Surge(%d) ",getProperty("SurgeValue",targ)),""),healText),strformat("Heal: <b>%s</b>",if(healSurge,json.get(retu,1)+getProperty("SurgeValue",targ),json.get(retu,1)))),""),
       -1,
       targ,
       if(yesTempHP,customTooltip(strformat("<html>%s = (%s)<br>%s</html>",tempHPRoll,json.get(retu,2),tempHPText),strformat("Temp HP: <b>%s</b>",json.get(retu,3))),"")

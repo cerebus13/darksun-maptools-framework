@@ -64,8 +64,8 @@
 [h,if(json.contains(macro.args,"healRoll")):healRoll        = json.get(macro.args, "healRoll");healRoll = "0d0"]
 [h,if(json.contains(macro.args,"tempHPMod")):tempHPMod         = json.get(macro.args, "tempHPMod");tempHPMod = "{}"]
 [h,if(json.contains(macro.args,"tempHPRoll")):tempHPRoll    = json.get(macro.args, "tempHPRoll");tempHPRoll = "0d0"]
-[h,if(json.contains(macro.args,"useSurge")):useSurge        = json.get(macro.args,"useSurge");useSurge = 0]
-[h,if(json.contains(macro.args,"saveSurge")):saveSurge        = json.get(macro.args,"saveSurge");saveSurge = 0]
+[h,if(json.contains(macro.args,"spendSurge")):spendSurge        = json.get(macro.args,"spendSurge");spendSurge = 0]
+[h,if(json.contains(macro.args,"healSurge")):healSurge        = json.get(macro.args,"healSurge");healSurge = 0]
 [h,if(json.contains(macro.args,"labelAppend")):labelAppend        = json.get(macro.args,"labelAppend");labelAppend = ""]
 
 [h:useKeywords = if(length(damageTypes) > 0,listAppend(keywords,damageTypes),keywords)]
@@ -101,7 +101,7 @@ tableBG,atkName,atkTypeName,useKeywords,actionType,rangeText,numTargetsText,vers
 
 [h:MyIndex=getMacroButtonIndex()]
 [if(atkKey<7): evalMacro('[macro("TargetScreen@"+UseLib): json.append("[]", atkKey, atkName, atkMod, damMod, damRoll, critDamRoll, targetDefense, missDamageRoll, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, keywords, damageTypes, token, powaStr, MyIndex, labelAppend)]')]
-[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, useSurge, selfStateJson, modDefenseJson, modAttackJson, token, powaStr, saveSurge, MyIndex, labelAppend)]')]
+[if(atkKey>6 && atkKey<15): evalMacro('[macro("HealTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, yesHeal, healMod, healRoll, yesTempHP, tempHPMod, tempHPRoll, spendSurge, selfStateJson, modDefenseJson, modAttackJson, token, powaStr, healSurge, MyIndex, labelAppend)]')]
 [if(atkKey>14 && atkKey<20): evalMacro('[macro("SecondaryTargetScreen@"+UseLib): json.append("[]", atkKey, atkName, targetStateJson, selfStateJson, markJson, vulnResistJson, modDefenseJson, modAttackJson, token, powaStr, MyIndex, labelAppend)]')]
 [if(atkKey==20), CODE:
 {
