@@ -54,7 +54,8 @@ Willpower (Will):{WillBase+WillMod+AllDefMod}
 WillMod:0
 WillModList
 -------------LIMITED USES-------------
-MagicItemUses (Magic):0
+PowerPoints (PP):0
+MaxPowerPoints:0
 -------------OTHER STATISTICS-------------
 HalfLevel:{floor(Level/2)}
 Skills (Skl):Acrobatics=0 ; Arcana=0 ; Athletics=0 ; Bluff=0 ; Diplomacy=0 ; Dungeoneering=0 ; Endurance=0 ; Heal=0 ; History=0 ; Insight=0 ; Intimidate=0 ; Nature=0 ; Perception=0 ; Religion=0 ; Stealth=0 ; Streetwise=0 ; Thievery=0 ;
