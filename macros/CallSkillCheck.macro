@@ -1,10 +1,11 @@
-<!-- CallSkillCheck macro -->
+@@ @CallSkillCheck
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
 
 [h: SkillNames = "Acrobatics, Arcana, Athletics, Bluff, Diplomacy, Dungeoneering, Endurance, Heal, History, Insight, Intimidate, Nature, Perception, Religion, Stealth, Streetwise, Thievery"]
 [h: status=input(
   strformat("Choice|%s|Skill|LIST|VALUE=STRING",SkillNames),
-  "ArmorCheck|0|Armor Check Penalty?|Check",
-  "ShieldCheck|0|Heavy Shield Check Penalty?|Check",
+  strformat("ArmorCheck|0,-1,-2|Armor Check Penalty|RADIO|ORIENT=H SELECT=%d",ArmorCheckPenalty * -1),
+  strformat("ShieldCheck|0,-2|Shield Check Penalty|RADIO|ORIENT=H SELECT=%d",ShieldCheckPenalty / -2),
   "Temp|0|Temp Bonus"
 )]
 [h: abort(status)]
@@ -20,3 +21,5 @@
 [h:output=customTooltip(strformat("d20(%d) + Level(%d) + %s(%d)%s%s%s%s",dieRoll,HalfLevel,json.get(statNameJson,Choice),json.get(statValJson,Choice),if(Skill!=0,strformat(" + Skill(%d)",Skill),""),if(listContains(armorPenalized,Choice)>0,if(ArmorCheck," + Armor(-1)",""),""),if(listContains(armorPenalized,Choice)>0,if(ShieldCheck," + Shield(-2)",""),""),if(Temp != 0,strformat(" + Temp(%d)",Temp),"")),dieRoll+HalfLevel+json.get(statValJson,Choice)+Skill+if(listContains(armorPenalized,Choice)>0,Armor+Shield,0)+Temp)]
 {output}
 [if(dieRoll==20): '<br><font color="red">***CRITICAL SUCCESS***</font>']
+
+!!
