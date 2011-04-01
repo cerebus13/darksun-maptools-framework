@@ -40,8 +40,9 @@ WillBase:0
 WillMod:0
 -------------LIMITED USES-------------
 *ActionPoints (AP):0
-*PowerPoints (PP)
-MaxPowerPoints
+*PP:{strformat("%s",if(PowerPoints != 0,PowerPoints,""))}
+PowerPoints:0
+MaxPowerPoints:0
 -------------OTHER STATISTICS-------------
 *Elevation (Elev)
 *Senses:Pers {10+WisMod+HalfLevel+0} / Insi {10+WisMod+HalfLevel+0}
@@ -54,6 +55,8 @@ Miscellaneous (Misc)
 Milestone:0
 UseLib
 SaveBonus:0
+ArmorCheckPenalty:0
+ShieldCheckPenalty:0
 -------------STATIC ATTACK, DAMAGE, HEAL, TEMP HP MODIFIERS-------------
 AllAtkModList (AllAtk)
 *AttackBonuses (ABon)
