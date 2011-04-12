@@ -132,10 +132,13 @@ public class NPCMaker extends JFrame {
 	npcList.addListSelectionListener(listListener);
 	npcList.addFocusListener(focusListener);
 	npcList.addKeyListener(keyListener);
+    npcList.setPreferredSize(null);
 	//npcList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 	JScrollPane npcScrollPane = new JScrollPane(npcList);
-	npcScrollPane.setPreferredSize(new Dimension(350, 350));
+    npcScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+    npcScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	npcScrollPane.setPreferredSize(new Dimension(250, 250));
 	npcScrollPane.setMinimumSize(new Dimension(10, 10));
 	centerPanel.add(npcScrollPane);
 	add(centerPanel, BorderLayout.CENTER);
@@ -282,7 +285,7 @@ public class NPCMaker extends JFrame {
     }
 
     /**
-     * Provides a listener that allows keyboard selction of buttons
+     * Provides a listener that allows keyboard selection of buttons
      */
     class KeyboardListener extends KeyAdapter {
 	public void keyTyped(KeyEvent e) {
@@ -315,7 +318,7 @@ public class NPCMaker extends JFrame {
     class ListFocusListener implements FocusListener {
 	@Override
 	public void focusGained(FocusEvent e) {
-	    npcList.setSelectedIndex(0);
+	    //npcList.setSelectedIndex(0);
 	}
 
 	@Override
