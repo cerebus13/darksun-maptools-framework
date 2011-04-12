@@ -108,6 +108,8 @@ public class Token {
      */
     public void setPortrait(File port) {
 	try {
+        if (port == null || !port.exists())
+            return;
 	    myPortrait = port;
 	    InputStream in = new FileInputStream(myPortrait);
 	    MD5Key md5 = new MD5Key(in);
@@ -1190,6 +1192,7 @@ public class Token {
             html = html.replace("[W]", "W");
             html = html.replace("[", "(");
             html = html.replace("]", ")");
+            html = html.replace("&nbsp;", "");
 
             // finally build a frame for the html to live in.
             String command;

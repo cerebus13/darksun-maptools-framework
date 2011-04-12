@@ -256,7 +256,14 @@ public class NPCBuilder extends JDialog {
                     else if (xmlRadio.isSelected())
                         pt = "XML";
                     NPCToken token = new NPCToken(myNPC,pt,joeRadio.isSelected());
-                    token.setPortrait(portraitFile);
+                    if (portraitFile != null && portraitFile.exists())
+                        token.setPortrait(portraitFile);
+                    else
+                    {
+                        portraitFile = new File(TokenMaker.npcImageFilePath);
+                        if (portraitFile != null && portraitFile.exists())
+                            token.setPortrait(portraitFile);
+                    }
                     token.setTokenFile(saveFile);
                     token.setTokenName(saveFile.getName().replace(suffix, ""));
                     if (xmlRadio.isSelected())
@@ -290,7 +297,14 @@ public class NPCBuilder extends JDialog {
                         else if (xmlRadio.isSelected())
                             pt = "XML";
                         NPCToken token = new NPCToken(myN,pt,joeRadio.isSelected());
-                        token.setPortrait(portraitFile);
+                        if (portraitFile.exists())
+                            token.setPortrait(portraitFile);
+                        else
+                        {
+                            portraitFile = new File(TokenMaker.npcImageFilePath);
+                            if (portraitFile.exists())
+                                token.setPortrait(portraitFile);
+                        }
                         token.setTokenFile(saveFile);
                         token.setTokenName(myN.getName());
                         if (xmlRadio.isSelected())
