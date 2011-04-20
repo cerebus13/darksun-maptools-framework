@@ -1,0 +1,17 @@
+@@ @AddAllSelectedToInitiative
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+
+[h:initGroup = getSelectedNames("json")]
+
+[foreach(token,initGroup,""),CODE:
+{
+  [token(token),CODE:
+  {       
+    [h:addToInitiative()]
+    [h:dieRoll=eval("1d20")]
+    [h:token.init=dieRoll+if(getProperty("Initiative")=="",0,getProperty("Initiative"))]
+  }]
+}]
+All Selected Tokens added to Initiative!
+
+!!
