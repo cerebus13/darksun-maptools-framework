@@ -1,0 +1,7 @@
+[h:selGroup = getSelected("json")]
+
+[foreach(tokID,selGroup,""),CODE:
+{
+  [h:switchToken(tokID)]
+  [macro("PassedRechargePowers@"+getProperty("UseLib")): json.set("{}","tokenID",tokID)]
+}]

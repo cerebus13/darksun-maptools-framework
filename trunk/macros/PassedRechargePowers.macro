@@ -1,0 +1,21 @@
+@@ @PassedRechargePowers
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=internal;tooltip=
+
+[h:tokenID = json.get(macro.args, "tokenID")]
+[h:switchToken(tokenID)]
+
+[h,foreach(m,getMacros(),""), code: 
+{
+  [h:index=getMacroIndexes(m)]
+  [h,if(isNumber(index)): propJson=getMacroProps(index,"json");propJson = '{}']
+  [h:label=json.get(propJson, "label")]
+  [h,if(matches(label,".*Recharge.*")),code:
+  {
+    [h: chargeRoll = eval("1d6")]
+    [h: chargeNumber = number(substring(label,length(label)-2,length(label)-1))]
+    [h,if(chargeRoll>=chargeNumber): setMacroProps(index, "label="+replace(label, " \\(Recharge "+chargeNumber+"\\)", ""))]
+  };{[h: ""]}]
+}]
+[s: getName(tokenID) + " - Recharge Powers run!<br>"]
+
+!!
