@@ -19,5 +19,6 @@
 [h:defineFunction("detailTargetScreen", "detailTargetScreen@"+getMacroLocation(), 1, 0 ) ]
 [h:defineFunction("bonusTargetScreen", "bonusTargetScreen@"+getMacroLocation(), 1, 0 ) ]
 [h:defineFunction("updateMacroLabelByIndex", "updateMacroLabelByIndex@"+getMacroLocation(), 1, 0 ) ]
+[h:defineFunction("rollMax","rollMax@"+getMacroLocation(),1)]
 
 !!
