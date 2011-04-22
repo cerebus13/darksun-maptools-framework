@@ -539,96 +539,109 @@ public class NPC extends Character {
             if (str.equals("Alignment")) {
                 state = State.ALIGNMENT; // process end stats
             }
-            if (str.equals("Equipment")) {
+            else if(str.equals("Equipment"))  {
                 state = State.EQUIPMENT;
             }
-            if (str.equals("Languages")) {
+            else if (str.equals("Languages")) {
                 state = State.LANGUAGES; // process end stats
             }
-            if (str.equals("Initiative")) {
+            else if (str.equals("Initiative")) {
                 state = State.INITIATIVE;
             }
-            if (str.equals("Perception")) {
+            else if (str.equals("Perception")) {
                 state = State.SENSES;
             }
-            if (str.equals("Senses")) {
+            else if (str.equals("Senses")) {
                 state = State.SENSES;
             }
-            if (str.equals("HP")) {
+            else if (str.equals("HP")) {
                 state = State.HP;
             }
-            if (str.equals("Bloodied")) {
+            else if (str.equals("Bloodied")) {
                 state = State.BLOODIED;
             }
-            if (str.equals("Regeneration")) {
+            else if (str.equals("Regeneration")) {
                 state = State.REGENERATION;
             }
-            if (str.equals("AC")) {
+            else if (str.equals("AC")) {
                 state = State.AC;
             }
-            if (str.equals("Fortitude")) {
+            else if (str.equals("Fortitude")) {
                 state = State.FORTITUDE;
             }
-            if (str.equals("Reflex")) {
+            else if (str.equals("Reflex")) {
                 state = State.REFLEX;
             }
-            if (str.equals("Will")) {
+            else if (str.equals("Will")) {
                 state = State.WILL;
             }
-            if (str.equals("Immune")) {
+            else if (str.equals("Immune")) {
                 state = State.IMMUNE;
             }
-            if (str.equals("Resist")) {
+            else if (str.equals("Resist")) {
                 state = State.RESIST;
             }
-            if (str.equals("Vulnerable")) {
+            else if (str.equals("Vulnerable")) {
                 state = State.VULNERABLE;
             }
-            if (str.equals("Saving Throws")) {
+            else if (str.equals("Saving Throws")) {
                 state = State.SAVINGTHROWS;
             }
-            if (str.equals("Speed")) {
+            else if (str.equals("Speed")) {
                 state = State.SPEED;
             }
-            if (str.equals("Action Points")) {
+            else if (str.equals("Action Points")) {
                 state = State.ACTIONPOINTS;
             }
-            if (str.equals("Skills")) {
+            else if (str.equals("Skills")) {
                 state = State.SKILLS;
             }
-            if (str.equals("Str")) {
+            else if (str.equals("Str")) {
                 state = State.STRENGTH;
             }
-            if (str.equals("Con")) {
+            else if (str.equals("Con")) {
                 state = State.CONSTITUTION;
             }
-            if (str.equals("Dex")) {
+            else if (str.equals("Dex")) {
                 state = State.DEXTERITY;
             }
-            if (str.equals("Int")) {
+            else if (str.equals("Int")) {
                 state = State.INTELLIGENCE;
             }
-            if (str.equals("Wis")) {
+            else if (str.equals("Wis")) {
                 state = State.WISDOM;
             }
-            if (str.equals("Cha")) {
+            else if (str.equals("Cha")) {
                 state = State.CHARISMA;
             }
-            if (str.equals("Description:"))
+            else if (str.equals("Description:"))
+            {
                 state = State.DESCRIPTION;
+            }
+            else if (str.equals("Darkvision"))
+            {
+                senses += "; Darkvision";
+            }
+            else if (str.equals("Low-Light vision"))
+            {
+                senses += "; Low-Light vision";
+            }
 		break;
 	    case INITIATIVE:
 		initiative = stringToInt(str);
 		state = State.STATS; // go look for another stat block label
 		break;
 	    case SENSES:
-		if (str.contains("Perception")) { // old style stat block
-		    senses = str;
-		} else { // MM3+ stat block
-		    senses = "Perception " + str;
-		}
-		state = State.STATS;
-		break;
+            if (str.contains("Perception"))
+            { // old style stat block
+                senses = str;
+            }
+            else
+            { // MM3+ stat block
+                senses = "Perception " + str;
+            }
+            state = State.STATS;
+            break;
 	    case HP:
 		HP = stringToInt(str);
 		state = State.STATS;

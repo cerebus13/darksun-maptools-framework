@@ -271,15 +271,6 @@ public class NPCToken extends Token {
     {
         if (tokenName == null || tokenFile == null)
             return;
-        try
-        {
-            if (tokenName != null)
-                new File(tokenName).mkdir();
-        }
-        catch (Exception e)
-        {
-            System.err.println("Error making a directory for the token: " + e);
-        }
         // Write out the XML
         try
         {
