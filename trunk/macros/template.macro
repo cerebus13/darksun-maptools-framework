@@ -1,0 +1,43 @@
+[macro("CallAttack@"+UseLib):
+  json.set
+  (
+  "{}",
+  "atkKey", 1,
+  "atkName", "NAME",
+  "atkType", 1,
+  "atkTypeName", "At-Will",
+  "keywords", "Weapon, Melee, Area, Ranged",
+  "damageTypes", "REPLACE",
+  "actionType", "REPLACE Action",
+  "targetDefense", "AC",
+  "rangeText", "Melee Weapon",
+  "numTargetsText", "One Creature",
+  "atkMod", '{"Bonus":13}',
+  "damMod", '{"Bonus":5}',
+  "damRoll", "1d8",
+  "critDamRoll", "8",
+  "effectText", "<b>On Hit:</b> Target is marked until the end of your next turn."
+  )
+]
+
+<!-- Extra Stuff
+  "atkKey", #,  // 1 = Attack with Atk & Dam rolls, 2 = Attack with only Atk roll, 3 = Attack with only Dam roll, 7 = Heal, 15 = Power that applies only states/marks, 20 = Utility
+  "atkType", #,  // At-Will = 1, Encounter = 2, Daily = 3, Other = 4
+  "markJson", '[1,2]',  // Json array of when to mark target.  0 = miss, 1 = hit, 2 = crit, 3 = always
+  "targetStateJson", '{1:["Grabbed"],2:["Grabbed"]}',
+  "selfStateJson", '{1:["Grabbed"],2:["Grabbed"]}',
+  "modDefenseJson", strformat('{"3":{"1":[{"modDef":1, "modName":"Shield", "modValue":4, "modOwner": "%s"},{"modDef":3, "modName":"Shield", "modValue":4, "modOwner": "%s"}]}}',getName(),getName()),
+  "modAttackJson", strformat('{"1":{"0":[{"modAtk": 1, "modName":"Dishearten", "modValue": -2, "modOwner": "%s"}]},"2":{"0": [{"modAtk": 1, "modName": "Dishearten", "modValue": -2, "modOwner": "%s"}]}}', getName(), getName())
+  "missDamageRoll", -2,  // damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous
+  "needMilestone", 1,
+  "healMod", '{"Bonus":15}',
+  "yesHeal", 1,
+  "yesTempHP", 1,
+  "useSurge", 1,
+  "healRoll", "1d6",
+  "tempHPMod", '{"Bonus":15}',
+  "tempHPRoll", "1d4",
+  "labelAppend", " (Recharge 6)",
+  [h:updateMacroLabel(" (Recharge 4)")]
+  [h:updateMacroLabel(" (Used)")]
+-->
