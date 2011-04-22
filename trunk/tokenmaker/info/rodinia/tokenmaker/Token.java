@@ -1175,6 +1175,7 @@ public class Token {
             return;
 
         String hotkey = "None";
+        String realUsage = "";
         if (!p.getName().equals(characterSheet)) {
             // get the HTML for the power from the compendium
             String html = getPowerText(p);
@@ -1217,7 +1218,8 @@ public class Token {
                 }
                 else if (usage.toLowerCase().contains("recharge"))
                 {
-                    usage = "Recharge";
+                    realUsage = usage;
+                    usage = "Encounter";
                     atkType = 2;
                 }
                 else
@@ -1279,14 +1281,19 @@ public class Token {
                           "       \"atkMod\", '{\"Bonus\":" + p.getAtkBonus() + "}',\n" +
                           "       \"damMod\", '{\"Bonus\":0}',\n" +
                           "       \"damRoll\", \"0d0\",\n" +
-                          "       \"critDamRoll\", \"0\",\n" +
+                          "       \"critDamRoll\", string(rollMax(\"0\")),\n";
+                if (realUsage.toLowerCase().contains("recharge"))
+                {
+                    command += "       \n\"labelAppend\", \" (Recharge " + realUsage.substring(realUsage.length() - 1) + ")\")";
+                }
+                else if(atkType == 2 || atkType == 3)
+                {
+                    command += "       \n\"labelAppend\", \" (Used)\"";
+                }
+                command +=
                           "       \"effectText\", \"" + html.trim() + "\"\n" +
                           "       )\n" +
                           "]";
-                if (p.getUsage().toLowerCase().contains("recharge"))
-                    command += "\n[h:updateMacroLabel(\" (Recharge " + p.getUsage().substring(p.getUsage().length() - 1) + ")\")]";
-                if (atkType == 2 || atkType == 3)
-                    command += "\n[h:updateMacroLabel(\" (Used)\")]";
             }
             else
             {
@@ -1302,26 +1309,29 @@ public class Token {
 
         String colorKey = "blue";
         String fontColorKey = "white";
+        String sortBy = "5";
 
         if (p.getUsage() != null
             && p.getUsage().toLowerCase().contains("at-will")) {
-            colorKey = "green";
+            colorKey = "lime";
             fontColorKey = "black";
+            sortBy = "0";
         }
-        if (p.getUsage() != null
+        else if(p.getUsage() != null
             && p.getUsage().toLowerCase().contains("encounter")) {
             colorKey = "red";
             fontColorKey = "white";
+            sortBy = "2";
         }
-        if (p.getUsage() != null
+        else if(p.getUsage() != null
             && p.getUsage().toLowerCase().contains("daily")) {
             colorKey = "black";
             fontColorKey = "white";
         }
-        if (p.getUsage() != null
-            && p.getUsage().toLowerCase().contains("recharge")) {
-            colorKey = "magenta";
-            fontColorKey = "white";
+        if (realUsage.toLowerCase().contains("recharge")) {
+            colorKey = "yellow";
+            fontColorKey = "black";
+            sortBy = "3";
         }
 
         try {
@@ -1335,8 +1345,8 @@ public class Token {
             writer.write("        <command>" + p.getDetail());
             writer.write("        </command>\n");
             writer.write("        <label>" + powerName + "</label>\n");
-            writer.write("        <group>" + p.getUsage() + "</group>\n");
-            writer.write("        <sortby>" + p.getLevel() + "</sortby>\n");
+            writer.write("        <group></group>\n");
+            writer.write("        <sortby>" + sortBy + "</sortby>\n");
             writer.write("        <autoExecute>true</autoExecute>\n");
             writer.write("        <includeLabel>false</includeLabel>\n");
             writer.write("        <applyToTokens>false</applyToTokens>\n");
@@ -1385,8 +1395,8 @@ public class Token {
             writer.write("        <label>" + auraName + 
                                   (me.getAuraKeywords() != null ? " (" + me.getAuraKeywords() + ")" : "")
                                   + " (Range " + me.getAuraRange() + ")</label>\n");
-            writer.write("        <group>Aura</group>\n");
-            writer.write("        <sortby>0</sortby>\n");
+            writer.write("        <group></group>\n");
+            writer.write("        <sortby>4</sortby>\n");
             writer.write("        <autoExecute>true</autoExecute>\n");
             writer.write("        <includeLabel>false</includeLabel>\n");
             writer.write("        <applyToTokens>false</applyToTokens>\n");
@@ -1418,12 +1428,14 @@ public class Token {
         String label = "";
         String group = "";
         String fontColorKey = "";
-        for(int i = 1; i < 14; i++)
+        String sortBy = "0";
+        String toolTip = "";
+        for(int i = 1; i < 21; i++)
         {
             switch(i)
             {
                 case 1: // Bull Rush
-                    colorKey = "green";
+                    colorKey = "lime";
                     command = "[macro(\"CallAttack@\"+UseLib):\n" +
                               "       json.set\n" +
                               "       (\n" +
@@ -1447,10 +1459,113 @@ public class Token {
                               "       )\n" +
                               "]";
                     label = "Bull Rush";
-                    group = "at-will";
+                    group = "At-Will";
                     fontColorKey = "black";
+                    toolTip = " ";
                     break;
-                case 2: // Ability Check
+                case 2: // Total Defense
+                    colorKey = "lime";
+                    command =
+                    "<!-- pass self as targetname, it will not be used -->\n" +
+                    "[h: decodeModDefenseJson(strformat('{\"1\":[{\"modDef\":0, \"modName\":\"Total Defense\", \"modValue\":2, \"modOwner\":\"%s\"}]}',getName()),getName())]\n" +
+                    "[macro(\"CallAttack@\"+UseLib):\n" +
+                    "  json.set\n" +
+                    "  (\n" +
+                    "    \"{}\",\n" +
+                    "    \"atkKey\", 20,\n" +
+                    "    \"atkName\", \"Total Defense\",\n" +
+                    "    \"atkType\", 1,\n" +
+                    "    \"atkTypeName\", \"At-Will\",\n" +
+                    "    \"actionType\", \"Standard Action\",\n" +
+                    "    \"effectText\", \"&lt;b&gt;Effect:&lt;/b&gt; You gain a +2 bonus to all defenses until the start of your next turn.\"\n" +
+                    "  )\n" +
+                    "]";
+                    label = "Total Defense";
+                    group = "At-Will";
+                    fontColorKey = "black";
+                    toolTip = " ";
+                    break;
+                case 3: // Grab
+                    colorKey = "lime";
+                    command =
+                    "[macro(\"CallAttack@\"+UseLib):\n" +
+                    "  json.set\n" +
+                    "  (\n" +
+                    "  \"{}\",\n" +
+                    "  \"atkKey\", 2,\n" +
+                    "  \"atkName\", \"Grab\",\n" +
+                    "  \"atkType\", 1,\n" +
+                    "  \"atkTypeName\", \"At-Will\",\n" +
+                    "  \"actionType\", \"Standard Action\",\n" +
+                    "  \"targetDefense\", \"Reflex\",\n" +
+                    "  \"hitStatAdded\", \"Strength\",\n" +
+                    "  \"rangeText\", \"Melee 1\",\n" +
+                    "  \"numTargetsText\", \"One Creature within 1 size category of you\",\n" +
+                    "  \"atkMod\", strformat('{\"Str\":%d}',HalfLevel+StrMod),\n" +
+                    "  \"targetStateJson\", '{\"1\":\"Grabbed\",\"2\":\"Grabbed\"}',\n" +
+                    "  \"effectText\", \"&lt;b&gt;Requirement:&lt;/b&gt; You must have at least one hand free.&lt;br&gt;&lt;b&gt;On Hit:&lt;/b&gt; The enemy is grabbed until it escapes or you end the grab.&lt;br&gt;&lt;b&gt;Sustain:&lt;/b&gt; Minor action to sustain a grab.\"\n" +
+                    "  )\n" +
+                    "]";
+                    label = "Grab";
+                    group = "At-Will";
+                    fontColorKey = "black";
+                    toolTip = " ";
+                    break;
+                case 4: // Grab - Move
+                    colorKey = "lime";
+                    command =
+                    "[macro(\"CallAttack@\"+UseLib):\n" +
+                    "  json.set\n" +
+                    "  (\n" +
+                    "  \"{}\",\n" +
+                    "  \"atkKey\", 2,\n" +
+                    "  \"atkName\", \"Grab - Move\",\n" +
+                    "  \"atkType\", 1,\n" +
+                    "  \"atkTypeName\", \"At-Will\",\n" +
+                    "  \"actionType\", \"Standard Action\",\n" +
+                    "  \"targetDefense\", \"Fortitude\",\n" +
+                    "  \"hitStatAdded\", \"Strength\",\n" +
+                    "  \"rangeText\", \"Melee 1\",\n" +
+                    "  \"numTargetsText\", \"One Creature grabbed by you\",\n" +
+                    "  \"atkMod\", strformat('{\"Str\":%d}',HalfLevel+StrMod),\n" +
+                    "  \"effectText\", \"&lt;b&gt;On Hit:&lt;/b&gt; Move up to half your speed and pull the grabbed target with you.\"\n" +
+                    "  )\n" +
+                    "]";
+                    label = "Grab - Move";
+                    group = "At-Will";
+                    fontColorKey = "black";
+                    toolTip = " ";
+                    break;
+                case 5: // Escape
+                    colorKey = "lime";
+                    command =
+                    "[h:acro=getStrProp(Skills, \"Acrobatics\") + DexMod]\n" +
+                    "[h:ath=getStrProp(Skills, \"Athletics\") + StrMod]\n" +
+                    "[h,if(acro > ath): useMod = acro; useMod = ath]\n" +
+                    "[h,if(acro > ath): targDef = \"Reflex\"; targDef = \"Fortitude\"]\n" +
+                    "[macro(\"CallAttack@\"+UseLib):\n" +
+                    "  json.set\n" +
+                    "  (\n" +
+                    "  \"{}\",\n" +
+                    "  \"atkKey\", 2,\n" +
+                    "  \"atkName\", \"Escape\",\n" +
+                    "  \"atkType\", 1,\n" +
+                    "  \"atkTypeName\", \"At-Will\",\n" +
+                    "  \"keywords\", \"\",\n" +
+                    "  \"actionType\", \"Standard Action\",\n" +
+                    "  \"targetDefense\", targDef,\n" +
+                    "  \"rangeText\", \"Melee\",\n" +
+                    "  \"numTargetsText\", \"One Creature\",\n" +
+                    "  \"atkMod\", strformat('{\"Bonus\":%d}',HalfLevel+useMod),\n" +
+                    "  \"effectText\", \"Success: You end the grab, and may shift 1 square.\"\n" +
+                    "  )\n" +
+                    "]";
+                    label = "Escape";
+                    group = "At-Will";
+                    fontColorKey = "black";
+                    toolTip = " ";
+                    break;
+                case 6: // Ability Check
                     colorKey = "default";
                     command = "[h: status=input(\n" +
                               "                    \"Choice|Strength,Constitution,Dexterity,Intelligence,Wisdom,Charisma|Ability|LIST|VALUE=STRING\",\n" +
@@ -1464,14 +1579,7 @@ public class Token {
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 3: // CallUpdatePropMods
-                    colorKey = "default";
-                    command = "[macro(\"CallUpdatePropMods@\"+UseLib): \"\"]";
-                    label = "CallUpdatePropMods";
-                    group = "custom";
-                    fontColorKey = "black";
-                    break;
-                case 4: // Clear Defense Mods
+                case 7: // Clear Defense Mods
                     colorKey = "default";
                     command = "[macro(\"ClearDefMods@\"+UseLib): \"\"]\n" +
                               "[abort(0)]";
@@ -1479,7 +1587,33 @@ public class Token {
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 5: // Clear Mark
+                case 8: // Clear AtkDam Mods
+                    colorKey = "default";
+                    command = "[macro(\"ClearAtkDamMods@\"+UseLib): \"\"]\n" +
+                              "[abort(0)]";
+                    label = "Clear AtkDam Mods";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 9: // Clear VulnResist
+                    colorKey = "default";
+                    command = "[macro(\"ClearVulnResist@\"+UseLib): \"\"]\n" +
+                              "[abort(0)]";
+                    label = "Clear VulnResist";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 10: // Clear All Mods
+                    colorKey = "default";
+                    command = "[macro(\"ClearDefMods@\"+UseLib): \"\"]\n" +
+                              "[macro(\"ClearAtkDamMods@\"+UseLib): \"\"]\n" +
+                              "[macro(\"ClearVulnResist@\"+UseLib): \"\"]\n" +
+                              "[abort(0)]";
+                    label = "Clear All Mods";
+                    group = "custom";
+                    fontColorKey = "black";
+                    break;
+                case 11: // Clear Mark
                     colorKey = "default";
                     command = "[macro(\"CallClearMark@\"+UseLib): \"\"]\n" +
                               "[abort(0)]";
@@ -1487,35 +1621,42 @@ public class Token {
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 6: // Edit Skills
+                case 12: // Edit Skills
                     colorKey = "default";
                     command = "[macro(\"CallEditSkills@\"+UseLib): \"\"]";
                     label = "Edit Skills";
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 7: // NPC Skill Check
+                case 13: // NPC Skill Check
                     colorKey = "default";
                     command = "[macro(\"CallNpcSkillCheck@\"+UseLib): \"\"]";
                     label = "Skill Check";
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 8: // Init
+                case 14: // Recharge
+                    colorKey = "magenta";
+                    command = "[macro(\"RechargePowers@\"+UseLib): \"\"]";
+                    label = "Recharge";
+                    group = "General";
+                    fontColorKey = "white";
+                    break;
+                case 15: // Init
                     colorKey = "magenta";
                     command = "[H: addToInitiative()]<b>Initiative:</b> [token.init=1d20+Initiative]";
                     label = "Init";
                     group = "General";
                     fontColorKey = "white";
                     break;
-                case 9: // Saving Throw
+                case 16: // Saving Throw
                     colorKey = "magenta";
                     command = "[macro(\"CallSave@\"+UseLib): \"\"]";
                     label = "Saving Throw";
                     group = "General";
                     fontColorKey = "white";
                     break;
-                case 10: // View Modifiers
+                case 17: // View Modifiers
                     colorKey = "yellow";
                     command = "[macro(\"ModifierDialog@\"+UseLib): \"\"]\n" +
                               "[abort(0)]";
@@ -1523,21 +1664,21 @@ public class Token {
                     group = "General";
                     fontColorKey = "black";
                     break;
-                case 11: // Manual HP Adjust
+                case 18: // Manual HP Adjust
                     colorKey = "magenta";
                     command = "[macro(\"CallHP@\"+UseLib): \"\"]";
                     label = "Manual HP Adjust";
                     group = "Healing/Damage";
                     fontColorKey = "white";
                     break;
-                case 12: // Self Damage
+                case 19: // Self Damage
                     colorKey = "magenta";
                     command = "[macro(\"CallDamage@\"+UseLib): \"\"]";
                     label = "Self Damage";
                     group = "Healing/Damage";
                     fontColorKey = "white";
                     break;
-                case 13: // Self Heal
+                case 20: // Self Heal
                     colorKey = "magenta";
                     command = "[macro(\"CallHeal@\"+UseLib): \"\"]";
                     label = "Self Heal";
@@ -1559,7 +1700,7 @@ public class Token {
                 writer.write("        </command>\n");
                 writer.write("        <label>" + label + "</label>\n");
                 writer.write("        <group>" + group + "</group>\n");
-                writer.write("        <sortby>0</sortby>\n");
+                writer.write("        <sortby>" + sortBy + "</sortby>\n");
                 writer.write("        <autoExecute>true</autoExecute>\n");
                 writer.write("        <includeLabel>false</includeLabel>\n");
                 writer.write("        <applyToTokens>false</applyToTokens>\n");
@@ -1568,7 +1709,7 @@ public class Token {
                 writer.write("        <minWidth>133</minWidth>\n");
                 writer.write("        <maxWidth></maxWidth>\n");
                 writer.write("        <allowPlayerEdits>false</allowPlayerEdits>\n");
-                writer.write("        <toolTip></toolTip>\n");
+                writer.write("        <toolTip>" + toolTip + "</toolTip>\n");
                 writer.write("        <commonMacro>false</commonMacro>\n");
                 writer.write("        <compareGroup>true</compareGroup>\n");
                 writer.write("        <compareSortPrefix>true</compareSortPrefix>\n");
