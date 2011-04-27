@@ -1,11 +1,6 @@
 <!-- ClearDefMods macro -->
 
+[h: applyModDefenseJson("{}", getName())]
 [h,if(getState("MinusToAC")):setState("MinusToAC", 0)]
 [h,if(getState("FightingDefense")): setState("FightingDefense",0)]
 [h,if(getState("TotalDefense")): setState("TotalDefense",0)]
-[h,if(ACMod!=0):ACMod=0]
-[h,if(FortMod!=0):FortMod=0]
-[h,if(WillMod!=0):WillMod=0]
-[h,if(RefMod!=0):RefMod=0]
-[h,if(AllDefMod!=0):AllDefMod=0]
-[h,if(length(AllDefModList) != 0):AllDefModList = ""]
