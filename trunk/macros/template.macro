@@ -21,7 +21,9 @@
 ]
 
 <!-- Extra Stuff
-  "atkKey", #,  // 1 = Attack with Atk & Dam rolls, 2 = Attack with only Atk roll, 3 = Attack with only Dam roll, 7 = Heal, 15 = Power that applies only states/marks, 20 = Utility
+  "atkKey", #,  // 1 = Attack with Atk & Dam rolls, 2 = Attack with only Atk roll, 3 = Attack with only Dam roll
+                // 4 = AOE attack with Atk/Dam rolls, 5 = AOE attack with Atk roll only, 6 = AOE attack with Dam roll only  
+                // 7 = Heal, 15 = Power that applies only states/marks, 20 = Utility
   "atkType", #,  // At-Will = 1, Encounter = 2, Daily = 3, Other = 4
   "markJson", '[1,2]',  // Json array of when to mark target.  0 = miss, 1 = hit, 2 = crit, 3 = always
   "targetStateJson", '{1:["Grabbed"],2:["Grabbed"]}',
@@ -30,14 +32,15 @@
   "modAttackJson", strformat('{"1":{"0":[{"modAtk": 1, "modName":"Dishearten", "modValue": -2, "modOwner": "%s"}]},"2":{"0": [{"modAtk": 1, "modName": "Dishearten", "modValue": -2, "modOwner": "%s"}]}}', getName(), getName())
   "missDamageRoll", -2,  // damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous
   "needMilestone", 1,
-  "healMod", '{"Bonus":15}',
-  "yesHeal", 1,
-  "yesTempHP", 1,
-  "useSurge", 1,
-  "healRoll", "1d6",
-  "tempHPMod", '{"Bonus":15}',
-  "tempHPRoll", "1d4",
-  "labelAppend", " (Recharge 6)",
-  [h:updateMacroLabel(" (Recharge 4)")]
+  "healMod", '{"Bonus":15}',  // flat modifier to HP heals
+  "yesHeal", 1,     // heal power gives HPs
+  "yesTempHP", 1,   // heal power gives TempHPs
+  "healSurge", 1,   // heal Target's surge value
+  "spendSurge", 1,  // spend a surge on the Target
+  "healRoll", "1d6",  // roll to apply to HP heals
+  "tempHPMod", '{"Bonus":15}',   // flat mod to TempHP heals
+  "tempHPRoll", "1d4",           // roll to apply to TempHP heals
+  "labelAppend", " (Recharge 6)",  // label to append to end of power that isn't an atkType 20 since Sam's code change
+  [h:updateMacroLabel(" (Recharge 4)")] // use these updates for atkType 20 powers
   [h:updateMacroLabel(" (Used)")]
 -->
