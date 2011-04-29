@@ -25,6 +25,7 @@
 
 Dazed
 Grabbed
+Prone
 Restrained
 Slowed
 
@@ -59,6 +60,7 @@ Ongoing_poison
   "tempHPMod", '{"Bonus":15}',   // flat mod to TempHP heals
   "tempHPRoll", "1d4",           // roll to apply to TempHP heals
   "labelAppend", " (Recharge 6)",  // label to append to end of power that isn't an atkType 20 since Sam's code change
+  "vulnResistJson", strformat('{"3":{"1": [{"modDef": 0, "modName": "All", "modValue": %d, "modOwner": "%s"}]}}', 5, getName()), // applies a 5 resist all modifier to self always
   [h:updateMacroLabel(" (Recharge 4)")] // use these updates for atkType 20 powers
   [h:updateMacroLabel(" (Used)")]
 -->
