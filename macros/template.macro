@@ -20,6 +20,23 @@
   )
 ]
 
+<!-- Conditions
+"targetStateJson", '{1:["Stater"],2:["Stater"]}',
+
+Dazed
+Grabbed
+Restrained
+Slowed
+
+Ongoing_necrotic
+Ongoing_poison
+
+-->
+
+<!-- HTML special characters
+&lt;br&gt;
+-->
+
 <!-- Extra Stuff
   "atkKey", #,  // 1 = Attack with Atk & Dam rolls, 2 = Attack with only Atk roll, 3 = Attack with only Dam roll
                 // 4 = AOE attack with Atk/Dam rolls, 5 = AOE attack with Atk roll only, 6 = AOE attack with Dam roll only  
@@ -30,6 +47,7 @@
   "selfStateJson", '{1:["Grabbed"],2:["Grabbed"]}',
   "modDefenseJson", strformat('{"3":{"1":[{"modDef":1, "modName":"Shield", "modValue":4, "modOwner": "%s"},{"modDef":3, "modName":"Shield", "modValue":4, "modOwner": "%s"}]}}',getName(),getName()),
   "modAttackJson", strformat('{"1":{"0":[{"modAtk": 1, "modName":"Dishearten", "modValue": -2, "modOwner": "%s"}]},"2":{"0": [{"modAtk": 1, "modName": "Dishearten", "modValue": -2, "modOwner": "%s"}]}}', getName(), getName())
+  "critDamRoll", string(rollMax("2d6")),
   "missDamageRoll", -2,  // damage to roll on a miss, will not apply to minions. a -2 means do 1/2 of normal damRoll from previous
   "needMilestone", 1,
   "healMod", '{"Bonus":15}',  // flat modifier to HP heals
