@@ -1470,11 +1470,11 @@ public class Token
                 {
                     command += "       \n\"labelAppend\", \" (Recharge "
                             + realUsage.substring(realUsage.length() - 1)
-                            + ")\")\n";
+                            + "),\")\n";
                 }
                 else if (atkType == 2 || atkType == 3)
                 {
-                    command += "       \n\"labelAppend\", \" (Used)\"\n";
+                    command += "       \n\"labelAppend\", \" (Used),\"\n";
                 }
                 command += "       \"effectText\", \"" + html.trim() + "\"\n"
                         + "       )\n" + "]";
@@ -1547,7 +1547,7 @@ public class Token
             writer.write("        <minWidth>133</minWidth>\n");
             writer.write("        <maxWidth></maxWidth>\n");
             writer.write("        <allowPlayerEdits>true</allowPlayerEdits>\n");
-            writer.write("        <toolTip></toolTip>\n");
+            writer.write("        <toolTip>a</toolTip>\n");
             writer.write("        <commonMacro>false</commonMacro>\n");
             writer.write("        <compareGroup>true</compareGroup>\n");
             writer.write("        <compareSortPrefix>true</compareSortPrefix>\n");
