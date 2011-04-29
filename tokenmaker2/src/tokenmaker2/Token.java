@@ -1470,11 +1470,11 @@ public class Token
                 {
                     command += "       \n\"labelAppend\", \" (Recharge "
                             + realUsage.substring(realUsage.length() - 1)
-                            + ")\")";
+                            + ")\")\n";
                 }
                 else if (atkType == 2 || atkType == 3)
                 {
-                    command += "       \n\"labelAppend\", \" (Used)\"";
+                    command += "       \n\"labelAppend\", \" (Used)\"\n";
                 }
                 command += "       \"effectText\", \"" + html.trim() + "\"\n"
                         + "       )\n" + "]";
