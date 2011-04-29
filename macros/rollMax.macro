@@ -1,7 +1,7 @@
 @@ @rollMax
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
 
-[h:crit=replace(arg(0),"d","*")]
-[r:macro.return=eval(crit)]
+[h:crit=replace(if(isNumber(arg(0)),string(arg(0)),arg(0)),"d","*")]
+[r:macro.return=eval(if(isNumber(crit),string(crit),crit))]
 
 !!
