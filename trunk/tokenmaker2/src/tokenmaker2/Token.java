@@ -1468,13 +1468,11 @@ public class Token
                         + "       \"critDamRoll\", string(rollMax(\"0\")),\n";
                 if (realUsage.toLowerCase().contains("recharge"))
                 {
-                    command += "       \n\"labelAppend\", \" (Recharge "
-                            + realUsage.substring(realUsage.length() - 1)
-                            + "),\")\n";
+                    command += "       \"labelAppend\", \" (Recharge " + realUsage.substring(realUsage.length() - 1) + ")\",\n";
                 }
                 else if (atkType == 2 || atkType == 3)
                 {
-                    command += "       \n\"labelAppend\", \" (Used),\"\n";
+                    command += "       \"labelAppend\", \" (Used)\",\n";
                 }
                 command += "       \"effectText\", \"" + html.trim() + "\"\n"
                         + "       )\n" + "]";
