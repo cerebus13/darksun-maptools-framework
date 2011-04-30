@@ -1828,10 +1828,10 @@ public class Token
                     group = "custom";
                     fontColorKey = "black";
                     break;
-                case 14: // Recharge
+                case 14: // Reecharge
                     colorKey = "magenta";
                     command = "[macro(\"RechargePowers@\"+UseLib): \"\"]";
-                    label = "Recharge";
+                    label = "Reecharge";
                     group = "General";
                     fontColorKey = "white";
                     break;
