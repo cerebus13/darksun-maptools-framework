@@ -2,10 +2,12 @@
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=player;tooltip=
 
 [h: SkillNames = "Acrobatics, Arcana, Athletics, Bluff, Diplomacy, Dungeoneering, Endurance, Heal, History, Insight, Intimidate, Nature, Perception, Religion, Stealth, Streetwise, Thievery"]
+[h: acp = ArmorCheckPenalty * -1]
+[h: scp = ShieldCheckPenalty / -2]
 [h: status=input(
   strformat("Choice|%s|Skill|LIST|VALUE=STRING",SkillNames),
-  strformat("ArmorCheck|0,-1,-2|Armor Check Penalty|RADIO|ORIENT=H SELECT=%d",ArmorCheckPenalty * -1),
-  strformat("ShieldCheck|0,-2|Shield Check Penalty|RADIO|ORIENT=H SELECT=%d",ShieldCheckPenalty / -2),
+  strformat("ArmorCheck|0,-1,-2|Armor Check Penalty|RADIO|ORIENT=H SELECT=%d",acp),
+  strformat("ShieldCheck|0,-2|Shield Check Penalty|RADIO|ORIENT=H SELECT=%d",scp),
   "Temp|0|Temp Bonus"
 )]
 [h: abort(status)]
