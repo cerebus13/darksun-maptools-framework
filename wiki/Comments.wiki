@@ -12,6 +12,7 @@ These are just a series of general comments concerning the framework.
 ===Token Properties===
 
   # Values for Vulns/Resists should always be positive as the code in DoAttack2 determines whether to add or subtract it from the damage done.
+  # Never put a comma in the name of a token as it breaks calls to GetState() against that token.
 
 ===Parameters to CallAttack Macro===
 
