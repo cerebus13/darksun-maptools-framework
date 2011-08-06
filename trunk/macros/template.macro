@@ -20,6 +20,15 @@
   )
 ]
 
+<!-- Macro colors
+At-Will = Lime/Black
+Encounter = Red/Black 
+Trait/Other = Blue/White 
+Recharge = Yellow/Black
+Aura = Orange/Black
+Triggered = Aqua/Black
+-->
+
 <!-- Conditions
 "targetStateJson", '{1:["Stater"],2:["Stater"]}',
 
@@ -32,6 +41,7 @@ Slowed
 
 Ongoing_necrotic
 Ongoing_poison
+Ongoing_damage
 
 -->
 
