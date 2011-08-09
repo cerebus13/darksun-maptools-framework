@@ -49,6 +49,12 @@ Ongoing_damage
 &lt;br&gt;
 -->
 
+<!-- Json Object of when to apply a Defense Modifier to target/self.  0 = miss, 1 = hit, 2 = crit, 3 = always -->
+<!-- Nested Json Object keys: 0 = Target, 1 = Self -->
+<!-- Array of Defense modifier Json object made up of 4 Key/Value pairs (modName, modValue, modDef [0=all,1=AC,2=Fort,3=Ref,4=Will], and modOwner) -->
+<!-- Example: {"3":{"1":[{"modDef":1, "modName":"Priest's Shield", "modValue":1, "modOwner": "Udo"}]}} -->
+<!-- Example: 3 = Perform Always, Nested 1 = To Self, apply Modifier Priest's Shield, as issued by Udo, to increase AC by 1 -->
+
 <!-- Extra Stuff
   "atkKey", #,  // 1 = Attack with Atk & Dam rolls, 2 = Attack with only Atk roll, 3 = Attack with only Dam roll
                 // 4 = AOE attack with Atk/Dam rolls, 5 = AOE attack with Atk roll only, 6 = AOE attack with Dam roll only  
