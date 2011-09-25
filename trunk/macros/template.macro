@@ -32,16 +32,28 @@ Triggered = Aqua/Black
 <!-- Conditions
 "targetStateJson", '{1:["Stater"],2:["Stater"]}',
 
+Blinded
+"targetStateJson", '{1:["Blinded"],2:["Blinded"]}',
 Dazed
+"targetStateJson", '{1:["Dazed"],2:["Dazed"]}',
 Grabbed
+"targetStateJson", '{1:["Grabbed"],2:["Grabbed"]}',
 Immobilized
+"targetStateJson", '{1:["Immobilized"],2:["Immobilized"]}',
 Prone
 Restrained
+"targetStateJson", '{1:["Restrained"],2:["Restrained"]}',
 Slowed
+"targetStateJson", '{1:["Slowed"],2:["Slowed"]}',
+Stunned
+"targetStateJson", '{1:["Stunned"],2:["Stunned"]}',
+Weakened
+"targetStateJson", '{1:["Weakened"],2:["Weakened"]}',
 
 Ongoing_necrotic
 Ongoing_poison
 Ongoing_damage
+"targetStateJson", '{1:["Grabbed","Ongoing_damage"],2:["Grabbed","Ongoing_damage"]}',
 
 -->
 
