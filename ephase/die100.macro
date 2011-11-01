@@ -1,0 +1,25 @@
+@@ @die100
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:dieRoll1=1d10-1]
+[h:dieRoll2=1d10-1]
+[h,if(dieRoll1==dieRoll2): rollMatch = 1;rollMatch = 0]
+[h,if(dieRoll1==0): tensZero = 1; tensZero = 0]
+[h,if(tensZero && rollMatch == 0): dieRoll = dieRoll2; dieRoll = number(concat(string(dieRoll1),string(dieRoll2)))]
+[h,if(tensZero && rollMatch): dieRoll = number("00")]
+
+[h:targetNumber=arg(0)]
+[h,if(argCount() < 2): mods = 0; mods = arg(1)]
+[h,if(argCount() < 3): rollerName = getPlayerName(); rollerName = arg(2)]
+
+[h,if(rollMatch): result = "CRITICAL "; result = ""]
+[h,if(dieRoll <= targetNumber + mods): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
+[h,if(dieRoll <= targetNumber + mods): margin = strformat('<br>%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"Excellent ",""),"Success",dieRoll); margin = strformat('<br>%sMargin of %s: <b>%d</b>.',if((dieRoll - (targetNumber + mods)) > 30,"Severe ",""),"Failure",dieRoll - (targetNumber + mods))]
+
+<span bgcolor=#cccccc><b>{rollerName}</b> rolls <i>2d10</i>.</b></span>
+<br>The total rolled is <b>{dieRoll}</b>.
+<br>The Target Number is <b>{targetNumber + mods}</b>.
+<br>Result: <b>{result}</b>.
+{margin}
+<br><small>{dieRoll} vs. {targetNumber} + {mods}</small>.
+
+!!

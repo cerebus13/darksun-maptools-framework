@@ -1,0 +1,66 @@
+PowerPoints:0
+PL:0
+*PLactual (PL):{PL} | ({floor(Powerpoints/15)})
+----Abilities
+Strength:0
+Stamina:0
+Agility:0
+Dexterity:0
+Fighting:0
+Intellect:0
+Awareness:0
+Presence:0
+----Defense
+#Dodge:0
+#Parry:0
+#Fortitude:0
+#Toughness:0
+#Will:0
+HeroPoints:0
+#Hits:0
+Initiative:{Dexterity}
+HaloCOLOR:none
+----Skills (Total, Ranks + Attributes)
+Acrobatics:No
+Athletics:{Strength}
+Deception:{Presence}
+Insight:{Awareness}
+Intimidation:{Presence}
+Investigation:No
+Perception:{Awareness}
+Persuasion:{Presence}
+SleightofHand:No
+Stealth:{Agility}
+Technology:No
+Treatment:No
+Vehicles:No
+E1:No
+E1Name:New Skill
+E2:No
+E2Name:New Skill
+E3:No
+E3Name:New Skill
+E4:No
+E4Name:New Skill
+E5:No
+E5Name:New Skill
+----Powers
+Power1:0
+Power2:0
+Power3:0
+Power4:0
+Power5:0
+Power6:0
+Power7:0
+Power8:0
+Power9:0
+Power10:0
+Power11:0
+Power12:0
+Power13:0
+Power14:0
+Power15:0
+Power16:0
+Power17:0
+Power18:0
+*SheetLauncher:[macro("Combat@Lib:dcfiles"):""]

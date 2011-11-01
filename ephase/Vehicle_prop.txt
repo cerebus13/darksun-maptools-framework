@@ -1,0 +1,8 @@
+Size
+Strength
+Speed
+Defense
+Toughness
+Weight
+Cost
+Notes

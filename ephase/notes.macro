@@ -1,0 +1,7 @@
+@@ @Notes
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=true ; group=Generic ; tooltip= ; minWidth= ; 
+[r:notes=getNotes()]
+[dialog(getTokenName()+' Notes',"width=400; height=600; temporary=1"):{{notes}}]
+[abort(0)]
+
+!!
