@@ -1,125 +1,122 @@
-!!
 @@ @CharacterSheet
 @PROPS@ fontColor=blue ; autoExecute=true ; fontSize=1.00em ; sortBy=1 ; color=white ; playerEditable=false ; applyToSelected=true ; group=Generic ; tooltip= ; minWidth= ; 
 [h,if( isFrameVisible("CharacterSheet") ), code: {}; { [resetFrame("CharacterSheet")] } ]
 [frame("CharacterSheet"): {
 
-<title>DC Character Sheet</title>
+<title>Eclipse Phase Character Sheet</title>
 <table bgcolor="#CCE8F2">
 
-<tr  background="asset://8b1c6e24556bbf4a1b93f6ca490ed1d9" STYLE="background-repeat: no-repeat" bgcolor='#D32A2C'>
-<td colspan="6" style="padding-top:1px; padding-bottom:1px" >
-<span style="color:white">
-<font size="3">
-<b><span style="color:white">[r:macrolink(token.name,'Notes@Lib:dcfiles','all','','impersonated')] |
-[r:macroLink('<font size="2">Refresh','CharacterSheet@Lib:dcfiles','all','','impersonated')]
-</td>
-<td style="padding-top:1px; padding-bottom:1px" >
-<b>
-<font size="2"><span style="color:white">
-[r:macroLink('PL','PowerPoints@Lib:dcfiles','all','','impersonated')]
-: <span style="color:white"> {PL} | {PowerPoints}
-</span>
-</td>
-</tr>
-
-<tr>
-<td colspan="7" style="background-color:black  ; margin:0px; padding:0px; height:0px"><HR width="100%" height="1%" align="center" noshade></td>
-</tr>
-
- 
+  <tr background="asset://8b1c6e24556bbf4a1b93f6ca490ed1d9" STYLE="background-repeat: no-repeat" bgcolor='#D32A2C'>
+    <td colspan="6" style="padding-top:1px; padding-bottom:1px" >
+      <span style="color:white">
+      <font size="3">
+      <b><span style="color:white">[r:macrolink(token.name,'Notes@'+LibPlayer,'all','','impersonated')] |
+      [r:macroLink('<font size="2">Refresh','CharacterSheet@'+LibPlayer,'all','','impersonated')]
+    </td>
+    <td style="padding-top:1px; padding-bottom:1px" >
+      <b>
+      <font size="2"><span style="color:white">
+      [r:macroLink('PL','PowerPoints@Lib:dcfiles','all','','impersonated')]
+      : <span style="color:white"> {PL} | {PowerPoints}
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="7" style="background-color:black  ; margin:0px; padding:0px; height:0px"><HR width="100%" height="1%" align="center" noshade></td>
+  </tr>
 	<tr background="asset://737bfa88b1a6718186d9faacd5b0d70c" STYLE="background-repeat: no-repeat" bgcolor='#CDE2F5'>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="3"><b><span style="color:black">[r:macroLink('<b>Attributes</b>','BuildAttributes@Lib:dcfiles','all','','impersonated')]
-</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><center><span style="color:black"><b>Value</td>
-		<<td style="padding-top:1px; padding-bottom:1px"><font size="3"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><b><span style="color:black">[r:macroLink('<b>Defenses</b>','BuildDefenses@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><center><span style="color:black"><b>Value</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="3"><b><span style="color:black">[r:macroLink('<b>Aptitudes</b>','editBaseAptitudes@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><center><span style="color:black"><b>Value</b></td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="3"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><span style="color:black"><b>Misc</td>
-	</tr>
-
-	<tr  bgcolor="white">
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Strength','Strength@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Strength}</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Dodge','Dodge@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Dodge}<span style="color:gray"> | {Dodge+10}</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('d20 + Mod','d20@Lib:dcfiles','all','','impersonated')]</td>
-	</tr>
-	<tr>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Stamina','Stamina@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Stamina}</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Parry','Parry@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Parry}<span style="color:gray"> | {Parry+10}</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Area Damage','AreaDamage@Lib:dcfiles','all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><b><span style="color:black"><b>Derived</b></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><center><span style="color:black"><b>Value</b></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="3"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><span style="color:black"><b>Misc</b></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="3"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="3"><center><span style="color:black"><b>Value</b></td>
 	</tr>
 	<tr bgcolor="white">
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Agiltity','Agiltity@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Agility}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('COG','Strength@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{COG_Total}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Fortitude','Fortitude@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Fortitude}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('TT','Dodge@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Trauma_Threshold}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td ><font size="2"><span style= "color:#1E90FF">[r:macroLink('Measurement','MeasurementsTable@Lib:dcfiles','all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('MOX','d20@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Moxie}</td>
 	</tr>
 	<tr>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Dexterity','Dexterity@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Dexterity}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('COO','Stamina@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{COO_Total}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Toughness','Toughness@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Toughness}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('LUC','Parry@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Lucidity}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Materials','MaterialTable@Lib:dcfiles','all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('INIT','AreaDamage@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Initiative}</td>
 	</tr>
 	<tr bgcolor="white">
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Fighting','Fighting@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Fighting}</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('INT','Strength@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{INT_Total}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Will','Will@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Will}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('IR','Dodge@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Insanity_Rating}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<tdstyle="padding-top:1px; padding-bottom:1px"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('SPD','d20@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Speed}</td>
 	</tr>
 	<tr>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Intellect','Intellect@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Intellect}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('REF','Stamina@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{REF_Total}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Hits','Hits@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Hits*-1}</td>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="2"><a href="http://dc.wikia.com/wiki/Main_Page">DC Wiki</a></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('WT','Parry@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Wound_Threshold}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Damage','AreaDamage@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Damage}</td>
 	</tr>
 	<tr bgcolor="white">
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Awareness','Awareness@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Awareness}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('SAV','Strength@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{SAV_Total}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Initiative','Initiative@Lib:dcfiles','all','','impersonated')] </td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Initiative}</td>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF"><a href="http://www.karridian.net/dcatlas.html">DC Atlas</a></td>
-		
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('DUR','Dodge@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Durability}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Wounds','d20@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Wounds}</td>
 	</tr>
 	<tr>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Presence','Presence@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Presence}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('SOM','Stamina@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{SOM_Total}</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Hero Pt','HeroPoints@Lib:dcfiles','all','','impersonated')]</td>
-		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{HeroPoints}</td>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
-	<td style="padding-top:1px; padding-bottom:1px"><font size="2"><a href ="https://sites.google.com/site/dcuniversegame/">Game Site</a></td>
-
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('DR','Parry@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Death_Rating}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2">[r:macroLink('Stress','AreaDamage@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Stress}</td>
 	</tr>
+	<tr bgcolor="white">
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('WIL','Strength@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{WIL_Total}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('DB','Dodge@'+LibPlayer,'all','','impersonated')]</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Damage_Bonus}</td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+		<td style="padding-top:1px; padding-bottom:1px"><font size="2"><span style= "color:#1E90FF">[r:macroLink('Trauma','d20@'+LibPlayer,'all','','impersonated')]</td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"></td>
+    <td style="padding-top:1px; padding-bottom:1px"><font size="2"><center>{Trauma}</td>
+	</tr>
+  <tr>
+    <td colspan="7" cellspacing="0px" cellpadding="0px" style="background-color:black ; margin:0px; padding:0px; height:0px"><HR width="100%" align="center" noshade></td>
+  </tr>
 
-<tr>
-<td colspan="7" cellspacing="0px" cellpadding="0px" style="background-color:black ; margin:0px; padding:0px; height:0px"><HR  width="100%" align="center" noshade></td>
-</tr>
-
-		<tr background="asset://737bfa88b1a6718186d9faacd5b0d70c" STYLE="background-repeat: no-repeat" bgcolor='#CDE2F5'>
-
+  <tr background="asset://737bfa88b1a6718186d9faacd5b0d70c" STYLE="background-repeat: no-repeat" bgcolor='#CDE2F5'>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><b><span style="color:black">[r:macroLink('<b>Skills</b>','BuildSkills@Lib:dcfiles','all','','impersonated')]</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="3"><span style="color:black"><center><b>Value</td>
 		<td style="padding-top:1px; padding-bottom:1px"><font size="3"></td>
@@ -317,8 +314,7 @@
 |
 {if(getState("Surprised"), '<span style="color:#D2262B"><b>'+macroLink('Surprised','Surprised@Lib:dcfiles','all','','impersonated')+'</b></span>',' <span style="color:gray">'+macroLink('Surprised','Surprised@Lib:dcfiles','all','','impersonated')+'</span>')}
 
-<tr background="
-asset://8b1c6e24556bbf4a1b93f6ca490ed1d9" STYLE="background-repeat: no-repeat" bgcolor='#D32A2C'>
+<tr background="asset://8b1c6e24556bbf4a1b93f6ca490ed1d9" STYLE="background-repeat: no-repeat" bgcolor='#D32A2C'>
 <td><span style="color:#D32A2D">.</td></tr>
 <tr>
 <td colspan="7" style="background-color:black  ; margin:0px; padding:0px; height:0px"><HR width="100%" height="1%" align="center" noshade></td>

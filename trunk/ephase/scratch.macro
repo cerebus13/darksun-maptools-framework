@@ -1,0 +1,62 @@
+<img src="asset://[r:getImage('image:d20')]"><br> Roll<br>2d10</img>
+ 
+<img src="[r:getImage('image:d20')]"><br> Roll<br>2d10</img>
+
+red banner =  asset://8b1c6e24556bbf4a1b93f6ca490ed1d9
+blue banner = asset://737bfa88b1a6718186d9faacd5b0d70c
+d20 =         asset://449b422b313b2d3e4c8c5f477c243526
+
+{"3":{"1":[{"modDef":1, "modName":"Priest's Shield", "modValue":1, "modOwner": "Udo"}]}}
+{
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""},
+"0":{"Name":"Animal_Handling","Base":0,"Default":"SAV","Spec":""}
+}
