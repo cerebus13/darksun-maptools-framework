@@ -1,0 +1,3689 @@
+@@ @onCampaignLoad
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h: selectedCount=listCount(getSelected())]
+[frame("Sheet"):{
+<html>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','','selected')]"></link>
+<head><title>Character Sheet</title></head>
+<body>
+			<table width="100%">
+				<tr>
+					<td align="center"><image src='[r: tableImage("Icons",1,300)]' border="0" align="middle"></image><br>
+						<font size = "5"><b>Loaded<br>Please select a token you own</b></font>
+					</td>
+				</tr>
+			</table>
+		}
+	]
+</body>
+</html>
+}]
+
+!!
+@@ @AbilitiesDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1" bgcolor="white">
+<table border="0" cellpadding="2" width="100%">
+
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>ABILITIES</b></font>
+		</td>
+		<td  align="right" colspan="2"><a href='[r:macroLinkText("TraitsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
+		</td>		
+	</tr>[h: num = 1]
+[h: abilityList = "Strength,COG,COO,INT,REF,SAV,SOM,WIL"]
+[foreach(abl, abilityList,""),code:{
+
+[if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
+		<td>
+			<table width="100%">
+				[h:jsonData=json.set("{}","name",abl,"rank",getProperty(abl),"modifier",0)]
+				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Abilities",num)]</a></b>
+					</td>
+				</tr>
+				<tr>
+		[h: jsonData = json.append("[]",abl,getProperty(abl),"Ability")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(abl)]</b></font></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+
+[if(roll.count == 3||roll.count==7),code:{</tr>}; {}]
+[h: num = num+1]
+}]
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @AdvantagesDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>ADVANTAGES</b></font>
+		</td>
+		<td width="5%">
+			<a href='[r:macroLinkText("AdvantageShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("AdvantageShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
+	</tr>
+[if(AdvantageShow),code:{
+</table>
+<table border="0" cellpadding="2" width="100%">
+		[h: color = table(PageColor,4)]
+				[h,if(json.isEmpty(Advantages)): propList = ""; propList = json.fields(Advantages)]
+				[h: propList=listSort(propList,"A")]
+				[foreach(prop, propList, ""), code: {
+	<tr bgcolor="[r: color]">
+		<td width="100%">
+				[h: propDetails = json.get(Advantages, prop)]
+				[h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("AdvantagesUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+				
+				
+		</td>
+	</tr>
+[h: colorcheck = table(PageColor,4)]
+[h, if(color == colorcheck): color = "white"; color = colorcheck]
+}]
+	<tr  bgcolor="[r:table(PageColor,3)]">
+		<td>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Advantage", encode(""))]<a href='[r:macroLinkText("AdvantagesUpdateDialog@this","none",jsonData,currentToken())]'>Add New Advantage</a></font></center></b>
+		</td>
+	</tr>
+</table>}; {</table>}]
+
+!!
+@@ @DamageDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr>
+		<td valign="middle">
+			<image src="[r: tableImage("Damage",6,80)]" border="0" align="middle"></image>
+		</td>
+		<td valign="middle" align="left"><a href='[r:macroLinkText("DamageUpdate@this","none","",currentToken())]'><image src="[r: tableImage("Number",Bruises,30)]" border="0"></image></a>
+		</td>
+		<td>
+			<a href='[r:macroLinkText("DamageUpdateDazed@this","none","Dazed",currentToken())]'><image src="[r: tableImage("Damage",3,40)]" border="0"></image></a>
+		</td>
+		<td>
+			<a href='[r:macroLinkText("DamageUpdateStaggered@this","none","Staggered",currentToken())]'><image src="[r: tableImage("Damage",4,40)]" border="0"></image></a>
+		</td>
+		<td>
+			<a href='[r:macroLinkText("DamageUpdateIncapacitated@this","none","Incapacitated",currentToken())]'><image src="[r: tableImage("Damage",5,40)]" border="0"></image></a>
+		</td>
+		<td>
+			[h: jsonData = json.append("[]", "D20", 0, "Roll",0)]<a href='[r:macroLinkText("D20basic@this","all",jsonData,currentToken())]'><image src="[r: tableImage("Icons",9,40)]" border="0"></image></a>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @DefenseDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="0" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td  valign="middle">&nbsp; &nbsp; <font color="white"><b>DEFENSES</b></font>
+		</td>
+		<td align="right"><image src='[r: tableImage("Icons", 10,23)]' border="0" align="middle"></image></a>
+	</td>
+		
+	</tr>
+</table>
+<table border="0" cellpadding="2" width="100%"  align="center" bgcolor="white">
+
+[h: color = table(PageColor,4)]
+
+[h: defenseList = "Dodge,Parry,Fortitude,Toughness,Will"]
+[foreach(def,defenseList,""),code:{
+		
+				<tr bgcolor="[r: color]">
+	<td>
+		[h:jsonData=json.set("{}","name",def,"rank",getProperty(def),"modifier",0)]
+		<font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: def]</a></font>
+					</td>
+					<td align="center">
+[h: jsonData = json.append("[]", def, getProperty(def),"Defense")]
+<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>[r: getProperty(def)]</a></font>[if(getProperty(def+"Norm")==""),code:{}; {[h: jsonData = json.append("[]", def, getProperty(def+"Norm"),"Defense")]/<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>[r: getProperty(def+"Norm")]</a></font>*}]
+					</td>
+</tr>
+[h: color = if(color == table(PageColor,4),"white", table(PageColor,4))]
+
+}]
+
+[if(DodgeNorm==""&&ParryNorm==""&&FortitudeNorm==""&&ToughnessNorm==""&&WillNorm==""),code:{
+}; {
+<tr><td align="center" colspan="2" ><font size="2">*without bonus</font></td></tr>
+}]				
+				
+</table>
+
+!!
+@@ @OffenseDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="0" width="100%"  align="center">
+				<tr>
+					<td>
+<table border="0" cellpadding="2" width="100%"  align="center" >
+[h,if(json.isEmpty(Attacks)): propList = ""; propList = json.fields(Attacks)][h: color = table(PageColor,4)]
+				[foreach(prop, propList, ""), code: {
+
+					<tr bgcolor="[r: color]">
+						<td align="left" width="35%">
+						<font color="black"><a href='[r:macroLinkText("OffenseUpdateDialog@this","none", prop, currentToken())]'><b>[r: prop]</b></a></font>
+						</td>
+						<td align="left"  width="55%">
+					[r: json.get(json.get(Attacks,prop),1)][r: if(json.get(json.get(Attacks,prop),1)!=""&&json.get(json.get(Attacks,prop),2)!="",", ","")][r: if(json.get(json.get(Attacks,prop),2)!="",json.get(json.get(Attacks,prop),2)+" Area","")]
+						</td>
+						<td align="right" width="5%">
+[h:jsonData=json.set("{}","name",prop)]
+<a href='[r:macroLinkText("AttackCheck@this","all", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 2)]' border="0"></image></a>
+					
+						</td>
+[h: jsonData = json.append("[]", prop, "", "Attack")]			<td align="right"  width="5%">
+[h: Rank =  json.get(json.get(Attacks,prop),3)][if(Rank==""),code:{<a href='[r:macroLinkText("Entry@this","none", json.append("[]", prop, "", "Area"), currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>}; {
+<a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>}]
+						</td>
+					</tr>
+[h: colorcheck = table(PageColor,4)]
+[h, if(color == colorcheck): color = "white"; color = colorcheck]}]
+</table>
+					</td>
+				</tr>
+</table>
+
+!!
+@@ @OffenseDisplayTop
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
+<table border="0" cellpadding="2" width="100%"  align="center">
+				<tr  bgcolor="[r:table(PageColor,2)]">
+					<td valign="middle">
+&nbsp; &nbsp; <font color="white"><b>OFFENSE</b></font>
+
+					</td>
+					<td align="right">
+				<a href='[r:macroLinkText("OffenseShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("OffenseShow"))]' border="0" align="middle"></image></a>&nbsp; 
+					</td>
+				</tr>
+</table>
+
+[if(OffenseShow),code:{
+
+[r, macro("OffenseDisplay@this"):""]
+
+<center>
+<a href='[r:macroLinkText("OffenseUpdateDialogNew@this","none","",currentToken())]'><b><font color="black">Add New Attack</font></b></a></center>
+}; {}]
+</table>
+
+!!
+@@ @PowersDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r:table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>POWERS</b></font>
+		</td>
+		<td   align="right">
+				<a href='[r:macroLinkText("PowersShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("PowersShow"))]' border="0" align="middle"></image></a>&nbsp; </td>
+	</tr>
+</table>
+[if(PowersShow),code:{
+<html>
+<body><table border="0" cellpadding="2" width="100%" bgcolor="white">
+[h: text = getProperty("Powers")]
+[h: text = replace(text,"%0A","</p><p style='margin-left:.15in; text-indent:-.15in'>")]
+<p  style="margin-left:.15in; text-indent:-.15in">
+[r: decode(text)]
+</p>
+</table>
+
+<center>
+<a href='[r:macroLinkText("PowersUpdateDialog@this","none","",currentToken())]'><b><font color="black">Edit Powers</font></b></a></center>
+</body>
+</html>
+}; {}]
+</table>
+
+!!
+@@ @SkillsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: color = json.get(macro.args,1)]
+<tr bgcolor="[r: color]">
+		<td align="left">
+		 	[h: Rank = json.get(json.get(Skills,skill),0)]
+			[h: Misc =  json.get(json.get(Skills,skill),1)]
+			[h: Attribute =  getProperty(json.get(json.get(Skills,skill),2))]
+			[h: RankTotal = Rank+Misc+Attribute]
+			[h:jsonData=json.set("{}","name",skill,"rank",RankTotal,"modifier",0)]
+			[h: info=json.append("[]",skill,json.get(json.get(Skills,skill),2))]
+			<font color="black"><a href='[r:macroLinkText("SkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
+		</td>
+		<td align="center" width="25%">
+			<font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: Rank]</a></font>
+		</td>
+		<td width="25%" align="right">[h: jsonData = json.append("[]",skill,RankTotal,"Skill")]
+			(<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: RankTotal]</a></font>)
+		</td>
+
+</tr>
+[h: colorcheck = table(PageColor,4)]
+[h: macro.return = if(color == colorcheck,"white", colorcheck)]
+
+!!
+@@ @SkillsDisplayTop
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("SkillsUpdateDialog@this","none","", currentToken())]'><b>SKILLS</b></a></font>
+		</td>
+		<td  align="center" width="25%" color="white">
+			<b>Rank</b>
+		</td>
+		<td  align="right" width="25%" color="white">
+			<b>Total</b>
+		</td>
+		
+	</tr>
+</table>
+<table border="0" cellpadding="2" width="100%" bgcolor="white">
+[h,if(json.isEmpty(Skills)): skillListunsort = ""; skillListunsort = json.fields(Skills)]
+[h: skillList = listsort(skillListunsort, "A")]
+[h: color = table(PageColor,4)]
+[foreach(skill, skillList, ""), code: {
+
+[h: skillDetails = json.get(Skills, skill)]
+[h: skillRank = json.get(skillDetails, 0)]
+[h: skillMisc = json.get(skillDetails,1)]
+[h: skillTrained = json.get(skillDetails,3)]
+
+[if(skillMisc==0&&skillRank==0&&skillTrained==0), code:{}; {
+[h: jsonData = json.append("[]", skill,color)]
+[r, macro("SkillsDisplay@this"):jsonData]
+[h: color = macro.return]
+}]
+
+}]
+
+</table>
+
+!!
+@@ @StatesDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+[h:theList = getTokenStates(",","Combined Conditions")]
+[h: theList=listSort(theList,"A")]
+[r, foreach(item, theList, ""),code:{[if(getState(item)),code:{<a href='[r:macroLinkText("ConditionsInfoRemove@this","none",item,currentToken())]'><image src="[r: getStateImage(item, 25)]" border="0" alt="[r: item]"></image></a>}; {}]}]
+[h:theList = getTokenStates(",","Basic Conditions")]
+[h: theList=listSort(theList,"A")]
+[r, foreach(item, theList, ""),code:{[if(getState(item)),code:{<a href='[r:macroLinkText("ConditionsInfoRemove@this","none",item,currentToken())]'><image src="[r: getStateImage(item, 25)]" border="0" alt="[r: item]"></image></a>}; {}]}]
+
+!!
+@@ @AbilityEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Ability Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Difficulty Class:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="DC" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Aid Another:
+		</td>
+		<td align="left">
+			[H: pcList=getExposedTokenNames()]
+			[h: pcList = replace(pcList,token.name+",","")]
+			[h: pcList = "No,"+pcList]
+			<select name="aid" selected="">
+			[foreach(name,pcList,""),code:{
+			<option value='[r: name]'>[r: name]</option>
+			}]</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modifier" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @AttackCheck
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: Roll = d20]
+[h: Name = json.get(macro.args,"name")]
+[h: Rank =  json.get(json.get(Attacks,name),3)]
+[h: range =  json.get(json.get(Attacks,name),1)]
+[h: area =  json.get(json.get(Attacks,name),2)]
+[h: Misc = json.get(macro.args,"range") + json.get(macro.args,"cover") + json.get(macro.args,"concealment") + json.get(macro.args,"attack")]
+[h: Target = json.get(macro.args,"target")]
+[h, if(Misc == ""): Misc = 0; Misc = Misc]
+[h: CritTotal = ""]
+
+<b>[r: Name]</b>
+[if(area!=""||range=="Perception"),code:{<br>}; {<br>
+<b>Attack</b>[r, if(Target !=""): " against "+Target; ""]:  [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Roll + Rank + Misc): Roll + Rank + Misc]}; {[t(Roll + Rank + Misc):Roll + Rank + Misc]}][r, macro("d20@this"):Roll] vs. [r: json.get(json.get(Attacks,name),4)]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+
+[h: Crit = json.get(json.get(Attacks,name),5)][h: jsonData=json.append("[]",Roll,Crit)][r, macro("Critical@this"):jsonData][h: CritTotal = macro.return]
+}]
+
+[h: Damage = json.get(json.get(Attacks,name),9)]
+[h, if(Damage == 1): Num = 10; Num = 15]
+[h, if(Damage == 1): newTarget = "Resistance"; newTarget = "Damage"]
+
+[h: effectrank = if(json.get(json.get(Attacks,name),7)=="",0,json.get(json.get(Attacks,name),7))]
+[h: strengthrank = if(json.get(json.get(Attacks,name),8)=="",0,getProperty("Strength"))]
+[h: Bonus = json.get(macro.args,"effect")]
+[h, if(Bonus == ""): Bonus = 0; Bonus = Bonus]
+[h: Effect = effectrank + strengthrank]
+[h: jsonEffect = Effect+Bonus]
+
+[if(range!="Perception"&&area!=""),code:{<b>Attack:</b> 
+[r: macroLink("Dodge","Entry@this","none",json.append('[]','Dodge',jsonEffect,'Resistance'),'selected')] to halve effect&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }; {}]
+<b>Hit</b>:
+[h: jsonData = json.append(json.get(json.get(Attacks,name),6),jsonEffect,newTarget)]
+[r: macroLink(json.get(json.get(Attacks,name),6),"Entry@this","none",jsondata,'selected')]  vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Effect + Num+ Bonus): Effect + Num + Misc]}; {[t(Effect + Num + Bonus):Effect + Num + Bonus]}][r: CritTotal]
+<br>
+<i>[r, macro("ConditionsLink@this"):json.get(json.get(Attacks,name),11)]</i>
+
+!!
+@@ @DefenseEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Defense Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Difficulty Class:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="DC" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Aid Another:
+		</td>
+		<td align="left">
+			[H: pcList=getExposedTokenNames()]
+			[h: pcList = replace(pcList,token.name+",","")]
+			[h: pcList = "No,"+pcList]
+			<select name="aid" selected="">
+			[foreach(name,pcList,""),code:{
+			<option value='[r: name]'>[r: name]</option>
+			}]</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modifier" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @Entry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[H, macro("EntrySize@this"):""]
+[H: sizeSettings = json.get(macro.return, json.get(macro.args, 2))]
+
+[H: Width = listget(sizeSettings, 0)+0]
+[H: Height = listget(sizeSettings, 1)+0]
+
+[R, dialog("EntryWindow", "temp=1; closebutton=0; width=" + Width + "; height=" + Height):
+
+	{
+		[r, macro(json.get(macro.args,2)+"Entry@this"):macro.args]
+	}
+]
+
+!!
+@@ @EntrySize
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[macro.return = json.set("",
+
+"Attack", "405, 256",
+"Damage", "365, 204",
+"Resistance", "365, 204",
+"Skill", "305, 223",
+"Ability", "305, 196",
+"Defense", "305, 196",
+"Initiative", "305, 146",
+"Area","305, 150"
+
+)]
+
+!!
+@@ @EntryType
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: checkLink=macroLinkText(json.get(macro.args,"ExeMacro")+"@this", if(json.get(macro.args, "Output") == "Private", if(isGM() == 1, "gm", "gm-self"), "all"), macro.args, currentToken())]
+[execLink(checkLink)]
+
+!!
+@@ @InitiativeCheck
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: Roll = d20]
+[h: Name = json.get(macro.args,"name")]
+[h: Rank = json.get(macro.args,"rank")]
+[h: Misc = json.get(macro.args,"modifier")]
+[h, if(Misc == ""): Misc = 0; Misc = Misc]
+
+[ if(json.get(macro.args,"setinit")==""),code:{
+
+I make an [r: Name] Check and get a [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Roll + Rank + Misc): Roll + Rank + Misc]}; {[t(Roll + Rank + Misc):Roll + Rank + Misc]}]
+
+[h:addtoInitiative()][h: setInitiative(Roll + Rank + Misc)]
+
+}; 
+{
+I set my initative to 
+[h:addtoInitiative()][r: setInitiative(json.get(macro.args,"setinit"))]
+
+}]
+
+!!
+@@ @InitiativeEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Initiative Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modifier" value="" size="5"></input>
+		</td>
+		<td>
+			Set Initiative:
+		</td>
+		<td align="left">
+			<input type="text" name="setinit" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="InitiativeCheck"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @SkillAltType
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[if(json.get(macro.args,"ability")=="No"),code:{}; {
+[h: name = json.get(macro.args,"name")]
+[h: ability = json.get(macro.args, "ability")]
+
+		 	[h: Rank = json.get(json.get(Skills,name),0)]
+			[h: Misc =  json.get(json.get(Skills,name),1)]
+			[h: Attribute =  getProperty(ability)]
+			[h: RankTotal = Rank+Misc+Attribute]
+[h: macro.args = json.set(macro.args,"rank",RankTotal)]
+}]
+
+[h: checkLink=macroLinkText(json.get(macro.args,"ExeMacro")+"@this", if(json.get(macro.args, "Output") == "Private", if(isGM() == 1, "gm", "gm-self"), "all"), macro.args, currentToken())]
+[execLink(checkLink)]
+
+!!
+@@ @SkillEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Skill Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('SkillAltType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Difficulty Class:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="DC" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Alternate Ability:
+		</td>
+		<td align="left">
+			<select name="ability" selected="">
+			<option value='No'>No</option>
+			<option value='Strength'>Strength</option>
+			<option value='REF'>REF</option>
+			<option value='COG'>COG</option>	
+			<option value='SAV'>SAV</option>
+			<option value='COO'>COO</option>
+			<option value='SOM'>SOM</option>
+			<option value='INT'>INT</option>
+			<option value='Persence'>Persence</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Aid Another:
+		</td>
+		<td align="left">
+			[H: pcList=getExposedTokenNames()]
+			[h: pcList = replace(pcList,token.name+",","")]
+			[h: pcList = "No,"+pcList]
+			<select name="aid" selected="">
+			[foreach(name,pcList,""),code:{
+			<option value='[r: name]'>[r: name]</option>
+			}]</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modifier" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @d20
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: Roll = macro.args]
+[h:  macro.return = if(Roll == 1, " &#8226; <b>Natural 1!</b>","")]
+
+[h:  macro.return = if(Roll == 20, " &#8226; <b>Natural 20!!!</b>",macro.return)]
+
+!!
+@@ @d20Check
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: Roll = d20]
+[h: Name = json.get(macro.args,"name")]
+[h: Rank = json.get(macro.args,"rank")]
+[h: Misc = json.get(macro.args,"modifier")]
+[h, if(json.get(macro.args,"aid")==""): Aid="No"; Aid = json.get(macro.args,"aid")]
+[h, if(json.get(macro.args,"ability")==""): Ability="No"; Ability = json.get(macro.args,"ability")]
+[h, if(Misc == ""): Misc = 0; Misc = Misc]
+
+I make a [r: Name] Check[r, if(Ability == "No"):""; " together with "+Ability][r, if(Aid == "No"):""; " to aid "+Aid] and get a [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Roll + Rank + Misc): Roll + Rank + Misc]}; {[t(Roll + Rank + Misc):Roll + Rank + Misc]}][r, macro("d20@this"):Roll]
+
+[if(json.get(macro.args, "DC") == ""), CODE:{[r: macro.return]}; { vs. DC [r: json.get(macro.args, "DC")][r: macro.return]
+<br>
+[h:resulta=(Roll+Rank+Misc)-json.get(macro.args, "DC")][r: table("DegreesSuccess",resulta)]}]
+
+!!
+@@ @Acrobatics
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Use Acrobatics to flip, dive, roll, tumble, and perform other acrobatic maneuvers, as well as keeping your balance under difficult circumstances.<p>
+
+<b>Balancing:</b> You can keep your balance and move along a precarious surface at your ground speed minus 1 rank with a successful Acrobatics check against the surface's DC. A degree of failure indicates you spend your move action just maintaining your balance and do not actually move, while two or more degrees of failure means you lose your balance and fall. You are vulnerable while balancing. If you accept a +5 increase to the Acrobatics DC, you are not vulnerable.<p>
+
+<b>Maneuvering:</b> You can make Acrobatics checks for various acrobatic stunts or maneuvers, from back flips to jumping over an opponent (to get behind them), flipping up onto a ledge, tumbling through obstacles, and so forth. The GM sets the DC. Success means you accomplish the maneuver.<p>
+
+<b>Standing:</b> You can make a DC 20 Acrobatics check to go from prone to standing as a free action rather than a move action. A failed check means you remain prone.<p>
+
+<b>Tumbling:</b> You can make an Acrobatics check (DC 5) to lessen damage from a fall, reducing the damage by 1 per degree. A fall reduced to rank 0 damage does no damage and you quickly roll to your feet as a free action. Otherwise, you are prone at the end of a fall.
+
+!!
+@@ @Asleep
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+While asleep, a character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none"," Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>. A hearing Perception check with three or more degrees of success wakes the character and removes all these conditions, as does any sudden movement (such as shaking the sleeping character) or any effect allowing a resistance check.
+
+!!
+@@ @Athletics
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Use Athletics for physical feats like climbing, jumping, riding animal mounts, and swimming. <p>
+
+<b>Climbing:</b> With a successful Athletics check, you can climb along a slope, wall, or other steep incline at your ground speed rank minus 2 as a move action. A perfectly smooth, flat, vertical surface can't be climbed without the Wall-crawling effect of Movement (see the Powers chapter). <p>
+
+<b>Jumping:</b> The result of an Athletics check is the distance (in feet) you can clear in a running long-jump. If you make a standing jump, divide the distance in half. If you make a vertical jump (straight up) divide the distance by 5, and if you make a standing vertical jump, divide it by 10. Your Athletics bonus + 10 is the base distance you can jump under routine circumstances. <p>
+
+<b>Running:</b> You can make a DC 15 Athletics check as a free action to run faster: success increases your ground speed rank by +1 for one round. <p>
+
+<b>Swimming:</b> A successful DC 10 Athletics check allows you to swim your ground speed rank minus 2 as a move action. If the check fails, you make no progress through the water during the action. With more than one degree of failure, you go under. If underwater, you must hold your breath to avoid drowning.<p>
+
+!!
+@@ @Blind
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+The character cannot see. Everything effectively has full visual concealment from him. He is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>, visually <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font>, and
+may be <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Impaired",currentToken())]'>impaired</a></font> or <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Disabled",currentToken())]'>disabled</a></font> for activities where vision is a factor.
+
+!!
+@@ @Bound
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A bound character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'>immobile</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Impaired",currentToken())]'>impaired</a></font>.
+
+!!
+@@ @Close Combat
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You're trained with a particular type of close attack, giving you a bonus to your attack checks with it equal to your skill rank (see Attack Check in The Basics and in the Action & Adventure chapter). Each close attack is a separate Close Combat skill with its own rank, and encompasses a single weapon or power, although an array may be considered one power, at the Gamemaster's discretion (see Arrays in the Powers chapter for more information).
+
+!!
+@@ @Compelled
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A compelled character is directed by an outside force, but struggling against it; the character is limited to free actions and a single standard action per turn, with both types of action being chosen by another, controlling character. As usual, this standard action can be traded for a move action. <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Controlled",currentToken())]'><b>Controlled</b></a></font> supersedes compelled.
+
+!!
+@@ @ConditionsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: info=json.get(macro.args,0)]
+[frame("Conditions"): {
+<html>
+<head>
+<title>Condition Display</title>
+</head>
+<body bgcolor="white">
+<table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+	<tr bgcolor="[r: table(PageColor,2)]" color="white">
+		<td align="left" width="50">
+<image src="[r: getStateImage(info,50)]" border="0"></image>
+		</td>
+		<td align="left">
+		<font  size="5"><b>[r: info]</b></font>
+		</td>
+		<td align="right">
+		</td>
+	</tr>
+	<tr>	
+		<td></td>
+		<td colspan="2" aligh="left">[r, macro(info+"@this"):""]</td>
+	</tr>
+</table>
+</body>
+</html>
+}]
+
+!!
+@@ @ConditionsInfoRemove
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: info=json.get(macro.args,0)]
+[frame("Conditions"): {
+<html>
+<head>
+<title>Condition Display</title>
+</head>
+<body bgcolor="white">
+<table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+	<tr bgcolor="[r: table(PageColor,2)]" color="white">
+		<td align="left" width="50">
+<image src="[r: getStateImage(info,50)]" border="0"></image>
+		</td>
+		<td align="left">
+		<font  size="5"><b>[r: info]</b></font>
+		</td>
+		<td align="right">
+			Remove <a href="[r: macroLinkText("StatesUpdateRemove@this", "none", info, currentToken())]"><image src="[r: tableImage("Buttons",10)]" border="0"></image></a>&nbsp; &nbsp; 
+		</td>
+	</tr>
+	<tr>	
+		<td></td>
+		<td colspan="2" align="left">[r, macro(info+"@this"):""]</td>
+	</tr>
+</table>
+</body>
+</html>
+}]
+
+!!
+@@ @Controlled
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A controlled character has no free will; the character’s actions each turn are dictated by another, controlling, character.
+
+!!
+@@ @Dazed
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A dazed character is limited to free actions and a single standard action per turn, although the character may use that action to perform a move, as usual. <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'><b>Stunned</b></a></font> supersedes dazed.
+
+!!
+@@ @Deaf
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+The character cannot hear, giving everything total auditory concealment from him. This may allow for surprise attacks on the unaware character. Interaction with other characters is limited to sign-language and lip-reading.
+
+!!
+@@ @Debilitated
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+The character has one or more abilities lowered below –5.
+
+!!
+@@ @Deception
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Deception is the skill of getting others to believe what you want them to believe. It covers things like acting, bluffing, fast-talk, trickery, and subterfuge. Deception takes as long as it takes to spin-out your story. <p>
+
+<b>Bluffing:</b> Make a Deception check to tell a believable lie or get someone do go along with you. A bluff is usually opposed by the target's Deception or Insight check. Favorable and unfavorable circumstances weigh heavily on the outcome. <p>
+
+<b>Disguise:</b> You can use makeup, costumes, and other props to change your appearance. Your Deception check result determines the effectiveness of the disguise, opposed by others' Perception check results. The GM makes the Deception check secretly, so you are not sure exactly how well your disguise holds up under scrutiny. 
+<p>
+<b>Feinting:</b> You can use Deception as a standard action to mislead an opponent in combat. Make a Deception check as a standard action. If your Deception check succeeds, the target is vulnerable against your next attack, until the end of your next round (see Vulnerable in the Conditions section of The Basics chapter). 
+<p>
+<b>Innuendo:</b> You can use Deception to send covert messages using wordplay and double-meanings while apparently talking about other things. The DC for a basic message is 10. Complex messages or messages trying to communicate new information have DCs of 15 or 20, respectively. The recipient of the message must make an Insight check against the same DC to understand it. 
+<p>
+<b>Tricking:</b> You can use Deception to mislead an opponent into taking a potentially unwise action, such as trying to hit you while standing in front of an electrical junction box or at the edge of a precipice. If your Deception check opposed by Deception or Insight succeeds, your opponent is heedless of the potential danger and may hit the junction box or lose his balance and fall, if his attack against you fails.
+
+!!
+@@ @Defenseless
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A defenseless character has active defense bonuses of 0. Attackers can make attacks on defenseless opponents as routine checks. If the attacker chooses to forgo the routine check and make a normal attack check, any hit is treated as a critical hit. Defenseless characters are often <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Prone",currentToken())]'><b>Prone</b></a></font>, providing opponents with an additional bonus to attack checks.
+
+!!
+@@ @Disabled
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A disabled character is at a –5 circumstance penalty on checks. If the penalty applies to specific checks, they are added to the name of the
+condition, such as Attack Disabled, Fighting Disabled, Perception Disabled, and so forth.<font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Debilitated",currentToken())]'><b>Debilitated</b></a></font>, if it applies to the same trait(s), supersedes disabled.
+
+!!
+@@ @Dying
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A dying character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Incapacitated",currentToken())]'>incapacitated</a></font> (<font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>) and near death. When the character gains this condition, immediately make a Fortitude check (DC 15). If the check succeeds, nothing happens. With two degrees of success, the character stabilizes, removing this condition. If the check fails, the character remains dying. Three or more total degrees of failure mean the character dies: so three failed Fortitude checks or one or two checks adding up to three degrees. Dying characters make a Fortitude check each round until they either die or stabilize. Another character can stabilize a dying character with a successful Treatment check (DC 15) or use of a Healing effect.
+
+!!
+@@ @Entranced
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+An entranced character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, taking no actions other than paying attention to the entrancing effect. Any obvious threat automatically
+breaks the trance. An ally can also shake a character free of the condition with an interaction skill check (DC 10 + effect rank).
+
+!!
+@@ @Exhausted
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Exhausted characters are near collapse. They are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Impaired",currentToken())]'>impaired</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>. Characters recover from an exhausted condition after an hour of rest in comfortable surroundings.
+
+!!
+@@ @Expertise
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Expertise is a broad skill encompassing knowledge and training in a variety of specialized fields, particularly professional disciplines and scholarship. Each is considered a separate skill and training in each is acquired separately, so a former police officer turned district attorney might have Expertise: Police Officer and Expertise: Law, each with their own ranks, for example. Sample Expertise domains: Art, Business, Carpentry, Cooking, Criminal, Current Events, Dance, History, Journalism, Law, Law Enforcement, Medicine, Military, Music, Magic, Philosophy, Politics, Popular Culture, Psychiatry, Science, Sociology, Streetwise, Theology.
+
+!!
+@@ @Fatigued
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Fatigued characters are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'><b>hindered</b></a></font>. Characters recover from a fatigued condition after an hour of rest.
+
+!!
+@@ @Grab
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font> while grabbing and holding an opponent.
+
+!!
+@@ @Hindered
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A hindered character moves at half normal speed (–1 speed rank). <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'><b>Immobile</b></a></font> supersedes hindered.
+
+!!
+@@ @Immobile
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Immobile characters have no movement speed and cannot move from the spot they occupy, although they are still capable of taking actions unless prohibited by another condition.
+
+!!
+@@ @Impaired
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+An impaired character is at a –2 circumstance penalty on checks. If the impairment applies to specific checks, they are added to the name of
+the condition, such as Attack Impaired, Fighting Impaired, Perception Impaired, and so forth. If it applies to the same trait(s), <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Disabled",currentToken())]'><b>Disabled</b></a></font> supersedes impaired.
+
+!!
+@@ @Incapacitated
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+An incapacitated character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>. Incapacitated characters generally also fall <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Prone",currentToken())]'>prone</a></font>, unless some outside
+force or aid keeps them standing.
+
+!!
+@@ @Insight
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You can tell someone's true intentions and feelings by paying attention to things like body language, inflection, and your own intuition.
+<p>
+<b>Detect Illusion:</b> The GM makes a secret Insight check to determine if your hero senses the true nature of an illusion (DC 10 + Illusion rank). Success means you pick up on a flaw in the illusion, sensing it is not real. See the Illusion effect in the Powers chapter for details. 
+<p>
+<b>Detect Influence:</b> You can make an Insight check to notice someone acting under outside influence. The DC is 10 + the rank of the effect or skill affecting the subject. If you succeed, you notice the subject is not acting entirely of his or her own will. Three or more degrees give you a general idea of what is influencing them (and perhaps even whom, depending on the situation and the Gamemaster's judgment).
+<p>
+<b>Evaluate:</b> With an Insight check, opposed by Deception, you can tell if someone is trustworthy and honorable (or not) upon meeting them. You can also make an Insight check (DC 20) to evaluate a social situation, getting a feel for the overall mood and prevailing attitudes. Two or more degrees of failure on either check mean you misinterpret the signs, so the GM may make these checks for you in secret. 
+<p>
+<b>Innuendo:</b> You can use Insight to pick up on hidden messages sent via the Deception skill (see the Deception skill description). Resist Influence: Make an Insight check when called to do so to resist or overcome the effects of certain interaction skills, such as Deception or Intimidation. If the result of your check exceeds your opponent's, you are unaffected by their attempt to influence you.
+
+!!
+@@ @Intimidation
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You know how to use threats (both real and implied) to get others to do what you want. 
+<p>
+<b>Coercing:</b> Make an Intimidation check, opposed by the target's Insight or Will defense (whichever has the highest bonus). If your check succeeds, you may treat the target as friendly, but only for actions taken in your presence. That is, the target retains his normal attitude, but will talk, advise, offer limited help, or advocate on your behalf while intimidated. The target cooperates, but won't necessarily obey your every whim or do anything that would directly endanger him. 
+<p>
+<b>Demoralizing:</b> You can use Intimidation in combat as a standard action to undermine an opponent's confidence. Make an Intimidation check as a standard action. If it succeeds, your target is impaired (a -2 circumstance penalty on checks) until the end of your next round. With four or more degrees of success, the target is disabled (a -5 penalty) until the end of your next round. 
+<p>
+<b>Intimidating Minions:</b> You can intimidate a whole group of minions - who can all see and hear you - with a single check. If the group has you at a disadvantage, you suffer the usual circumstance penalty on your check. Compare your check result against a single resistance check made by the GM for the entire group. Your Intimidation check must have the same effect on every member of the group.
+
+!!
+@@ @Investigation
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You know how to search for and study clues, gather information through interviews and surveillance, and analyze evidence to help solve crimes. The GM may make Investigation checks for you in secret, so you do not know exactly what you have found, or if you may have missed something. 
+<p>
+<b>Search:</b> You can search an area for clues, hidden items, traps, and other details. Perception allows you to immediately notice things, while an Investigation check allows you to pick up on details with some effort. 
+<p>
+<b>Gather Evidence:</b> To collect a piece of evidence for analysis, make an Investigation check (DC 15). If the check succeeds, the evidence can be analyzed (see the following). If the check fails, an analysis can be done, but with a -5 penalty for highly unfavorable circumstances. With more than one degree of failure, the evidence is ruined and no analysis can be done. On the other hand, two or more degrees of success provide a +2 circumstance bonus to later analysis. 
+<p>
+<b>Analyze Evidence:</b> You can make an Investigation check to apply forensic knowledge to evidence. This function of Investigation does not give you clues where none exist. It simply allows you to extract useful information from evidence and clues you have found. Gather Information: You know how to make contacts, collect gossip and rumors, question informants, and otherwise get information from people. 
+<p>
+<b>Surveillance:</b> You can set up surveillance of a particular area, watching from a stationary location. The DC of the subject's Stealth check to evade your notice is equal to the result of your Investigation check. For actively following a subject, see Tailing in the Stealth skill description.
+
+!!
+@@ @Paralyzed
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A paralyzed character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'>immobile</a></font>, and physically <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, frozen in place and unable to move, but still aware and able to take purely mental actions, involving no physical movement whatsoever.
+
+!!
+@@ @Perception
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Use this skill to notice and pick up on things. Discerning details - such as clearly hearing conversation or reading fine text - requires at least three degrees of success on the Perception check. 
+<p>
+<b>Hearing:</b> Make a check against a DC based on how loud the noise is or against an opposed Stealth check. Normal conversation is DC 0, a soft noise DC 10. Listening through a door is +5 DC, +15 for a solid wall. While you're asleep, hearing something well enough to wake up is +10 DC. 
+<p>
+<b>Seeing:</b> Make a check against a DC based on how visible the object is or against an opposed Stealth check. Something in plain sight is DC 0, while something subtle or easily overlooked may be DC 5, 10 or more. Visual perception is also used to detect someone in disguise (see the Deception skill) or to notice a concealed object (see the Sleight of Hand skill). 
+<p>
+<b>Other Senses:</b> You can make Perception checks involving other sense types as well (see the Powers chapter for more on sense types). Noticing something obvious to a sense is DC 0. Less obvious things are DC 10 or so, hidden things DC 20 or more, and discerning details requires at least three degrees of success, as usual.
+
+!!
+@@ @Persuasion
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You're skilled in dealing with people, from etiquette and social graces to a way with words and public speaking, all of which helps to get your point across, make a good impression, negotiate, and generally win people over to your way of seeing things. In negotiations, all participants roll Persuasion checks to see who gains the advantage. Opposed checks also resolve cases where two advocates plead opposing cases before a third party. Non-player characters each have an initial attitude towards you or your cause. The GM chooses the character's initial attitude based on circumstances. Most of the time, people are favorable or indifferent toward heroes, but a specific circumstance or complication may call for a different attitude.
+
+!!
+@@ @Prone
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A prone character is lying on the ground, receiving a –5 circumstance penalty on close attack checks. Opponents receive a +5 circumstance bonus to close attack checks but a –5 penalty to ranged attack checks (effectively giving the prone character total cover
+against ranged attacks). Prone characters are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>. Standing up from a prone position is a move action.
+
+!!
+@@ @Ranged Combat
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You're trained with a particular type of ranged attack, giving you a bonus to your attack checks with it equal to your skill rank (see Attack Check in The Basics and in the Action & Adventure chapter). Each ranged attack is a separate Ranged Combat skill with its own rank, and encompasses a single weapon or power, although an array may be considered one power, at the Gamemaster's discretion (see Arrays in the Powers chapter for more information).
+
+!!
+@@ @Restrained
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A restrained character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font>. If the restraints are anchored to an immobile object, the character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'>immobile</a></font> rather than
+hindered. If restrained by another character, the restrained character is immobile but may be moved by the restraining character.
+
+!!
+@@ @SkillsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: skill=json.get(macro.args,0)]
+[h: ability=json.get(macro.args,1)]
+
+[h: skill = if(startsWith(skill, "CC"),"Close Combat",skill)]
+[h: skill = if(startsWith(skill, "Exp"),"Expertise",skill)]
+[h: skill = if(startsWith(skill, "RC"),"Ranged Combat",skill)]
+
+[frame("Skills"): {
+<html>
+<head>
+<title>[r: skill] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+<center><b>[r: skill]</b> ([r: ability])</center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(skill+"@this"):""]
+</body>
+</html>
+}]
+
+!!
+@@ @Slight of Hand
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You can perform dexterous feats of legerdemain such as palming small objects, picking pockets, slipping out of restraints, and so forth. Stage magicians use Sleight of Hand legitimately as a performance skill, but it is most commonly known for its criminal applications.
+<p>
+<b>Concealing:</b> You can use Sleight of Hand to conceal a small item on your person, making your check result the DC of an Investigation or Perception check to find it. 
+<p>
+<b>Contorting:</b> Make a DC 30 Sleight of Hand check to fit through a tight space wide enough for your head but too narrow for the width of your shoulders, or to reach through an opening wide enough for your hand, but too narrow for your arm. Escaping: Make a Sleight of Hand check to slip out of various restraints. This takes at least a minute per check. 
+<p>
+<b>Legerdemain:</b> Minor feats of Sleight of Hand, such as making a coin or playing card 'vanish', have a DC of 10 unless an observer is focused on noticing what you are doing. When you perform this skill under observation, your check is opposed by the observer's Perception check to see if they notice the trick. 
+<p>
+<b>Stealing:</b> To covertly take something from another person make a Sleight of Hand check (DC 20). Your target makes a Perception check and notices the attempt if his check result beats yours, whether you succeed in taking the object or not. You can also make a Sleight of Hand check to plant a small object on someone, slip something into their pocket, drop something into their drink, place a tiny radio tracer on them, and so forth.
+
+!!
+@@ @Staggered
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A staggered character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Dazed",currentToken())]'>dazed</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>.
+
+!!
+@@ @Stealth
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You're skilled in going unnoticed. While using Stealth, you can move at your speed rank minus 1 with no penalty. Faster than that, up to your full speed, you take a -5 circumstance penalty to your Stealth checks. 
+<p>
+<b>Hiding:</b> If you have cover or concealment, make a Stealth check, opposed by an observer's Perception check, to hide and go unnoticed. 
+<p>
+<b>Tailing:</b> You can use Stealth to tail someone at your normal speed. This assumes you have some cover or concealment (crowds of people, shadows, fog, etc.). If the subject is worried about being followed, he can make a Perception check (opposed by your Stealth check) every time he changes course (goes around a street corner, exits a building, and so on). If he is unsuspecting, he only gets one Perception check for the scene.
+
+!!
+@@ @Stunned
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Stunned characters cannot take any actions, including free actions
+
+!!
+@@ @Surprised
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+A surprised character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font>, caught off-guard and therefore unable to act, and less able to avoid attacks.
+
+!!
+@@ @Technology
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Technology covers operating, building, repairing, and generally working with technological devices and equipment. Without the proper tools or equipment, you take a -5 penalty to Technology checks for highly unfavorable circumstances. 
+<p>
+<b>Operating:</b> Most routine operations of technological equipment don't require a skill check and can be done untrained. Using an unfamiliar device does require a check, with the DC determined by how foreign or unusual the device is, from simple (DC 10) to highly advanced (DC 25 or more). 
+<p>
+<b>Building:</b> The difficulty and time required to make an item depends on its complexity, as shown on the Building Items table. If your Technology check succeeds, you have made the item after the necessary time. 
+<p>
+<b>Repairing:</b> You can also use Technology to repair damaged items, with a -5 to the DC to build the item and -2 to the time rank required. So you can perform repairs on a complex item in eight hours (time rank 12) with a DC of 20. 
+<p>
+<b>Jury-rigging:</b> You can also attempt jury-rigged, or temporary, repairs. Doing this reduces the repair DC by an additional 5 (for a total of -10 to the DC to build the item), and allows you to make the Technology check as a standard action. However, a jury-rigged repair can only fix a single problem, and the repair only lasts until the end of the scene. 
+<p>
+<b>Demolitions:</b> Careful placement of an explosive against a fixed structure can maximize damage by exploiting vulnerabilities in the structure. This requires at least a minute and a DC 10 Technology check. The GM makes the check, so you don't know exactly how well you have done until the explosive goes off. 
+<p>
+<b>Inventing:</b> If you have the Inventor advantage (see the Advantages chapter), you can use Technology to create inventions, temporary devices. See Inventing, page 145, for details. 
+<p>
+<b>Security:</b> You can use Technology to disarm or sabotage various security devices, including locks, traps, and sensors. This takes at least a minute, possibly longer, at the GM's discretion. The GM makes your Technology check secretly, so you don't necessarily know right away if you have succeeded.
+
+!!
+@@ @Transformed
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Transformed characters have some or all of their traits altered by an outside agency. This may range from a change in the character’s appearance to a complete change in trait ranks, even the removal of some traits and the addition of others! The primary
+limit on the transformed condition is the character’s power point total cannot increase, although it can effectively decrease for the duration of the transformation, such as when a powerful superhero is turned into an otherwise powerless mouse or frog (obviously based on considerably fewer power points)
+
+!!
+@@ @Treatment
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+You're trained in treating injuries and ailments. 
+<p>
+<b>Diagnosis:</b> You can diagnose injuries and ailments with an eye toward further treatment. This takes at least a minute. At the GM's discretion, a successful diagnosis provides a +2 bonus for favorable circumstances on further Treatment checks. 
+<p>
+<b>Provide Care:</b>  Providing care means treating an injured patient for a day or more. If successful, the patient further reduces the recovery time by 1 rank (see Recovery in the Action & Adventure chapter). You can provide care for up to your Treatment rank in patients at one time. 
+<p>
+<b>Revive:</b> You can remove the dazed or stunned conditions from a subject (see Conditions in the Action & Adventure chapter). The check to revive is a standard action. A successful check removes the condition. 
+<p>
+<b>Stabilize:</b> As a standard action, a successful Treatment check stabilizes a dying character. 
+<p>
+<b>Treat Disease and Poison:</b> You can treat a character afflicted with a disease or poison. Each time the character makes a resistance check against the ailment, you make a Treatment check. One degree of success provides the patient with a +2 circumstance bonus to the resistance check, three or more degrees of success provides a +5 circumstance bonus.
+
+!!
+@@ @Unaware
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+The character is completely unaware of his surroundings, unable to make interaction or Perception checks or perform any action based on them. If the condition applies to a specific sense or senses, they are added to the name of the condition, such as visually unaware, tactilely unaware (or numb), and so forth. Subjects have full concealment from all of a character’s unaware senses.
+
+!!
+@@ @Vehicles
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Use this skill to operate vehicles, from ground vehicles like cars to boats, planes, or even spaceships! See Vehicles in the Gadgets & Gear chapter for details. Routine tasks, such as ordinary operation of known vehicles, don't require a check and may even be done untrained for some vehicles, particularly common ones like cars. Make a check only when operating the vehicle in a stressful or dramatic situation like being chased or attacked, or trying to reach a destination in a limited amount of time.
+
+!!
+@@ @Vulnerable
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Vulnerable characters are limited in their ability to defend themselves, halving their active defenses (round up the final value). <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'><b>Defenseless</b></a></font>
+supersedes vulnerable.
+
+!!
+@@ @Weakened
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+The character has temporarily lost power points in a trait. See the Weaken effect in the Powers chapter for more. <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Debilitated",currentToken())]'><b>Debilitated</b></a></font> supersedes weakened.
+
+!!
+@@ @AdvantageShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("AdvantageShow")): setProperty("AdvantageShow",0); setProperty("AdvantageShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @AdvantagesUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+[h: text = encode(text)]
+[h: jsonData = json.append("[]",text)]
+[h:Advantages = json.set(Advantages, json.get(macro.args, "Name"), jsonData)]
+[if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: Advantages = json.remove(Advantages, json.get(macro.args, "Name"))]}; {}]
+
+[if( json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: Advantages = json.remove(Advantages, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@this"):""]
+Advantages Updated
+
+!!
+@@ @ConditionsLink
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: temp = macro.args]
+
+[h: cond1Data = ""]
+[h: cond1Title = 0]
+[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable, Restrained"]
+[FOREACH(cond1, cond1List, ""),code:{
+[if(listContains(temp,cond1)),code:{[h: cond1Data=listappend(cond1Data, cond1)][h: cond1Title = 1]}; {}]
+}]
+[r, if(cond1Title):"(1st Degree: "; ""]
+[FOREACH(var, cond1Data, ","),code:{
+[r: macroLink(var,"StatesUpdate@this","none",var,"selected")]}]
+
+[h: cond2Data = ""]
+[h: cond2Title = 0]
+[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned, Bound"]
+[FOREACH(cond2, cond2List, ""),code:{
+[if(listContains(temp,cond2)),code:{[h: cond2Data=listappend(cond2Data, cond2)][h: cond2Title = 1]}; {}]
+}]
+[r, if(cond2Title):", 2nd Degree: "; ""]
+[FOREACH(var, cond2Data, ","),code:{
+[r: macroLink(var,"StatesUpdate@this","none",var,"selected")]}]
+
+[h: cond3Data = ""]
+[h: cond3Title = 0]
+[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[FOREACH(cond3, cond3List, ""),code:{
+[if(listContains(temp,cond3)),code:{[h: cond3Data=listappend(cond3Data, cond3)][h: cond3Title = 1]}; {}]
+}]
+[r, if(cond3Title):", 3rd Degree: "; ""]
+[FOREACH(var, cond3Data, ","),code:{
+[r: macroLink(var,"StatesUpdate@this","none",var,"selected")]}]
+[r, if(cond1Title):")"; ""]
+
+!!
+@@ @ConditionsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[setAllStates(0)]
+[h: if(Bruises==0, "", setState("Bruises"+Bruises,1))]
+[h: data = json.remove(macro.args, "Submit")]
+[h, foreach(item, data),code:{
+
+[r, macro(item+"Update@this"):""]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+
+!!
+@@ @DamageUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: status=input(
+"function|Increase, Decrease, Clear|Change Bruises|RADIO|ORIENT=H SPAN=TRUE"
+)]
+[h: abort(status)]
+
+[if(function==2),code:{
+
+[h: setState("Bruises"+Bruises,0)]
+[h: Bruises=0]
+
+}; {
+	
+	[if(function==0),code:{
+[h: setState("Bruises"+Bruises,0)]
+[h: Bruises=Bruises+1]
+[h: setState("Bruises"+Bruises,1)]
+
+	}; {
+[h: setState("Bruises"+Bruises,0)]
+[h: Bruises=Bruises-1][h: Bruises=if(Bruises < 0,0,Bruises)]
+[h: if(Bruises==0, "", setState("Bruises"+Bruises,1))]
+
+	}]
+
+}]
+[r, macro("SheetLoad@this"):""]
+
+!!
+@@ @DamageUpdateDazed
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getState("Dazed")),code:{
+
+[if(getState("Incapacitated")),code:{
+}; {
+[h: setState("Bruises"+Bruises,0)]
+[h:  Bruises=Bruises+1]
+[h: setState("Bruises"+Bruises,1)]
+}]
+}; {
+
+[if(getState("Incapacitated")),code:{
+}; {
+[h: setState("Bruises"+Bruises,0)]
+[h:  Bruises=Bruises+1]
+[h: setState("Bruises"+Bruises,1)]
+[h, macro("DazedUpdate@this"):""]
+}]
+
+}]
+[h, macro("SheetLoad@this"):""]
+
+!!
+@@ @DamageUpdateIncapacitated
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getState("Incapacitated")),code:{
+}; {
+[h, macro("IncapacitatedUpdate@this"):""]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+
+!!
+@@ @DamageUpdateQuick
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: setState("Bruises"+Bruises,0)]
+[h: Bruises=Bruises+1]
+[h: setState("Bruises"+Bruises,1)]
+
+[r, macro("SheetLoad@this"):""]
+
+!!
+@@ @DamageUpdateStaggered
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getState("Staggered")),code:{
+
+[if(getState("Incapacitated")),code:{
+}; {
+[h, macro("IncapacitatedUpdate@this"):""]
+}]
+}; {
+
+[if(getState("Incapacitated")),code:{
+}; {
+[h: setState("Bruises"+Bruises,0)]
+[h:  Bruises=Bruises+1]
+[h: setState("Bruises"+Bruises,1)]
+[h: setState("Dazed",0)]
+[h, macro("StaggeredUpdate@this"):""]
+}]
+
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+
+!!
+@@ @HeroPointsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: status=input(
+".|Spend Hero Point||LABEL|SPAN=TRUE",
+"check|0|Restore Hero Point|CHECK|"
+)]
+[h: abort(status)]
+[if(check),code:{
+[h: HeroPoints = HeroPoints + 1] I gain a Hero Point
+}; 
+{
+[r, if(HeroPoints),code:{[h: HeroPoints = HeroPoints-1]I spend a Hero Point}; {[h: HeroPoints = HeroPoints]I have no Hero Points left to spend}] 
+
+}]
+
+[r, macro("SheetLoad@this"):""]
+
+!!
+@@ @OffenseShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("OffenseShow")): setProperty("OffenseShow",0); setProperty("OffenseShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @OffenseUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: name = json.get(macro.args, "name")]
+[h: action = json.get(macro.args, "action")]
+[h: range = json.get(macro.args, "range")]
+[h: area = json.get(macro.args, "area")]
+
+[h: attackbonus = json.get(macro.args, "attackbonus")]
+[h: defenseclass = json.get(macro.args, "defenseclass")]
+[h: critical = json.get(macro.args, "critical")]
+
+[h: resistance = json.get(macro.args, "resistance")]
+[h: effectrank = json.get(macro.args, "effectrank")]
+[h: damage = json.get(macro.args, "damage")]
+[h: strengthrank = json.get(macro.args, "strengthrank")]
+
+[h: notes = json.get(macro.args, "notes")]
+
+[h: delete = json.get(macro.args, "delete")]
+
+[h: condData = ""]
+[h: condList = "Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable, Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned, Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[foreach( temp, condList, ""),code:{[h: tempName = json.get(macro.args,temp)][if(tempName !=""),code:{[h: condData =listappend(condData, tempName)]}; {}]
+}]
+[h: cond = condData]
+
+[if (delete == 1), code:{
+[h: Attacks = json.remove(Attacks, name)]
+}; {
+[h: jsonData = json.append("[]",action,range,area,attackbonus,defenseclass,critical,resistance,effectrank,strengthrank,damage,notes,cond)]
+[h: Attacks = json.set(Attacks, name, jsonData)]
+}]
+[if(name != json.get(macro.args, "overwrite")),code:{[h: Attacks = json.remove(Attacks, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@Lib:MnM"):""]
+Offense Updated
+
+!!
+@@ @PowersShowUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("PowersShow")): setProperty("PowersShow",0); setProperty("PowersShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @PowersUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+
+<!-- encode it -->
+[h: text = encode(text)]
+
+[h:  setProperty("Powers", text)]
+[h, macro("SheetLoad@this"):""]
+Powers Updated
+
+!!
+@@ @SetHeroPointsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: status=input(
+"hp|1|Hero Point(s)|TEXT",
+"function|Add, Subtract, Make Total|Set Hero Points|RADIO"
+)]
+[h: abort(status)]
+
+[if(function==2),code:{
+
+[h: HeroPoints=hp]
+
+}; {
+	
+	[if(function==0),code:{
+
+[h: HeroPoints=HeroPoints+1]
+
+	}; {
+
+[h: HeroPoints=HeroPoints-1][h: HeroPoints=if(HeroPoints < 0,0,HeroPoints)]
+
+	}]
+
+}]
+[r, macro("SheetLoad@this"):""]
+
+!!
+@@ @SkillsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[foreach(tempAbility, json.fields(Skills), ""), code: {
+[h: propRank = json.get(macro.args, tempAbility+"Rank")]
+[h: propAttribute = json.get(macro.args, tempAbility+"Attribute")]
+[h: propMisc = json.get(macro.args, tempAbility+"Misc")]
+[h: propTrained = json.get(macro.args, tempAbility+"Trained")]
+[h: propdata = json.append("[]", propRank, propMisc, propAttribute, propTrained)]
+[h: Skills = json.set(Skills, tempAbility, propdata)]
+}]
+
+[h: newExp = json.get(macro.args, "newExp1")]
+[if(newExp == ""),code:{}; {
+[h: name = "Exp: "+newExp]
+[h: propRank = json.get(macro.args, "newExpRank1")]
+[h: propMisc = json.get(macro.args, "newExpMisc1")]
+[h: propdata = json.append("[]", propRank,propMisc, "Intellect",  0)]
+[h: Skills = json.set(Skills, name, propdata)]
+}]
+[h: newExp = json.get(macro.args, "newExp2")]
+[if(newExp == ""),code:{}; {
+[h: name = "Exp: "+newExp]
+[h: propRank = json.get(macro.args, "newExpRank2")]
+[h: propMisc = json.get(macro.args, "newExpMisc2")]
+[h: propdata = json.append("[]", propRank,propMisc, "Intellect",  0)]
+[h: Skills = json.set(Skills, name, propdata)]
+}]
+
+[h: newCC = json.get(macro.args, "newCC1")]
+[if(newCC == ""),code:{}; {
+[h: name = "CC: "+newCC]
+[h: propRank = json.get(macro.args, "newCCRank1")]
+[h: propMisc = json.get(macro.args, "newCCMisc1")]
+[h: propdata = json.append("[]", propRank, propMisc,"Fighting", 0)]
+[h: Skills = json.set(Skills, name, propdata)]
+}]
+[h: newCC = json.get(macro.args, "newCC2")]
+[if(newCC == ""),code:{}; {
+[h: name = "CC: "+newCC]
+[h: propRank = json.get(macro.args, "newCCRank2")]
+[h: propMisc = json.get(macro.args, "newCCMisc2")]
+[h: propdata = json.append("[]", propRank, propMisc,"Fighting", 0)]
+[h: Skills = json.set(Skills, name, propdata)]
+}]
+
+[h: newRC = json.get(macro.args, "newRC1")]
+[if(newRC == ""),code:{}; {
+[h: name = "RC: "+newRC]
+[h: propRank = json.get(macro.args, "newRCRank1")]
+[h: propMisc = json.get(macro.args, "newRCMisc1")]
+[h: propdata = json.append("[]", propRank,  propMisc,"Dexterity", 0)]
+[h: Skills = json.set(Skills, name, propdata)]
+}]
+[h: newRC = json.get(macro.args, "newRC2")]
+[if(newRC == ""),code:{}; {
+[h: name = "RC: "+newRC]
+[h: propRank = json.get(macro.args, "newRCRank2")]
+[h: propMisc = json.get(macro.args, "newRCMisc2")]
+[h: propdata = json.append("[]", propRank,  propMisc,"Dexterity", 0)]
+[h: Skills = json.set(Skills, name, propdata)]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+Skills Updated
+
+!!
+@@ @StatesUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: temp=json.get(macro.args, 0)]
+[r, macro(temp+"Update@this"):""]
+[h, macro("SheetLoad@Lib:MnM"):""]
+
+!!
+@@ @StatesUpdateRemove
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: temp=json.get(macro.args, 0)]
+[r, macro(temp+"Update@this"):""]
+[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("ConditionsInfoDisplay@Lib:MnM"):temp]
+
+!!
+@@ @TraitsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: setProperty("Strength", json.get(macro.args, "Strength"))]
+[h: setProperty("COG", json.get(macro.args, "COG"))]
+[h: setProperty("COO", json.get(macro.args, "COO"))]
+[h: setProperty("INT", json.get(macro.args, "INT"))]
+[h: setProperty("REF", json.get(macro.args, "REF"))]
+[h: setProperty("SAV", json.get(macro.args, "SAV"))]
+[h: setProperty("SOM", json.get(macro.args, "SOM"))]
+[h: setProperty("WIL", json.get(macro.args, "WIL"))]
+[h: setProperty("Dodge", json.get(macro.args, "Dodge"))]
+[h: setProperty("DodgeNorm", json.get(macro.args, "DodgeNorm"))]
+[h: setProperty("Parry", json.get(macro.args, "Parry"))]
+[h: setProperty("ParryNorm", json.get(macro.args, "ParryNorm"))]
+[h: setProperty("Fortitude", json.get(macro.args, "Fortitude"))]
+[h: setProperty("FortitudeNorm", json.get(macro.args, "FortitudeNorm"))]
+[h: setProperty("Toughness", json.get(macro.args, "Toughness"))]
+[h: setProperty("ToughnessNorm", json.get(macro.args, "ToughnessNorm"))]
+[h: setProperty("Will", json.get(macro.args, "Will"))]
+[h: setProperty("WillNorm", json.get(macro.args, "WillNorm"))]
+[h: setProperty("Initiative", json.get(macro.args, "Initiative"))]
+[h: setProperty("Minion", json.get(macro.args, "Minion"))]
+[h, macro("SheetLoad@this"):""]
+Traits Updated
+
+!!
+@@ @AdvantagesUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Advantages", "temporary=0; input=1; noframe=0"): {
+[h: name = json.get(macro.args, 0)]
+[h: text = json.get(macro.args, 1)]
+
+<html>
+<head>
+<title>Edges Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="AdvantagesUpdate" action="[r:macroLinkText('AdvantagesUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+<tr>
+<td valign="top" align="center">
+<label for="Name"><b>Advantage Name and Rank: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+</td>
+</tr>
+<tr>
+<td align="center">
+Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></input>
+</td>
+</tr>
+<tr>
+<td align="center">
+<input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @ColorUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[h: number = 0]
+[h, if(PageColor == "Bright Green"): number = 1; number = number]
+[h, if(PageColor == "Dark Blue"): number = 2; number = number]
+[h, if(PageColor == "Dark Orange"): number = 3; number = number]
+[h, if(PageColor == "Light Blue"): number = 4; number = number]
+[h, if(PageColor == "Light Orange"): number = 5; number = number]
+[h, if(PageColor == "Maroon"): number = 6; number = number]
+[h, if(PageColor == "Olive Green"): number = 7; number = number]
+[h, if(PageColor == "Purple"): number = 8; number = number]
+[h, if(PageColor == "Red"): number = 9; number = number]
+[h, if(PageColor == "Teal Blue"): number = 10; number = number]
+
+[h: status = input(
+"PageColor|Gray,Bright Green,Dark Blue,Dark Orange,Light Blue,Light Orange,Maroon,Olive Green,Purple,Red,Teal Blue|Choose Sheet Color|LIST|VALUE=STRING SELECT="+number
+)]
+[h: abort(status)]
+
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @ConditionsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Conditions", "width=300; height=405; temporary=0; input=1; noframe=0"): {
+
+<html>
+<head>
+<title>Conditions</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="ConditionsUpdate" action="[r:macroLinkText('ConditionsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+<tr bgcolor="[r: table(PageColor,2)]" color="white">
+<td colspan="3"><center>
+<b>Basic Conditions</b></center>
+</td>
+</tr>
+[h:theList = getTokenStates(",","Basic Conditions")]
+[h: theList=listSort(theList,"A")]
+[h: columncheck = 1]
+[r, foreach(item, theList, ""),code:{
+[r, if(columncheck > 1):""; "<tr>"]
+<td>
+<input type="checkbox" name="[r: item]" value="1" [r: if(getState(item),"CHECKED","")]> <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none",item,currentToken())]'>[r: item]</a></font></input>
+</td>
+[r, if(columncheck < 3):""; "</tr>"]
+[h: columncheck = if(columncheck == 3, 1, columncheck+1)]
+
+}]
+<tr bgcolor="[r: table(PageColor,2)]" color="white">
+<td colspan="3" ><center>
+<b>Combined Conditions</b></center>
+</td>
+</tr>
+[h:theList = getTokenStates(",","Combined Conditions")]
+[h: theList=listSort(theList,"A")]
+[h: columncheck = 1]
+[r, foreach(item, theList, ""),code:{
+[r, if(columncheck > 1):""; "<tr>"]
+<td>
+<input type="checkbox" name="[r: item]" value="1" [r: if(getState(item),"CHECKED","")]> <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none",item,currentToken())]'>[r: item]</a></font></input>
+</td>
+[r, if(columncheck < 3):""; "</tr>"]
+[h: columncheck = if(columncheck == 3, 1, columncheck+1)]
+}]
+<tr>
+<td colspan="3"><hr><center>
+<input type="checkbox" name="Clear All" value="1"> Clear All</input></center
+</td>
+</tr>
+<tr>
+<td align="center" colspan="3"><hr>
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @OffenseUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[h: name = macro.args]
+[h: data = json.get(Attacks, name)]
+
+[dialog("Offense Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
+<head>
+<title>Offense Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="Offense Update" action="[r:macroLinkText('OffenseUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			<b>Name: </b> <input type="text" name="name" value="[r: name]"></input>
+		</td>
+		<td align="center">		
+	 Delete? <input type="checkbox" name="delete" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			Action: <select name="action" selected="[r: action = json.get(data,0)]">
+<option value="No Action" [r: if(action == "No Action", "selected", "")]>No Action</option>
+<option value="Standard" [r: if(action == "Standard", "selected", "")]>Standard</option>
+<option value="Move" [r: if(action == "Move", "selected", "")]>Move</option>
+<option value="Free" [r: if(action == "Free", "selected", "")]>Free</option>
+<option value="Reaction" [r: if(action == "Reaction", "selected", "")]>Reaction</option>
+</select>
+Range: <select name="range" selected="[r: range = json.get(data,1)]">
+<option value="" [r: if(range == "", "selected", "")]></option>
+<option value="Close" [r: if(range == "Close", "selected", "")]>Close</option>
+<option value="Ranged" [r: if(range == "Ranged", "selected", "")]>Ranged</option>
+<option value="Perception" [r: if(range == "Perception", "selected", "")]>Perception</option>
+</select>  
+Area: <select name="area" selected="[r: area = json.get(data,2)]">
+<option value="" [r: if(area == "", "selected", "")]></option>
+<option value="Burst" [r: if(area == "Burst", "selected", "")]>Burst</option>
+<option value="Cloud" [r: if(area == "Cloud", "selected", "")]>Cloud</option>
+<option value="Cone" [r: if(area == "Cone", "selected", "")]>Cone</option>
+<option value="Cylinder" [r: if(area == "Cylinder", "selected", "")]>Cylinder</option>
+<option value="Line" [r: if(area == "Line", "selected", "")]>Line</option>
+<option value="Perception" [r: if(area == "Perception", "selected", "")]>Perception</option>
+<option value="Shapeable" [r: if(area == "Shapeable", "selected", "")]>Shapeable</option>
+</select><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Attack Bonus: <input type="text" name="attackbonus" value="[r: attackbonus = json.get(data,3)]" size="2"></input> vs. <select name="defenseclass" selected="[r: defenseclass = json.get(data,4)]">
+<option value="" [r: if(defenseclass == "", "selected", "")]></option>
+<option value="Dodge" [r: if(defenseclass == "Dodge", "selected", "")]>Dodge</option>
+<option value="Parry" [r: if(defenseclass == "Parry", "selected", "")]>Parry</option>
+<option value="Toughness" [r: if(defenseclass == "Toughness", "selected", "")]>Toughness</option>
+<option value="Fortitude" [r: if(defenseclass == "Fortitude", "selected", "")]>Fortitude</option>
+<option value="Will" [r: if(defenseclass == "Will", "selected", "")]>Will</option>
+</select> Critical on: <input type="text" name="critical" value="[r: critical = json.get(data,5)]" size="2"></input>+
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<select name="resistance" selected="[r: resistance = json.get(data,6)]">
+<option value="" [r: if(resistance == "", "selected", "")]></option>
+<option value="Toughness" [r: if(resistance == "Toughness", "selected", "")]>Toughness</option>
+<option value="Fortitude" [r: if(resistance == "Fortitude", "selected", "")]>Fortitude</option>
+<option value="Will" [r: if(resistance == "Will", "selected", "")]>Will</option>
+<option value="Dodge" [r: if(resistance == "Dodge", "selected", "")]>Dodge</option>
+<option value="Parry" [r: if(resistance == "Parry", "selected", "")]>Parry</option>
+</select>  vs. Effect Rank: <input type="text" name="effectrank" value="[r: effectrank = json.get(data,7)]" size="2"></input> + Strength? <input type="checkbox" name="strengthrank" value="1" [r, if(json.get(data,8)=="1"):"CHECKED"; ""]></input>  
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Non-Damage Effect/Conditions Only: <input type="checkbox" name="damage" value="1" [r,  if(json.get(data,9)=="1"):"CHECKED"; ""]></input><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Notes: <textarea name="notes" value="[r: notes = json.get(data,10)]" rows="2" cols="40">[r: notes = json.get(data,10)]</textarea>
+		</td>
+	</tr>
+[h: cond = json.get(data, 11)]
+	<tr>
+		<td>
+			<label for="cond"><b>Conditions: </b></label><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td>
+						1st Degree<br>
+[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable"]
+[FOREACH(cond1, cond1List, "<br>"),code:{<input type="checkbox" name="[r: cond1]" value="[r: cond1]" [r, if(listContains(cond,cond1)):"checked"; ""]></input> <font size = "2">[r: cond1]</font>}]
+					</td>
+					<td>
+						2nd Degree<br>
+[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned"]
+[FOREACH(cond2, cond2List, "<br>"),code:{<input type="checkbox" name="[r: cond2]" value="[r: cond2]" [r, if(listContains(cond,cond2)):"checked"; ""]></input> <font size = "2">[r: cond2]</font>}]
+					</td>
+					<td>
+3rd Degree<br>
+[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[FOREACH(cond3, cond3List, "<br>"),code:{<input type="checkbox" name="[r: cond3]" value="[r: cond3]" [r, if(listContains(cond,cond3)):"checked"; ""]></input> <font size = "2">[r: cond3]</font>}]
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><input type='hidden' name='overwrite' value='[r: name]'></input>
+			<input type='submit' name='Submit' value='Submit'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+}]
+
+!!
+@@ @OffenseUpdateDialogNew
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Offense Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
+<head>
+<title>Offense Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="Offense Update" action="[r:macroLinkText('OffenseUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			<b>Name: </b> <input type="text" name="name" value="New Power"></input>
+		</td>
+		<td align="center">		
+	 Delete? <input type="checkbox" name="delete" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			Action: <select name="action" selected="">
+<option value="No Action" >No Action</option>
+<option value="Standard" >Standard</option>
+<option value="Move" >Move</option>
+<option value="Free" >Free</option>
+<option value="Reaction" >Reaction</option>
+</select>
+Range: <select name="range" selected="">
+<option value="" ></option>
+<option value="Close" >Close</option>
+<option value="Ranged" >Ranged</option>
+<option value="Perception" >Perception</option>
+</select>  
+Area: <select name="area" selected="">
+<option value="" ></option>
+<option value="Burst" >Burst</option>
+<option value="Cloud" >Cloud</option>
+<option value="Cone" >Cone</option>
+<option value="Cylinder" >Cylinder</option>
+<option value="Line" >Line</option>
+<option value="Perception" >Perception</option>
+<option value="Shapeable" >Shapeable</option>
+</select><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Attack Bonus: <input type="text" name="attackbonus" value="" size="2"></input> vs. <select name="defenseclass" selected="">
+<option value="" ></option>
+<option value="Dodge" >Dodge</option>
+<option value="Parry" >Parry</option>
+<option value="Toughness" >Toughness</option>
+<option value="Fortitude" >Fortitude</option>
+<option value="Will" >Will</option>
+</select> Critical on: <input type="text" name="critical" value="" size="2"></input>+
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<select name="resistance" selected="">
+<option value="" ></option>
+<option value="Toughness" >Toughness</option>
+<option value="Fortitude" >Fortitude</option>
+<option value="Will" >Will</option>
+<option value="Dodge" >Dodge</option>
+<option value="Parry" >Parry</option>
+</select>  vs. Effect Rank: <input type="text" name="effectrank" value="" size="2"></input> + Strength? <input type="checkbox" name="strengthrank" value="1" ></input>  
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Non-Damage Effect/Conditions Only: <input type="checkbox" name="damage" value="1"></input><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Notes: <textarea name="notes" value="" rows="2" cols="40"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label for="cond"><b>Conditions: </b></label><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td>
+						1st Degree<br>
+[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable"]
+[FOREACH(cond1, cond1List, "<br>"),code:{<input type="checkbox" name="[r: cond1]" value="[r: cond1]" ></input> <font size = "2">[r: cond1]</font>}]
+					</td>
+					<td>
+						2nd Degree<br>
+[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned"]
+[FOREACH(cond2, cond2List, "<br>"),code:{<input type="checkbox" name="[r: cond2]" value="[r: cond2]" ></input> <font size = "2">[r: cond2]</font>}]
+					</td>
+					<td>
+3rd Degree<br>
+[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[FOREACH(cond3, cond3List, "<br>"),code:{<input type="checkbox" name="[r: cond3]" value="[r: cond3]" ></input> <font size = "2">[r: cond3]</font>}]
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><input type='hidden' name='overwrite' value=''></input>
+			<input type='submit' name='Submit' value='Submit'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+}]
+
+!!
+@@ @PowersUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Powers", "height = 520; width=400; temporary=0; input=1; noframe=0"): {
+[h: text = getProperty("Powers")]
+
+<html>
+<head>
+<title>Powers Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="PowersUpdate" action="[r:macroLinkText('PowersUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+<tr>
+<td valign="top">
+<textarea name="Text" value="[r: text]" rows="30" cols="50" wrap="hard">[r: decode(text)]</textarea>
+</td>
+</tr>
+<tr>
+<td align="center">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @SkillsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Skills Update", "temporary=0; input=1; noframe=0; closebutton=0"): {
+<html>
+<head>
+<title>Skills Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillsUpdate" action="[r:macroLinkText('SkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+[h: color = "#ededed"]
+
+				[h: propListunsort = json.fields(Skills)]
+				[h: propList = listsort(propListunsort, "A")]
+				[foreach(tempAbility, propList, ""), code: {
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>[r: tempAbility]</b></label>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="[r: tempAbility+"Rank"]" value="[r: json.get(json.get(Skills, tempAbility), 0)]" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="[r: tempAbility+"Misc"]" value="[r: json.get(json.get(Skills, tempAbility), 1)]" size="2"></input><input type="hidden" name="[r: tempAbility+"Attribute"]" value="[r: json.get(json.get(Skills, tempAbility), 2)]"></input><input type="hidden" name="[r: tempAbility+"Trained"]" value="[r: json.get(json.get(Skills, tempAbility), 3)]"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+}]
+
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Expertise: </b></label><input type="text" name="newExp1" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newExpRank1" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newExpMisc1" value="0" size="2"></input>
+<input type="hidden" name="newExpTrained1" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Expertise: </b></label><input type="text" name="newExp2" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newExpRan2k" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newExpMisc2" value="0" size="2"></input>
+<input type="hidden" name="newExpTrained2" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Close Combat: </b></label><input type="text" name="newCC1" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newCCRank1" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newCCMisc1" value="0" size="2"></input><input type="hidden" name="newCCTrained1" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Close Combat: </b></label><input type="text" name="newCC2" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newCCRank2" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newCCMisc2" value="0" size="2"></input><input type="hidden" name="newCCTrained2" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Ranged Combat: </b></label><input type="text" name="newRC1" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newRCRank1" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newRCMisc1" value="0" size="2"></input><input type="hidden" name="newRCTrained1" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Ranged Combat: </b></label><input type="text" name="newRC2" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newRCRank2" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newRCMisc2" value="0" size="2"></input><input type="hidden" name="newRCTrained2" value="0"></input>
+</td>
+</tr>
+
+<tr>
+<td align="center" colspan="4">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @TraitsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Traits Update", "temporary=0; height=380; width=320; input=1; noframe=0"): {
+<html>
+<head>
+<title>Traits Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="TraitsUpdate" action="[r:macroLinkText('TraitsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+	<tr>
+		<td bgcolor="black" valign="middle" colspan="8">&nbsp; &nbsp; <font color="white"><b>ABILITIES</b></font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>STR</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="Strength" value="[r: getProperty("Strength")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>STA</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="REF" value="[r: getProperty("REF")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>COG</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="COG" value="[r: getProperty("COG")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>DEX</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><font color="black"><b><input type="text" name="SAV" value="[r: getProperty("SAV")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>FGT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><font color="black"><b><input type="text" name="COO" value="[r: getProperty("COO")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>INT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SOM" value="[r: getProperty("SOM")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>AWE</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="INT" value="[r: getProperty("INT")]" size="2"></input></b>										</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>PRE</b>
+					</td>
+				</tr>
+				<tr>
+					<td  align="center" width="100%"><font color="black"><b><input type="text" name="WIL" value="[r: getProperty("WIL")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="black" valign="middle" colspan="8">&nbsp; &nbsp; <font color="white"><b>DEFENSES & INITIATIVE</b></font>
+		</td>
+	</tr>	
+	<tr>
+		<td colspan="2">Defense
+		</td>
+		<td align="center" colspan="3">Defense<br>Rank
+		</td>
+		<td align="center" colspan="3">Defense Rank<br>without Bonuses
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Dodge
+		</td>
+		<td align="center" colspan="3"><input type="text" name="Dodge" value="[r: getProperty("Dodge")]" size="2"></input>
+		</td>
+		<td align="center" colspan="3"><input type="text" name="DodgeNorm" value="[r: getProperty("DodgeNorm")]" size="2"></input>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Parry
+		</td>
+		<td align="center" colspan="3"><input type="text" name="Parry" value="[r: getProperty("Parry")]" size="2"></input>
+		</td>
+		<td align="center" colspan="3"><input type="text" name="ParryNorm" value="[r: getProperty("ParryNorm")]" size="2"></input>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Fortitude
+		</td>
+		<td align="center" colspan="3"><input type="text" name="Fortitude" value="[r: getProperty("Fortitude")]" size="2"></input>
+		</td>
+		<td align="center" colspan="3"><input type="text" name="FortitudeNorm" value="[r: getProperty("FortitudeNorm")]" size="2"></input>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Toughness
+		</td>
+		<td align="center" colspan="3"><input type="text" name="Toughness" value="[r: getProperty("Toughness")]" size="2"></input>
+		</td>
+		<td align="center" colspan="3"><input type="text" name="ToughnessNorm" value="[r: getProperty("ToughnessNorm")]" size="2"></input>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Will
+		</td>
+		<td align="center" colspan="3"><input type="text" name="Will" value="[r: getProperty("Will")]" size="2"></input>
+		</td>
+		<td align="center" colspan="3"><input type="text" name="WillNorm" value="[r: getProperty("WillNorm")]" size="2"></input>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8"><hr>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Initiative
+		</td>
+		<td align="center" colspan="3"><input type="text" name="Initiative" value="[r: getProperty("Initiative")]" size="2"></input>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8"><hr>
+			Is Character a minion: <input type="checkbox" name="Minion" value="1" [r,  if(getProperty("Minion")=="1"):"CHECKED"; ""]></input>
+		</td>
+	</tr>
+<tr>
+<td align="center" colspan="8">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @VsCheckDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[h: abilityList=" ,Strength,REF,COG,SAV,COO,SOM,INT,WIL"]
+[h: defenseList= " ,Dodge,Parry,Fortitude,Toughness,Will"]
+[h: skillListunsort = json.fields(Skills)]
+[h: skillList = listsort(skillListunsort, "A")]
+[h: skillList = " ,"+skillList]
+
+[h:status=input(
+
+"DC|0|Target DC|TEXT|WIDTH=2",
+"ability|"+abilityList+"|Ability|LIST|VALUE=STRING",
+"defense|"+defenseList+"|Defense|LIST|VALUE=STRING",
+"skill|"+skillList+"|Skill|LIST|VALUE=STRING",
+"Misc|0|Misc Bonus|TEXT|WIDTH=2"
+
+)]
+[h:abort(status)]
+
+[if(skill ==""),code:{}; {
+[h: skillRank = json.get(json.get(Skills,skill),0)]
+[h: skillMisc =  json.get(json.get(Skills,skill),1)]
+[h: skillAtt =  getProperty(json.get(json.get(Skills,skill),2))]
+[h: skillTotal = skillRank+skillMisc+skillAtt]
+}]
+
+[h, if(ability == ""): Rank = 0; Rank = getProperty(ability)]
+[h, if(defense == ""): Rank = Rank; Rank = getProperty(defense)]
+[h, if(skill == ""): Rank = Rank; Rank = skillTotal]
+
+[h, if(ability == ""): Name = "d20 Roll"; Name = ability+" Check"]
+[h, if(defense == ""): Name = Name; Name = defense+" Check"]
+[h, if(skill == ""): Name = Name; Name = skill+" Check"]
+
+[h: Roll = d20]
+
+[h:resulta=(Roll+Rank+Misc)-DC]
+[r: name] : [t: Roll+ Rank+Misc][r, if(DC): " vs. DC "+ DC; ""][r, macro("d20@this"):Roll][r: macro.return]
+[r, if(DC),code:{<br>
+[r: table("DegreesSuccess",resulta)]
+}; {}]
+
+!!
+@@ @VsCheckDialogDM
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[h:status=input(
+
+"DC|0|Target DC|TEXT|",
+"roll|0|Roll Result|TEXT|"
+
+)]
+[h:abort(status)]
+
+[h:resulta=roll-DC]
+[r: table("DegreesSuccess",resulta)]
+
+!!
+@@ @AdvantagesUpdateDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("Advantages", "temporary=0; input=1; noframe=0"): {
+<html>
+<head>
+<title>Advantages Display</title>
+</head>
+<body>
+<table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+	<tr  bgcolor="[r: table(PageColor,2)]" color="white">
+		<td align="center" width="98%">
+		<font  size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+		</td>
+		<td align="right" width="1%">
+		<font color="white"><a href="[r: macroLinkText("AdvantagesUpdateDialog@this", "none", macro.args, currentToken())]"><image src="[r: tableImage("Buttons",5)]" border="0"></image></a></font>
+		</td>
+	</tr>
+	<tr>	
+		<td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+	</tr>
+</table>
+</body>
+</html>
+}]
+
+!!
+@@ @AreaEntry
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+<head>
+<title>Area Attack Modifiers</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%"  bgcolor="white">
+	<tr>
+		<td align="center" colspan="2">
+			Effect Modifiers: <input type="text" name="effect" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="ExeMacro" value="AttackCheck"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @AttackArea
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+<table width="100%"  bgcolor="white">
+	<tr>
+		<td alignt="center">
+			Effect Modifiers: <input type="text" name="effect" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @AttackDamage
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+
+
+!!
+@@ @AttackEntry
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+[h: name =  json.get(macro.args,0)]
+[h: range =  json.get(json.get(Attacks,name),1)]
+[h: area =  json.get(json.get(Attacks,name),2)]
+
+<head>
+<title>Attack Modifiers</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+	
+[if(range=="Perception"||area!=""),code:{[r, macro("AttackArea@this"):""]}; {
+	[r, macro("AttackTarget@this"):""]
+	[r, macro("AttackRangeMods@this"):""]
+	[r, macro("AttackMods@this"):""]
+}]
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="ExeMacro" value="AttackCheck"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @AttackMods
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+<table width="100%"  bgcolor="white">
+	<tr>
+		<td align="left">
+			Attack Modifiers: <input type="text" name="attack" value="" size="5"></input>
+		</td>
+		<td alignt="right">
+			Effect Modifiers: <input type="text" name="effect" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @AttackRangeMods
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+<table width="100%"  bgcolor="white">
+	<tr>
+		<td>
+			Range:
+		</td>
+		<td align="left">
+<input type="radio" name="range" value="0" checked> None</input>
+<input type="radio" name="range" value="-2"> Medium</input>
+<input type="radio" name="range" value="-5"> Long</input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Cover:
+		</td>
+		<td align="left">
+<input type="radio" name="cover" value="0" checked> None</input>
+<input type="radio" name="cover" value="-2"> Partial</input>
+<input type="radio" name="cover" value="-5"> Total</input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Concealment:
+		</td>
+		<td align="left">
+<input type="radio" name="concealment" value="0" checked> None</input>
+<input type="radio" name="concealment" value="-2"> Partial</input>
+<input type="radio" name="concealment" value="-5"> Total</input>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @AttackResistance
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+
+
+!!
+@@ @AttackTarget
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td><center><b> Attack Target:</b> 
+			
+			<select name="target">
+			<option value="">None</option>
+			<option value="[r: token.name]">Self</option>
+			[H: tokenList=getExposedTokenNames()]
+			[h: tokenList = replace(tokenList,token.name+",","")]
+			[foreach(name,tokenList,""),code:{
+			<option value='[r: name]'>[r: name]</option>
+			}]</select></center>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @Critical
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+[h: Roll = json.get(macro.args,0)]
+[h: Crit = json.get(macro.args,1)]
+[h: Crit = if(Crit=="",20,Crit)]
+[h:  macro.return = if(Roll == 1, " &#8226; <b>Natural 1!</b>","")]
+
+[h:  macro.return = if(Roll >= Crit, " &#8226; <b>Critical Hit!!!</b>",macro.return)]
+
+[h:  macro.return = if(Roll == 20, " &#8226; <b>Natural 20!!!</b>",macro.return)]
+
+!!
+@@ @AsleepUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Asleep")): setState("Asleep",0); setState("Asleep",1)]
+
+!!
+@@ @BlindUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Blind")): setState("Blind",0); setState("Blind",1)]
+
+!!
+@@ @BoundUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Bound")): ""; setState("Hindered",0)]
+[if(getState("Bound")): ""; setState("Vulnerable",0)]
+[if(getState("Bound")): ""; setState("Restrained",0)]
+[if(getState("Bound")): setState("Bound",0); setState("Bound",1)]
+
+!!
+@@ @Clear AllUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[setAllStates(0)]
+[h: if(Bruises==0, "", setState("Bruises"+Bruises,1))]
+
+!!
+@@ @CompelledUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Compelled")): setState("Compelled",0); setState("Compelled",1)]
+
+!!
+@@ @ControlledUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Controlled")): setState("Controlled",0); setState("Controlled",1)]
+[setState("Compelled", 0)]
+
+!!
+@@ @DazedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Dazed")): setState("Dazed",0); setState("Dazed",1)]
+
+!!
+@@ @DeafUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Deaf")): setState("Deaf",0); setState("Deaf",1)]
+
+!!
+@@ @DebilitatedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Debilitated")): setState("Debilitated",0); setState("Debilitated",1)]
+
+!!
+@@ @DefenselessUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Defenseless")): setState("Defenseless",0); setState("Defenseless",1)]
+[setState("Vulnerable",0)]
+
+!!
+@@ @DisabledUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Disabled")): setState("Disabled",0); setState("Disabled",1)]
+[setState("Impaired",0)]
+
+!!
+@@ @DyingUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Dying")): ""; setState("Dazed",0))]
+[if(getState("Dying")): ""; setState("Hindered",0))]
+[if(getState("Dying")): ""; setState("Staggered",0))]
+[if(getState("Dying")): ""; setState("Incapacitated",0))]
+[if(getState("Dying")): setState("Dying",0); setState("Dying",1)]
+
+!!
+@@ @EntrancedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Entranced")): setState("Entranced",0); setState("Entranced",1)]
+
+!!
+@@ @ExhaustedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Exhausted")): setState("Exhausted",0); setState("Exhausted",1)]
+
+!!
+@@ @FatiguedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Fatigued")): setState("Fatigued",0); setState("Fatigued",1)]
+
+!!
+@@ @GrabUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=aa ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Grab")): setState("Grab",0); setState("Grab",1)]]
+
+!!
+@@ @HinderedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Hindered")): setState("Hindered",0); setState("Hindered",1)]
+
+!!
+@@ @ImmobileUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Immobile")): setState("Immobile",0); setState("Immobile",1)]
+[setState("Hindered",0)]
+
+!!
+@@ @ImpairedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Impaired")): setState("Impaired",0); setState("Impaired",1)]
+
+!!
+@@ @IncapacitatedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Incapacitated")): ""; setState("Dazed",0))]
+[if(getState("Incapacitated")): ""; setState("Hindered",0))]
+[if(getState("Incapacitated")): ""; setState("Staggered",0))]
+[if(getState("Incapacitated")): ""; setState("Dying",0))]
+[if(getState("Incapacitated")): setState("Incapacitated",0); setState("Incapacitated",1)]
+
+!!
+@@ @ParalyzedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Paralyzed")): setState("Paralyzed",0); setState("Paralyzed",1)]
+
+!!
+@@ @ProneUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Prone")): setState("Prone",0); setState("Prone",1)]
+
+!!
+@@ @Reset BruisesUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[h: setState("Bruises"+Bruises,0)]
+[h: Bruises=0]
+
+!!
+@@ @RestrainedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Restrained")): setState("Restrained",0); setState("Restrained",1)]
+
+!!
+@@ @StaggeredUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Staggered")): setState("Staggered",0); setState("Staggered",1)]
+
+!!
+@@ @StunnedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Stunned")): setState("Stunned",0); setState("Stunned",1)]
+[setState("Dazed",0)]
+
+!!
+@@ @SurprisedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Surprised")): setState("Surprised",0); setState("Surprised",1)]
+
+!!
+@@ @TransformedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Transformed")): setState("Transformed",0); setState("Transformed",1)]
+
+!!
+@@ @UnawareUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Unaware")): setState("Unaware",0); setState("Unaware",1)]
+
+!!
+@@ @VulnerableUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Vulnerable")): setState("Vulnerable",0); setState("Vulnerable",1)]
+
+!!
+@@ @WeakenedUpdate
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+[if(getState("Weakened")): setState("Weakened",0); setState("Weakened",1)]
+
+!!
+@@ @Attack
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Check ; tooltip= ; minWidth= ; 
+[h: name=macro.args]
+
+[h: Roll = d20]
+[h: Rank =  json.get(json.get(Attacks,name),3)]
+[h: Crit = json.get(json.get(Attacks,name),5)]
+[h: CritTotal = ""]
+
+<b>[r: name]</b>
+
+[if(Rank == ""),code:{<br>}; {<br>
+
+[r, macro("AttackModifier@this"):macro.args]
+[h: Misc = json.get(macro.return,0)]
+[h: Bonus = json.get(macro.return,1)]
+[h: Target = json.get(macro.return,2)]
+
+<b>Attack</b>[r, if(Target !=""): " against "+Target; ""]: 
+[t: Roll + Rank + Misc] vs. [r: json.get(json.get(Attacks,name),4)]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <b>Hit</b>:
+[h: Misc = Bonus][h: jsonData=json.append("[]",Roll,Crit)][r, macro("Critical@this"):jsonData][h: CritTotal = macro.return]
+}]
+
+[h: Damage = json.get(json.get(Attacks,name),9)]
+[h: Resistance = json.get(json.get(Attacks,name),6)]
+
+[if(Resistance==""),code:{}; {
+
+[if(Damage == 1),code:{
+
+[h: Rank = if(json.get(json.get(Attacks,name),7)=="",0,json.get(json.get(Attacks,name),7))]
+[h: effecttotal = Rank+Misc]
+[h: jsonData = json.append("[]", json.get(json.get(Attacks,name),6),effecttotal, json.get(json.get(Attacks,name),11))]
+[r: macroLink(json.get(json.get(Attacks,name),6),"Resistance@this","all",jsondata,"selected")]  vs. DC [t: Rank + 10 + Misc] [r: CritTotal]
+[h: jsonData = json.get(json.get(Attacks,name),11)]<br>
+<i>[r, macro("ConditionsLink@this"):jsonData]</i>
+
+}; {
+
+[h: effectrank = if(json.get(json.get(Attacks,name),7)=="",0,json.get(json.get(Attacks,name),7))]
+[h: strengthrank = if(json.get(json.get(Attacks,name),8)=="",0,getProperty("Strength"))]
+[h: Rank = effectrank + strengthrank]
+[h: effecttotal = effectrank+strengthrank+Misc]
+[h: jsonData = json.append("[]", json.get(json.get(Attacks,name),6),effecttotal)]
+[r: macroLink(json.get(json.get(Attacks,name),6),"Damage@this","all",jsondata,"selected")]  vs. DC [t: Rank + 15 + Misc] [r: CritTotal]
+
+}]
+
+}]
+
+!!
+@@ @CharSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h: page = getStrProp(macro.args, "Page")]
+[h: tempPage = getStrProp(CharPage, "Page")]
+
+[h, if(page==""&&tempPage==""): page="Stats"]
+[h, if(page==""&&tempPage!=""): page=tempPage]
+[h: CharPage="Page="+page]
+[h: icon = tblImage("Header",1)]
+
+<table width="100%" cellpadding="0" border="1" bgcolor="white">
+<table width="100%" cellpadding="2" border="0" bgcolor="[r: table(PageColor,2)]" background="
+[r: tblImage('Icons',2)]">
+	<tr >
+		<td width="30%" rowspan="2">
+			<a href="[r: macroLinktext("ColorUpdate@this", "none", "", currentToken())]"><image src='[r:getTokenImage(75)]' border="0"></image></a>
+		</td>
+		<td width="45%" align="center" >
+		<a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Stats", currentToken())]">
+			<font color="[r: if(page=="Stats","yellow","white")]" size="4"><b>Stats</b></font></a>
+		</td>
+		<td width="45%" align="center" >
+		<a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Powers", currentToken())]">
+			<font color="[r: if(page=="Powers","yellow","white")]" size="4"><b>Powers</b></font></a>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" colspan="2" color="white">
+			<font size="6"><b>[r: token.name]</b>&nbsp; </font>
+		</td>
+	</tr>
+</table>
+
+[r, macro("HeaderSheet@this"):macro.args]
+</table>
+<table width="100%" cellpadding="2" border="0">
+	<tr>
+		<td>
+<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+		</td>
+	</tr>
+</table>
+[r, macro(page+"Sheet@this"):macro.args]
+
+!!
+@@ @HeaderSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="2" border="0">
+	<tr bgcolor="[r: table(PageColor,4)]">
+		<td width="34%" align="center">
+			
+			<b><a href='[r:macroLinkText("DamageUpdate@this","none","",currentToken())]'><font color="black">Bruises:</font></a> [r: Bruises]</b>
+		</td>
+		<td width="33%" align="center">
+			[h: jsonData = json.append("[]", "Initiative", getProperty("Initiative"), "Initiative")]
+					<b><font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>Initiative:</a> 
+[h: jsonData = json.set("{}", "name","Initiative","rank", getProperty("Initiative"),"misc",0)]
+<a href='[r:macroLinkText("InitiativeCheck@this","all", jsonData, currentToken())]'>+[r: Initiative]</a></font></b>
+		</td>
+		<td width="33%" align="center"><b>
+			<b><font color="black"><a href="[r: macroLinktext("HeroPointsUpdate@this", "all", "Page=Stats", currentToken())]">Hero Points:</a></font> [r: HeroPoints]</b>
+
+		</td>	
+	</tr>
+	<tr bgcolor="[r: table(PageColor,4)]">
+		<td width="34%" align="center">
+			<b><font color="black"><a href='[r:macroLinkText("TableLoad@this","none",'', currentToken())]'>Tables</a></font></b>
+		</td>
+		<td width="33%" align="center">
+			<b><font color="black"></b>
+		</td>
+		<td width="33%" align="center">
+		</td>	
+	</tr>
+</table>
+<table width="100%" cellpadding="5" border="0" valign="middle">
+
+				<tr>
+					<td  align="left" width="10%">
+						<b><font color="black"><a href='[r:macroLinkText("ConditionsUpdateDialog@this","none", "", currentToken())]'>Conditions:</a></font></b>
+					</td>
+					<td align="left">
+						 [r, macro("StatesDisplay@this"):""]
+					</td>
+				</tr>
+</table>
+
+!!
+@@ @PowersSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0">
+	<tr>
+		<td valign="top" align="center" width="100%"><!--Left side of character sheet-->
+			<table width="100%" cellpadding="0">
+				<tr>
+					<td>
+						[r, macro("OffenseDisplayTop@this"):""]
+					</td>
+				</tr>
+<table width="100%" cellpadding="2" border="0">
+	<tr>
+		<td>
+<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+		</td>
+	</tr>
+</table>
+				<tr>
+					<td>
+						[r, macro("PowersDisplay@this"):""]
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @Sheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h: selectedCount=listCount(getSelected())]
+[frame("Sheet"):{
+<html>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','','selected')]"></link>
+<head><title>Character Sheet</title></head>
+<body>
+
+	[r, if(getPropertyType()=="MnM"&&selectedCount <= 1), code:
+		{
+			[r, macro("CharSheet@this"): macro.args]
+		}; 
+		{
+			<table width="100%">
+				<tr>
+					<td align="center"><image src='[r: tableImage("Icons",1,300)]' border="0" align="middle"></image><br>
+						<font size = "5"><b>[r, if(SelectedCount <= 1): "This is not a character token."; "Multiple tokens selected."]</b></font>
+					</td>
+				</tr>
+			</table>
+		}
+	]
+</body>
+</html>
+}]
+
+!!
+@@ @SheetLoad
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[H: OwnedCurrent = listContains(getOwned(getPlayerName()), currentToken())]
+[H: OwnedSelected = listContains(getOwned(getPlayerName()), getSelected())]
+
+[R, if(	OwnedCurrent == 1  ||
+		OwnedSelected == 1 ||
+		isGM() ), CODE:
+	{
+		[r, macro("Sheet@this"): macro.args]	
+	}; {
+		[h: ""]
+	}
+]
+
+!!
+@@ @StatsSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("AbilitiesDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="2" border="0">
+	<tr>
+		<td>
+<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0" valign="top">
+	<tr>
+		<td width="45%">
+			<table width="100%" cellpadding="0" border="1">
+			[r, macro("DefenseDisplay@this"):""]
+			</table>
+<table width="100%" cellpadding="2" border="0">
+	<tr>
+		<td>
+<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+		</td>
+	</tr>
+</table><table width="100%" cellpadding="0" border="1">
+			[r, macro("AdvantagesDisplay@this"):""]</table>
+		</td>
+
+<table width="100%" cellpadding="1" border="0">
+	<tr>
+		<td>
+<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+		</td>
+	</tr>
+</table>
+
+		<td width="55%"><table width="100%" cellpadding="0" border="1">
+			[r, macro("SkillsDisplayTop@this"):""]</table>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @D20basic
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
+[h:status=input(
+
+"rollName|"+json.get(macro.args,0)+"|Roll Name",
+"rollType|Roll, Check, Attack|Type of Roll|LIST| VALUE=STRING",
+"rollMod|0|D20 Bonus/Penalty|TEXT|",
+"hp|0|Improved Roll|CHECK"
+
+)]
+[h:abort(status)]
+[h: jsonData=json.append("[]",rollName,rollMod,rollType,0,hp)]
+[r, macro("D20rollbasic@this"):jsonData]
+
+!!
+@@ @D20mod
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
+[h: name=json.get(macro.args,0)]
+[h:status=input(
+
+"rollMod|0|"+name+" Bonus/Penalty|TEXT|"
+
+)]
+[h:abort(status)]
+[h: jsonData= json.set(macro.args,3,rollMod)]
+[r, macro("D20roll@this"):jsonData]
+
+!!
+@@ @D20rollbasic
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
+[h: rollName = json.get(macro.args, 0)]
+[h: rollBonus = json.get(macro.args, 1)]
+[h: rollType = json.get(macro.args, 2)]
+[h: rollMisc = json.get(macro.args, 3)]
+[h: rollImproved = json.get(macro.args, 4)]
+[h: rolldie = if(rollImproved==1, d20r10 , d20)]
+
+[r: rollname] [r:rollType][r: if(rollImproved==1, " <i>(Improved Roll)</i>","")]: [t:rolldie+rollBonus+rollMisc] [if(rolldie == 1), code: {<span style color="blue"> &#8226; <b>Natural 1!</b></span>}; {}] [if(rolldie == 20), code: {<span style color="red"> &#8226; <b>Natural 20!!!</b></span>}; {}]
+
+!!
+@@ @DamageCheck
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+[h: Roll = d20]
+[h: Effect =  json.get(macro.args,"effect")]
+
+[if(json.get(macro.args,"ability")=="No"),code:{
+[h: Rank = getProperty(json.get(macro.args,"name"))]
+}; {
+[h: Rank = getProperty(json.get(macro.args,"ability"))]
+}]
+[h, if(json.get(macro.args,"rankmod")==""): Misc=0-getProperty("Bruises"); Misc = json.get(macro.args,"rankmod")-getProperty("Bruises")]
+[h, if(json.get(macro.args,"effectmod")==""): Bonus=0; Bonus = json.get(macro.args,"effectmod")]
+
+[if(json.get(macro.args,"half")=="1"),code:{[h: Effect = floor(Effect/2)][h, if(Effect <= 0):Effect = 1; Effect = Effect]}; {}]
+
+I make a [r, if(json.get(macro.args,"ability") == "No"):json.get(macro.args,"name"); json.get(macro.args,"ability")] Check:  [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Roll + Rank + Misc): Roll + Rank + Misc]}; {[t(Roll + Rank + Misc):Roll + Rank + Misc]}][r, macro("d20@this"):Roll] 
+
+vs. DC  [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+15+Bonus):  Effect+15+Bonus]}; {[t( Effect+15+Bonus): Effect+15+Bonus]}][r: macro.return]
+<br>
+[h:resulta=-1*(Roll+Rank+Misc-(Effect+15+Bonus))]
+
+[if(getProperty("Minion")),code:{
+
+[h: margina= table("MinionDamage",resulta)]
+
+}; {
+
+[h: margina= table("Damage",resulta)]
+
+}]
+
+[switch(margina),code:
+case 0: {
+No Effect!!!
+}; 
+case 1: {
+[r: macroLink("-1 Penalty","DamageUpdateQuick@this","none","","selected")]
+}; 
+case 2: {
+[r: macroLink("Dazed & -1 Penalty","DamageUpdateDazed@this","none","Dazed","selected")]
+}; 
+case 3: {
+[r: macroLink("Staggered & -1 Penalty","DamageUpdateStaggered@this","none","Staggered","selected")]
+}; 
+case 4: {
+[r: macroLink("Incapacitated!","DamageUpdateIncapacitated@this","none","Incapacitated","selected")]
+}]
+
+!!
+@@ @DamageEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+<head>
+<title>Damage Resistance Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)] vs. DC [r: json.get(macro.args,1)+15]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td  colspan = "2">
+			Alternate Defense:
+			<select name="ability" selected="">
+			<option value='No'>No</option>
+			<option value='Dodge'>Dodge</option>
+			<option value='Parry'>Parry</option>
+			<option value='Fortitude'>Fortitude</option>	
+			<option value='Toughness'>Toughness</option>
+			<option value='Will'>Will</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td colspan = "2">
+			Half Effect Rank: <input type="checkbox" name="half" value="1"></input>
+		</td>
+	</tr>
+	<tr>
+		<td align="left">
+			Defense Modifiers: <input type="text" name="rankmod" value="" size="5"></input>
+		</td>
+		<td alignt="right">
+			DC Modifiers: <input type="text" name="effectmod" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="effect" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="DamageCheck"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @ResistanceCheck
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+[h: Roll = d20]
+[h: Effect =  json.get(macro.args,"effect")]
+
+[if(json.get(macro.args,"ability")=="No"),code:{
+[h: Rank = getProperty(json.get(macro.args,"name"))]
+}; {
+[h: Rank = getProperty(json.get(macro.args,"ability"))]
+}]
+[h, if(json.get(macro.args,"rankmod")==""): Misc=0-getProperty("Bruises"); Misc = json.get(macro.args,"rankmod")-getProperty("Bruises")]
+[h, if(json.get(macro.args,"effectmod")==""): Bonus=0; Bonus = json.get(macro.args,"effectmod")]
+
+[if(json.get(macro.args,"half")=="1"),code:{[h: Effect = floor(Effect/2)][h, if(Effect <= 0):Effect = 1; Effect = Effect]}; {}]
+
+I make a [r, if(json.get(macro.args,"ability") == "No"):json.get(macro.args,"name"); json.get(macro.args,"ability")] Check:  [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Roll + Rank + Misc): Roll + Rank + Misc]}; {[t(Roll + Rank + Misc):Roll + Rank + Misc]}][r, macro("d20@this"):Roll] 
+
+vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+Bonus):  Effect+10+Bonus]}; {[t( Effect+10+Bonus): Effect+10+Bonus]}][r: macro.return]
+<br>
+[h:resulta=-1*(Roll+Rank+Misc-(Effect+10+Bonus))]
+
+[if(getProperty("Minion")),code:{
+
+[r: table("MinionMargin",resulta)]
+
+}; {
+
+[r: table("Margin",resulta)]
+
+}]
+
+!!
+@@ @ResistanceEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+<head>
+<title>Resistance Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)] vs. DC [r: json.get(macro.args,1)+10]</center>
+		</td>
+	</tr>
+</table><table width="100%" bgcolor="white">
+	<tr>
+		<td  colspan = "2">
+			Alternate Defense:
+			<select name="ability" selected="">
+			<option value='No'>No</option>
+			<option value='Dodge'>Dodge</option>
+			<option value='Parry'>Parry</option>
+			<option value='Fortitude'>Fortitude</option>	
+			<option value='Toughness'>Toughness</option>
+			<option value='Will'>Will</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td colspan = "2">
+			Half Effect Rank: <input type="checkbox" name="half" value="1"></input>
+		</td>
+	</tr>
+	<tr>
+		<td align="left">
+			Defense Modifiers: <input type="text" name="rankmod" value="" size="5"></input>
+		</td>
+		<td alignt="right">
+			DC Modifiers: <input type="text" name="effectmod" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="effect" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="ResistanceCheck"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @GMLoad
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[r, macro("GMSheet@this"): macro.args]
+
+!!
+@@ @GMSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[frame("GM"):{
+<html>
+<head><title>GM Screen</title></head>
+<body>
+<table border="0" width="100%" cellpadding="3">
+<tr>
+<td>
+[r,macro("StatesDisplayGM@this"):""]
+</td>
+</tr>
+</table>
+</body>
+</html>
+}]
+
+!!
+@@ @Measurements Table
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[dialog("Measurements Table","width=400; height=600; temporary=1; noframe=0; "): {
+
+<table bgcolor="[r: table(PageColor,4)]">
+	<tr bgcolor='[r: table(PageColor,2)]'>
+		<td ><span style="color:white"><b><center>Rank</td>
+		<td ><span style="color:white"><b><center>Mass</td>
+		<td ><span style="color:white"><b><center>Time</td>
+		<td ><span style="color:white"><b><center>Distance</td>
+		<td ><span style="color:white"><b><center>Volume</td>
+	</tr><tr>
+<td colspan="7" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+</tr>
+	<tr bgcolor="white">
+		<td ><center>-5</td>
+		<td ><center>1.5 lb.</td>
+		<td ><center>1/8 second</td>
+		<td ><center>6 inches</td>
+		<td ><center>1/32 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>-4</td>
+		<td ><center>3 lbs.</td>
+		<td ><center>1/4 second</td>
+		<td ><center>1 foot</td>
+		<td ><center>1/16 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>-3</td>
+		<td ><center>6 lbs.</td>
+		<td ><center>1/2 second</td>
+		<td ><center>3 feet</td>
+		<td ><center>1/8 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>-2</td>
+		<td ><center>12 lbs.</td>
+		<td ><center>1 second</td>
+		<td ><center>6 feet</td>
+		<td ><center>1/4 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>-1</td>
+		<td ><center>25 lbs.</td>
+		<td ><center>3 seconds</td>
+		<td ><center>15 feet</td>
+		<td ><center>1/2 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>0</td>
+		<td ><center>50 lbs.</td>
+		<td ><center>6 seconds</td>
+		<td ><center>30 feet</td>
+		<td ><center>1 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>1</td>
+		<td ><center>100 lbs.</td>
+		<td ><center>12 seconds</td>
+		<td ><center>60 feet</td>
+		<td ><center>2 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>2</td>
+		<td ><center>200 lbs.</td>
+		<td ><center>30 seconds</td>
+		<td ><center>120 feet</td>
+		<td ><center>4 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>3</td>
+		<td ><center>400 lbs.</td>
+		<td ><center>1 minute</td>
+		<td ><center>250 feet</td>
+		<td ><center>8 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>4</td>
+		<td ><center>800 lbs.</td>
+		<td ><center>2 minutes</td>
+		<td ><center>500 feet</td>
+		<td ><center>15 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>5</td>
+		<td ><center>1600 lbs.</td>
+		<td ><center>4 minutes</td>
+		<td ><center>900 feet</td>
+		<td ><center>30 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>6</td>
+		<td ><center>3200 lbs.</td>
+		<td ><center>8 minutes</td>
+		<td ><center>1800 feet</td>
+		<td ><center>60 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>7</td>
+		<td ><center>3 tons</td>
+		<td ><center>15 minutes</td>
+		<td ><center>1/2 mile</td>
+		<td ><center>125 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>8</td>
+		<td ><center>6 tons</td>
+		<td ><center>30 minutes</td>
+		<td ><center>1 mile</td>
+		<td ><center>250 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>9</td>
+		<td ><center>12 tons</td>
+		<td ><center>1 hour</td>
+		<td ><center>2 miles</td>
+		<td ><center>500 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>10</td>
+		<td ><center>25 tons</td>
+		<td ><center>2 hours</td>
+		<td ><center>4 miles</td>
+		<td ><center>1,000 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>11</td>
+		<td ><center>50 tons</td>
+		<td ><center>4 hours</td>
+		<td ><center>8 miles</td>
+		<td ><center>2,000 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>12</td>
+		<td ><center>100 tons</td>
+		<td ><center>8 hours</td>
+		<td ><center>16 miles</td>
+		<td ><center>4,000 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>13</td>
+		<td ><center>200 tons</td>
+		<td ><center>16 hours</td>
+		<td ><center>30 miles</td>
+		<td ><center>8,000 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>14</td>
+		<td ><center>400 tons</td>
+		<td ><center>1 day</td>
+		<td ><center>60 miles</td>
+		<td ><center>16,000 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>15</td>
+		<td ><center>800 tons</td>
+		<td ><center>2 days</td>
+		<td ><center>120 miles</td>
+		<td ><center>32,000 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>16</td>
+		<td ><center>1600 tons</td>
+		<td ><center>4 days</td>
+		<td ><center>250 miles</td>
+		<td ><center>65,000 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>17</td>
+		<td ><center>3.2 ktons</td>
+		<td ><center>1 week</td>
+		<td ><center>500 miles</td>
+		<td ><center>125,000 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>18</td>
+		<td ><center>6 ktons</td>
+		<td ><center>2 weeks</td>
+		<td ><center>1,000 miles</td>
+		<td ><center>250,000 cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>19</td>
+		<td ><center>12 ktons</td>
+		<td ><center>1 month</td>
+		<td ><center>2,000 miles</td>
+		<td ><center>500,000 cft.</td>
+	</tr>
+	<tr>
+		<td ><center>20</td>
+		<td ><center>25 ktons</td>
+		<td ><center>2 months</td>
+		<td ><center>4,000 miles</td>
+		<td ><center>1 million cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>21</td>
+		<td ><center>50 ktons</td>
+		<td ><center>4 months</td>
+		<td ><center>8,000 miles</td>
+		<td ><center>2 million cft.</td>
+	</tr>
+	<tr>
+		<td ><center>22</td>
+		<td ><center>100 ktons</td>
+		<td ><center>8 months</td>
+		<td ><center>1,6000 miles</td>
+		<td ><center>4 million cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>23</td>
+		<td ><center>200 ktons</td>
+		<td ><center>1.5 years</td>
+		<td ><center>32,000 miles</td>
+		<td ><center>8 million cft.</td>
+	</tr>
+	<tr>
+		<td ><center>24</td>
+		<td ><center>400 ktons</td>
+		<td ><center>3 years</td>
+		<td ><center>64,000 miles</td>
+		<td ><center>15 million cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>25</td>
+		<td ><center>800 ktons</td>
+		<td ><center>6 years</td>
+		<td ><center>125,000 miles</td>
+		<td ><center>32 million cft.</td>
+	</tr>
+	<tr>
+		<td ><center>26</td>
+		<td ><center>1,600 ktons</td>
+		<td ><center>12 years</td>
+		<td ><center>250,000 miles</td>
+		<td ><center>65 million cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>27</td>
+		<td ><center>3,200 ktons</td>
+		<td ><center>25 years</td>
+		<td ><center>500,000 miles</td>
+		<td ><center>125 million cft.</td>
+	</tr>
+	<tr>
+		<td ><center>28</td>
+		<td ><center>6,400 ktons</td>
+		<td ><center>50 years</td>
+		<td ><center>1 million miles</td>
+		<td ><center>250 million cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>29</td>
+		<td ><center>12,500 ktons</td>
+		<td ><center>100 years</td>
+		<td ><center>2 million miles</td>
+		<td ><center>500 million cft.</td>
+	</tr>
+	<tr>
+		<td ><center>30</td>
+		<td ><center>25,000 ktons</td>
+		<td ><center>200 years</td>
+		<td ><center>4 million miles</td>
+		<td ><center>1 billion cft.</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>+1</td>
+		<td ><center>x2</td>
+		<td ><center>x2</td>
+		<td ><center>x2</td>
+		<td ><center>x2</td>
+	</tr>
+</table>
+
+}]
+[abort(0)]
+
+!!
+@@ @Size Rank Modifiers
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[dialog("Size Rank Modifiers","width=475; height=353; temporary=1; noframe=0; "): {
+
+<table bgcolor="[r: table(PageColor,4)]">
+	<tr bgcolor='[r: table(PageColor,2)]'>
+		<td ><span style="color:white"><b><center>Size Rank</td>
+		<td ><span style="color:white"><b><center>Height/Length</td>
+		<td ><span style="color:white"><b><center>Active Defense</td>
+		<td ><span style="color:white"><b><center>Stealth</td>
+		<td ><span style="color:white"><b><center>Intimidation</td>
+		<td ><span style="color:white"><b><center>STR</td>
+		<td ><span style="color:white"><b><center>STA</td>
+		<td ><span style="color:white"><b><center>Speed</td>
+	</tr>
+	<tr>
+		<td colspan="8" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>3</td>
+		<td ><center>250 feet.</td>
+		<td ><center>-10</td>
+		<td ><center>-20</td>
+		<td ><center>+10</td>
+		<td ><center>+20</td>
+		<td ><center>+20</td>
+		<td ><center>+2</td>
+	</tr>
+	<tr>
+		<td ><center>2</td>
+		<td ><center>120 feet</td>
+		<td ><center>-8</td>
+		<td ><center>-16</td>
+		<td ><center>+8</td>
+		<td ><center>+16</td>
+		<td ><center>+16</td>
+		<td ><center>+2</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>1</td>
+		<td ><center>60 feet</td>
+		<td ><center>-6</td>
+		<td ><center>-12</td>
+		<td ><center>+6</td>
+		<td ><center>+12</td>
+		<td ><center>+12</td>
+		<td ><center>+1</td>
+	</tr>
+	<tr>
+		<td ><center>0</td>
+		<td ><center>30 feet</td>
+		<td ><center>-4</td>
+		<td ><center>-8</td>
+		<td ><center>+4</td>
+		<td ><center>+8</td>
+		<td ><center>+8</td>
+		<td ><center>+1</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>-1</td>
+		<td ><center>15 feet</td>
+		<td ><center>-2</td>
+		<td ><center>-4</td>
+		<td ><center>+2</td>
+		<td ><center>+4</td>
+		<td ><center>+4</td>
+		<td ><center>+0</td>
+	</tr>
+	<tr>		
+		<td ><center>-2</td>
+		<td ><center>6 feet</td>
+		<td ><center>0</td>
+		<td ><center>0</td>
+		<td ><center>0</td>
+		<td ><center>0</td>
+		<td ><center>0</td>
+		<td ><center>+0</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>-3</td>
+		<td ><center>3 feet</td>
+		<td ><center>+2</td>
+		<td ><center>+4</td>
+		<td ><center>-2</td>
+		<td ><center>-1</td>
+		<td ><center>0</td>
+		<td ><center>+0</td>
+	</tr>
+	<tr>
+		<td ><center>-4</td>
+		<td ><center>1 feet</td>
+		<td ><center>+4</td>
+		<td ><center>+8</td>
+		<td ><center>-4</td>
+		<td ><center>-2</td>
+		<td ><center>0</td>
+		<td ><center>-1</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>-5</td>
+		<td ><center>6 inches</td>
+		<td ><center>+6</td>
+		<td ><center>+12</td>
+		<td ><center>-6</td>
+		<td ><center>-3</td>
+		<td ><center>0</td>
+		<td ><center>-1</td>
+	</tr>
+	<tr>
+		<td ><center>-6</td>
+		<td ><center>3 inches</td>
+		<td ><center>+8</td>
+		<td ><center>+16</td>
+		<td ><center>-8</td>
+		<td ><center>-4</td>
+		<td ><center>0</td>
+		<td ><center>-2</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>-7</td>
+		<td ><center>1 inches</td>
+		<td ><center>+10</td>
+		<td ><center>+20</td>
+		<td ><center>-10</td>
+		<td ><center>-5</td>
+		<td ><center>0</td>
+		<td ><center>-2</td>
+	</tr>
+</table>
+
+}]
+[abort(0)]
+
+!!
+@@ @StatesDisplayGM
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[h:theList = getTokenStates(",","Basic Conditions")]
+[h: theList=listSort(theList,"A")]
+[r, foreach(item, theList, ""),code:{
+
+<font color="black"><a href='[r:macroLinkText("StatesUpdate@this","none",item,"selected")]'><image src="[r: getStateImage(item, 35)]" border="0" alt="[r: item]"></image></a></font>
+
+}]<br><hr>
+[h:theList = getTokenStates(",","Combined Conditions")]
+[h: theList=listSort(theList,"A")]
+[r, foreach(item, theList, ""),code:{
+
+<font color="black"><a href='[r:macroLinkText("StatesUpdate@this","none",item,"selected")]'><image src="[r: getStateImage(item, 35)]" border="0" alt="[r: item]"></image></a></font>
+
+}]<br><hr>
+<font color="black"><a href='[r:macroLinkText("StatesUpdate@this","none","Clear All","selected")]'>Clear All</a></font>&nbsp; 
+<font color="black"><a href='[r:macroLinkText("StatesUpdate@this","none","Reset Bruises","selected")]'>Reset Bruises</a></font>&nbsp; 
+<font color="black"><a href='[r:macroLinkText("SetHeroPointsUpdate@this","none","Reset Bruises","selected")]'>Set Hero Points</a></font>&nbsp; 
+<font color="black"><a href='[r:macroLinkText("VsCheckDialogGM@this","GM","","none")]'>Vs. Check</a></font>
+
+!!
+@@ @TableLoad
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[status=input(
+"chart|Measurements Table,Size Rank Modifiers|Choose Table|RADIO|VALUE=STRING SPAN=TRUE"
+)]
+
+[h: abort(status)]
+
+[r, macro(chart+"@this"):""]
+
+!!
