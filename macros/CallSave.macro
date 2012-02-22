@@ -1,4 +1,4 @@
-<!-- CallSave macro -->
+<!-- Call Save macro -->
 
 <!-- The assumption is made that all States in campaign do not have spaces in their name, otherwise code will break -->
 
@@ -15,13 +15,15 @@
 )]
 [h:abort(status)]
 
-[h:dieRoll=eval("1d20")+misc]
+[h:saveBon = getProperty("SaveBonus")]
+[h:dieRoll=eval("1d20")+saveBon+misc]
+[h:customTooltip(strformat("d20(%d) %s%s",dieRoll - saveBon - misc,if(saveBon != 0,strformat("+ SaveBonus(%d) ",saveBon),""),if(misc != 0,strformat("+ misc(%d) ",misc),"")),string(dieRoll))]
 [h,if(Choice!=0): stateChoice=substring(listGet(imageList,Choice),0,indexOf(listGet(imageList,Choice)," ")); stateChoice="None"]
 [h,if(Choice!=0): imgLink=strformat(" <img src='%s' align='middle'></img>",getStateImage(stateChoice,30)); imgLink=""]
 
 [h,if(dieRoll>=10): 
-  output=strformat("Save <font color='green'>SUCCESS</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)));
-  output=strformat("Save <font color='red'>FAILED</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)))
+  output=strformat("Save <font color='green'>SUCCESS</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,macro.return);
+  output=strformat("Save <font color='red'>FAILED</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,macro.return)
 ]
-<p>{output}</p>
+<font color='black'>{output}</font>
 [h,if(dieRoll>=10 && Choice != 0): setState(stateChoice,0)]
