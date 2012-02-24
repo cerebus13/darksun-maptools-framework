@@ -26,19 +26,19 @@
 <table border="0" cellpadding="2" width="100%">
 
 	<tr bgcolor="[r: table(PageColor,2)]">
-		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>ABILITIES</b></font>
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>APTITUDES</b></font>
 		</td>
 		<td  align="right" colspan="2"><a href='[r:macroLinkText("TraitsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
 		</td>		
 	</tr>[h: num = 1]
-[h: abilityList = "Strength,COG,COO,INT,REF,SAV,SOM,WIL"]
+[h: abilityList = "COG,COO,INT,REF,SAV,SOM,WIL"]
 [foreach(abl, abilityList,""),code:{
 
 [if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
 				[h:jsonData=json.set("{}","name",abl,"rank",getProperty(abl),"modifier",0)]
-				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Abilities",num)]</a></b>
+				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Aptitudes",num)]</a></b>
 					</td>
 				</tr>
 				<tr>
@@ -49,6 +49,82 @@
 		</td>
 
 [if(roll.count == 3||roll.count==7),code:{</tr>}; {}]
+[h: num = num+1]
+}]
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @AptitudesDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1" bgcolor="white">
+<table border="0" cellpadding="2" width="100%">
+
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>APTITUDES</b></font>
+		</td>
+		<td  align="right" colspan="2"><a href='[r:macroLinkText("TraitsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
+		</td>		
+	</tr>[h: num = 1]
+[h: abilityList = "COG,COO,INT,REF,SAV,SOM,WIL"]
+[foreach(abl, abilityList,""),code:{
+
+[if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
+		<td>
+			<table width="100%">
+				[h:jsonData=json.set("{}","name",abl,"rank",getProperty(abl),"modifier",0)]
+				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Aptitudes",num)]</a></b>
+					</td>
+				</tr>
+				<tr>
+		[h: jsonData = json.append("[]",abl,getProperty(abl),"Ability")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(abl)]</b></font></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+
+[if(roll.count == 3||roll.count==7),code:{</tr>}; {}]
+[h: num = num+1]
+}]
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @StatsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1" bgcolor="white">
+<table border="0" cellpadding="2" width="100%">
+
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>STATS</b></font>
+		</td>
+		<td  align="right" colspan="3"><a href='[r:macroLinkText("StatsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
+		</td>		
+	</tr>[h: num = 1]
+[h: statList = "MOX,TT,LUC,IR,WT,DUR,DR,INIT,SPD,DB"]
+[foreach(stat, statList,""),code:{
+
+[if(roll.count == 0||roll.count==5),code:{<tr>}; {}]
+		<td>
+			<table width="100%">
+				[h:jsonData=json.set("{}","name",stat,"rank",getProperty(stat),"modifier",0)]
+				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b>
+					</td>
+				</tr>
+				<tr>
+		[h: jsonData = json.append("[]",stat,getProperty(stat),"Stat")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+
+[if(roll.count == 4||roll.count==9),code:{</tr>}; {}]
 [h: num = num+1]
 }]
 				</tr>
@@ -324,6 +400,78 @@
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Ability Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Difficulty Class:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="DC" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Aid Another:
+		</td>
+		<td align="left">
+			[H: pcList=getExposedTokenNames()]
+			[h: pcList = replace(pcList,token.name+",","")]
+			[h: pcList = "No,"+pcList]
+			<select name="aid" selected="">
+			[foreach(name,pcList,""),code:{
+			<option value='[r: name]'>[r: name]</option>
+			}]</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modifier" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @StatEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Stats Check</title>
 <meta name="input" content="true">
 </head>
 <body>
@@ -668,14 +816,13 @@ I set my initative to
 		<td align="left">
 			<select name="ability" selected="">
 			<option value='No'>No</option>
-			<option value='Strength'>Strength</option>
-			<option value='REF'>REF</option>
-			<option value='COG'>COG</option>	
+      <option value='COG'>COG</option>	
+			<option value='COO'>COO</option>			
+			<option value='INT'>INT</option>      
+      <option value='REF'>REF</option>
 			<option value='SAV'>SAV</option>
-			<option value='COO'>COO</option>
 			<option value='SOM'>SOM</option>
-			<option value='INT'>INT</option>
-			<option value='Persence'>Persence</option>
+      <option value='WIL'>WIL</option>
 			</select>
 		</td>
 	</tr>
@@ -1347,6 +1494,24 @@ Advantages Updated
 [r, macro("SheetLoad@this"):""]
 
 !!
+@@ @RezPointsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: status=input(
+".|Spend Rez Point||LABEL|SPAN=TRUE",
+"check|0|Restore Rez Point|CHECK|"
+)]
+[h: abort(status)]
+[if(check),code:{
+[h: RezPoints = RezPoints + 1] I gain a Rez Point
+}; 
+{
+[r, if(RezPoints),code:{[h: RezPoints = RezPoints-1]I spend a Rez Point}; {[h: RezPoints = RezPoints]I have no Rez Points left to spend}] 
+
+}]
+
+[r, macro("SheetLoad@this"):""]
+
+!!
 @@ @OffenseShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("OffenseShow")): setProperty("OffenseShow",0); setProperty("OffenseShow",1)]
@@ -1519,7 +1684,6 @@ Skills Updated
 !!
 @@ @TraitsUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
-[h: setProperty("Strength", json.get(macro.args, "Strength"))]
 [h: setProperty("COG", json.get(macro.args, "COG"))]
 [h: setProperty("COO", json.get(macro.args, "COO"))]
 [h: setProperty("INT", json.get(macro.args, "INT"))]
@@ -1541,6 +1705,22 @@ Skills Updated
 [h: setProperty("Minion", json.get(macro.args, "Minion"))]
 [h, macro("SheetLoad@this"):""]
 Traits Updated
+
+!!
+@@ @StatsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: setProperty("MOX", json.get(macro.args, "MOX"))]
+[h: setProperty("TT", json.get(macro.args, "TT"))]
+[h: setProperty("LUC", json.get(macro.args, "LUC"))]
+[h: setProperty("IR", json.get(macro.args, "IR"))]
+[h: setProperty("WT", json.get(macro.args, "WT"))]
+[h: setProperty("DUR", json.get(macro.args, "DUR"))]
+[h: setProperty("DR", json.get(macro.args, "DR"))]
+[h: setProperty("INIT", json.get(macro.args, "INIT"))]
+[h: setProperty("SPD", json.get(macro.args, "SPD"))]
+[h: setProperty("DB", json.get(macro.args, "DB"))]
+[h, macro("SheetLoad@this"):""]
+Stats Updated
 
 !!
 @@ @AdvantagesUpdateDialog
@@ -2073,34 +2253,10 @@ Area: <select name="area" selected="">
 <form method="json" name="TraitsUpdate" action="[r:macroLinkText('TraitsUpdate@Lib:MnM', 'none', '', currentToken())]">
 <table>
 	<tr>
-		<td bgcolor="black" valign="middle" colspan="8">&nbsp; &nbsp; <font color="white"><b>ABILITIES</b></font>
+		<td bgcolor="black" valign="middle" colspan="7">&nbsp; &nbsp; <font color="white"><b>APTITUDES</b></font>
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<table width="100%">
-				<tr>
-					<td bgcolor="black" color="white" align="center" width="100%"><b>STR</b>
-					</td>
-				</tr>
-				<tr>
-					<td align="center" width="100%"><b><input type="text" name="Strength" value="[r: getProperty("Strength")]" size="2"></input></b>
-					</td>
-				</tr>
-			</table>
-		</td>
-		<td>
-			<table width="100%">
-				<tr>
-					<td bgcolor="black" color="white" align="center" width="100%"><b>STA</b>
-					</td>
-				</tr>
-				<tr>
-					<td align="center" width="100%"><b><input type="text" name="REF" value="[r: getProperty("REF")]" size="2"></input></b>
-					</td>
-				</tr>
-			</table>
-		</td>
 		<td>
 			<table width="100%">
 				<tr>
@@ -2113,34 +2269,58 @@ Area: <select name="area" selected="">
 				</tr>
 			</table>
 		</td>
-		<td>
+    <td>
 			<table width="100%">
 				<tr>
-					<td bgcolor="black" color="white" align="center" width="100%"><b>DEX</b>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>COO</b>
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><font color="black"><b><input type="text" name="SAV" value="[r: getProperty("SAV")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="COO" value="[r: getProperty("COO")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
 		</td>
-		<td>
-			<table width="100%">
-				<tr>
-					<td bgcolor="black" color="white" align="center" width="100%"><b>FGT</b>
-					</td>
-				</tr>
-				<tr>
-					<td align="center" width="100%"><font color="black"><b><input type="text" name="COO" value="[r: getProperty("COO")]" size="2"></input></b>
-					</td>
-				</tr>
-			</table>
-		</td>
-		<td>
+    <td>
 			<table width="100%">
 				<tr>
 					<td bgcolor="black" color="white" align="center" width="100%"><b>INT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="INT" value="[r: getProperty("INT")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>REF</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="REF" value="[r: getProperty("REF")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SAV</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SAV" value="[r: getProperty("SAV")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SOM</b>
 					</td>
 				</tr>
 				<tr>
@@ -2149,25 +2329,14 @@ Area: <select name="area" selected="">
 				</tr>
 			</table>
 		</td>
-		<td>
+    <td>
 			<table width="100%">
 				<tr>
-					<td bgcolor="black" color="white" align="center" width="100%"><b>AWE</b>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>WIL</b>
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="INT" value="[r: getProperty("INT")]" size="2"></input></b>										</td>
-				</tr>
-			</table>
-		</td>
-		<td>
-			<table width="100%">
-				<tr>
-					<td bgcolor="black" color="white" align="center" width="100%"><b>PRE</b>
-					</td>
-				</tr>
-				<tr>
-					<td  align="center" width="100%"><font color="black"><b><input type="text" name="WIL" value="[r: getProperty("WIL")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="WIL" value="[r: getProperty("WIL")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -2252,9 +2421,158 @@ Area: <select name="area" selected="">
 } ]
 
 !!
+@@ @StatsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Stats Update", "temporary=0; height=380; width=340; input=1; noframe=0"): {
+<html>
+<head>
+<title>Stats Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="StatsUpdate" action="[r:macroLinkText('StatsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+	<tr>
+		<td bgcolor="black" valign="middle" colspan="10">&nbsp; &nbsp; <font color="white"><b>STATS</b></font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>MOX</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="MOX" value="[r: getProperty("MOX")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>TT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="TT" value="[r: getProperty("TT")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>LUC</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="LUC" value="[r: getProperty("LUC")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>IR</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="IR" value="[r: getProperty("IR")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>WT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="WT" value="[r: getProperty("WT")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>DUR</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="DUR" value="[r: getProperty("DUR")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>DR</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="DR" value="[r: getProperty("DR")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>INIT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="INIT" value="[r: getProperty("INIT")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SPD</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SPD" value="[r: getProperty("SPD")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>DB</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="DB" value="[r: getProperty("DB")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+<tr>
+<td align="center" colspan="10">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
 @@ @VsCheckDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[h: abilityList=" ,Strength,REF,COG,SAV,COO,SOM,INT,WIL"]
+[h: abilityList=" ,COG,COO,INT,REF,SAV,SOM,WIL"]
 [h: defenseList= " ,Dodge,Parry,Fortitude,Toughness,Will"]
 [h: skillListunsort = json.fields(Skills)]
 [h: skillList = listsort(skillListunsort, "A")]
@@ -2823,9 +3141,10 @@ Area: <select name="area" selected="">
 			<b><font color="black"><a href='[r:macroLinkText("TableLoad@this","none",'', currentToken())]'>Tables</a></font></b>
 		</td>
 		<td width="33%" align="center">
-			<b><font color="black"></b>
+			<b><font color="black"><a href="[r: macroLinktext("RezPointsUpdate@this", "all", "Page=Stats", currentToken())]">Rez Points:</a></font> [r: RezPoints]</b>
 		</td>
 		<td width="33%" align="center">
+      <b><font color="black">Morph:</font> [r: Morph]</b>
 		</td>	
 	</tr>
 </table>
@@ -2880,7 +3199,7 @@ Area: <select name="area" selected="">
 <head><title>Character Sheet</title></head>
 <body>
 
-	[r, if(getPropertyType()=="MnM"&&selectedCount <= 1), code:
+	[r, if(getPropertyType() != "Basic" && getPropertyType() != "zLibrary" && selectedCount <= 1), code:
 		{
 			[r, macro("CharSheet@this"): macro.args]
 		}; 
@@ -2920,7 +3239,14 @@ Area: <select name="area" selected="">
 <table width="100%" cellpadding="0">
 	<tr>
 		<td width="100%" valign="top">
-			[r, macro("AbilitiesDisplay@this"):""]
+			[r, macro("AptitudesDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("StatsDisplay@this"):""]
 		</td>
 	</tr>
 </table>

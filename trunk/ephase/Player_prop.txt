@@ -1,162 +1,118 @@
+PowerPoints:150
+PowerLevel:{floor(PowerPoints/15)}
+HeroPoints:{if(isPC(),1,0)}
+Minion:0
+-----Abilities-----
+Strength:0
+Stamina:0
+Agility:0
+Dexterity:0
+Fighting:0
+Intellect:0
+Awareness:0
+Presence:0
+-----Defenses-----
+Dodge:{Agility}
+Parry:{Fighting}
+Fortitude:{Stamina}
+Toughness:{Stamina}
+Will:{Awareness}
+DodgeNorm:{""}
+ParryNorm:{""}
+FortitudeNorm:{""}
+ToughnessNorm:{""}
+WillNorm:{""}
+*#HeroPointsShow (Hero Points):{if(isPC(),HeroPoints,"")}
+*@DodgeShow (Dodge):{Dodge}{if(DodgeNorm=="","","/"+DodgeNorm)}
+*@ParryShow (Parry):{Parry}{if(ParryNorm=="","","/"+ParryNorm)}
+*@FortitudeShow (Fortitude):{Fortitude}{if(FortitudeNorm=="","","/"+FortitudeNorm)}
+*@ToughnessShow (Toughness):{Toughness}{if(ToughnessNorm=="","","/"+ToughnessNorm)}
+*@WillShow (Will):{Will}{if(WillNorm=="","","/"+WillNorm)}
+-----Combat-----
+Initiative:{Agility}
+Bruises:0
+Attacks:{}
+-----Advantages-----
+Advantages:{}
+-----Skills-----
+Skills:{"Acrobatics":[0,0,"Agility",0],"Athletics":[0,0,"Strength",1],"Deception":[0,0,"Presence",1],"Insight":[0,0,"Awareness",1],"Intimidation":[0,0,"Presence",1],"Investigation":[0,0,"Intellect",0],"Perception":[0,0,"Awareness",1],"Persuasion":[0,0,"Presence",1],"Sleight of Hand":[0,0,"Dexterity",0],"Stealth":[0,0,"Agility",1],"Technology":[0,0,"Intellect",0],"Treatment":[0,0,"Intellect",0],"Vehicles":[0,0,"Dexterity",0]}
+{"Acrobatics":[3,0,"Agility",0],"Athletics":[0,0,"Strength",1],"Deception":[0,0,"Presence",1],"Insight":[0,0,"Awareness",1],"Intimidation":[5,0,"Presence",1],"Investigation":[1,0,"Intellect",0],"Perception":[6,0,"Awareness",1],"Persuasion":[0,0,"Presence",1],"Sleight of Hand":[0,0,"Dexterity",0],"Stealth":[9,0,"Agility",1],"Technology":[5,0,"Intellect",0],"Treatment":[1,0,"Intellect",0],"Vehicles":[1,0,"Dexterity",0],"RC: Throwing":[8,0,"Dexterity",0]}
+-----Attacks/Powers-----
+Powers:""
+-----Complications-----
+Complications:{}
+-----Sheet-----
+CharPage:{}
+OffenseShow:0
+PowersShow:0
+AdvantageShow:0
+PageColor:Gray
 -----Biography
 Background
 Faction
 Gender
 Age:0
 Motivations
-Rez Points(Rez):0
------Aptitudes
-COG_Base:0
-COO_Base:0
-INT_Base:0
-REF_Base:0
-SAV_Base:0
-SOM_Base:0
-WIL_Base:0
-COG_Total(COG):{COG_Base+COG_Morph}
-COO_Total(COO):{COO_Base+COO_Morph}
-INT_Total(INT):{INT_Base+INT_Morph}
-REF_Total(REF):{REF_Base+REF_Morph}
-SAV_Total(SAV):{SAV_Base+SAV_Morph}
-SOM_Total(SOM):{SOM_Base+SOM_Morph}
-WIL_Total(WIL):{WIL_Base+WIL_Morph}
------Derived Stats
-Moxie(MOX):0
-Trauma_Threshold(TT):{ceiling(Lucidity/5)}
-Lucidity(LUC):{WIL_Total*2}
-Insanity_Rating(IR):{Lucidity*2}
-Wound_Threshold(WT):{ceiling(Durability/5)}
-Durability(DUR):Morph_Durability
-Death_Rating(DR):Morph_Death_Rating
-Initiative(INIT):{(REF_Total+INT_Total}*2}
-Speed(SPD):0
-Damage_Bonus(DB):{floor(Durability/10)}
------Damage & Stress
-Damage:0
-Wounds:0
-Stress:0
-Trauma:0
------Equipment
-Armor_Energy:0
-Armor_Kinetic:0
------Active Skills
-Skill_Animal_Handling:0
-Skill_Beam_Weapons:0
-Skill_Blades:0
-Skill_Climbing:0
-Skill_Clubs:0
-Skill_Control:0
-Skill_Deception:0
-Skill_Demolitions:0
-Skill_Disguise:0
-Skill_Exotic_Melee1:0
-Skill_Exotic_Melee2:0
-Skill_Exotic_Ranged1:0
-Skill_Exotic_Ranged2:0
-Skill_Flight:0
-Skill_Fray:0
-Skill_Free_Fall:0
-Skill_Freerunning:0
-Skill_Gunnery:0
-Skill_Hardware1:0
-Skill_Hardware2:0
-Skill_Impersonation:0
-Skill_Infiltration:0
-Skill_Infosec:0
-Skill_Interfacing:0
-Skill_Intimidation:0
-Skill_Investigation:0
-Skill_Kinesics:0
-Skill_Kinetic_Weapons:0
-Skill_Medicine1:0
-Skill_Medicine2:0
-Skill_Navigation:0
-Skill_Networking1:0
-Skill_Networking2:0
-Skill_Networking3:0
-Skill_Networking4:0
-Skill_Palming:0
-Skill_Perception:0
-Skill_Persuation:0
-Skill_Pilot1:0
-Skill_Pilot2:0
-Skill_Programming:0
-Skill_Protocol:0
-Skill_Psi_Assault:0
-Skill_Psychosurgery:0
-Skill_Research:0
-Skill_Scrounging:0
-Skill_Seeker_Weapons:0
-Skill_Sense:0
-Skill_Spray_Weapons:0
-Skill_Swimming:0
-Skill_Throwing_Weapons:0
-Skill_Unarmed_Combat:0
------Knowledge Skills
-Skill_Academics1:0
-Skill_Academics2:0
-Skill_Academics3:0
-Skill_Academics4:0
-Skill_Art1:0
-Skill_Art2:0
-Skill_Art3:0
-Skill_Art4:0
-Skill_Interest1:0
-Skill_Interest2:0
-Skill_Interest3:0
-Skill_Interest4:0
-Skill_Language1:0
-Skill_Language2:0
-Skill_Language3:0
-Skill_Language4:0
-Skill_Profession1:0
-Skill_Profession2:0
-Skill_Profession3:0
-Skill_Profession4:0
------Reputation
-@-Rep:0
-C-Rep:0
-E-Rep:0
-F-Rep:0
-G-Rep:0
-I-Rep:0
-R-Rep:0
------Morph
-Morph_Name
-Morph_Type
-Morph_Gender
-Morph_Age
-Morph_Aptitude_Max:0
-Morph_Speed_Mod:0
-Morph_Movement_Rate
-Morph_Mobility
-Morph_Durability:0
-Morph_Wound_Threshold:0
-Morph_Death_Rating:0
-COG_Morph:0
-COO_Morph:0
-INT_Morph:0
-REF_Morph:0
-SAV_Morph:0
-SOM_Morph:0
-WIL_Morph:0
------Muse
-Muse_COG:0
-Muse_COO:0
-Muse_INT:0
-Muse_REF:0
-Muse_SAV:0
-Muse_SOM:0
-Muse_WIL:0
-Muse_Trauma_Threshold:0={ceiling(Muse_Lucidity/5)}
-Muse_Lucidity:{Muse_WIL*2}
-Muse_Insanity_Rating:{Muse_Lucidity*2}
------Traits & Psi & Gear
-Positive_Traits
-Negative_Traits
-Psi_Sleights
-Gear
------Lib Tokens
+RezPoints(Rez):0
+Morph:None
+-----Lib Tokens-----
 LibPlayer:Lib:Player
 LibMorph:Lib:Morph
 LibWeapon:Lib:Weapon
+-----Aptitudes-----
+COG:0
+COO:0
+INT:0
+REF:0
+SAV:0
+SOM:0
+WIL:0
+-----Stats-----
+MOX:0
+TT:0
+LUC:0
+IR:0
+WT:0
+DUR:0
+DR:0
+INIT:0
+SPD:0
+DB:0
+-----Damage and Stress-----
+DAMAGE:0
+WOUNDS:0
+STRESS:0
+TRAUMA:0
+-----Reputation-----
+@-rep:0
+C-rep:0
+E-rep:0
+F-rep:0
+G-rep:0
+I-rep:0
+R-rep:0
+-----Knowledge Skills-----
+KnowledgeSkills:{"Academics: ":[0,0,"COG",0],"Art: ":[0,0,"INT",0],"Interest: ":[0,0,"COG",0],"Language: ":[0,0,"INT",0],"Profession: ":[0,0,"COG",0]}
+-----Active Skills-----
+ActiveSkills:{"Animal Handling":[0,0,"SAV",0],"Beam Weapons":[0,0,"COO",0],"Blades":[0,0,"SOM",0],"Climbing":[0,0,"SOM",0],"Clubs":[0,0,"SOM",0],"Control":[0,0,"WIL",0],"Deception":[0,0,"SAV",0],"Demolitions":[0,0,"COG",0],"Disguise":[0,0,"INT",0],"Exotic Melee":[0,0,"SOM",0],"Exotic Ranged":[0,0,"COO",0],"Flight":[0,0,"SOM",0],"Fray":[0,0,"REF",0],"Free Fall":[0,0,"REF",0],"Freerunning":[0,0,"SOM",0],"Gunnery":[0,0,"INT",0],"Hardware":[0,0,"COG",0],"Impersonation":[0,0,"SAV",0],"Infiltration":[0,0,"COO",0],"Infosec":[0,0,"COG",0],"Interfacing":[0,0,"COG",0],"Intimidation":[0,0,"AV",0],"Investigation":[0,0,"INT",0],"Kinesics":[0,0,"SAV",0],"Kinetic Weapons":[0,0,"COO",0],"Medicine":[0,0,"COG",0],"Navigation":[0,0,"INT",0],"Networking":[0,0,"SAV",0],"Palming":[0,0,"COO",0],"Perception":[0,0,"INT",0],"Persuation":[0,0,"SAV",0],"Pilot":[0,0,"REF",0],"Programming":[0,0,"COG",0],"Protocol":[0,0,"SAV",0],"Psi Assault":[0,0,"WIL",0],"Psychosurgery":[0,0,"INT",0],"Research":[0,0,"COG",0],"Scrounging":[0,0,"INT",0],"Seeker Weapons":[0,0,"COO",0],"Sense":[0,0,"INT",0],"Spray Weapons":[0,0,"COO",0],"Swimming":[0,0,"SOM",0],"Throwing Weapons":[0,0,"COO",0],"Unarmed Combat":[0,0,"SOM",0]}
+-----Traits-----
+Traits:{"Benefit 4 (Multi-millionare)":[""],"Close Attack 7":[""],"Defensive Roll":[""],"Equipment 6":[""],"Inventor":[""],"Jack-of-all-trades":[""],"Move-by Action":[""],"Power Attack":[""],"Quick Draw":[""],"Well-Informed":[""]}
+-----Psi Sleights-----
+PsiSleights:{}
+-----Implants and Enhancements-----
+ImplantsEnhancements:{}
+-----Gear-----
+Gear:{}
+-----Muse Stats-----
+COG_Muse:0
+COO_Muse:0
+INT_Muse:0
+REF_Muse:0
+SAV_Muse:0
+SOM_Muse:0
+WIL_Muse:0
+TT_Muse:0
+LUC_Muse:0
+IR_Muse:0
+-----Muse Skills-----
+MuseSkills:{"Academics: ":[0,0,"COG",0],"Art: ":[0,0,"INT",0],"Interest: ":[0,0,"COG",0],"Language: ":[0,0,"INT",0],"Profession: ":[0,0,"COG",0]}
