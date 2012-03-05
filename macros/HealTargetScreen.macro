@@ -15,7 +15,7 @@
 [h:yesTempHP       = json.get(macro.args, 5)]
 [h:tempHPMod       = json.get(macro.args, 6)]
 [h:tempHPRoll      = json.get(macro.args, 7)]
-[h:spendSurge        = json.get(macro.args, 8)]
+[h:spendSurge      = json.get(macro.args, 8)]
 [h:selfStateJson   = json.get(macro.args, 9)] <!-- Json holding states to be applied to self with this power -->
 [h:modDefenseJson  = json.get(macro.args, 10)]
 [h:modAttackJson   = json.get(macro.args, 11)]
@@ -24,6 +24,8 @@
 [h:healSurge       = json.get(targetArgs, 14)]
 [h:myIndex         = json.get(targetArgs, 15)]
 [h:labelAppend     = json.get(targetArgs, 16)]
+[h:selfSpendSurge  = json.get(targetArgs, 17)]
+
 [h:targList = getSelectedNames("json")]
 [h,if(!json.isEmpty(targList)),CODE:
 {
@@ -71,6 +73,7 @@
   <input type='hidden' name='healSurge' value='[r:healSurge]'></input>
   <input type='hidden' name='myIndex' value='[r:myIndex]'></input>
   <input type='hidden' name='labelAppend' value='[r:labelAppend]'></input>
+  <input type='hidden' name='selfSpendSurge' value='[r:selfSpendSurge]'></input>
   </form>
   </body>
   </html>
