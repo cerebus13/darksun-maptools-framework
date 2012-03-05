@@ -15,8 +15,8 @@
 [h: Armor=ArmorCheck*-1]
 [h: Shield=ShieldCheck*-2]
 [h:armorPenalized="Acrobatics,Athletics,Endurance,Stealth,Thievery"]
-[h:statNameJson=json.fromStrProp("Acrobatics=Dex;Arcana=Int;Athletics=Str;Bluff=Cha;Diplomacy=Cha;Dungeoneering=Wis;Endurance=Con;Heal=Wis;History=Int;Insight=Wis;Intimidate=Cha;Nature=Wis;Perception=Wis;Religion=Wis;Stealth=Dex;Streetwise=Cha;Thievery=Dex")]
-[h:statValJson =json.fromStrProp(strformat("Acrobatics=%{DexMod};Arcana=%{IntMod};Athletics=%{StrMod};Bluff=%{ChaMod};Diplomacy=%{ChaMod};Dungeoneering=%{WisMod};Endurance=%{ConMod};Heal=%{WisMod};History=%{IntMod};Insight=%{WisMod};Intimidate=%{ChaMod};Nature=%{WisMod};Perception=%{WisMod};Religion=%{WisMod};Stealth=%{DexMod};Streetwise=%{ChaMod};Thievery=%{DexMod}"))]
+[h:statNameJson=json.fromStrProp("Acrobatics=Dex;Arcana=Int;Athletics=Str;Bluff=Cha;Diplomacy=Cha;Dungeoneering=Wis;Endurance=Con;Heal=Wis;History=Int;Insight=Wis;Intimidate=Cha;Nature=Wis;Perception=Wis;Religion=Int;Stealth=Dex;Streetwise=Cha;Thievery=Dex")]
+[h:statValJson =json.fromStrProp(strformat("Acrobatics=%{DexMod};Arcana=%{IntMod};Athletics=%{StrMod};Bluff=%{ChaMod};Diplomacy=%{ChaMod};Dungeoneering=%{WisMod};Endurance=%{ConMod};Heal=%{WisMod};History=%{IntMod};Insight=%{WisMod};Intimidate=%{ChaMod};Nature=%{WisMod};Perception=%{WisMod};Religion=%{IntMod};Stealth=%{DexMod};Streetwise=%{ChaMod};Thievery=%{DexMod}"))]
 
 <b>{Choice} Check:</b><br>
 [h:dieRoll=1d20]
