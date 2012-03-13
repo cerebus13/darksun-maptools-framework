@@ -84,7 +84,7 @@ WOUNDS:0
 STRESS:0
 TRAUMA:0
 -----Reputation-----
-@-rep:0
+A-rep:0
 C-rep:0
 E-rep:0
 F-rep:0
