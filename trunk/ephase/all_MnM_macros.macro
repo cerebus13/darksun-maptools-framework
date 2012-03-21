@@ -425,6 +425,32 @@
 [h: macro.return = if(color == colorcheck,"white", colorcheck)]
 
 !!
+@@ @KnowSkillsDisplayBottom
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: color = json.get(macro.args,1)]
+<tr bgcolor="[r: color]">
+		<td align="left">
+		 	[h: rank = json.get(json.get(KnowledgeSkills,skill),0)]
+			[h: misc =  json.get(json.get(KnowledgeSkills,skill),1)]
+			[h: attribute =  getProperty(json.get(json.get(KnowledgeSkills,skill),2))]
+			[h: rankTotal = rank+misc+attribute]
+			[h: jsonData=json.set("{}","name",skill,"rank",rankTotal,"modifier",0)]
+			[h: info=json.append("[]",skill,json.get(json.get(KnowledgeSkills,skill),2))]
+			<font color="black"><a href='[r:macroLinkText("KnowSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
+		</td>
+		<td align="center" width="25%">
+			<font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: rank]</a></font>
+		</td>
+		<td width="25%" align="right">[h: jsonData = json.append("[]",skill,rankTotal,"KnowSkill")]
+			(<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: rankTotal]</a></font>)
+		</td>
+
+</tr>
+[h: colorcheck = table(PageColor,4)]
+[h: macro.return = if(color == colorcheck,"white", colorcheck)]
+
+!!
 @@ @SkillsDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%">
@@ -459,6 +485,42 @@
 
 }]
 
+</table>
+
+!!
+@@ @KnowSkillsDisplayTop
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("KnowSkillsUpdateDialog@this","none","", currentToken())]'><b>KNOW. SKILLS</b></a></font>
+		</td>
+		<td  align="center" width="25%" color="white">
+			<b>Rank</b>
+		</td>
+		<td  align="right" width="25%" color="white">
+			<b>Total</b>
+		</td>
+		
+	</tr>
+</table>
+<table border="0" cellpadding="2" width="100%" bgcolor="white">
+[h,if(json.isEmpty(KnowledgeSkills)): skillListunsort = ""; skillListunsort = json.fields(KnowledgeSkills)]
+[h: skillList = listsort(skillListunsort, "A")]
+[h: color = table(PageColor,4)]
+[foreach(skill, skillList, ""), code: 
+{
+  [h: skillDetails = json.get(KnowledgeSkills, skill)]
+  [h: skillRank = json.get(skillDetails, 0)]
+  [h: skillMisc = json.get(skillDetails,1)]
+  [h: skillTrained = json.get(skillDetails,3)]
+  [if(skillMisc==0&&skillRank==0&&skillTrained==0), code:
+  {}; 
+  {
+    [h: jsonData = json.append("[]", skill,color)]
+    [r, macro("KnowSkillsDisplayBottom@this"):jsonData]
+    [h: color = macro.return]
+  }]
+}]
 </table>
 
 !!
@@ -932,6 +994,25 @@ I set my initative to
 [execLink(checkLink)]
 
 !!
+@@ @KnowSkillAltType
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[if(json.get(macro.args,"ability")=="No"),code:
+  {};
+  {
+    [h: name = json.get(macro.args,"name")]
+    [h: ability = json.get(macro.args, "ability")]
+    [h: rank = json.get(json.get(KnowledgeSkills,name),0)]
+    [h: misc =  json.get(json.get(KnowledgeSkills,name),1)]
+    [h: attribute =  getProperty(ability)]
+    [h: rankTotal = rank+misc+attribute]
+    [h: macro.args = json.set(macro.args,"rank",rankTotal)]
+  }
+]
+
+[h: checkLink=macroLinkText(json.get(macro.args,"ExeMacro")+"@this", if(json.get(macro.args, "Output") == "Private", if(isGM() == 1, "gm", "gm-self"), "all"), macro.args, currentToken())]
+[execLink(checkLink)]
+
+!!
 @@ @SkillEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
@@ -940,6 +1021,95 @@ I set my initative to
 </head>
 <body>
 <form method="json" name="SkillCheck" action="[r:macroLinkText('SkillAltType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Difficulty Class:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="DC" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Alternate Ability:
+		</td>
+		<td align="left">
+			<select name="ability" selected="">
+			<option value='No'>No</option>
+      <option value='COG'>COG</option>	
+			<option value='COO'>COO</option>			
+			<option value='INT'>INT</option>      
+      <option value='REF'>REF</option>
+			<option value='SAV'>SAV</option>
+			<option value='SOM'>SOM</option>
+      <option value='WIL'>WIL</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Aid Another:
+		</td>
+		<td align="left">
+			[H: pcList=getExposedTokenNames()]
+			[h: pcList = replace(pcList,token.name+",","")]
+			[h: pcList = "No,"+pcList]
+			<select name="aid" selected="">
+			[foreach(name,pcList,""),code:{
+			<option value='[r: name]'>[r: name]</option>
+			}]</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modifier" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
+			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @KnowSkillEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Knowledge Skill Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="KnowSkillCheck" action="[r:macroLinkText('KnowSkillAltType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1359,6 +1529,112 @@ hindered. If restrained by another character, the restrained character is immobi
 </body>
 </html>
 }]
+
+!!
+@@ @KnowSkillsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: skill=json.get(macro.args,0)]
+[h: ability=json.get(macro.args,1)]
+
+<!-- Skills that can have multiple fields get a prefix -->
+[h: skill = if(startsWith(skill, "Academics"),"Academics",skill)]
+[h: skill = if(startsWith(skill, "Art"),"Art",skill)]
+[h: skill = if(startsWith(skill, "Interest"),"Interest",skill)]
+[h: skill = if(startsWith(skill, "Language"),"Language",skill)]
+[h: skill = if(startsWith(skill, "Profession"),"Profession",skill)]
+
+[frame("KnowledgeSkills"): {
+<html>
+<head>
+<title>[r: skill] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+<center><b>[r: skill]</b> ([r: ability])</center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(skill+"@this"):""]
+</body>
+</html>
+}]
+
+!!
+@@ @Academics
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Knowledge
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> Academics covers any sort of specialized non-applied knowledge you can only get through intensive education. Most theoretical and applied sciences, social sciences, transhumanities, etc. are covered by this skill. Most of the other skills listed in this chapter could also be taken as an Academics field, reflecting a working theoretical knowledge of the skill-for example, Academics: Armorer or Academics: Interrogation.
+<p>
+<b>When you use it:</b> Academics is used when a character wishes to call upon a specific body of knowledge. For example, Academics: Chemistry could be used to identify a particular substance, understand an unusual chemical reaction, or determine what elements are needed to nanofabricate something that requires exotic materials. At the gamemaster's discretion, some Academics-related tests might not be defaultable, given that only someone who has been educated in that subject is likely to be able to tackle it.
+<p>
+<b>Sample Fields:</b> Archeology, Astrobiology, Astronomy, Astrophysics, Astrosociology, Biochemistry, Biology, Botany, Computer Science, Cryptography, Economics, Engineering, Genetics, Geology, Linguistics, Mathematics, Memetics, Nanotechnology, Old Earth History, Physics, Political Science, Psychology, Sociology, Xeno-archeology, Xenolinguistics, Zoology
+<p>
+<b>Specializations:</b> As appropriate to the field
+
+!!
+@@ @Art
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Knowledge
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Art confers the ability to create and evaluate artistic endeavors. This is a particularly useful skill in Eclipse Phase, especially in the post-scarcity economies where creativity and vision can be a key component to a character's reputation.
+<p>
+<b>When you use it:</b> The Art skill can be used to either create a new work of art or to duplicate an existing piece of art in the hopes of passing it off as your own. The skill can also determine the approximate value of a piece of art either on the open market, for monetary exchange systems, or in terms of reputation for the artist.
+<p>
+<b>Sample Fields:</b> Architecture, Criticism, Dance, Drama, Drawing, Painting, Performance, Sculpture, Simulspace Design, Singing, Speech, Writing
+<p>
+<b>Specializations:</b> As appropriate to the field
+
+!!
+@@ @Interest
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Knowledge
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> Interest includes just about any topic that captures your attention that isn't covered by another skill. This includes hobbies, obsessions, causes, pastimes, and other recreational pursuits.
+<p>
+<b>When you use it:</b> Use the Interest skill whenever you need to recall or use knowledge related to the particular interest in question.
+<p>
+<b>Sample Fields:</b> Ancient Sports, Celebrity Gossip, Conspiracies, Factor Trivia, Gambling, Hypercorp Politics, Lunar Habitats, Martian Beers, Old Earth Nation-States, Reclaimer Blogs, Science Fiction, Scum Drug Dealers, Spaceship Models, Triad Economics, Underground XP
+<p>
+<b>Specializations:</b> As appropriate to the field
+
+!!
+@@ @Language
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Knowledge
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Language covers the speaking and reading of languages other than the player's native tongue. A speaker is considered fluent at a skill level of 50; anything above this indicates further refinement in technical vocabulary, accents, and knowledge of dialects.
+<p>
+<b>When you use it:</b> Use the Language skill whenever you want to speak, understand, or read something in a language at which you are skilled. Most speaking and reading comprehension tests can be considered Simple Success Tests if your skill is over 50, unless the gamemaster rules the subject is sufficiently complex that a non-native speaker would have trouble understanding it.
+<p>
+<b>Sample Fields:</b> Arabic, Cantonese, English, French, Hindi, Japanese, Mandarin, Portuguese, Russian, Spanish
+<p>
+<b>Specializations:</b> As appropriate to the field, representing dialects, technical jargon, and subcultural slang
+
+!!
+@@ @Profession
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Knowledge
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> Profession skills indicate training in a profession practiced in Eclipse Phase. This can indicate either formal training or informal, on-the-job type training and includes both legal and extralegal trades.
+<p>
+<b>When you use it:</b> Use Profession to perform work-related tasks for a specific trade (i.e. mining, balancing accounts, designing a security system, etc.) or to reference specialized knowledge that someone trained in that profession might have.
+<p>
+<b>Sample Fields:</b> Accounting, Appraisal, Asteroid Prospecting, Banking, Cool Hunting, Con Schemes, Distribution, Forensics, Lab Technician, Mining, Police Procedures, Psychotherapy, Security Ops, Smuggling Tricks, Social Engineering, Squad Tactics, Viral Marketing, XP Production
+<p>
+<b>Specializations:</b> As appropriate to the field
 
 !!
 @@ @Slight of Hand
@@ -1813,6 +2089,62 @@ Powers Updated
 
 [h, macro("SheetLoad@Lib:MnM"):""]
 Skills Updated
+
+!!
+@@ @KnowSkillsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[foreach(tempAbility, json.fields(KnowledgeSkills), ""), code: {
+  [h: propRank = json.get(macro.args, tempAbility+"Rank")]
+  [h: propAttribute = json.get(macro.args, tempAbility+"Attribute")]
+  [h: propMisc = json.get(macro.args, tempAbility+"Misc")]
+  [h: propTrained = json.get(macro.args, tempAbility+"Trained")]
+  [h: propdata = json.append("[]", propRank, propMisc, propAttribute, propTrained)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, tempAbility, propdata)]
+}]
+
+[h: newKnow = json.get(macro.args, "newAcademics")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Academics: "+newKnow]
+  [h: propRank = json.get(macro.args, "newAcademicsRank")]
+  [h: propMisc = json.get(macro.args, "newAcademicsMisc")]
+  [h: propdata = json.append("[]", propRank, propMisc, "COG", 0)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+}]
+[h: newKnow = json.get(macro.args, "newArt")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Art: "+newKnow]
+  [h: propRank = json.get(macro.args, "newArtRank")]
+  [h: propMisc = json.get(macro.args, "newArtMisc")]
+  [h: propdata = json.append("[]", propRank, propMisc, "INT", 0)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+}]
+[h: newKnow = json.get(macro.args, "newInterest")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Interest: "+newKnow]
+  [h: propRank = json.get(macro.args, "newInterestRank")]
+  [h: propMisc = json.get(macro.args, "newInterestMisc")]
+  [h: propdata = json.append("[]", propRank, propMisc,"COG", 0)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+}]
+[h: newKnow = json.get(macro.args, "newLanguage")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Language: "+newKnow]
+  [h: propRank = json.get(macro.args, "newLanguageRank")]
+  [h: propMisc = json.get(macro.args, "newLanguageMisc")]
+  [h: propdata = json.append("[]", propRank, propMisc,"INT", 0)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+}]
+[h: newKnow = json.get(macro.args, "newProfession")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Profession: "+newKnow]
+  [h: propRank = json.get(macro.args, "newProfessionRank")]
+  [h: propMisc = json.get(macro.args, "newProfessionMisc")]
+  [h: propdata = json.append("[]", propRank, propMisc,"COG", 0)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+Knowledge Skills Updated
 
 !!
 @@ @StatesUpdate
@@ -2412,6 +2744,110 @@ Area: <select name="area" selected="">
 } ]
 
 !!
+@@ @KnowSkillsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Knowledge Skills Update", "temporary=0; input=1; noframe=0; closebutton=0"): {
+<html>
+<head>
+<title>Knowledge Skills Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="KnowSkillsUpdate" action="[r:macroLinkText('KnowSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+[h: color = "#ededed"]
+[h: propListunsort = json.fields(KnowledgeSkills)]
+[h: propList = listsort(propListunsort, "A")]
+
+[foreach(tempAbility, propList, ""), code: {
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>[r: tempAbility]</b></label>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="[r: tempAbility+"Rank"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 0)]" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="[r: tempAbility+"Misc"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 1)]" size="2"></input><input type="hidden" name="[r: tempAbility+"Attribute"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 2)]"></input><input type="hidden" name="[r: tempAbility+"Trained"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 3)]"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+}]
+
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Academics: </b></label><input type="text" name="newAcademics" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newAcademicsRank" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newAcademicsMisc" value="0" size="2"></input>
+<input type="hidden" name="newAcademicsTrained" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Art: </b></label><input type="text" name="newArt" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newArtRank" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newArtMisc" value="0" size="2"></input>
+<input type="hidden" name="newArtTrained" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Interest: </b></label><input type="text" name="newInterest" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newInterestRank" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newInterestMisc" value="0" size="2"></input><input type="hidden" name="newInterestTrained" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Language: </b></label><input type="text" name="newLanguage" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newLanguageRank" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newLanguageMisc" value="0" size="2"></input><input type="hidden" name="newLanguageTrained" value="0"></input>
+</td>
+</tr>
+[h: color=if(color=="#ededed","white","#ededed")]
+<tr bgcolor="[r: color]">
+<td>
+<label for="Name"><b>Profession: </b></label><input type="text" name="newProfession" value="" size="8"></input>
+</td>
+<td>
+<label for="Rank">Rank: </label><input type="text" name="newProfessionRank" value="0" size="2"></input>
+</td>
+<td>
+<label for="Name">Misc: </label><input type="text" name="newProfessionMisc" value="0" size="2"></input><input type="hidden" name="newProfessionTrained" value="0"></input>
+</td>
+</tr>
+
+<tr>
+<td align="center" colspan="4">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
 @@ @TraitsUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Traits Update", "temporary=0; height=380; width=320; input=1; noframe=0"): {
@@ -2820,7 +3256,7 @@ Area: <select name="area" selected="">
 !!
 @@ @RepUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Reputation Update", "temporary=0; height=380; width=360; input=1; noframe=0"): {
+[dialog("Reputation Update", "temporary=1; height=380; width=335; input=1; noframe=0"): {
 <html>
 <head>
 <title>Reputation Update</title>
@@ -3625,41 +4061,12 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 </table>
-<table width="100%" cellpadding="2" border="0">
-	<tr>
-		<td>
-<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
-		</td>
-	</tr>
-</table>
-<table width="100%" cellpadding="0" valign="top">
-	<tr>
-		<td width="45%">
-			<table width="100%" cellpadding="0" border="1">
-			[r, macro("DefenseDisplay@this"):""]
-			</table>
-<table width="100%" cellpadding="2" border="0">
-	<tr>
-		<td>
-<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
-		</td>
-	</tr>
-</table><table width="100%" cellpadding="0" border="1">
-			[r, macro("AdvantagesDisplay@this"):""]</table>
-		</td>
-
-<table width="100%" cellpadding="1" border="0">
-	<tr>
-		<td>
-<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
-		</td>
-	</tr>
-</table>
-
-		<td width="55%"><table width="100%" cellpadding="0" border="1">
-			[r, macro("SkillsDisplayTop@this"):""]</table>
-		</td>
-	</tr>
+<table width="100%" cellpadding="0" border="1">
+  <tr>
+    <td width="100%">
+      [r, macro("KnowSkillsDisplayTop@this"):""]
+    </td>
+  </tr>
 </table>
 
 !!
