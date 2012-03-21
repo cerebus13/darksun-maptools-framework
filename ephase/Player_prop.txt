@@ -36,7 +36,6 @@ Attacks:{}
 Advantages:{}
 -----Skills-----
 Skills:{"Acrobatics":[0,0,"Agility",0],"Athletics":[0,0,"Strength",1],"Deception":[0,0,"Presence",1],"Insight":[0,0,"Awareness",1],"Intimidation":[0,0,"Presence",1],"Investigation":[0,0,"Intellect",0],"Perception":[0,0,"Awareness",1],"Persuasion":[0,0,"Presence",1],"Sleight of Hand":[0,0,"Dexterity",0],"Stealth":[0,0,"Agility",1],"Technology":[0,0,"Intellect",0],"Treatment":[0,0,"Intellect",0],"Vehicles":[0,0,"Dexterity",0]}
-{"Acrobatics":[3,0,"Agility",0],"Athletics":[0,0,"Strength",1],"Deception":[0,0,"Presence",1],"Insight":[0,0,"Awareness",1],"Intimidation":[5,0,"Presence",1],"Investigation":[1,0,"Intellect",0],"Perception":[6,0,"Awareness",1],"Persuasion":[0,0,"Presence",1],"Sleight of Hand":[0,0,"Dexterity",0],"Stealth":[9,0,"Agility",1],"Technology":[5,0,"Intellect",0],"Treatment":[1,0,"Intellect",0],"Vehicles":[1,0,"Dexterity",0],"RC: Throwing":[8,0,"Dexterity",0]}
 -----Attacks/Powers-----
 Powers:""
 -----Complications-----
@@ -92,7 +91,7 @@ G-rep:0
 I-rep:0
 R-rep:0
 -----Knowledge Skills-----
-KnowledgeSkills:{"Academics: ":[0,0,"COG",0],"Art: ":[0,0,"INT",0],"Interest: ":[0,0,"COG",0],"Language: ":[0,0,"INT",0],"Profession: ":[0,0,"COG",0]}
+KnowledgeSkills:{"Academics: One":[0,0,"COG",0],"Art: Two":[0,0,"INT",0],"Interest: Three":[0,0,"COG",0],"Language: Four":[0,0,"INT",0],"Profession: Five":[0,0,"COG",0]}
 -----Active Skills-----
 ActiveSkills:{"Animal Handling":[0,0,"SAV",0],"Beam Weapons":[0,0,"COO",0],"Blades":[0,0,"SOM",0],"Climbing":[0,0,"SOM",0],"Clubs":[0,0,"SOM",0],"Control":[0,0,"WIL",0],"Deception":[0,0,"SAV",0],"Demolitions":[0,0,"COG",0],"Disguise":[0,0,"INT",0],"Exotic Melee":[0,0,"SOM",0],"Exotic Ranged":[0,0,"COO",0],"Flight":[0,0,"SOM",0],"Fray":[0,0,"REF",0],"Free Fall":[0,0,"REF",0],"Freerunning":[0,0,"SOM",0],"Gunnery":[0,0,"INT",0],"Hardware":[0,0,"COG",0],"Impersonation":[0,0,"SAV",0],"Infiltration":[0,0,"COO",0],"Infosec":[0,0,"COG",0],"Interfacing":[0,0,"COG",0],"Intimidation":[0,0,"AV",0],"Investigation":[0,0,"INT",0],"Kinesics":[0,0,"SAV",0],"Kinetic Weapons":[0,0,"COO",0],"Medicine":[0,0,"COG",0],"Navigation":[0,0,"INT",0],"Networking":[0,0,"SAV",0],"Palming":[0,0,"COO",0],"Perception":[0,0,"INT",0],"Persuation":[0,0,"SAV",0],"Pilot":[0,0,"REF",0],"Programming":[0,0,"COG",0],"Protocol":[0,0,"SAV",0],"Psi Assault":[0,0,"WIL",0],"Psychosurgery":[0,0,"INT",0],"Research":[0,0,"COG",0],"Scrounging":[0,0,"INT",0],"Seeker Weapons":[0,0,"COO",0],"Sense":[0,0,"INT",0],"Spray Weapons":[0,0,"COO",0],"Swimming":[0,0,"SOM",0],"Throwing Weapons":[0,0,"COO",0],"Unarmed Combat":[0,0,"SOM",0]}
 -----Traits-----
