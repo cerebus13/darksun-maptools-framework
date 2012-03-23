@@ -1,5 +1,6 @@
 @@ @onCampaignLoad
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h:defineFunction("die100", "die100@"+getMacroLocation(), 0, 0 ) ]
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
@@ -59,14 +60,14 @@
 
 !!
 @@ @AptitudesDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
 <table border="0" cellpadding="2" width="100%">
 
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>APTITUDES</b></font>
 		</td>
-		<td  align="right" colspan="2"><a href='[r:macroLinkText("TraitsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
+		<td  align="right" colspan="2"><a href='[r:macroLinkText("AptitudesUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
 		</td>		
 	</tr>[h: num = 1]
 [h: abilityList = "COG,COO,INT,REF,SAV,SOM,WIL"]
@@ -75,12 +76,12 @@
 [if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
-				[h:jsonData=json.set("{}","name",abl,"rank",getProperty(abl),"modifier",0)]
-				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Aptitudes",num)]</a></b>
+				[h:jsonData=json.set("{}","targetNumber",getProperty(abl)*3,"mods",0,"rollerName",getName(currentToken()),"rollTitle",strformat("default %s Aptitude check",abl))]
+				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("die100@this","all",jsonData, currentToken())]'>[r: table("Aptitudes",num)]</a></b>
 					</td>
 				</tr>
 				<tr>
-		[h: jsonData = json.append("[]",abl,getProperty(abl),"Ability")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(abl)]</b></font></a>
+		[h: jsonData = json.append("[]",abl,strformat(" %s Aptitude check",abl),"Aptitude")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(abl)]</b></font></a>
 					</td>
 				</tr>
 			</table>
@@ -106,11 +107,30 @@
 		</td>
 		<td  align="right" colspan="3"><a href='[r:macroLinkText("StatsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
 		</td>		
-	</tr>[h: num = 1]
-[h: statList = "MOX,TT,LUC,IR,WT,DUR,DR,INIT,SPD,DB"]
-[foreach(stat, statList,""),code:{
+	</tr>
+  <tr>
+    <td>
+			<table width="100%">
+        [h: num = 1]
+				[h:jsonData=json.set("{}","rollerName",getName(currentToken())]
+				<tr>
+          <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
+            <font color="white"><b><a href='[r:macroLinkText("UseMoxie@this","all",jsonData,currentToken())]'>[r: table("Stats",num)]</a></b>
+					</td>
+				</tr>
+				<tr>
+          [h: jsonData = json.append("[]","MOX",getProperty("MOX"),"Moxie")]	
+          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
+            <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+    [h: num = num+1]    
+    [h: statList = "TT,LUC,IR,WT,DUR,DR,INIT,SPD,DB"]    
+    [foreach(stat, statList,""),code:{
 
-[if(roll.count == 0||roll.count==5),code:{<tr>}; {}]
+    [if(roll.count==5),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
 				[h:jsonData=json.set("{}","name",stat,"rank",getProperty(stat),"modifier",0)]
@@ -124,8 +144,8 @@
 			</table>
 		</td>
 
-[if(roll.count == 4||roll.count==9),code:{</tr>}; {}]
-[h: num = num+1]
+    [if(roll.count == 4||roll.count==9),code:{</tr>}; {}]
+    [h: num = num+1]
 }]
 				</tr>
 			</table>
@@ -606,6 +626,90 @@
 </html>
 
 !!
+@@ @AptitudeEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Aptitude Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: strformat("%s (%d)",json.get(macro.args,0),getProperty(json.get(macro.args,0)))]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Pre-made Target Numbers:</b>
+		</td>
+		<td align="left">
+      <select name="targetNumber" selected="">
+        <option value='0'>Custom</option>
+        <option value='[r: getProperty(json.get(macro.args,0)) * 3]'>Aptitude x 3</option>
+        <option value='[r: getProperty(json.get(macro.args,0)) * 2]'>Aptitude x 2</option>
+        <option value='[r: getProperty(json.get(macro.args,0))]'>Aptitude</option>
+			</select>
+		</td>
+	</tr>
+  <tr>
+		<td>
+			<b>Custom Target Number:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="secondaryTargetNumber" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Teamwork:
+		</td>
+		<td align="left">
+			<select name="teamWork" selected="">
+        <option value='0'>None</option>
+        <option value='1'>One</option>
+        <option value='2'>Two</option>
+        <option value='3'>Three</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>					
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
 @@ @StatEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
@@ -669,6 +773,50 @@
 		<td align="center">
 			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
 			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @MoxieEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Moxie Usage</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="MoxieEntry" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>MOX ([r: getProperty(MOX)])</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+  <tr>
+		<td>
+			<b>Pick one Option:</b>
+		</td>
+		<td align="left">
+      <INPUT TYPE=RADIO NAME="moxOption" VALUE="1" CHECKED>Ignore all negative modifiers that apply to a test. The Moxie point must be spent before dice are rolled.<BR>
+      <INPUT TYPE=RADIO NAME="moxOption" VALUE="2"        >Flip-flop a d100 roll result. For example, an 83 would become a 38.<BR>
+      <INPUT TYPE=RADIO NAME="moxOption" VALUE="3"        >Upgrade a success, making it a critical success, as if you rolled doubles. You must succeed in the test before you spend the Moxie point.<BR>
+      <INPUT TYPE=RADIO NAME="moxOption" VALUE="4"        >Ignore a critical failure, treating it as a regular failure instead.<BR>
+      <INPUT TYPE=RADIO NAME="moxOption" VALUE="5"        >Go first in an Action Phase.
+		</td>
+	</tr>
+	<tr>	
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">	
+			<input type="hidden" name="ExeMacro" value="UseMoxie"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -886,6 +1034,7 @@
 "Resistance", "365, 204",
 "Skill", "305, 223",
 "Ability", "305, 196",
+"Aptitude", "305, 212",
 "Defense", "305, 196",
 "Initiative", "305, 146",
 "Area","305, 150"
@@ -1920,20 +2069,10 @@ Advantages Updated
 !!
 @@ @RezPointsUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
-[h: status=input(
-".|Spend Rez Point||LABEL|SPAN=TRUE",
-"check|0|Restore Rez Point|CHECK|"
-)]
+[h: status = input("rez|"+RezPoints+"|Rez Points")]
 [h: abort(status)]
-[if(check),code:{
-[h: RezPoints = RezPoints + 1] I gain a Rez Point
-}; 
-{
-[r, if(RezPoints),code:{[h: RezPoints = RezPoints-1]I spend a Rez Point}; {[h: RezPoints = RezPoints]I have no Rez Points left to spend}] 
-
-}]
-
-[r, macro("SheetLoad@this"):""]
+[h: RezPoints = rez]
+[h, macro("SheetLoad@this"):""]
 
 !!
 @@ @OffenseShowUpdate
@@ -2185,6 +2324,19 @@ Knowledge Skills Updated
 [h: setProperty("Minion", json.get(macro.args, "Minion"))]
 [h, macro("SheetLoad@this"):""]
 Traits Updated
+
+!!
+@@ @AptitudesUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: setProperty("COG", json.get(macro.args, "COG"))]
+[h: setProperty("COO", json.get(macro.args, "COO"))]
+[h: setProperty("INT", json.get(macro.args, "INT"))]
+[h: setProperty("REF", json.get(macro.args, "REF"))]
+[h: setProperty("SAV", json.get(macro.args, "SAV"))]
+[h: setProperty("SOM", json.get(macro.args, "SOM"))]
+[h: setProperty("WIL", json.get(macro.args, "WIL"))]
+[h, macro("SheetLoad@this"):""]
+Aptitudes Updated
 
 !!
 @@ @StatsUpdate
@@ -3028,9 +3180,122 @@ Area: <select name="area" selected="">
 } ]
 
 !!
+@@ @AptitudesUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Aptitudes Update", "temporary=0; height=200; width=270; input=1; noframe=0"): {
+<html>
+<head>
+<title>Aptitudes Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="AptitudesUpdate" action="[r:macroLinkText('AptitudesUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+	<tr>
+		<td bgcolor="black" valign="middle" colspan="7">&nbsp; &nbsp; <font color="white"><b>APTITUDES</b></font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>COG</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="COG" value="[r: getProperty("COG")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>COO</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="COO" value="[r: getProperty("COO")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>INT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="INT" value="[r: getProperty("INT")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>REF</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="REF" value="[r: getProperty("REF")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SAV</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SAV" value="[r: getProperty("SAV")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SOM</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SOM" value="[r: getProperty("SOM")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>WIL</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="WIL" value="[r: getProperty("WIL")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+<tr>
+<td align="center" colspan="8">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
 @@ @StatsUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Stats Update", "temporary=0; height=380; width=360; input=1; noframe=0"): {
+[dialog("Stats Update", "temporary=0; height=200; width=360; input=1; noframe=0"): {
 <html>
 <head>
 <title>Stats Update</title>
@@ -3256,7 +3521,7 @@ Area: <select name="area" selected="">
 !!
 @@ @RepUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Reputation Update", "temporary=1; height=380; width=335; input=1; noframe=0"): {
+[dialog("Reputation Update", "temporary=0; height=200; width=335; input=1; noframe=0"): {
 <html>
 <head>
 <title>Reputation Update</title>
@@ -4793,5 +5058,56 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h: abort(status)]
 
 [r, macro(chart+"@this"):""]
+
+!!
+@@ @die100
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(json.contains(macro.args,"rollTitle")):rollTitle = json.get(macro.args, "rollTitle");rollTitle = "2d10"]
+[h,if(json.contains(macro.args,"targetNumber")):targetNumber = json.get(macro.args, "targetNumber");targetNumber = 0]
+[h,if(json.contains(macro.args,"mods")):mods = json.get(macro.args, "mods");mods = 0]
+[h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
+[h,if(json.contains(macro.args,"teamWork")):teamWork = json.get(macro.args, "teamWork");teamWork = 0]
+[h,if(json.contains(macro.args,"secondaryTargetNumber")):secondaryTargetNumber = json.get(macro.args, "secondaryTargetNumber");secondaryTargetNumber = 0]
+
+[h,if(isNumber(mods)==0): mods = 0]
+[h,if(isNumber(targetNumber)==0): targetNumber = 0]
+[h,if(isNumber(secondaryTargetNumber)==0): secondaryTargetNumber = 0]
+[h,if(targetNumber==0): targetNumber = secondaryTargetNumber]
+[h,if(mods==0): modsText = ""; modsText = strformat(" + %d",mods)]
+[h,if(number(teamWork)==0): teamWorkText = ""; teamWorkText = strformat(" + %d (with %d assisting)",number(teamWork)*10,number(teamWork))]
+
+[h:dieRoll1=1d10-1]
+[h:dieRoll2=1d10-1]
+[h,if(dieRoll1 == 0 && dieRoll1 != dieRoll2): dieRoll = dieRoll2; dieRoll = number(concat(string(dieRoll1),string(dieRoll2)))]
+[h,if(dieRoll1 == 0 && dieRoll1 == dieRoll2): dieRollText = "00"; dieRollText = string(dieRoll)]
+
+[h,if(dieRoll1 == dieRoll2): result = "CRITICAL "; result = ""]
+[h,if(dieRoll <= targetNumber + mods + number(teamWork)*10): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
+[h,if(dieRoll <= targetNumber + mods + number(teamWork)*10): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - (targetNumber + mods + number(teamWork)*10)) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - (targetNumber + mods + number(teamWork)*10))]
+
+<p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
+<br>The total rolled is <b>{dieRollText}</b>.
+<br>The Target Number is <b>{targetNumber + mods + number(teamWork)*10}</b>.
+<br>Result: <b>{result}</b>.
+<br>{margin}
+<br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}</small>.</p>
+
+!!
+@@ @UseMoxie
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(json.contains(macro.args,"moxOption")):moxOption = json.get(macro.args, "moxOption");moxOption = ""]
+[h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
+
+[h,switch(moxOption):
+  case "1": res = "<br>Result: Ignore all negative modifiers that apply to a test. The Moxie point must be spent before dice are rolled.";
+  case "2": res = "<br>Flip-flop a d100 roll result. For example, an 83 would become a 38.";
+  case "3": res = "<br>Upgrade a success, making it a critical success, as if you rolled doubles. You must succeed in the test before you spend the Moxie point.";
+  case "4": res = "<br>Ignore a critical failure, treating it as a regular failure instead.";
+  case "5": res = "<br>Go first in an Action Phase.";
+  default: res = ""
+]
+
+<p><span bgcolor=#cccccc><b>{rollerName}</b> spends a Moxie point.</span>
+{res}
 
 !!

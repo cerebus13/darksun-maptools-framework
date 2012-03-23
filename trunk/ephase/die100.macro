@@ -1,5 +1,7 @@
 @@ @die100
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+<!-- Argument 0 = Target Number for test, Argument 1 (Optional) = modifiers to test, Argument 2 (Optional) = name of roller for test -->
+
 [h:dieRoll1=1d10-1]
 [h:dieRoll2=1d10-1]
 [h,if(dieRoll1==dieRoll2): rollMatch = 1;rollMatch = 0]
