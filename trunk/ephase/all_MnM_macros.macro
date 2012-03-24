@@ -98,7 +98,7 @@
 
 !!
 @@ @StatsDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
 <table border="0" cellpadding="2" width="100%">
 
@@ -111,26 +111,25 @@
   <tr>
     <td>
 			<table width="100%">
-        [h: num = 1]
-				[h:jsonData=json.set("{}","rollerName",getName(currentToken())]
+				[h:jsonData=json.set("{}","rollerName",getName(currentToken()))]
 				<tr>
           <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
-            <font color="white"><b><a href='[r:macroLinkText("UseMoxie@this","all",jsonData,currentToken())]'>[r: table("Stats",num)]</a></b>
+            <font color="white"><b><a href='[r:macroLinkText("UseMoxie@this","all",jsonData,currentToken())]'>[r: strformat("MOX (%s)",getProperty("MOX_base"))]</a></b>
 					</td>
 				</tr>
 				<tr>
           [h: jsonData = json.append("[]","MOX",getProperty("MOX"),"Moxie")]	
           <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
-            <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
+            <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty("MOX")]</b></font></a>
 					</td>
 				</tr>
 			</table>
 		</td>
-    [h: num = num+1]    
     [h: statList = "TT,LUC,IR,WT,DUR,DR,INIT,SPD,DB"]    
+    [h: num = 2]
     [foreach(stat, statList,""),code:{
 
-    [if(roll.count==5),code:{<tr>}; {}]
+    [if(roll.count==4),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
 				[h:jsonData=json.set("{}","name",stat,"rank",getProperty(stat),"modifier",0)]
@@ -784,6 +783,9 @@
 !!
 @@ @MoxieEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h,if(MOX==0): input(".|You do not have any Moxie to spend!||LABEL|SPAN=TRUE")]
+[h,if(MOX==0): abort(0)]
+
 <head>
 <title>Moxie Usage</title>
 <meta name="input" content="true">
@@ -794,7 +796,7 @@
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td color="white">
-			<center><b>MOX ([r: getProperty(MOX)])</center>
+			<center><b>MOX ([r: MOX + " / " + MOX_base])</center>
 		</td>
 	</tr>
 </table>
@@ -817,7 +819,7 @@
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">	
 			<input type="hidden" name="ExeMacro" value="UseMoxie"></input>
-			<input type='submit' name='Roll' value='Roll'></input>
+			<input type='submit' name='Roll' value='Pick'></input>
 		</td>
 	</tr>
 </table>
@@ -1037,7 +1039,8 @@
 "Aptitude", "305, 212",
 "Defense", "305, 196",
 "Initiative", "305, 146",
-"Area","305, 150"
+"Area","305, 150",
+"Moxie", "305, 320"
 
 )]
 
@@ -2342,6 +2345,7 @@ Aptitudes Updated
 @@ @StatsUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("MOX", json.get(macro.args, "MOX"))]
+[h: setProperty("MOX_base", json.get(macro.args, "MOX_base"))]
 [h: setProperty("TT", json.get(macro.args, "TT"))]
 [h: setProperty("LUC", json.get(macro.args, "LUC"))]
 [h: setProperty("IR", json.get(macro.args, "IR"))]
@@ -3295,7 +3299,7 @@ Area: <select name="area" selected="">
 !!
 @@ @StatsUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Stats Update", "temporary=0; height=200; width=360; input=1; noframe=0"): {
+[dialog("Stats Update", "temporary=1; height=200; width=440; input=1; noframe=0"): {
 <html>
 <head>
 <title>Stats Update</title>
@@ -3305,7 +3309,7 @@ Area: <select name="area" selected="">
 <form method="json" name="StatsUpdate" action="[r:macroLinkText('StatsUpdate@Lib:MnM', 'none', '', currentToken())]">
 <table>
 	<tr>
-		<td bgcolor="black" valign="middle" colspan="10">&nbsp; &nbsp; <font color="white"><b>STATS</b></font>
+		<td bgcolor="black" valign="middle" colspan="11">&nbsp; &nbsp; <font color="white"><b>STATS</b></font>
 		</td>
 	</tr>
 	<tr>
@@ -3317,6 +3321,18 @@ Area: <select name="area" selected="">
 				</tr>
 				<tr>
 					<td align="center" width="100%"><b><input type="text" name="MOX" value="[r: getProperty("MOX")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>Base MOX</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="MOX_base" value="[r: getProperty("MOX_base")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -3431,7 +3447,7 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 <tr>
-<td align="center" colspan="10">
+<td align="center" colspan="11">
 <input type='submit' name='Submit' value='Submit'></input>
 </td>
 </tr>
@@ -5095,6 +5111,9 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 !!
 @@ @UseMoxie
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(MOX==0): input(".|You do not have any Moxie to spend!||LABEL|SPAN=TRUE")]
+[h,if(MOX==0): abort(0)]
+
 [h,if(json.contains(macro.args,"moxOption")):moxOption = json.get(macro.args, "moxOption");moxOption = ""]
 [h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
 
@@ -5107,7 +5126,9 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
   default: res = ""
 ]
 
+[h:MOX = MOX - 1]
 <p><span bgcolor=#cccccc><b>{rollerName}</b> spends a Moxie point.</span>
 {res}
+[h, macro("SheetLoad@this"):""]
 
 !!
