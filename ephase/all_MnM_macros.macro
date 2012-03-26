@@ -132,12 +132,15 @@
     [if(roll.count==4),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
-				[h:jsonData=json.set("{}","name",stat,"rank",getProperty(stat),"modifier",0)]
-				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b>
+				[h:jsonData=json.append("[]",stat)]
+				<tr>
+          <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
+            <font color="white"><b><a href='[r:macroLinkText("StatsInfoDisplay@this","all",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b>
 					</td>
 				</tr>
 				<tr>
-		[h: jsonData = json.append("[]",stat,getProperty(stat),"Stat")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
+          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
+            <font color="black"><b>[r: getProperty(stat)]</b></font></a>
 					</td>
 				</tr>
 			</table>
@@ -1714,6 +1717,42 @@ hindered. If restrained by another character, the restrained character is immobi
 }]
 
 !!
+@@ @StatsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: statShort=json.get(macro.args,0)]
+
+[h,switch(statShort):
+  case "TT": statLong = "Trauma Threshold";
+  case "LUC": statLong = "Lucidity";
+  case "IR": statLong = "Insanity Rating";
+  case "WT": statLong = "Wound Threshold";
+  case "DUR": statLong = "Durability";
+  case "DR": statLong = "Death Rating";
+  case "INIT": statLong = "Initiative";
+  case "SPD": statLong = "Speed";
+  case "DB": statLong = "Damage Bonus";
+  default: statLong = ""
+]
+
+[frame("StatsInfo"): {
+<html>
+<head>
+<title>[r: statLong] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+<center><b>[r: statLong]</b> ([r: statShort])</center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(statShort+"@this"):""]
+</body>
+</html>
+}]
+
+!!
 @@ @Academics
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <b>Type:</b> Field, Knowledge
@@ -1772,6 +1811,68 @@ hindered. If restrained by another character, the restrained character is immobi
 <b>Sample Fields:</b> Arabic, Cantonese, English, French, Hindi, Japanese, Mandarin, Portuguese, Russian, Spanish
 <p>
 <b>Specializations:</b> As appropriate to the field, representing dialects, technical jargon, and subcultural slang
+
+!!
+@@ @TT
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+The Trauma Threshold determines if you suffer a trauma (mental wound) each time you take stress (see Mental Health, p. 209). A higher Trauma Threshold means that your mental state is more resilient against experiences that might inflict psychiatric disorders or other serious mental instabilities.
+<p>
+Trauma Threshold is calculated by dividing Lucidity by 5 (rounding up).
+
+!!
+@@ @LUC
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+Lucidity is similar to Durability, except that it measures mental health and state of mind rather than physical well-being. Your Lucidity determines how much stress (mental damage) you can take before you are incapacitated or driven insane (see Mental Health, p. 209).
+<p>
+Lucidity is unlimited, but generally ranges from 20 to 60 for baseline unmodified humans. Lucidity is determined by your Willpower aptitude x 2.
+
+!!
+@@ @IR
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+Your Insanity Rating is the total amount of stress your mind can take before you go permanently insane and are lost for good. Insanity Rating equals LUC x 2.
+
+!!
+@@ @WT
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+A Wound Threshold is used to determine if you receive a wound each time you take physical damage (see Physical Health, p. 206). The higher the Wound Threshold, the more resistant to serious injury you are.
+<p>
+Wound Threshold is calculated by dividing Durability by 5 (rounding up).
+
+!!
+@@ @DUR
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+Durability is your morph's physical health (or structural integrity in the case of synthetic shells, or system integrity in the case of infomorphs). It determines the amount of damage your morph can take before you are incapacitated or killed (see Physical Health, p. 206).
+<p>
+Durability is unlimited, though the range for base-line (unmodified) humans tends to fall between 20 and 60. Your Durability stat is determined by your morph.
+
+!!
+@@ @DR
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+Death Rating is the total amount of damage your morph can take before it is killed or destroyed beyond repair. Death Rating is equal to DUR x 1.5 for biomorphs and DUR x 2 for synthmorphs.
+
+!!
+@@ @INIT
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+Your character's Initiative stat helps determine when they act in relation to other characters during the Action Turn (see Initiative, p. 188). Your Initiative stat is equal to your character's Intuition (INT) + Reflexes (REF) aptitudes divided by 5 (rounded up). Certain implants and other factors may modify this score.
+
+!!
+@@ @SPD
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+The Speed stat determines how often your character gets to act in an Action Turn (see Initiative, p. 188). All characters start with a Speed stat of 1, meaning they act once per turn. Certain implants and other advantages may boost this up to a maximum of 4.
+
+!!
+@@ @DB
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p>
+The Damage Bonus stat quantifies how much extra oomph your character is able to give their melee and thrown weapons attacks. Damage Bonus is determined by dividing your Somatics (SOM) aptitude by 10 and rounding down.
 
 !!
 @@ @Profession
