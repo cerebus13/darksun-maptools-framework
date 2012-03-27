@@ -114,7 +114,7 @@
 				[h:jsonData=json.set("{}","rollerName",getName(currentToken()))]
 				<tr>
           <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
-            <font color="white"><b><a href='[r:macroLinkText("UseMoxie@this","all",jsonData,currentToken())]'>[r: strformat("MOX (%s)",getProperty("MOX_base"))]</a></b>
+            <font color="white"><b><a href='[r:macroLinkText("UseMoxie@this","all",jsonData,currentToken())]'>[r: strformat("MOX (%s)",getProperty("MOX_base"))]</a></b></font>
 					</td>
 				</tr>
 				<tr>
@@ -135,12 +135,12 @@
 				[h:jsonData=json.append("[]",stat)]
 				<tr>
           <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
-            <font color="white"><b><a href='[r:macroLinkText("StatsInfoDisplay@this","all",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b>
+            <font color="white"><b><a href='[r:macroLinkText("StatsInfoDisplay@this","none",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b></font>
 					</td>
 				</tr>
 				<tr>
           <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
-            <font color="black"><b>[r: getProperty(stat)]</b></font></a>
+            <font color="black"><b>[r: getProperty(stat)]</b></font>
 					</td>
 				</tr>
 			</table>
@@ -148,7 +148,7 @@
 
     [if(roll.count == 4||roll.count==9),code:{</tr>}; {}]
     [h: num = num+1]
-}]
+    }]
 				</tr>
 			</table>
 		</td>
@@ -162,7 +162,7 @@
 <table border="0" cellpadding="2" width="100%">
 
 	<tr bgcolor="[r: table(PageColor,2)]">
-		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>DAMAGE & STRESS</b></font>
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b><a href='[r:macroLinkText("DerangementDisorderInfoDisplay@this","none","",currentToken())]'>DAMAGE & STRESS</a></b></font>
 		</td>
 		<td  align="right" colspan="2"><a href='[r:macroLinkText("DamageStressUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
 		</td>		
@@ -173,12 +173,16 @@
 [if(roll.count == 0||roll.count==5),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
-				[h:jsonData=json.set("{}","name",stat,"rank",getProperty(stat),"modifier",0)]
-				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("DamageStress",num)]</a></b>
+				[h:jsonData=json.append("[]",stat)]
+				<tr>
+          <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
+            <font color="white"><b><a href='[r:macroLinkText("DamageStressInfoDisplay@this","none",jsonData, currentToken())]'>[r: table("DamageStress",num)]</a></b>
 					</td>
 				</tr>
 				<tr>
-          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("DamageStressUpdateDialog@this","none","",currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
+          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
+            [h:jsonData=json.append("[]",stat)]
+            <font color="black"><a href='[r:macroLinkText("DSUpdate@this","all",jsonData,currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
 					</td>
 				</tr>
 			</table>
@@ -1743,11 +1747,172 @@ hindered. If restrained by another character, the restrained character is immobi
 <table border="0" cellpadding="0" width="100%" height="50%">
 	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
 		<td><font size="5">
-<center><b>[r: statLong]</b> ([r: statShort])</center><p>
+      <center><b>[r: statLong]</b> ([r: statShort])</center><p>
 		</font></td>
 	</tr>
 </table>
 [r, macro(statShort+"@this"):""]
+</body>
+</html>
+}]
+
+!!
+@@ @DamageStressInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: nameShort=json.get(macro.args,0)]
+
+[frame("DamageStressInfo"): {
+<html>
+<head>
+<title>[r: nameShort] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+      <center><b>[r: nameShort]</b></center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(nameShort+"@this"):""]
+</body>
+</html>
+}]
+
+!!
+@@ @DerangementDisorderInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[frame("DD"): {
+<html>
+<head>
+<title>Derangement & Disorder Info</title>
+</head>
+<body bgcolor="white">
+  <table border="0" cellpadding="0" width="100%" height="50%">
+    <tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+      <td><font size="5">
+        <center><b>Derangements & Disorders</b></center><p>
+      </font></td>
+    </tr>
+  </table>
+  <h1>DERANGEMENTS</h1>
+  Derangements are temporary mental conditions that result from traumas. Derangements are measured as Minor, Moderate, or Major. The gamemaster and player should cooperate in choosing which derangement to apply, as appropriate to the scenario and character personality.
+  <p>
+  Derangements last for 1d10 / 2 hours (round down) or until the character receives psychiatric help, whichever comes first. At the gamemasters discretion, a derangement may last longer if the character has not been distanced from the source of the stress or if they remain embroiled in other stress-inducing situations.
+  <p>
+  Derangement effects are meant to be roleplayed.  The player should incorporate the derangement into their characters words and actions. If the gamemaster does not feel the player is stressing the effects enough, they can emphasize them. If the gamemaster feels it is appropriate, they may also call for additional modifiers or tests for certain actions.
+  <h2>ANXIETY (MINOR)</h2>
+  You suffer a panic attack, exhibiting the physiological conditions of fear and worry: sweatiness, racing heart, trembling, shortness of breath, headaches, and so on.
+  <h2>AVOIDANCE (MINOR)</h2>
+  You are psychologically incapable of dealing with the source of the stress or some circumstance related to it, so you avoid it-even covering your ears, curling up in a ball, or shutting off your sensors if you have to.
+  <h2>DIZZINESS (MINOR)</h2>
+  The stress makes you light-headed and disoriented.
+  <h2>ECHOLALIA (MINOR)</h2>
+  You involuntarily repeat words and phrases spoken by others.
+  <h2>FIXATION (MINOR)</h2>
+  You become fixated on something that you did wrong or some circumstance that led to your stress. You obsess over it, repeating the behavior, trying to fix it, running scenarios through your head and out loud, and so on.
+  <h2>HUNGER (MINOR)</h2>
+  You are suddenly consumed by an irrational yet overwhelming desire to eat something-perhaps even something unusual.
+  <h2>INDECISIVENESS (MINOR)</h2>
+  You are flustered by the cause of your stress, finding it difficult to make choices or select courses of action.
+  <h2>LOGORRHOEA (MINOR)</h2>
+  Your response to the trauma is to engage in excessive talking and babbling. You don't shut up.
+  <h2>NAUSEA (MINOR)</h2>
+  The stress sickens you, forcing you to fight down queasiness.
+  <h2>CHILLS (MODERATE)</h2>
+  Your body temperature rises, making you feel cold, and shivering sets in. You just can't get warm.
+  <h2>CONFUSION (MODERATE)</h2>
+  The trauma scrambles your concentration, making you forget what you're doing, mix up simple tasks, and falter over easy decisions.
+  <h2>ECHOPRAXIA (MODERATE)</h2>
+  You involuntarily repeat and mimic the actions of others around you.
+  <h2>MOOD SWINGS (MODERATE)</h2>
+  You lose control of your emotions. You switch from ecstasy to tears and back to rage without warning.
+  <h2>MUTE (MODERATE)</h2>
+  The trauma shocks you into speechlessness and a complete inability to effectively communicate.
+  <h2>NARCISSISM (MODERATE)</h2>
+  In the wake of the mental shock, all you can think about is yourself. You cease caring about those around you.
+  <h2>PANIC (MODERATE)</h2>
+  You are overwhelmed by fear or anxiety and immediately seek to distance yourself from the cause of the stress.
+  <h2>TREMORS (MODERATE)</h2>
+  You shake violently, making it difficult to hold things or stay still.
+  <h2>BLACKOUT (MAJOR)</h2>
+  You operate on auto-pilot in a temporary fugue state. Later, you will be incapable of recalling what happened during this period. (Synthetic shells and infomorphs may call up memory records from storage.)
+  <h2>FRENZY (MAJOR)</h2>
+  You have a major freak out over the source of the stress and attack it.
+  <h2>HALLUCINATIONS (MAJOR)</h2>
+  You see, hear, or otherwise sense things that aren't really there.
+  <h2>HYSTERIA (MAJOR)</h2>
+  You lose control, panicking over the source of the stress. This typically results in an emotional outburst of crying, laughing, or irrational fear.
+  <h2>IRRATIONALITY (MAJOR)</h2>
+  You are so jarred by the stress that your capacity for logical judgment breaks down. You are angered by imaginary offenses, hold unreasonable expectations, or otherwise accept things with unconvincing evidence.
+  <h2>PARALYSIS (MAJOR)</h2>
+  You are so shocked by the trauma that you are effectively frozen, incapable of making decisions or taking action.
+  <h2>PSYCHOSOMATIC CRIPPLING (MAJOR)</h2>
+  The trauma overwhelms you, impairing some part of your physical functioning. You suffer from an inexplicable blindness, deafness, or phantom pain or are suddenly incapable of using a limb or other extremity.
+  <h1>DISORDERS</h1>
+  Disorders reflect more permanent madness. In this case, "permanent" does not necessarily mean forever, but the condition is ongoing until the character receives lengthy and effective psychiatric help. Disorders are inflicted whenever a character accumulates 4 traumas.  The gamemaster and player should choose a disorder that fits the situation and character.
+  <p>
+  Disorders are not always "active"-they may remain dormant until triggered by certain conditions.  While it is certainly possible to act under a disorder, it represents a severe impairment to a persons ability to maintain normal relationships and do a job successfully. Disorders should not be glamorized as cute roleplaying quirks. They represent the best attempts of a damaged psyche to deal with a world that has failed it in some way.  Additionally, people in many habitats, particularly those in the inner system, still regard disorders as a mark of social stigma and may react negatively towards impaired characters.
+  <p>
+  Characters that acquire disorders over the course of their adventures may get rid of them in one of two ways, either through in-game attempts to treat them (p. 215) or by buying them off as they would a negative trait (see  Gaining/Losing Traits, p. 153).
+  <h2>ADDICTION</h2>
+  Addiction as a disorder can refer to any sort of addictive behavior focused toward a particular behavior or substance, to the point where the user is unable to function without the addiction but is also severely impaired due to the effects of the addiction. It is marked by a desire on the part of the subject to seek help or reduce the use of the addicting substance/act, but also by the subject spending large amounts of time in pursuit of their addiction to the exclusion of other activities. This is a step up from the Addiction negative trait on p. 148-this is much more of a crippling behavior that compensates for spending time away from the addiction. Addictions are typically related to the trauma that caused the disorder (VR or drug addictions are encouraged).
+  <p>
+  <b>Suggested Game Effects:</b> The addict functions in only two states: under the influence of their addiction or in withdrawal. Additionally, they spend large amounts of time away from their other responsibilities in pursuit of their addiction.
+  <h2>ATAVISM</h2>
+  Atavism is a disorder that mainly affects uplifts. It results in them regressing to an earlier un- or partially uplifted state. They may exhibit behaviors more closely in line with their more animalistic forbears, or they may lose some of their uplift benefits such as the ability for abstract reasoning or speech.  
+  <p>
+  <b>Suggested Game Effects:</b>  The player and gamemaster should discuss how much of the uplifts nature is lost and adjust game penalties accordingly. It is important to note that other uplifts view atavistic uplifts with something akin to horror and will usually have nothing to do with them.
+  <h2>ATTENTION DEFICIT HYPERACTIVITY DISORDER (ADHD)</h2>
+  This disorder manifests as a marked inability to focus on any one task for an extended period of time, and also an inability to notice details in most situations.  Sufferers may find themselves starting multiple tasks, beginning a new one after only a cursory attempt at the prior task. ADHD suffers may also have a manic edge that manifests as confidence in their ability to get a given job done, even though they will quickly lose all interest in it.
+  <p>
+  <b>Suggested Game Effects:</b> Perception and related skill penalties. Increased difficulty modifiers to task actions, particularly as the action drags on.
+  <h2>AUTOPHAGY</h2>
+  This is a disorder that usually only occurs among uplifted octopi. It is a form of anxiety disorder characterized by self-cannibalism of the limbs. Subjects afflicted with autophagy will, under stress, begin to consume their limbs if at all possible, causing themselves potentially serious harm.
+  <p>
+  <b>Suggested Game Effects:</b>  Anytime an uplifted octopus with this disorder is placed in a stressful situation they must make a successful WIL x 3 Test or begin to consume one of their limbs.
+  <h2>BIPOLAR DISORDER</h2>
+  Bipolar disorder is also called manic depression. It is similar to depression except for the fact that the periods of depression are interrupted by brief (a matter of days at most) periods of mania where the subject feels inexplicably "up" about everything with heightened energy and a general disregard for consequences. The depressive stages are similar in all ways to depression. The manic stages are dangerous since the subject will take risks, spend wildly, and generally engage in behavior without much in the way of forethought or potential long term consequences.
+  <p>
+  <b>Suggested Game Effects:</b>  Similar to depression, but when manic the character must make a WIL x 3 Test to not do some action that may be potentially risky.  They will also try to convince others to go along with the idea.
+  <h2>BODY DYSMORPHIA</h2>
+  Subjects afflicted with this disorder believe that they are so unspeakably hideous that they are unable to interact with others or function normally for fear of ridicule and humiliation at their appearance. They tend to be very secretive and reluctant to seek help because they are afraid others will think them vain-or they may feel too embarrassed to do so. Ironically, BDD is often misunderstood as a vanity-driven obsession, whereas it is quite the opposite; people with BDD believe themselves to be irrevocably ugly or defective. A similar disorder, gender identity disorder, where the patient is upset with their entire sexual biology, often precipitates BDD-like feelings. Gender identity disorder is directed specifically at external sexually dimorphic features, which are in constant conflict with the patients internal psychiatric gender.
+  <p>
+  <b>Suggested Game Effects:</b> Because of the nature of Eclipse Phase and the ability to swap out and modify a body, this is a fairly common disorder. It is suggested that characters with this suffer increased or prolonged resleeving penalties since they are unable to fully adjust to the reality of their new morph.
+  <h2>BORDERLINE PERSONALITY DISORDER</h2>
+  This disorder is marked by a general inability to fully experience ones self any longer. Emotional states are variable and often marked by extremes and acting out. Simply put, the subject feels like they are losing their sense of self and seeks constant reassurance from others around them, yet is not fully able to act in an appropriate way. They may also engage in impulsive behaviors in an attempt to experience some sort of feeling. In extreme cases, there may be suicidal thoughts or attempts.
+  <p>
+  <b>Suggested Game Effects:</b> The character needs to be around others and will not be left alone, however they also are not quite able to relate to others in a normal way and may also take risks or make impulsive decisions.
+  <h2>DEPRESSION</h2>
+  Clinical depression is characterized by intense feelings of hopelessness and worthlessness. Subjects usually report feeling as though nothing they do matters and no one would care anyway, so they are disinclined to 
+  attempt much in the way of anything. The character is depressed and finds it difficult to be motivated to do much of anything. Even simple acts such as eating and bathing can seem to be monumental tasks.
+  <p>
+  <b>Suggested Game Effect:</b> Depressives often lack the will to take any sort of action, often to the point of requiring a WIL x 3 Test to engage in sustained activity.
+  <h2>FUGUE</h2>
+  The character enters into a fugue state where they display little attention to external stimuli.  They will still function physiologically but refrain from speaking and stare off into the distance, unable to focus on events around them. Unlike catatonia, a person in a fugue state will walk around if lead about by a helper, but is otherwise unresponsive. The fugue state is usually a persistent state, but it can be an occasional state that is triggered by some sort of external stimuli similar to the original trauma that triggered the disorder.
+  <p>
+  <b>Suggested Game Effects:</b> Characters in a fugue state are totally non-responsive to most stimuli around them. They will not even defend themselves if attacked and will usually attempt to curl into a fetal position if physically assaulted.
+  <h2>GENERAL ANXIETY DISORDER (GAD)</h2>
+  GAD results in severe feelings of anxiety about nearly everything the character comes into contact with. Even simple tasks represent the potential for failure on a catastrophic scale and should be avoided or minimized. Additionally, negative outcomes for any action are always assumed to be the only possible outcomes.
+  <p>
+  <b>Suggested Game Effects:</b>  A character with GAD will be almost entirely useless unless convinced otherwise, and then only for a short period of time. Another character can attempt to use a relevant social skill to coax the GAD character into doing what is required of them. If the character with the disorder fails at the task, however, all future attempts to coax them will suffer a cumulative –10 penalty.
+  <h2>HYPOCHONDRIA</h2>
+  Hypochondriacs suffer from a delusion that they are sick in ways that they are not. They will create disorders that they believe they suffer from, usually to get the attention of others. Often hypochondriacs will inflict harm on themselves or even ingest substances that will aid in producing symptoms similar to the disorder they believe they have. These attempts to simulate symptoms can and will cause actual harm to hypochondriacs.
+  <p>
+  <b>Possible Game Effects:</b> A subject that is hypochondriac will often behave as though they are under the effects of some other disorder or physical malady.  This can be consistent over time or can be different and ever changing. They will react with hostility to claims that they are faking or not actually ill.
+  <h2>IMPULSE CONTROL DISORDER</h2>
+  Subjects have a certain act or belief that they must engage in a certain activity that comes into their mind.  This can be kleptomania, pyromania, sexual exhibitionism, etc. They feel a sense of building anxiety whenever they are prevented from engaging in this behavior for an extended period (usually several times a day to weekly, depending on the impulse) and will often attempt to engage in this behavior at inconvenient or inappropriate times. This is different from OCD in the sense that OCD is usually a single contained behavior that must be engaged in to reduce anxiety. Impulse control disorder is a variety of behaviors and can be virtually any sort of highly  inappropriate action.
+  <p>
+  <b>Suggested Game Effects:</b> Similar to OCD, if the character does not engage in the behavior they will grow increasingly disturbed and suffer penalties to all actions until they are able to engage in the compulsion that alleviates their anxiety.
+  <h2>INSOMNIA</h2>
+  Insomniacs find themselves unable to sleep, or unable to sleep for an extended period of time. This is most often due to anxiety about their lives or as a result of depression and the accompanying negative thought patterns. This is not the sort of sleeplessness that is brought about as a result of normal stress but rather a near total inability to find rest in sleep when it is desired.  Insomniacs may find themselves nodding off at inopportune times, but never for long, and never enough to gain any restful sleep. As a result, they are frequently lethargic and inattentive as their lack of sleep robs them of their edge and eventually any semblance of alertness.   Additionally, insomniacs are frequently irritable due to being on edge and unable to rest.
+  <p>
+  <b>Suggested Game Effects:</b> Due to the lack of meaningful sleep, insomniacs should suffer from blanket penalties to perception-related tasks or anything requiring concentration or prolonged fine motor abilities.
+  <h2>MEGALOMANIA</h2>
+  A megalomaniac believes themselves to be the single most important person in the universe. Nothing is more important than the megalomaniac and everything around them must be done according to their whim. Failure to comply with the dictates of a megalomaniac can often result in rages or actual physical assaults by the subject.
+  <p>
+  <b>Suggested Game Effects:</b>  A character that has megalomania will demand attention and has difficulty in nearly any social situation. Additionally, they may be provoked to violence if they think they are being slighted.
+  
 </body>
 </html>
 }]
@@ -1873,6 +2038,82 @@ The Speed stat determines how often your character gets to act in an Action Turn
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <p>
 The Damage Bonus stat quantifies how much extra oomph your character is able to give their melee and thrown weapons attacks. Damage Bonus is determined by dividing your Somatics (SOM) aptitude by 10 and rounding down.
+
+!!
+@@ @DAMAGE
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Damage Points</b>
+<p>
+Any physical harm that befalls your character is measured in damage points. These points are cumulative, and are recorded on your character sheet. Damage points are characterized as fatigue, stun, bruises, bumps, sprains, minor cuts, and similar hurts that, while painful, do not significantly impair or threaten your character's life unless they accumulate to a significant amount. Any source of harm that inflicts a large amount of damage points at once, however, is likely to have a more severe effect (see Wounds).
+<p>
+Damage points may be reduced by rest, medical care, and/or repair (see Healing and Repair, p. 208).
+<p>
+<b>Damage Types</b>
+<p>
+Physical damage comes in three forms: Energy, Kinetic, and Psi.
+<p>
+<b>Energy Damage</b>
+<p>
+Energy damage includes lasers, plasma guns, fire, electrocution, explosions, and others sources of damaging energy.
+<p>
+<b>Kinetic Damage</b>
+<p>
+Kinetic damage is caused by projectiles and other objects moving at great speeds that disperse their energy into the target upon impact. Kinetic attacks include slug-throwers, flechette weapons, knives, and punches.
+<p>
+<b>Psi Damage</b>
+<p>
+Psi damage is caused by offensive psi sleights like Psychic Stab (p. 228).
+
+!!
+@@ @WOUNDS
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Wounds represent more grievous injuries: bad cuts and hemorrhaging, fractures and breaks, mangled limbs, and other serious damage that impairs your ability to function and may lead to death or long-term damage.
+<p>
+Any time your character sustains damage, compare the amount inflicted (after it has been reduced by armor) to your Wound Threshold. If the modified DV equals or exceeds your Wound Threshold, you have suffered a wound. If the inflicted damage is double your Wound Threshold, you suffer 2 wounds; if triple your Wound Threshold, you suffer 3 wounds; and so on.
+<p>
+Wounds are cumulative and must be marked on your character sheet.
+<p>
+<b>Wound Effects</b>
+<p>
+Each wound applies a cumulative -10 modifier to actions and -1 to Initiative. A character with 3 wounds, for example, suffers -30 to all actions and -3 to Initiative.
+<p>
+Some traits, morphs, implants, drugs, and psi allow a character to ignore wound modifiers. These effects are cumulative, though a maximum of 3 wounds worth of modifiers may be negated (-30 to actions and -3 to Initiative). 
+<p>
+<b>Knockdown:</b> Any time a character takes a wound, they must make an immediate SOM x 3 Test. Wound modifiers apply. If they fail, they are knocked down and must expend a Quick Action to get back up. Bots and vehicles must make a Pilot Test to avoid crashing.
+<p>
+<b>Unconsciousness:</b> Any time a character receives 2 or more wounds at once (from the same attack), they must also make an immediate SOM x 3 Test; wound modifiers again apply. If they fail, they have been knocked unconscious (until they are awoken or heal). Bots and vehicles that take 2 or more wounds at once automatically crash (see Crashing, p. 196).
+<p>
+<b>Bleeding:</b> Any biomorph character who has suffered a wound and who takes damage that exceeds their Durability is in danger of bleeding to death. They incur 1 additional damage point per Action Turn (20 per minute) until they receive medical care or die.
+
+!!
+@@ @STRESS
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Stress Points</b>
+<p>
+Stress points represent fractures in your ego's integrity, cracks in the mental image of yourself. This mental damage is experienced as cerebral shocks, disorientation, cognitive disconnects, synaptic misfires, or an undermining of the intellectual faculties. On their own, these stress points do not significantly impair your character's functioning, but if allowed to accumulate they can have severe repercussions. Additionally, any source that inflicts a large amount of stress points at once is likely to have a more severe impact (see Trauma, p. 209).
+<p>
+Stress points may be reduced by long-term rest, psychiatric care, and/or psychosurgery (p. 215).
+<p>
+<b>Lucidity and Stress</b>
+<p>
+Your Lucidity stat benchmarks your character's mental stability. If you build up an amount of stress points equal to or greater than your Lucidity score, your character's ego immediately suffers a mental breakdown. You effectively go into shock and remain in a catatonic state until your stress points are reduced to a level below your Lucidity stat. Accumulated stress points will overwhelm egos housed inside synthetic shells or infomorphs just as they will biological brains-the mental software effectively seizes up, incapable of functioning until it is debugged.
+
+!!
+@@ @TRAUMA
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+Mental trauma is more severe than stress points. Traumas represent severe mental shocks, a crumbling of personality/self, delirium, paradigm shifts, and other serious cognitive malfunctions. Traumas impair your character's functioning and may result in temporary derangements or permanent disorders.
+<p>
+If your character receives a number of stress points at once that equals or exceeds their Trauma Threshold, they have suffered a trauma. If the inflicted stress points are double or triple the Trauma Threshold, they suffer 2 or 3 traumas, respectively, and so on. Traumas are cumulative and must be recorded on your character sheet.
+<p>
+<b>Trauma Effects</b>
+<p>
+Each trauma applies a cumulative -10 modifier to all of the character's actions and -1 to Initiative. A character with 2 traumas, for example, suffers -20 to all actions and -2 Initiative. These modifiers are also cumulative with wound modifiers.
+<p>
+<b>Disorientation:</b>  Any time a character suffers a trauma, they must make an immediate WIL x 3 Test. Trauma modifiers apply. If they fail, they are temporarily stunned and disoriented and must expend a Complex Action to regain their wits.
+<p>
+<b>Derangements and Disorders:</b> Any time a character is hit with a trauma, they suffer a temporary derangement (see Derangements). The first trauma inflicts a minor derangement. If a second trauma is applied, the first derangement is either upgraded from minor to a moderate derangement or else a second minor derangement is applied (gamemaster's discretion). Likewise, a third trauma may upgrade that derangement from moderate to major or else inflict a new minor. It is generally recommended that derangements be upgraded in potency, especially when result from the same set of ongoing circumstances. In the case of traumas that result from distinctly separate situations and sources, separate derangements may be applied.
+<p>
+<b>Disorder:</b> When four or more traumas have been inflicted on a character, a major derangement is upgraded to a disorder. Disorders represent long-lasting psychological afflictions that typically require weeks or even months of psychotherapy and/or psychosurgery to remedy (see Disorders, p. 211).
 
 !!
 @@ @Profession
@@ -2172,11 +2413,38 @@ Advantages Updated
 
 !!
 @@ @RezPointsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: status = input("rez|"+RezPoints+"|Rez Points")]
 [h: abort(status)]
+[h,if(isNumber(rez) != 1): abort(0)]
+[h,if(rez < 0): abort(0)]
 [h: RezPoints = rez]
 [h, macro("SheetLoad@this"):""]
+[h: outputter = strformat("<span bgcolor=#cccccc>%s updated Rez Points to: <b>%d</b> !!</span>",getName(currentToken()),RezPoints)]
+{outputter}
+
+!!
+@@ @DSUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: argName = json.get(macro.args,0)]
+[if(argName == "DAMAGE" || argName == "STRESS"),code:
+  {
+    [h: status = input("val|0|"+argName+" Points taken")]
+    [h: abort(status)]
+    [h,if(isNumber(val) != 1): abort(0)]
+    [h,if(val < 1): abort(0)]
+    [h: setProperty(argName, getProperty(argName) + val)]
+    [h, macro("SheetLoad@this"):""]
+    [h: outputter = strformat("<span bgcolor=#cccccc>%s took %s points: <b>%d</b> !! (new total: %d)</span>",getName(currentToken()),argName,val,getProperty(argName))]
+    {outputter}
+  };
+  {
+    [h: setProperty(argName, getProperty(argName) + 1)]
+    [h, macro("SheetLoad@this"):""]
+    [h: outputter = strformat("<span bgcolor=#cccccc>%s took 1 %s !! (new total: %d)</span>",getName(currentToken()),argName,getProperty(argName))]
+    {outputter}
+  }
+]
 
 !!
 @@ @OffenseShowUpdate
@@ -4320,7 +4588,7 @@ Area: <select name="area" selected="">
 			<b><font color="black"><a href='[r:macroLinkText("TableLoad@this","none",'', currentToken())]'>Tables</a></font></b>
 		</td>
 		<td width="33%" align="center">
-			<b><font color="black"><a href="[r: macroLinktext("RezPointsUpdate@this", "all", "Page=Stats", currentToken())]">Rez Points:</a></font> [r: RezPoints]</b>
+			<b><font color="black"><a href='[r: macroLinktext("RezPointsUpdate@this", "all", "Page=Stats", currentToken())]'>Rez Points:</a></font> [r: RezPoints]</b>
 		</td>
 		<td width="33%" align="center">
       <b><font color="black">Morph:</font> [r: Morph]</b>
