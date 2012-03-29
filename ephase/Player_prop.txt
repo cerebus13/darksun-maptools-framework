@@ -84,13 +84,20 @@ WOUNDS:0
 STRESS:0
 TRAUMA:0
 -----Reputation-----
-A-rep:0
-C-rep:0
-E-rep:0
-F-rep:0
-G-rep:0
-I-rep:0
-R-rep:0
+A-Rep:0
+A-Rep_favors:[]
+c-Rep:0
+c-Rep_favors:[]
+e-Rep:0
+e-Rep_favors:[]
+f-Rep:0
+f-Rep_favors:[]
+g-Rep:0
+g-Rep_favors:[]
+i-Rep:0
+i-Rep_favors:[]
+r-Rep:0
+r-Rep_favors:[]
 -----Knowledge Skills-----
 KnowledgeSkills:{"Academics: One":[0,0,"COG",0],"Art: Two":[0,0,"INT",0],"Interest: Three":[0,0,"COG",0],"Language: Four":[0,0,"INT",0],"Profession: Five":[0,0,"COG",0]}
 -----Active Skills-----

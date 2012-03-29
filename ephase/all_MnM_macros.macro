@@ -118,7 +118,7 @@
 					</td>
 				</tr>
 				<tr>
-          [h: jsonData = json.append("[]","MOX",getProperty("MOX"),"Moxie")]	
+          [h: jsonData = json.append("[]","MOX",getProperty("MOX"),"Moxie",getName(currentToken()))]	
           <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
             <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty("MOX")]</b></font></a>
 					</td>
@@ -210,18 +210,22 @@
 		<td align="right" colspan="2"><a href='[r:macroLinkText("RepUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
 		</td>		
 	</tr>[h: num = 1]
-[h: statList = "A-rep,C-rep,E-rep,F-rep,G-rep,I-rep,R-rep"]
+[h: statList = "A-Rep,c-Rep,e-Rep,f-Rep,g-Rep,i-Rep,r-Rep"]
 [foreach(stat, statList,""),code:{
 
 [if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
-				[h:jsonData=json.set("{}","name",stat,"rank",getProperty(stat),"modifier",0)]
-				<tr><td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%"><font color="white"><b><a href='[r:macroLinkText("d20Check@this","all",jsonData, currentToken())]'>[r: table("Rep",num)]</a></b>
+				<tr>
+          [h:jsonData=json.set("{}","repName",stat,"repFavors",getProperty(stat+"_favors"),"rollerName",getName(currentToken()))]
+          <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
+            <font color="white"><b><a href='[r:macroLinkText("UseFavor@this","all",jsonData, currentToken())]'>[r: table("Rep",num)]</a></b>
 					</td>
 				</tr>
 				<tr>
-		[h: jsonData = json.append("[]",stat,getProperty(stat),"Rep")]	<td align="center" width="100%" bgcolor="[r: table(PageColor,3)]"><font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
+          [h: jsonData = json.append("[]",stat,getProperty(stat),"Rep", getName(currentToken()))]	
+          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
+            <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(stat)]</b></font></a>
 					</td>
 				</tr>
 			</table>
@@ -826,6 +830,7 @@
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">	
+      <input type="hidden" name="rollerName" value="[r: json.get(macro.args,3)]"></input>
 			<input type="hidden" name="ExeMacro" value="UseMoxie"></input>
 			<input type='submit' name='Roll' value='Pick'></input>
 		</td>
@@ -838,68 +843,75 @@
 !!
 @@ @RepEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h:repNamer = json.get(macro.args,0)]
+[h:repValuer = json.get(macro.args,1)]
+[h,if(repValuer==0): input(".|You do not have any "+repNamer+" to burn!||LABEL|SPAN=TRUE")]
+[h,if(repValuer==0): abort(0)]
+[h,switch(repNamer):
+  case "A-Rep": networkName = "Networking: Autonomists";
+  case "c-Rep": networkName = "Networking: Hypercorps";
+  case "e-Rep": networkName = "Networking: Ecologists";
+  case "f-Rep": networkName = "Networking: Media";
+  case "g-Rep": networkName = "Networking: Criminals";
+  case "i-Rep": networkName = "Networking: Firewall";
+  case "r-Rep": networkName = "Networking: Scientists"
+]
+[h,if(repNamer=="A-Rep"): repNamer = "@-Rep"]
+
 <head>
-<title>Reputation Check</title>
+<title>Reputation Burn</title>
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="RepCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td color="white">
-			<center><b>[r: json.get(macro.args,0)]</center>
+			<center><b>[r: repNamer] Burn ([r: repValuer])</center>
 		</td>
 	</tr>
 </table>
 <table width="100%" bgcolor="white">
 	<tr>
 		<td>
-			<b>Difficulty Class:</b>
+			<b>Pick one:</b>
 		</td>
-		<td align="left">
-			<input type="text" name="DC" value="" size="5"></input>
+		<td>
+			<input type="radio" name="burnChoice" value="1" checked="checked">Get a bonus on a [r: networkName] test (max of +30).</input><br>
+      <input type="radio" name="burnChoice" value="2">Get a Favor before it has refreshed.</input>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			Aid Another:
+			<b># to burn for Networking:</b>
 		</td>
-		<td align="left">
-			[H: pcList=getExposedTokenNames()]
-			[h: pcList = replace(pcList,token.name+",","")]
-			[h: pcList = "No,"+pcList]
-			<select name="aid" selected="">
-			[foreach(name,pcList,""),code:{
-			<option value='[r: name]'>[r: name]</option>
-			}]</select>
-		</td>
-	</tr>
-	<tr>
 		<td>
-			<b>Modifier:</b>
-		</td>
-		<td align="left">
-			<input type="text" name="modifier" value="" size="5"></input>
+			<input type="text" name="choiceOneValue" value="" size="5"></input>
 		</td>
 	</tr>
-</table>
-<table width="100%">
-	<tr  bgcolor="[r: table(PageColor,3)]">
-		<td align="left">
-			Private: <input type="checkbox" name="Output" value="Private"></input>
+  <tr>
+		<td>
+			<b># to burn for a Favor:</b>
 		</td>
-		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		<td>
+			<input type="radio" name="choiceTwoValue" value="0" checked="checked">Trivial Favor (Cost 0)</input><br>
+      <input type="radio" name="choiceTwoValue" value="1">Low Favor (Cost 1)</input><br>
+      <input type="radio" name="choiceTwoValue" value="5">Moderate Favor (Cost 5)</input><br>
+      <input type="radio" name="choiceTwoValue" value="10">High Favor (Cost 10)</input><br>
+      <input type="radio" name="choiceTwoValue" value="20">Scarce Favor (Cost 20)</input>
 		</td>
 	</tr>
 </table>
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">
-			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
-			<input type="hidden" name="ExeMacro" value="d20Check"></input>
-			<input type='submit' name='Roll' value='Roll'></input>
+			<input type="hidden" name="repName" value="[r: json.get(macro.args,0)]"></input>					
+      <input type="hidden" name="repValue" value="[r: json.get(macro.args,1)]"></input>
+      <input type="hidden" name="rollerName" value="[r: json.get(macro.args,3)]"></input>
+      <input type="hidden" name="networkName" value="[r: networkName]"></input>
+			<input type="hidden" name="ExeMacro" value="BurnRep"></input>
+			<input type='submit' name='Done' value='Done'></input>
 		</td>
 	</tr>
 </table>
@@ -1048,7 +1060,9 @@
 "Defense", "305, 196",
 "Initiative", "305, 146",
 "Area","305, 150",
-"Moxie", "305, 320"
+"Moxie", "305, 320",
+"Rep", "520, 325"
+
 
 )]
 
@@ -2001,6 +2015,249 @@ hindered. If restrained by another character, the restrained character is immobi
       <td>argonauts (also technologists, researchers, and scientists)</td>
     </tr>
   </table>
+  <br>
+  <table bgcolor="[r: table(PageColor,4)]">
+    <tr>
+      <td>
+        <table bgcolor="[r: table(PageColor,4)]">
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
+              <center><h2><span style="color:white">Networking Skill modifiers</span></h2></center>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+          </tr>
+          <tr bgcolor='[r: table(PageColor,2)]'>
+            <td><b><span style="color:white">Situation</td>
+            <td><b><span style="color:white">Modifier</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>Favor level exceeds Rep level</td>
+            <td>-10 per level</td>
+          </tr>
+          <tr>
+            <td>Rep level exceeds Favor level</td>
+            <td>+10 per level</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>Keeping quiet</td>
+            <td>-Variable (p. 288)</td>
+          </tr>
+          <tr>
+            <td>Burning Rep</td>
+            <td>+Rep amount burned</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>Paying extra</td>
+            <td>+10 per level</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table bgcolor="[r: table(PageColor,4)]">
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
+              <center><h2><span style="color:white">Reputation levels</span></h2></center>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+          </tr>
+          <tr bgcolor='[r: table(PageColor,2)]'>
+            <td><b><span style="color:white">Reputation Score</td>
+            <td><b><span style="color:white">Reputation Level</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>0-19</td>
+            <td>Level 1</td>
+          </tr>
+          <tr>
+            <td>20-39</td>
+            <td>Level 2</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>40-59</td>
+            <td>Level 3</td>
+          </tr>
+          <tr>
+            <td>60-79</td>
+            <td>Level 4</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>80-99</td>
+            <td>Level 5</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table bgcolor="[r: table(PageColor,4)]">
+    <tr>
+      <td>
+        <table bgcolor="[r: table(PageColor,4)]">
+          <tr>
+            <td colspan="4" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
+              <center><h2><span style="color:white">Favors</span></h2></center>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+          </tr>
+          <tr bgcolor='[r: table(PageColor,2)]'>
+            <td><b><span style="color:white">Favor Level</td>
+            <td><b><span style="color:white">Timeframe</td>
+            <td><b><span style="color:white">Burning Rep cost</td>
+            <td><b><span style="color:white">Refresh Rate</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>1 (Trivial)</td>
+            <td>1 minute</td>
+            <td>0</td>
+            <td>1 hour</td>
+          </tr>
+          <tr>
+            <td>2 (Low)</td>
+            <td>30 minutes</td>
+            <td>1</td>
+            <td>1 day</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>3 (Moderate)</td>
+            <td>1 hour</td>
+            <td>5</td>
+            <td>1 week</td>
+          </tr>
+          <tr>
+            <td>4 (High)</td>
+            <td>1 day</td>
+            <td>10</td>
+            <td>1 month</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>5 (Scarce)</td>
+            <td>3 days</td>
+            <td>20</td>
+            <td>3 months</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table bgcolor="[r: table(PageColor,4)]">
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
+              <center><h2><span style="color:white">Acquire/Unload Goods</span></h2></center>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+          </tr>
+          <tr bgcolor='[r: table(PageColor,2)]'>
+            <td><b><span style="color:white">Level</td>
+            <td><b><span style="color:white">Service</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>1</td>
+            <td>Acquire/unload item with an expense of Trivial.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Acquire/unload item with an expense of Low.</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>3</td>
+            <td>Acquire/unload item with an expense of Moderate.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Acquire/unload item with an expense of High.</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>5</td>
+            <td>Acquire/unload item with an expense of Expensive.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table bgcolor="[r: table(PageColor,4)]">
+    <tr>
+      <td>
+        <table bgcolor="[r: table(PageColor,4)]">
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
+              <center><h2><span style="color:white">Acquire Services</span></h2></center>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+          </tr>
+          <tr bgcolor='[r: table(PageColor,2)]'>
+            <td><b><span style="color:white">Level</td>
+            <td><b><span style="color:white">Service</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>1</td>
+            <td><b>Trivial favor:</b> Get someone to perform services for 15 minutes. Move a chair. Browbeat someone. Catch a ride. Research someone online. Borrow 50 credits. Other Trivial cost services.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><b>Minor favor:</b> Get someone to perform services for an hour. Move to a new cubicle. Rough someone up. Loan a vehicle. Provide an alibi. Healing vat rental. Minor hacking assistance. Basic legal or police assistance. Borrow 250 credits. Other Low cost services.</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>3</td>
+            <td><b>Moderate favor:</b>  Get someone to perform services for a day. Move to a habitat in the same cluster. Serious beating. Lookout. Short-distance egocast. Short shuttle trip (under 50,000 km). Minor psychosurgery. Uploading. Reservations at the best restaurant ever. Major legal representation or police favors. Borrow 1,000 credits. Other Moderate cost services</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><b>Major favor:</b> Get someone to perform services for a month. Move a body. Homicide. Getaway shuttle pilot. Industrial sabotage. Large-volume shipping contract on bulk freighter. Medium-distance egocast. Mid-range shuttle trip (50,000-150,000 km). Moderate psychosurgery. Resleeving. Get out of jail free. Borrow 5,000 credits. Other High cost services.</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>5</td>
+            <td><b>Partnership:</b> Get someone to perform services for a year. Move dismembered body. Mass murder. Major embezzlement. Acts of terrorism. Relocate a mid-size asteroid. Long-distance egocast. Long-range shuttle trip (150,000 km or more). Borrow 20,000 credits. Other Expensive cost services.</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table bgcolor="[r: table(PageColor,4)]">
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
+              <center><h2><span style="color:white">Acquire Information</span></h2></center>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+          </tr>
+          <tr bgcolor='[r: table(PageColor,2)]'>
+            <td><b><span style="color:white">Level</td>
+            <td><b><span style="color:white">Service</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>1</td>
+            <td><b>Common Information:</b> Where to eat. What biz a certain hypercorp is in. Who is in charge.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><b>Public Information:</b> Make gray market connections. Where the "bad neighborhood" is. Obscure public database info. Who is the local crime syndicate. Public hypercorp news.</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>3</td>
+            <td><b>Private Information:</b> Make black market connections. Where an unlisted hypercorp facility is. Who is a cop. Who is a crime syndicate member. Where someone hangs out. Internal hypercorp news. Who is sleeping with whom.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><b>Secret Information:</b> Make exotic black market connections. Where a secret corp facility is. Where someone is hiding out. Secret hypercorp projects. Who is cheating on whom.</td>
+          </tr>
+          <tr bgcolor="white">
+            <td>5</td>
+            <td><b>Top Secret Intel:</b> Where a top secret black-budget lab is. Illegal hypercorp projects. Scandalous data. Blackmail material.</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
   
 </body>
 </html>
@@ -2829,13 +3086,13 @@ Damage & Stress Updated
 !!
 @@ @RepUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
-[h: setProperty("A-rep", json.get(macro.args, "A-rep"))]
-[h: setProperty("C-rep", json.get(macro.args, "C-rep"))]
-[h: setProperty("E-rep", json.get(macro.args, "E-rep"))]
-[h: setProperty("F-rep", json.get(macro.args, "F-rep"))]
-[h: setProperty("G-rep", json.get(macro.args, "G-rep"))]
-[h: setProperty("I-rep", json.get(macro.args, "I-rep"))]
-[h: setProperty("R-rep", json.get(macro.args, "R-rep"))]
+[h: setProperty("A-Rep", json.get(macro.args, "A-Rep"))]
+[h: setProperty("c-Rep", json.get(macro.args, "c-Rep"))]
+[h: setProperty("e-Rep", json.get(macro.args, "e-Rep"))]
+[h: setProperty("f-Rep", json.get(macro.args, "f-Rep"))]
+[h: setProperty("g-Rep", json.get(macro.args, "g-Rep"))]
+[h: setProperty("i-Rep", json.get(macro.args, "i-Rep"))]
+[h: setProperty("r-Rep", json.get(macro.args, "r-Rep"))]
 [h, macro("SheetLoad@this"):""]
 Reputation Updated
 
@@ -4016,7 +4273,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="A-rep" value="[r: getProperty("A-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="A-Rep" value="[r: getProperty("A-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -4028,7 +4285,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="C-rep" value="[r: getProperty("C-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="c-Rep" value="[r: getProperty("c-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -4040,7 +4297,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="E-rep" value="[r: getProperty("E-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="e-Rep" value="[r: getProperty("e-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -4052,7 +4309,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="F-rep" value="[r: getProperty("F-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="f-Rep" value="[r: getProperty("f-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -4064,7 +4321,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="G-rep" value="[r: getProperty("G-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="g-Rep" value="[r: getProperty("g-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -4076,7 +4333,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="I-rep" value="[r: getProperty("I-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="i-Rep" value="[r: getProperty("i-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -4088,7 +4345,7 @@ Area: <select name="area" selected="">
 					</td>
 				</tr>
 				<tr>
-					<td align="center" width="100%"><b><input type="text" name="R-rep" value="[r: getProperty("R-rep")]" size="2"></input></b>
+					<td align="center" width="100%"><b><input type="text" name="r-Rep" value="[r: getProperty("r-Rep")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -5577,10 +5834,114 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 [h,switch(moxOption):
   case "1": res = "<br>Result: Ignore all negative modifiers that apply to a test. The Moxie point must be spent before dice are rolled.";
-  case "2": res = "<br>Flip-flop a d100 roll result. For example, an 83 would become a 38.";
-  case "3": res = "<br>Upgrade a success, making it a critical success, as if you rolled doubles. You must succeed in the test before you spend the Moxie point.";
-  case "4": res = "<br>Ignore a critical failure, treating it as a regular failure instead.";
-  case "5": res = "<br>Go first in an Action Phase.";
+  case "2": res = "<br>Result: Flip-flop a d100 roll result. For example, an 83 would become a 38.";
+  case "3": res = "<br>Result: Upgrade a success, making it a critical success, as if you rolled doubles. You must succeed in the test before you spend the Moxie point.";
+  case "4": res = "<br>Result: Ignore a critical failure, treating it as a regular failure instead.";
+  case "5": res = "<br>Result: Go first in an Action Phase.";
+  default: res = ""
+]
+
+[h:MOX = MOX - 1]
+<p><span bgcolor=#cccccc><b>{rollerName}</b> spends a Moxie point.</span>
+{res}
+[h, macro("SheetLoad@this"):""]
+
+!!
+@@ @BurnRep
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(json.contains(macro.args,"repName")):repName = json.get(macro.args, "repName");repName = ""]
+[h,if(json.contains(macro.args,"repValue")):repValue = json.get(macro.args, "repValue");repValue = 0]
+[h,if(repValue==0): input(".|You do not have any "+repName+" to burn!||LABEL|SPAN=TRUE")]
+[h,if(repValue==0): abort(0)]
+[h,if(json.contains(macro.args,"burnChoice")):burnChoice = json.get(macro.args, "burnChoice");burnChoice = ""]
+[h,if(json.contains(macro.args,"choiceOneValue")):choiceOneValue = json.get(macro.args, "choiceOneValue");choiceOneValue = ""]
+[h,if(json.contains(macro.args,"choiceTwoValue")):choiceTwoValue = json.get(macro.args, "choiceTwoValue");choiceTwoValue = ""]
+[h,if(json.contains(macro.args,"networkName")):networkName = json.get(macro.args, "networkName");networkName = ""]
+[h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
+[h,if(burnChoice=="1"),code: 
+  {
+    [h,if(isNumber(choiceOneValue)==0),code:
+      {
+        [h: input(".|Invalid input for amount of Rep to burn!||LABEL|SPAN=TRUE")]
+        [h: abort(0)]
+      };{}
+    ]
+    [h,if(number(choiceOneValue) < 1),code:
+      {
+        [h: input(".|Invalid input for amount of Rep to burn!||LABEL|SPAN=TRUE")]
+        [h: abort(0)]
+      };{}
+    ]
+    [h,if(number(choiceOneValue) > repValue),code:
+      {
+        [h: input(".|Entered Rep value to burn is more than you have!||LABEL|SPAN=TRUE")]
+        [h: abort(0)]
+      };{}
+    ]
+    [h,if(number(choiceOneValue) > 30),code:
+      {
+        [h: input(".|Entered Rep value to burn is greater than 30!||LABEL|SPAN=TRUE")]
+        [h: abort(0)]
+      };{}
+    ]
+  };{}
+]
+[h,if(burnChoice=="2" && number(choiceTwoValue) > repValue),code: 
+  {
+    [h: input(".|Entered Rep value to burn is more than you have!||LABEL|SPAN=TRUE")]
+    [h: abort(0)]
+  };{}
+]
+
+[switch(burnChoice),code:
+  case "1": 
+  {
+    [h:setProperty(repName,repValue - number(choiceOneValue))]
+    [h,if(repName=="A-Rep"): repName = "@-Rep"]
+    <p><span bgcolor=#cccccc><b>{rollerName}</b> burns {choiceOneValue} {repName} points ({repValue - number(choiceOneValue)} remaining).</span>
+    <br>
+    Result: Adds a +{choiceOneValue} bonus to a {networkName} roll.
+  }; 
+  case "2": 
+  {
+    [h,switch(choiceTwoValue):
+      case "0": favorName = "Trivial";
+      case "1": favorName = "Low";
+      case "5": favorName = "Moderate";
+      case "10": favorName = "High";
+      case "20": favorName = "Scarce"
+    ]
+    [h:setProperty(repName,repValue - number(choiceTwoValue))]
+    [h,if(repName=="A-Rep"): repName = "@-Rep"]
+    <p><span bgcolor=#cccccc><b>{rollerName}</b> burns {choiceTwoValue} {repName} points ({repValue - number(choiceTwoValue)} remaining).</span>
+    <br>
+    Result: Gets a {favorName} Favor.
+  }
+]
+
+[h, macro("SheetLoad@this"):""]
+
+!!
+@@ @UseFavor
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h:allFavors = json.append("[]","1 (Trivial)","2 (Low)","3 (Moderate)","4 (High)","5 (Scarce)")]
+[h:regainFavor = json.difference(allFavors,repFavors)]
+[h: choice = input(
+      strformat(".|Used Favors: %s||LABEL",json.toList(repFavors,", ")),
+      "pick|Use Favor,Regain Favor|Choose Option|RADIO",
+      "regainFavor|1d6,1d8,2d6,2d8,3d6,3d8|Favors to Regain|LIST|SELECT=0 VALUE=STRING",
+)]
+[h: abort(choice)]
+
+[h,if(json.contains(macro.args,"moxOption")):moxOption = json.get(macro.args, "moxOption");moxOption = ""]
+[h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
+
+[h,switch(moxOption):
+  case "1": res = "<br>Result: Ignore all negative modifiers that apply to a test. The Moxie point must be spent before dice are rolled.";
+  case "2": res = "<br>Result: Flip-flop a d100 roll result. For example, an 83 would become a 38.";
+  case "3": res = "<br>Result: Upgrade a success, making it a critical success, as if you rolled doubles. You must succeed in the test before you spend the Moxie point.";
+  case "4": res = "<br>Result: Ignore a critical failure, treating it as a regular failure instead.";
+  case "5": res = "<br>Result: Go first in an Action Phase.";
   default: res = ""
 ]
 
