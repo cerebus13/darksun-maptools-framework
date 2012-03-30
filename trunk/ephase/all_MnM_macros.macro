@@ -5924,30 +5924,40 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 !!
 @@ @UseFavor
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
-[h:allFavors = json.append("[]","1 (Trivial)","2 (Low)","3 (Moderate)","4 (High)","5 (Scarce)")]
-[h:regainFavor = json.difference(allFavors,repFavors)]
-[h: choice = input(
-      strformat(".|Used Favors: %s||LABEL",json.toList(repFavors,", ")),
-      "pick|Use Favor,Regain Favor|Choose Option|RADIO",
-      "regainFavor|1d6,1d8,2d6,2d8,3d6,3d8|Favors to Regain|LIST|SELECT=0 VALUE=STRING",
-)]
-[h: abort(choice)]
-
-[h,if(json.contains(macro.args,"moxOption")):moxOption = json.get(macro.args, "moxOption");moxOption = ""]
+[h,if(json.contains(macro.args,"repName")):repName = json.get(macro.args, "repName");repName = ""]
 [h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
+[h,if(json.contains(macro.args,"repFavors")):repFavors = json.get(macro.args, "repFavors");repFavors = ""]
 
-[h,switch(moxOption):
-  case "1": res = "<br>Result: Ignore all negative modifiers that apply to a test. The Moxie point must be spent before dice are rolled.";
-  case "2": res = "<br>Result: Flip-flop a d100 roll result. For example, an 83 would become a 38.";
-  case "3": res = "<br>Result: Upgrade a success, making it a critical success, as if you rolled doubles. You must succeed in the test before you spend the Moxie point.";
-  case "4": res = "<br>Result: Ignore a critical failure, treating it as a regular failure instead.";
-  case "5": res = "<br>Result: Go first in an Action Phase.";
-  default: res = ""
+[h:allFavors = json.append("[]","1 (Trivial)","2 (Low)","3 (Moderate)","4 (High)","5 (Scarce)")]
+[h:spendFavors = json.sort(json.difference(allFavors,repFavors))]
+[h:choice = input(
+      strformat(".|Used Favors: %s||LABEL|SPAN=TRUE ",if(json.length(repFavors)>0,json.toList(repFavors,", "),"None")),
+      "pick|Use Favor,Regain Favor|Choose Option|RADIO",
+      strformat("spendChoice|%s|Favor to Spend|LIST|SELECT=0 VALUE=STRING",if(json.length(spendFavors)>0,json.toList(spendFavors),"None")),
+      strformat("regainChoice|%s|Favor to Regain|LIST|SELECT=0 VALUE=STRING",if(json.length(repFavors)>0,json.toList(repFavors),"None"))
+)]
+[h:abort(choice)]
+
+[h,switch(pick),code:
+  case 0:
+  {
+    [h,if(spendChoice=="None"): updateFavors = "[]"; updateFavors = json.sort(json.append(repFavors,spendChoice))]
+    [h,if(json.length(updateFavors)>0): setProperty(repName+"_favors",updateFavors)]
+    [h,if(repName=="A-Rep"): repName = "@-Rep"]
+    [h,if(spendChoice=="None"): outStr = "";outStr = strformat("spends a Favor (<b>%s</b>)",spendChoice)]
+  };
+  case 1:
+  {
+    [h,if(regainChoice=="None"): updateFavors = "[]"; updateFavors = json.sort(json.difference(repFavors,regainChoice))]
+    [h,if(regainChoice!="None"): setProperty(repName+"_favors",updateFavors)]
+    [h,if(repName=="A-Rep"): repName = "@-Rep"]
+    [h,if(regainChoice=="None"): outStr = "";outStr = strformat("regains a Favor (<b>%s</b>)",regainChoice)]
+  }
 ]
-
-[h:MOX = MOX - 1]
-<p><span bgcolor=#cccccc><b>{rollerName}</b> spends a Moxie point.</span>
-{res}
+[h,if(length(outStr)==0): abort(0)]
 [h, macro("SheetLoad@this"):""]
+
+<p><span bgcolor=#cccccc><b>{rollerName}</b> {outStr} for {repName}.</span><br>
+Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),"</b>, <b>")}</b>) Favors remaining for {repName}.
 
 !!
