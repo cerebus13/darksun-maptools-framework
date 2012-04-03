@@ -123,3 +123,12 @@ LUC_Muse:0
 IR_Muse:0
 -----Muse Skills-----
 MuseSkills:{"Academics: ":[0,0,"COG",0],"Art: ":[0,0,"INT",0],"Interest: ":[0,0,"COG",0],"Language: ":[0,0,"INT",0],"Profession: ":[0,0,"COG",0]}
+
+--------------------------------COMMENTS--------------------------------
+Skills are stored as a Json Object: Key = skill name, Value = Json Array.  Some skills have a focus/concentration which is in the name after a : symbol.  If one of these skills gets in the list without anything following the : then it will probably throw an error.
+Json Array has the following values at indexes:
+0 = Base Skill value
+1 = Bonus skill value (to keep it separate from Base for ease of using Rez Points)
+2 = Linked Aptitude
+3 = 1 if Skill can be defaulted to Aptitude, 0 if not
+4 = name of Specialization if there is one, "" if not
