@@ -461,21 +461,26 @@
 [h: skill = json.get(macro.args,0)]
 [h: color = json.get(macro.args,1)]
 <tr bgcolor="[r: color]">
-		<td align="left">
-		 	[h: rank = json.get(json.get(KnowledgeSkills,skill),0)]
-			[h: misc =  json.get(json.get(KnowledgeSkills,skill),1)]
-			[h: attribute =  getProperty(json.get(json.get(KnowledgeSkills,skill),2))]
-			[h: rankTotal = rank+misc+attribute]
-			[h: jsonData=json.set("{}","name",skill,"rank",rankTotal,"modifier",0)]
-			[h: info=json.append("[]",skill,json.get(json.get(KnowledgeSkills,skill),2))]
-			<font color="black"><a href='[r:macroLinkText("KnowSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
-		</td>
-		<td align="center" width="25%">
-			<font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: rank]</a></font>
-		</td>
-		<td width="25%" align="right">[h: jsonData = json.append("[]",skill,rankTotal,"KnowSkill")]
-			(<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: rankTotal]</a></font>)
-		</td>
+  [h: rank = json.get(json.get(KnowledgeSkills,skill),0)]
+  [h: misc =  json.get(json.get(KnowledgeSkills,skill),1)]
+  [h: aptitude = json.get(json.get(KnowledgeSkills,skill),2)]
+  [h: attribute = getProperty(json.get(json.get(KnowledgeSkills,skill),2))]
+  [h: rankTotal = rank+misc+attribute]
+  <td align="left">
+    [h: jsonData=json.set("{}","name",skill,"rank",rankTotal,"modifier",0)]
+    [h: info=json.append("[]",skill,json.get(json.get(KnowledgeSkills,skill),2))]
+    <font color="black"><a href='[r:macroLinkText("KnowSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
+  </td>
+  <td align="center" width="25%">
+    <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: rank]</a></font>
+  </td>
+  <td align="left" width="15%">
+    <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: aptitude]</a></font>
+  </td>
+  <td width="15%" align="right">
+    [h: jsonData = json.append("[]",skill,rankTotal,"KnowSkill")]
+    (<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: rankTotal]</a></font>)
+  </td>
 
 </tr>
 [h: colorcheck = table(PageColor,4)]
@@ -521,20 +526,22 @@
 !!
 @@ @KnowSkillsDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
-<table border="0" cellpadding="2" width="100%">
+<table border="1" cellpadding="2" width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("KnowSkillsUpdateDialog@this","none","", currentToken())]'><b>KNOW. SKILLS</b></a></font>
 		</td>
-		<td  align="center" width="25%" color="white">
-			<b>Rank</b>
+		<td align="center" width="25%" color="white">
+			<b>Spec.</b>
 		</td>
-		<td  align="right" width="25%" color="white">
+    <td align="left" width="15%" color="white">
+			<b>Aptitude</b>
+		</td>
+		<td align="right" width="15%" color="white">
 			<b>Total</b>
 		</td>
-		
 	</tr>
 </table>
-<table border="0" cellpadding="2" width="100%" bgcolor="white">
+<table border="1" cellpadding="2" width="100%" bgcolor="white">
 [h,if(json.isEmpty(KnowledgeSkills)): skillListunsort = ""; skillListunsort = json.fields(KnowledgeSkills)]
 [h: skillList = listsort(skillListunsort, "A")]
 [h: color = table(PageColor,4)]
@@ -544,7 +551,7 @@
   [h: skillRank = json.get(skillDetails, 0)]
   [h: skillMisc = json.get(skillDetails,1)]
   [h: skillTrained = json.get(skillDetails,3)]
-  [if(skillMisc==0&&skillRank==0&&skillTrained==0), code:
+  [if(skillMisc==0&&skillRank==0), code:
   {}; 
   {
     [h: jsonData = json.append("[]", skill,color)]
@@ -2018,7 +2025,7 @@ hindered. If restrained by another character, the restrained character is immobi
   <br>
   <table bgcolor="[r: table(PageColor,4)]">
     <tr>
-      <td>
+      <td valign="top">
         <table bgcolor="[r: table(PageColor,4)]">
           <tr>
             <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
@@ -2054,7 +2061,7 @@ hindered. If restrained by another character, the restrained character is immobi
           </tr>
         </table>
       </td>
-      <td>
+      <td valign="top">
         <table bgcolor="[r: table(PageColor,4)]">
           <tr>
             <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
@@ -2095,7 +2102,7 @@ hindered. If restrained by another character, the restrained character is immobi
   <br>
   <table bgcolor="[r: table(PageColor,4)]">
     <tr>
-      <td>
+      <td valign="top">
         <table bgcolor="[r: table(PageColor,4)]">
           <tr>
             <td colspan="4" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
@@ -2143,7 +2150,7 @@ hindered. If restrained by another character, the restrained character is immobi
           </tr>
         </table>
       </td>
-      <td>
+      <td valign="top">
         <table bgcolor="[r: table(PageColor,4)]">
           <tr>
             <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
@@ -2184,7 +2191,7 @@ hindered. If restrained by another character, the restrained character is immobi
   <br>
   <table bgcolor="[r: table(PageColor,4)]">
     <tr>
-      <td>
+      <td valign="top">
         <table bgcolor="[r: table(PageColor,4)]">
           <tr>
             <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
@@ -2220,7 +2227,7 @@ hindered. If restrained by another character, the restrained character is immobi
           </tr>
         </table>
       </td>
-      <td>
+      <td valign="top">
         <table bgcolor="[r: table(PageColor,4)]">
           <tr>
             <td colspan="2" style="background-color:'[r: table(PageColor,2)]'  ; margin:0px; padding:0px; height:0px">
@@ -2951,12 +2958,18 @@ Skills Updated
 @@ @KnowSkillsUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [foreach(tempAbility, json.fields(KnowledgeSkills), ""), code: {
-  [h: propRank = json.get(macro.args, tempAbility+"Rank")]
-  [h: propAttribute = json.get(macro.args, tempAbility+"Attribute")]
-  [h: propMisc = json.get(macro.args, tempAbility+"Misc")]
-  [h: propTrained = json.get(macro.args, tempAbility+"Trained")]
-  [h: propdata = json.append("[]", propRank, propMisc, propAttribute, propTrained)]
-  [h: KnowledgeSkills = json.set(KnowledgeSkills, tempAbility, propdata)]
+  [h: propDelete = json.get(macro.args, tempAbility+"Delete")]
+  [h, if(propDelete!=""), code: 
+  {
+    [h: KnowledgeSkills = json.remove(KnowledgeSkills,tempAbility)]
+  };{
+    [h: propRank = json.get(macro.args, tempAbility+"Rank")]
+    [h: propAttribute = json.get(macro.args, tempAbility+"Attribute")]
+    [h: propMisc = json.get(macro.args, tempAbility+"Misc")]
+    [h: propTrained = json.get(macro.args, tempAbility+"Trained")]
+    [h: propdata = json.append("[]", propRank, propMisc, propAttribute, propTrained)]
+    [h: KnowledgeSkills = json.set(KnowledgeSkills, tempAbility, propdata)]
+  }]
 }]
 
 [h: newKnow = json.get(macro.args, "newAcademics")]
@@ -3625,94 +3638,99 @@ Area: <select name="area" selected="">
 </head>
 <body>
 <form method="json" name="KnowSkillsUpdate" action="[r:macroLinkText('KnowSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
-<table>
-[h: color = "#ededed"]
-[h: propListunsort = json.fields(KnowledgeSkills)]
-[h: propList = listsort(propListunsort, "A")]
+  <table>
+  [h: color = "#ededed"]
+  [h: propListunsort = json.fields(KnowledgeSkills)]
+  [h: propList = listsort(propListunsort, "A")]
 
-[foreach(tempAbility, propList, ""), code: {
-<tr bgcolor="[r: color]">
-<td>
-<label for="Name"><b>[r: tempAbility]</b></label>
-</td>
-<td>
-<label for="Rank">Rank: </label><input type="text" name="[r: tempAbility+"Rank"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 0)]" size="2"></input>
-</td>
-<td>
-<label for="Name">Misc: </label><input type="text" name="[r: tempAbility+"Misc"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 1)]" size="2"></input><input type="hidden" name="[r: tempAbility+"Attribute"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 2)]"></input><input type="hidden" name="[r: tempAbility+"Trained"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 3)]"></input>
-</td>
-</tr>
-[h: color=if(color=="#ededed","white","#ededed")]
-}]
+  [foreach(tempAbility, propList, ""), code: {
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>[r: tempAbility]</b></label>
+      </td>
+      <td>
+        <label for="Rank">Rank: </label><input type="text" name="[r: tempAbility+"Rank"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 0)]" size="2"></input>
+      </td>
+      <td>
+        <label for="Name">Misc: </label>
+        <input type="text" name="[r: tempAbility+"Misc"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 1)]" size="2"></input>
+        <input type="hidden" name="[r: tempAbility+"Attribute"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 2)]"></input>
+        <input type="hidden" name="[r: tempAbility+"Trained"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 3)]"></input>
+        <label for="del"> Delete: </label>
+        <input type="checkbox" name="[r: tempAbility+"Delete"]" value="1"></input>
+      </td>
+    </tr>
+  [h: color=if(color=="#ededed","white","#ededed")]
+  }]
 
-<tr bgcolor="[r: color]">
-<td>
-<label for="Name"><b>Academics: </b></label><input type="text" name="newAcademics" value="" size="8"></input>
-</td>
-<td>
-<label for="Rank">Rank: </label><input type="text" name="newAcademicsRank" value="0" size="2"></input>
-</td>
-<td>
-<label for="Name">Misc: </label><input type="text" name="newAcademicsMisc" value="0" size="2"></input>
-<input type="hidden" name="newAcademicsTrained" value="0"></input>
-</td>
-</tr>
-[h: color=if(color=="#ededed","white","#ededed")]
-<tr bgcolor="[r: color]">
-<td>
-<label for="Name"><b>Art: </b></label><input type="text" name="newArt" value="" size="8"></input>
-</td>
-<td>
-<label for="Rank">Rank: </label><input type="text" name="newArtRank" value="0" size="2"></input>
-</td>
-<td>
-<label for="Name">Misc: </label><input type="text" name="newArtMisc" value="0" size="2"></input>
-<input type="hidden" name="newArtTrained" value="0"></input>
-</td>
-</tr>
-[h: color=if(color=="#ededed","white","#ededed")]
-<tr bgcolor="[r: color]">
-<td>
-<label for="Name"><b>Interest: </b></label><input type="text" name="newInterest" value="" size="8"></input>
-</td>
-<td>
-<label for="Rank">Rank: </label><input type="text" name="newInterestRank" value="0" size="2"></input>
-</td>
-<td>
-<label for="Name">Misc: </label><input type="text" name="newInterestMisc" value="0" size="2"></input><input type="hidden" name="newInterestTrained" value="0"></input>
-</td>
-</tr>
-[h: color=if(color=="#ededed","white","#ededed")]
-<tr bgcolor="[r: color]">
-<td>
-<label for="Name"><b>Language: </b></label><input type="text" name="newLanguage" value="" size="8"></input>
-</td>
-<td>
-<label for="Rank">Rank: </label><input type="text" name="newLanguageRank" value="0" size="2"></input>
-</td>
-<td>
-<label for="Name">Misc: </label><input type="text" name="newLanguageMisc" value="0" size="2"></input><input type="hidden" name="newLanguageTrained" value="0"></input>
-</td>
-</tr>
-[h: color=if(color=="#ededed","white","#ededed")]
-<tr bgcolor="[r: color]">
-<td>
-<label for="Name"><b>Profession: </b></label><input type="text" name="newProfession" value="" size="8"></input>
-</td>
-<td>
-<label for="Rank">Rank: </label><input type="text" name="newProfessionRank" value="0" size="2"></input>
-</td>
-<td>
-<label for="Name">Misc: </label><input type="text" name="newProfessionMisc" value="0" size="2"></input><input type="hidden" name="newProfessionTrained" value="0"></input>
-</td>
-</tr>
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Academics: </b></label><input type="text" name="newAcademics" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Rank">Rank: </label><input type="text" name="newAcademicsRank" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Name">Misc: </label><input type="text" name="newAcademicsMisc" value="0" size="2"></input>
+        <input type="hidden" name="newAcademicsTrained" value="0"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Art: </b></label><input type="text" name="newArt" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Rank">Rank: </label><input type="text" name="newArtRank" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Name">Misc: </label><input type="text" name="newArtMisc" value="0" size="2"></input>
+        <input type="hidden" name="newArtTrained" value="0"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Interest: </b></label><input type="text" name="newInterest" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Rank">Rank: </label><input type="text" name="newInterestRank" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Name">Misc: </label><input type="text" name="newInterestMisc" value="0" size="2"></input><input type="hidden" name="newInterestTrained" value="0"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Language: </b></label><input type="text" name="newLanguage" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Rank">Rank: </label><input type="text" name="newLanguageRank" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Name">Misc: </label><input type="text" name="newLanguageMisc" value="0" size="2"></input><input type="hidden" name="newLanguageTrained" value="0"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Profession: </b></label><input type="text" name="newProfession" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Rank">Rank: </label><input type="text" name="newProfessionRank" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Name">Misc: </label><input type="text" name="newProfessionMisc" value="0" size="2"></input><input type="hidden" name="newProfessionTrained" value="0"></input>
+      </td>
+    </tr>
 
-<tr>
-<td align="center" colspan="4">
-<input type='submit' name='Submit' value='Submit'></input>
-</td>
-</tr>
-</table> 
+    <tr>
+      <td align="center" colspan="4">
+        <input type='submit' name='Submit' value='Submit'></input>
+      </td>
+    </tr>
+  </table> 
 </form>
 </body>
 </html>
