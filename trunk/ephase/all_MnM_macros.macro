@@ -461,25 +461,24 @@
 [h: skill = json.get(macro.args,0)]
 [h: color = json.get(macro.args,1)]
 <tr bgcolor="[r: color]">
-  [h: rank = json.get(json.get(KnowledgeSkills,skill),0)]
-  [h: misc =  json.get(json.get(KnowledgeSkills,skill),1)]
+  [h: base = json.get(json.get(KnowledgeSkills,skill),0)]
+  [h: bonus =  json.get(json.get(KnowledgeSkills,skill),1)]
   [h: aptitude = json.get(json.get(KnowledgeSkills,skill),2)]
-  [h: attribute = getProperty(json.get(json.get(KnowledgeSkills,skill),2))]
-  [h: rankTotal = rank+misc+attribute]
+  [h: knowTotal = base+bonus]
   <td align="left">
-    [h: jsonData=json.set("{}","name",skill,"rank",rankTotal,"modifier",0)]
+    [h: jsonData=json.set("{}","name",skill,"base",knowTotal,"modifier",0)]
     [h: info=json.append("[]",skill,json.get(json.get(KnowledgeSkills,skill),2))]
     <font color="black"><a href='[r:macroLinkText("KnowSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
   </td>
-  <td align="center" width="25%">
-    <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: rank]</a></font>
+  <td align="center" width="15%">
+    <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: base]</a></font>
   </td>
   <td align="left" width="15%">
     <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: aptitude]</a></font>
   </td>
   <td width="15%" align="right">
-    [h: jsonData = json.append("[]",skill,rankTotal,"KnowSkill")]
-    (<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: rankTotal]</a></font>)
+    [h: jsonData = json.append("[]",skill,knowTotal,"KnowSkill")]
+    (<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: knowTotal]</a></font>)
   </td>
 
 </tr>
@@ -526,11 +525,11 @@
 !!
 @@ @KnowSkillsDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
-<table border="1" cellpadding="2" width="100%">
+<table border="0" cellpadding="2" width="100%" bgcolor="white">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("KnowSkillsUpdateDialog@this","none","", currentToken())]'><b>KNOW. SKILLS</b></a></font>
 		</td>
-		<td align="center" width="25%" color="white">
+		<td align="center" width="15%" color="white">
 			<b>Spec.</b>
 		</td>
     <td align="left" width="15%" color="white">
@@ -540,25 +539,21 @@
 			<b>Total</b>
 		</td>
 	</tr>
-</table>
-<table border="1" cellpadding="2" width="100%" bgcolor="white">
-[h,if(json.isEmpty(KnowledgeSkills)): skillListunsort = ""; skillListunsort = json.fields(KnowledgeSkills)]
-[h: skillList = listsort(skillListunsort, "A")]
-[h: color = table(PageColor,4)]
-[foreach(skill, skillList, ""), code: 
-{
-  [h: skillDetails = json.get(KnowledgeSkills, skill)]
-  [h: skillRank = json.get(skillDetails, 0)]
-  [h: skillMisc = json.get(skillDetails,1)]
-  [h: skillTrained = json.get(skillDetails,3)]
-  [if(skillMisc==0&&skillRank==0), code:
-  {}; 
+  [h,if(json.isEmpty(KnowledgeSkills)): skillListunsort = ""; skillListunsort = json.fields(KnowledgeSkills)]
+  [h: skillList = listsort(skillListunsort, "A")]
+  [h: color = table(PageColor,4)]
+  [foreach(skill, skillList, ""), code: 
   {
-    [h: jsonData = json.append("[]", skill,color)]
-    [r, macro("KnowSkillsDisplayBottom@this"):jsonData]
-    [h: color = macro.return]
+    [h: skillDetails = json.get(KnowledgeSkills, skill)]
+    [h: skillBase = json.get(skillDetails,0)]
+    [h: skillBonus = json.get(skillDetails,1)]
+    [if(skillBonus==0&&skillBase==0), code: {}; 
+    {
+      [h: jsonData = json.append("[]", skill,color)]
+      [r, macro("KnowSkillsDisplayBottom@this"):jsonData]
+      [h: color = macro.return]
+    }]
   }]
-}]
 </table>
 
 !!
@@ -2963,54 +2958,60 @@ Skills Updated
   {
     [h: KnowledgeSkills = json.remove(KnowledgeSkills,tempAbility)]
   };{
-    [h: propRank = json.get(macro.args, tempAbility+"Rank")]
-    [h: propAttribute = json.get(macro.args, tempAbility+"Attribute")]
-    [h: propMisc = json.get(macro.args, tempAbility+"Misc")]
-    [h: propTrained = json.get(macro.args, tempAbility+"Trained")]
-    [h: propdata = json.append("[]", propRank, propMisc, propAttribute, propTrained)]
-    [h: KnowledgeSkills = json.set(KnowledgeSkills, tempAbility, propdata)]
+    [h: propBase = json.get(macro.args, tempAbility+"Base")]
+    [h: propBonus = json.get(macro.args, tempAbility+"Bonus")]
+    [h: propAptitude = json.get(macro.args, tempAbility+"Aptitude")]
+    [h: propDefault = json.get(macro.args, tempAbility+"Default")]
+    [h: propSpec = json.get(macro.args, tempAbility+"Spec")]
+    [h: propData = json.append("[]", propBase, propBonus, propAptitude, propDefault, propSpec)]
+    [h: KnowledgeSkills = json.set(KnowledgeSkills, tempAbility, propData)]
   }]
 }]
 
 [h: newKnow = json.get(macro.args, "newAcademics")]
 [if(newKnow == ""),code:{}; {
   [h: name = "Academics: "+newKnow]
-  [h: propRank = json.get(macro.args, "newAcademicsRank")]
-  [h: propMisc = json.get(macro.args, "newAcademicsMisc")]
-  [h: propdata = json.append("[]", propRank, propMisc, "COG", 0)]
-  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+  [h: propBase = json.get(macro.args, "newAcademicsBase")]
+  [h: propBonus = json.get(macro.args, "newAcademicsBonus")]
+  [h: propSpec = json.get(macro.args, "newAcademicsSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "COG", 1, propSpec)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propData)]
 }]
 [h: newKnow = json.get(macro.args, "newArt")]
 [if(newKnow == ""),code:{}; {
   [h: name = "Art: "+newKnow]
-  [h: propRank = json.get(macro.args, "newArtRank")]
-  [h: propMisc = json.get(macro.args, "newArtMisc")]
-  [h: propdata = json.append("[]", propRank, propMisc, "INT", 0)]
-  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+  [h: propBase = json.get(macro.args, "newArtBase")]
+  [h: propBonus = json.get(macro.args, "newArtBonus")]
+  [h: propSpec = json.get(macro.args, "newArtSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "INT", 1, propSpec)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propData)]
 }]
 [h: newKnow = json.get(macro.args, "newInterest")]
 [if(newKnow == ""),code:{}; {
   [h: name = "Interest: "+newKnow]
-  [h: propRank = json.get(macro.args, "newInterestRank")]
-  [h: propMisc = json.get(macro.args, "newInterestMisc")]
-  [h: propdata = json.append("[]", propRank, propMisc,"COG", 0)]
-  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+  [h: propBase = json.get(macro.args, "newInterestBase")]
+  [h: propBonus = json.get(macro.args, "newInterestBonus")]
+  [h: propSpec = json.get(macro.args, "newInterestSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG", 1, propSpec)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propData)]
 }]
 [h: newKnow = json.get(macro.args, "newLanguage")]
 [if(newKnow == ""),code:{}; {
   [h: name = "Language: "+newKnow]
-  [h: propRank = json.get(macro.args, "newLanguageRank")]
-  [h: propMisc = json.get(macro.args, "newLanguageMisc")]
-  [h: propdata = json.append("[]", propRank, propMisc,"INT", 0)]
-  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+  [h: propBase = json.get(macro.args, "newLanguageBase")]
+  [h: propBonus = json.get(macro.args, "newLanguageBonus")]
+  [h: propSpec = json.get(macro.args, "newLanguageSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"INT", 1, propSpec)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propData)]
 }]
 [h: newKnow = json.get(macro.args, "newProfession")]
 [if(newKnow == ""),code:{}; {
   [h: name = "Profession: "+newKnow]
-  [h: propRank = json.get(macro.args, "newProfessionRank")]
-  [h: propMisc = json.get(macro.args, "newProfessionMisc")]
-  [h: propdata = json.append("[]", propRank, propMisc,"COG", 0)]
-  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propdata)]
+  [h: propBase = json.get(macro.args, "newProfessionBase")]
+  [h: propBonus = json.get(macro.args, "newProfessionBonus")]
+  [h: propSpec = json.get(macro.args, "newProfessionSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG", 1, propSpec)]
+  [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propData)]
 }]
 
 [h, macro("SheetLoad@Lib:MnM"):""]
@@ -3649,30 +3650,34 @@ Area: <select name="area" selected="">
         <label for="Name"><b>[r: tempAbility]</b></label>
       </td>
       <td>
-        <label for="Rank">Rank: </label><input type="text" name="[r: tempAbility+"Rank"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 0)]" size="2"></input>
+        <label for="Base">Base: </label><input type="text" name="[r: tempAbility+"Base"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 0)]" size="2"></input>
       </td>
       <td>
-        <label for="Name">Misc: </label>
-        <input type="text" name="[r: tempAbility+"Misc"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 1)]" size="2"></input>
-        <input type="hidden" name="[r: tempAbility+"Attribute"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 2)]"></input>
-        <input type="hidden" name="[r: tempAbility+"Trained"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 3)]"></input>
-        <label for="del"> Delete: </label>
-        <input type="checkbox" name="[r: tempAbility+"Delete"]" value="1"></input>
+        <label for="Bonus">Bonus: </label><input type="text" name="[r: tempAbility+"Bonus"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 1)]" size="2"></input>
+        <input type="hidden" name="[r: tempAbility+"Aptitude"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 2)]"></input>
+        <input type="hidden" name="[r: tempAbility+"Default"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 3)]"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="[r: tempAbility+"Spec"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 4)]" size="10"></input>
+      </td>
+      <td>
+        <label for="del">Delete: </label><input type="checkbox" name="[r: tempAbility+"Delete"]" value="1"></input>
       </td>
     </tr>
-  [h: color=if(color=="#ededed","white","#ededed")]
+    [h: color=if(color=="#ededed","white","#ededed")]
   }]
-
     <tr bgcolor="[r: color]">
       <td>
         <label for="Name"><b>Academics: </b></label><input type="text" name="newAcademics" value="" size="8"></input>
       </td>
       <td>
-        <label for="Rank">Rank: </label><input type="text" name="newAcademicsRank" value="0" size="2"></input>
+        <label for="Base">Base: </label><input type="text" name="newAcademicsBase" value="0" size="2"></input>
       </td>
       <td>
-        <label for="Name">Misc: </label><input type="text" name="newAcademicsMisc" value="0" size="2"></input>
-        <input type="hidden" name="newAcademicsTrained" value="0"></input>
+        <label for="Bonus">Bonus: </label><input type="text" name="newAcademicsBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newAcademicsSpec" value="" size="10"></input>
       </td>
     </tr>
     [h: color=if(color=="#ededed","white","#ededed")]
@@ -3681,11 +3686,13 @@ Area: <select name="area" selected="">
         <label for="Name"><b>Art: </b></label><input type="text" name="newArt" value="" size="8"></input>
       </td>
       <td>
-        <label for="Rank">Rank: </label><input type="text" name="newArtRank" value="0" size="2"></input>
+        <label for="Base">Base: </label><input type="text" name="newArtBase" value="0" size="2"></input>
       </td>
       <td>
-        <label for="Name">Misc: </label><input type="text" name="newArtMisc" value="0" size="2"></input>
-        <input type="hidden" name="newArtTrained" value="0"></input>
+        <label for="Bonus">Bonus: </label><input type="text" name="newArtBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newArtSpec" value="" size="10"></input>
       </td>
     </tr>
     [h: color=if(color=="#ededed","white","#ededed")]
@@ -3694,10 +3701,13 @@ Area: <select name="area" selected="">
         <label for="Name"><b>Interest: </b></label><input type="text" name="newInterest" value="" size="8"></input>
       </td>
       <td>
-        <label for="Rank">Rank: </label><input type="text" name="newInterestRank" value="0" size="2"></input>
+        <label for="Base">Base: </label><input type="text" name="newInterestBase" value="0" size="2"></input>
       </td>
       <td>
-        <label for="Name">Misc: </label><input type="text" name="newInterestMisc" value="0" size="2"></input><input type="hidden" name="newInterestTrained" value="0"></input>
+        <label for="Bonus">Bonus: </label><input type="text" name="newInterestBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newInterestSpec" value="" size="10"></input>
       </td>
     </tr>
     [h: color=if(color=="#ededed","white","#ededed")]
@@ -3706,10 +3716,13 @@ Area: <select name="area" selected="">
         <label for="Name"><b>Language: </b></label><input type="text" name="newLanguage" value="" size="8"></input>
       </td>
       <td>
-        <label for="Rank">Rank: </label><input type="text" name="newLanguageRank" value="0" size="2"></input>
+        <label for="Base">Base: </label><input type="text" name="newLanguageBase" value="0" size="2"></input>
       </td>
       <td>
-        <label for="Name">Misc: </label><input type="text" name="newLanguageMisc" value="0" size="2"></input><input type="hidden" name="newLanguageTrained" value="0"></input>
+        <label for="Bonus">Bonus: </label><input type="text" name="newLanguageBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newLanguageSpec" value="" size="10"></input>
       </td>
     </tr>
     [h: color=if(color=="#ededed","white","#ededed")]
@@ -3718,10 +3731,13 @@ Area: <select name="area" selected="">
         <label for="Name"><b>Profession: </b></label><input type="text" name="newProfession" value="" size="8"></input>
       </td>
       <td>
-        <label for="Rank">Rank: </label><input type="text" name="newProfessionRank" value="0" size="2"></input>
+        <label for="Base">Base: </label><input type="text" name="newProfessionBase" value="0" size="2"></input>
       </td>
       <td>
-        <label for="Name">Misc: </label><input type="text" name="newProfessionMisc" value="0" size="2"></input><input type="hidden" name="newProfessionTrained" value="0"></input>
+        <label for="Bonus">Bonus: </label><input type="text" name="newProfessionBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newProfessionSpec" value="" size="10"></input>
       </td>
     </tr>
 
