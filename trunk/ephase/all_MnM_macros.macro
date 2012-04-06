@@ -4934,20 +4934,27 @@ Area: <select name="area" selected="">
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="2" border="0">
 	<tr bgcolor="[r: table(PageColor,4)]">
-		<td width="34%" align="center">
-			
-			<b><a href='[r:macroLinkText("DamageUpdate@this","none","",currentToken())]'><font color="black">Bruises:</font></a> [r: Bruises]</b>
+    <td>
+			<b><font color="black">Background:</b> [r: Background]</font>
 		</td>
-		<td width="33%" align="center">
-			[h: jsonData = json.append("[]", "Initiative", getProperty("Initiative"), "Initiative")]
-					<b><font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>Initiative:</a> 
-[h: jsonData = json.set("{}", "name","Initiative","rank", getProperty("Initiative"),"misc",0)]
-<a href='[r:macroLinkText("InitiativeCheck@this","all", jsonData, currentToken())]'>+[r: Initiative]</a></font></b>
+  </tr>
+  <tr bgcolor="[r: table(PageColor,4)]">
+    <td>
+      <b><font color="black">Motivations:</b> [r: Motivations]</font>
+    </td>
+  </tr>
+</table>
+<table width="100%" cellpadding="2" border="0">
+	<tr bgcolor="[r: table(PageColor,4)]">
+		<td width="34%">
+			<b><font color="black">Faction:</b> [r: Faction]</font>
 		</td>
-		<td width="33%" align="center"><b>
-			<b><font color="black"><a href="[r: macroLinktext("HeroPointsUpdate@this", "all", "Page=Stats", currentToken())]">Hero Points:</a></font> [r: HeroPoints]</b>
-
+		<td width="33%">
+      <b><font color="black">Morph:</b> [r: Morph]</font>
 		</td>	
+    <td width="33%">
+			<b><font color="black">Age:</b> [r: Age]</font>
+		</td>
 	</tr>
 	<tr bgcolor="[r: table(PageColor,4)]">
 		<td width="34%" align="center">
@@ -4957,20 +4964,19 @@ Area: <select name="area" selected="">
 			<b><font color="black"><a href='[r: macroLinktext("RezPointsUpdate@this", "all", "Page=Stats", currentToken())]'>Rez Points:</a></font> [r: RezPoints]</b>
 		</td>
 		<td width="33%" align="center">
-      <b><font color="black">Morph:</font> [r: Morph]</b>
+
 		</td>	
 	</tr>
 </table>
 <table width="100%" cellpadding="5" border="0" valign="middle">
-
-				<tr>
-					<td  align="left" width="10%">
-						<b><font color="black"><a href='[r:macroLinkText("ConditionsUpdateDialog@this","none", "", currentToken())]'>Conditions:</a></font></b>
-					</td>
-					<td align="left">
-						 [r, macro("StatesDisplay@this"):""]
-					</td>
-				</tr>
+  <tr>
+    <td  align="left" width="10%">
+      <b><font color="black"><a href='[r:macroLinkText("ConditionsUpdateDialog@this","none", "", currentToken())]'>Conditions:</a></font></b>
+    </td>
+    <td align="left">
+       [r, macro("StatesDisplay@this"):""]
+    </td>
+  </tr>
 </table>
 
 !!
