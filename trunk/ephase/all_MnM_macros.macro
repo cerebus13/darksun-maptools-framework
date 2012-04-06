@@ -22,7 +22,7 @@
 
 !!
 @@ @AbilitiesDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
 <table border="0" cellpadding="2" width="100%">
 
@@ -157,7 +157,7 @@
 
 !!
 @@ @DamageStressDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
 <table border="0" cellpadding="2" width="100%">
 
@@ -199,7 +199,7 @@
 
 !!
 @@ @RepDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
 <table border="0" cellpadding="2" width="100%">
 
@@ -242,7 +242,7 @@
 
 !!
 @@ @AdvantagesDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>ADVANTAGES</b></font>
@@ -278,7 +278,7 @@
 
 !!
 @@ @DamageDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%">
 	<tr>
 		<td valign="middle">
@@ -303,7 +303,7 @@
 
 !!
 @@ @DefenseDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="0" width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td  valign="middle">&nbsp; &nbsp; <font color="white"><b>DEFENSES</b></font>
@@ -343,7 +343,7 @@
 
 !!
 @@ @OffenseDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="0" width="100%"  align="center">
 				<tr>
 					<td>
@@ -377,7 +377,7 @@
 
 !!
 @@ @OffenseDisplayTop
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
 <table border="0" cellpadding="2" width="100%"  align="center">
 				<tr  bgcolor="[r:table(PageColor,2)]">
@@ -402,7 +402,7 @@
 
 !!
 @@ @PowersDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
 <table border="0" cellpadding="2" width="100%">
 	<tr bgcolor="[r:table(PageColor,2)]">
@@ -431,7 +431,7 @@
 
 !!
 @@ @SkillsDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 [h: skill = json.get(macro.args,0)]
 [h: color = json.get(macro.args,1)]
 <tr bgcolor="[r: color]">
@@ -457,7 +457,7 @@
 
 !!
 @@ @KnowSkillsDisplayBottom
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 [h: skill = json.get(macro.args,0)]
 [h: color = json.get(macro.args,1)]
 <tr bgcolor="[r: color]">
@@ -475,7 +475,7 @@
   </td>
   <td align="center" width="15%">
     [h: specData=json.set("{}","specName",spec,"knowName",skill)]
-    <font color="black"><a href='[r:macroLinkText("SpecUpdate@this","none", specData, currentToken())]'>[r: specText]</a></font>
+    <font color="black"><a href='[r:macroLinkText("KnowSpecUpdate@this","none", specData, currentToken())]'>[r: specText]</a></font>
   </td>
   <td align="left" width="15%">
     [h: jsonData = json.append("[]",aptitude,strformat(" %s Aptitude check",aptitude),"Aptitude")]	
@@ -492,8 +492,44 @@
 [h: macro.return = if(color == colorcheck,"white", colorcheck)]
 
 !!
+@@ @ActiveSkillsDisplayBottom
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: color = json.get(macro.args,1)]
+<tr bgcolor="[r: color]">
+  [h: base = json.get(json.get(ActiveSkills,skill),0)]
+  [h: bonus =  json.get(json.get(ActiveSkills,skill),1)]
+  [h: aptitude = json.get(json.get(ActiveSkills,skill),2)]
+  [h: default = json.get(json.get(ActiveSkills,skill),3)]
+  [h: spec = json.get(json.get(ActiveSkills,skill),4)]
+  [h,if(length(spec)==0): specText = "no";specText = "yes"]
+  [h: activeTotal = base+bonus]
+  <td align="left">
+    [h: jsonData=json.set("{}","name",skill,"base",activeTotal,"modifier",0)]
+    [h: info=json.append("[]",skill,json.get(json.get(ActiveSkills,skill),2))]
+    <font color="black"><a href='[r:macroLinkText("ActiveSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
+  </td>
+  <td align="center" width="15%">
+    [h: specData=json.set("{}","specName",spec,"activeName",skill)]
+    <font color="black"><a href='[r:macroLinkText("ActiveSpecUpdate@this","none", specData, currentToken())]'>[r: specText]</a></font>
+  </td>
+  <td align="left" width="15%">
+    [h: jsonData = json.append("[]",aptitude,strformat(" %s Aptitude check",aptitude),"Aptitude")]	
+    [h,if(default): outputter = "<font color='black'><a href='"+macroLinkText("Entry@this","none",jsonData, currentToken())+"'>"+aptitude+"</font></a>"; outputter = "<font color='black'>"+aptitude+"</font>"]
+    {outputter}
+  </td>
+  <td width="15%" align="right">
+    [h: jsonData = json.append("[]",skill,activeTotal,"ActiveSkill",strformat(" %s skill check",skill),spec)]
+    (<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: activeTotal]</a></font>)
+  </td>
+
+</tr>
+[h: colorcheck = table(PageColor,4)]
+[h: macro.return = if(color == colorcheck,"white", colorcheck)]
+
+!!
 @@ @SkillsDisplayTop
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("SkillsUpdateDialog@this","none","", currentToken())]'><b>SKILLS</b></a></font>
@@ -530,7 +566,7 @@
 
 !!
 @@ @KnowSkillsDisplayTop
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%" bgcolor="white">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("KnowSkillsUpdateDialog@this","none","", currentToken())]'><b>KNOW. SKILLS</b></a></font>
@@ -563,8 +599,42 @@
 </table>
 
 !!
+@@ @ActiveSkillsDisplayTop
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%" bgcolor="white">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("ActiveSkillsUpdateDialog@this","none","", currentToken())]'><b>ACTIVE SKILLS</b></a></font>
+		</td>
+		<td align="center" width="15%" color="white">
+			<b>Spec.</b>
+		</td>
+    <td align="left" width="15%" color="white">
+			<b>Aptitude</b>
+		</td>
+		<td align="right" width="15%" color="white">
+			<b>Total</b>
+		</td>
+	</tr>
+  [h,if(json.isEmpty(ActiveSkills)): skillListunsort = ""; skillListunsort = json.fields(ActiveSkills)]
+  [h: skillList = listsort(skillListunsort, "A")]
+  [h: color = table(PageColor,4)]
+  [foreach(skill, skillList, ""), code: 
+  {
+    [h: skillDetails = json.get(ActiveSkills, skill)]
+    [h: skillBase = json.get(skillDetails,0)]
+    [h: skillBonus = json.get(skillDetails,1)]
+    [if(skillBonus==0&&skillBase==0), code: {}; 
+    {
+      [h: jsonData = json.append("[]", skill,color)]
+      [r, macro("ActiveSkillsDisplayBottom@this"):jsonData]
+      [h: color = macro.return]
+    }]
+  }]
+</table>
+
+!!
 @@ @StatesDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 [h:theList = getTokenStates(",","Combined Conditions")]
 [h: theList=listSort(theList,"A")]
 [r, foreach(item, theList, ""),code:{[if(getState(item)),code:{<a href='[r:macroLinkText("ConditionsInfoRemove@this","none",item,currentToken())]'><image src="[r: getStateImage(item, 25)]" border="0" alt="[r: item]"></image></a>}; {}]}]
@@ -574,7 +644,7 @@
 
 !!
 @@ @AbilityEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Aptitude Check</title>
 <meta name="input" content="true">
@@ -646,7 +716,7 @@
 
 !!
 @@ @AptitudeEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Aptitude Check</title>
 <meta name="input" content="true">
@@ -731,7 +801,7 @@
 
 !!
 @@ @StatEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Stats Check</title>
 <meta name="input" content="true">
@@ -851,7 +921,7 @@
 
 !!
 @@ @RepEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h:repNamer = json.get(macro.args,0)]
 [h:repValuer = json.get(macro.args,1)]
 [h,if(repValuer==0): input(".|You do not have any "+repNamer+" to burn!||LABEL|SPAN=TRUE")]
@@ -930,7 +1000,7 @@
 
 !!
 @@ @AttackCheck
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: Roll = d20]
 [h: Name = json.get(macro.args,"name")]
 [h: Rank =  json.get(json.get(Attacks,name),3)]
@@ -969,7 +1039,7 @@
 
 !!
 @@ @DefenseEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Defense Check</title>
 <meta name="input" content="true">
@@ -1041,7 +1111,7 @@
 
 !!
 @@ @Entry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [H, macro("EntrySize@this"):""]
 [H: sizeSettings = json.get(macro.return, json.get(macro.args, 2))]
 
@@ -1057,7 +1127,7 @@
 
 !!
 @@ @EntrySize
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [macro.return = json.set("",
 
 "Attack", "405, 256",
@@ -1070,20 +1140,21 @@
 "Initiative", "305, 146",
 "Area","305, 150",
 "Moxie", "305, 320",
-"Rep", "520, 325"
-
+"Rep", "520, 325",
+"KnowSkill", "305, 320",
+"ActiveSkill", "305, 320"
 
 )]
 
 !!
 @@ @EntryType
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: checkLink=macroLinkText(json.get(macro.args,"ExeMacro")+"@this", if(json.get(macro.args, "Output") == "Private", if(isGM() == 1, "gm", "gm-self"), "all"), macro.args, currentToken())]
 [execLink(checkLink)]
 
 !!
 @@ @InitiativeCheck
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: Roll = d20]
 [h: Name = json.get(macro.args,"name")]
 [h: Rank = json.get(macro.args,"rank")]
@@ -1105,7 +1176,7 @@ I set my initative to
 
 !!
 @@ @InitiativeEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Initiative Check</title>
 <meta name="input" content="true">
@@ -1161,7 +1232,7 @@ I set my initative to
 
 !!
 @@ @SkillAltType
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [if(json.get(macro.args,"ability")=="No"),code:{}; {
 [h: name = json.get(macro.args,"name")]
 [h: ability = json.get(macro.args, "ability")]
@@ -1177,27 +1248,8 @@ I set my initative to
 [execLink(checkLink)]
 
 !!
-@@ @KnowSkillAltType
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
-[if(json.get(macro.args,"ability")=="No"),code:
-  {};
-  {
-    [h: name = json.get(macro.args,"name")]
-    [h: ability = json.get(macro.args, "ability")]
-    [h: rank = json.get(json.get(KnowledgeSkills,name),0)]
-    [h: misc =  json.get(json.get(KnowledgeSkills,name),1)]
-    [h: attribute =  getProperty(ability)]
-    [h: rankTotal = rank+misc+attribute]
-    [h: macro.args = json.set(macro.args,"rank",rankTotal)]
-  }
-]
-
-[h: checkLink=macroLinkText(json.get(macro.args,"ExeMacro")+"@this", if(json.get(macro.args, "Output") == "Private", if(isGM() == 1, "gm", "gm-self"), "all"), macro.args, currentToken())]
-[execLink(checkLink)]
-
-!!
 @@ @SkillEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
 <title>Skill Check</title>
 <meta name="input" content="true">
@@ -1286,7 +1338,7 @@ I set my initative to
 
 !!
 @@ @KnowSkillEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: specValue = json.get(macro.args,4)]
 <head>
 <title>Knowledge Skill Check</title>
@@ -1354,8 +1406,77 @@ I set my initative to
 </html>
 
 !!
+@@ @ActiveSkillEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: specValue = json.get(macro.args,4)]
+<head>
+<title>Active Skill Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="ActiveSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: strformat("%s (%d)",json.get(macro.args,0),json.get(macro.args,1))]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			Teamwork:
+		</td>
+		<td align="left">
+			<select name="teamWork" selected="">
+        <option value='0'>None</option>
+        <option value='1'>One</option>
+        <option value='2'>Two</option>
+        <option value='3'>Three</option>
+			</select>
+		</td>
+	</tr>
+  <tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+  [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
+  {specRow}
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,3)]"></input>					
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+      <input type="hidden" name="specName" value="[r: specValue]"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
 @@ @d20
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: Roll = macro.args]
 [h:  macro.return = if(Roll == 1, " &#8226; <b>Natural 1!</b>","")]
 
@@ -1363,7 +1484,7 @@ I set my initative to
 
 !!
 @@ @d20Check
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: Roll = d20]
 [h: Name = json.get(macro.args,"name")]
 [h: Rank = json.get(macro.args,"rank")]
@@ -1380,7 +1501,7 @@ I make a [r: Name] Check[r, if(Ability == "No"):""; " together with "+Ability][r
 
 !!
 @@ @Acrobatics
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Use Acrobatics to flip, dive, roll, tumble, and perform other acrobatic maneuvers, as well as keeping your balance under difficult circumstances.<p>
 
 <b>Balancing:</b> You can keep your balance and move along a precarious surface at your ground speed minus 1 rank with a successful Acrobatics check against the surface's DC. A degree of failure indicates you spend your move action just maintaining your balance and do not actually move, while two or more degrees of failure means you lose your balance and fall. You are vulnerable while balancing. If you accept a +5 increase to the Acrobatics DC, you are not vulnerable.<p>
@@ -1393,12 +1514,12 @@ Use Acrobatics to flip, dive, roll, tumble, and perform other acrobatic maneuver
 
 !!
 @@ @Asleep
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 While asleep, a character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none"," Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>. A hearing Perception check with three or more degrees of success wakes the character and removes all these conditions, as does any sudden movement (such as shaking the sleeping character) or any effect allowing a resistance check.
 
 !!
 @@ @Athletics
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Use Athletics for physical feats like climbing, jumping, riding animal mounts, and swimming. <p>
 
 <b>Climbing:</b> With a successful Athletics check, you can climb along a slope, wall, or other steep incline at your ground speed rank minus 2 as a move action. A perfectly smooth, flat, vertical surface can't be climbed without the Wall-crawling effect of Movement (see the Powers chapter). <p>
@@ -1411,28 +1532,28 @@ Use Athletics for physical feats like climbing, jumping, riding animal mounts, a
 
 !!
 @@ @Blind
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 The character cannot see. Everything effectively has full visual concealment from him. He is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>, visually <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font>, and
 may be <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Impaired",currentToken())]'>impaired</a></font> or <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Disabled",currentToken())]'>disabled</a></font> for activities where vision is a factor.
 
 !!
 @@ @Bound
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A bound character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'>immobile</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Impaired",currentToken())]'>impaired</a></font>.
 
 !!
 @@ @Close Combat
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You're trained with a particular type of close attack, giving you a bonus to your attack checks with it equal to your skill rank (see Attack Check in The Basics and in the Action & Adventure chapter). Each close attack is a separate Close Combat skill with its own rank, and encompasses a single weapon or power, although an array may be considered one power, at the Gamemaster's discretion (see Arrays in the Powers chapter for more information).
 
 !!
 @@ @Compelled
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A compelled character is directed by an outside force, but struggling against it; the character is limited to free actions and a single standard action per turn, with both types of action being chosen by another, controlling character. As usual, this standard action can be traded for a move action. <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Controlled",currentToken())]'><b>Controlled</b></a></font> supersedes compelled.
 
 !!
 @@ @ConditionsInfoDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: info=json.get(macro.args,0)]
 [frame("Conditions"): {
 <html>
@@ -1462,7 +1583,7 @@ A compelled character is directed by an outside force, but struggling against it
 
 !!
 @@ @ConditionsInfoRemove
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: info=json.get(macro.args,0)]
 [frame("Conditions"): {
 <html>
@@ -1493,27 +1614,27 @@ A compelled character is directed by an outside force, but struggling against it
 
 !!
 @@ @Controlled
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A controlled character has no free will; the character’s actions each turn are dictated by another, controlling, character.
 
 !!
 @@ @Dazed
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A dazed character is limited to free actions and a single standard action per turn, although the character may use that action to perform a move, as usual. <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'><b>Stunned</b></a></font> supersedes dazed.
 
 !!
 @@ @Deaf
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 The character cannot hear, giving everything total auditory concealment from him. This may allow for surprise attacks on the unaware character. Interaction with other characters is limited to sign-language and lip-reading.
 
 !!
 @@ @Debilitated
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 The character has one or more abilities lowered below –5.
 
 !!
 @@ @Deception
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Deception is the skill of getting others to believe what you want them to believe. It covers things like acting, bluffing, fast-talk, trickery, and subterfuge. Deception takes as long as it takes to spin-out your story. <p>
 
 <b>Bluffing:</b> Make a Deception check to tell a believable lie or get someone do go along with you. A bluff is usually opposed by the target's Deception or Insight check. Favorable and unfavorable circumstances weigh heavily on the outcome. <p>
@@ -1528,71 +1649,71 @@ Deception is the skill of getting others to believe what you want them to believ
 
 !!
 @@ @Defenseless
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A defenseless character has active defense bonuses of 0. Attackers can make attacks on defenseless opponents as routine checks. If the attacker chooses to forgo the routine check and make a normal attack check, any hit is treated as a critical hit. Defenseless characters are often <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Prone",currentToken())]'><b>Prone</b></a></font>, providing opponents with an additional bonus to attack checks.
 
 !!
 @@ @Disabled
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A disabled character is at a –5 circumstance penalty on checks. If the penalty applies to specific checks, they are added to the name of the
 condition, such as Attack Disabled, Fighting Disabled, Perception Disabled, and so forth.<font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Debilitated",currentToken())]'><b>Debilitated</b></a></font>, if it applies to the same trait(s), supersedes disabled.
 
 !!
 @@ @Dying
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A dying character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Incapacitated",currentToken())]'>incapacitated</a></font> (<font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>) and near death. When the character gains this condition, immediately make a Fortitude check (DC 15). If the check succeeds, nothing happens. With two degrees of success, the character stabilizes, removing this condition. If the check fails, the character remains dying. Three or more total degrees of failure mean the character dies: so three failed Fortitude checks or one or two checks adding up to three degrees. Dying characters make a Fortitude check each round until they either die or stabilize. Another character can stabilize a dying character with a successful Treatment check (DC 15) or use of a Healing effect.
 
 !!
 @@ @Entranced
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 An entranced character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, taking no actions other than paying attention to the entrancing effect. Any obvious threat automatically
 breaks the trance. An ally can also shake a character free of the condition with an interaction skill check (DC 10 + effect rank).
 
 !!
 @@ @Exhausted
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Exhausted characters are near collapse. They are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Impaired",currentToken())]'>impaired</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>. Characters recover from an exhausted condition after an hour of rest in comfortable surroundings.
 
 !!
 @@ @Expertise
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Expertise is a broad skill encompassing knowledge and training in a variety of specialized fields, particularly professional disciplines and scholarship. Each is considered a separate skill and training in each is acquired separately, so a former police officer turned district attorney might have Expertise: Police Officer and Expertise: Law, each with their own ranks, for example. Sample Expertise domains: Art, Business, Carpentry, Cooking, Criminal, Current Events, Dance, History, Journalism, Law, Law Enforcement, Medicine, Military, Music, Magic, Philosophy, Politics, Popular Culture, Psychiatry, Science, Sociology, Streetwise, Theology.
 
 !!
 @@ @Fatigued
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Fatigued characters are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'><b>hindered</b></a></font>. Characters recover from a fatigued condition after an hour of rest.
 
 !!
 @@ @Grab
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font> while grabbing and holding an opponent.
 
 !!
 @@ @Hindered
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A hindered character moves at half normal speed (–1 speed rank). <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'><b>Immobile</b></a></font> supersedes hindered.
 
 !!
 @@ @Immobile
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Immobile characters have no movement speed and cannot move from the spot they occupy, although they are still capable of taking actions unless prohibited by another condition.
 
 !!
 @@ @Impaired
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 An impaired character is at a –2 circumstance penalty on checks. If the impairment applies to specific checks, they are added to the name of
 the condition, such as Attack Impaired, Fighting Impaired, Perception Impaired, and so forth. If it applies to the same trait(s), <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Disabled",currentToken())]'><b>Disabled</b></a></font> supersedes impaired.
 
 !!
 @@ @Incapacitated
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 An incapacitated character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Unaware",currentToken())]'>unaware</a></font>. Incapacitated characters generally also fall <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Prone",currentToken())]'>prone</a></font>, unless some outside
 force or aid keeps them standing.
 
 !!
 @@ @Insight
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You can tell someone's true intentions and feelings by paying attention to things like body language, inflection, and your own intuition.
 <p>
 <b>Detect Illusion:</b> The GM makes a secret Insight check to determine if your hero senses the true nature of an illusion (DC 10 + Illusion rank). Success means you pick up on a flaw in the illusion, sensing it is not real. See the Illusion effect in the Powers chapter for details. 
@@ -1605,7 +1726,7 @@ You can tell someone's true intentions and feelings by paying attention to thing
 
 !!
 @@ @Intimidation
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You know how to use threats (both real and implied) to get others to do what you want. 
 <p>
 <b>Coercing:</b> Make an Intimidation check, opposed by the target's Insight or Will defense (whichever has the highest bonus). If your check succeeds, you may treat the target as friendly, but only for actions taken in your presence. That is, the target retains his normal attitude, but will talk, advise, offer limited help, or advocate on your behalf while intimidated. The target cooperates, but won't necessarily obey your every whim or do anything that would directly endanger him. 
@@ -1616,7 +1737,7 @@ You know how to use threats (both real and implied) to get others to do what you
 
 !!
 @@ @Investigation
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You know how to search for and study clues, gather information through interviews and surveillance, and analyze evidence to help solve crimes. The GM may make Investigation checks for you in secret, so you do not know exactly what you have found, or if you may have missed something. 
 <p>
 <b>Search:</b> You can search an area for clues, hidden items, traps, and other details. Perception allows you to immediately notice things, while an Investigation check allows you to pick up on details with some effort. 
@@ -1629,12 +1750,12 @@ You know how to search for and study clues, gather information through interview
 
 !!
 @@ @Paralyzed
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A paralyzed character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'>defenseless</a></font>, <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'>immobile</a></font>, and physically <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font>, frozen in place and unable to move, but still aware and able to take purely mental actions, involving no physical movement whatsoever.
 
 !!
 @@ @Perception
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Use this skill to notice and pick up on things. Discerning details - such as clearly hearing conversation or reading fine text - requires at least three degrees of success on the Perception check. 
 <p>
 <b>Hearing:</b> Make a check against a DC based on how loud the noise is or against an opposed Stealth check. Normal conversation is DC 0, a soft noise DC 10. Listening through a door is +5 DC, +15 for a solid wall. While you're asleep, hearing something well enough to wake up is +10 DC. 
@@ -1645,29 +1766,29 @@ Use this skill to notice and pick up on things. Discerning details - such as cle
 
 !!
 @@ @Persuasion
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You're skilled in dealing with people, from etiquette and social graces to a way with words and public speaking, all of which helps to get your point across, make a good impression, negotiate, and generally win people over to your way of seeing things. In negotiations, all participants roll Persuasion checks to see who gains the advantage. Opposed checks also resolve cases where two advocates plead opposing cases before a third party. Non-player characters each have an initial attitude towards you or your cause. The GM chooses the character's initial attitude based on circumstances. Most of the time, people are favorable or indifferent toward heroes, but a specific circumstance or complication may call for a different attitude.
 
 !!
 @@ @Prone
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A prone character is lying on the ground, receiving a –5 circumstance penalty on close attack checks. Opponents receive a +5 circumstance bonus to close attack checks but a –5 penalty to ranged attack checks (effectively giving the prone character total cover
 against ranged attacks). Prone characters are <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>. Standing up from a prone position is a move action.
 
 !!
 @@ @Ranged Combat
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You're trained with a particular type of ranged attack, giving you a bonus to your attack checks with it equal to your skill rank (see Attack Check in The Basics and in the Action & Adventure chapter). Each ranged attack is a separate Ranged Combat skill with its own rank, and encompasses a single weapon or power, although an array may be considered one power, at the Gamemaster's discretion (see Arrays in the Powers chapter for more information).
 
 !!
 @@ @Restrained
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A restrained character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font>. If the restraints are anchored to an immobile object, the character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Immobile",currentToken())]'>immobile</a></font> rather than
 hindered. If restrained by another character, the restrained character is immobile but may be moved by the restraining character.
 
 !!
 @@ @SkillsInfoDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: skill=json.get(macro.args,0)]
 [h: ability=json.get(macro.args,1)]
 
@@ -1695,7 +1816,7 @@ hindered. If restrained by another character, the restrained character is immobi
 
 !!
 @@ @KnowSkillsInfoDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: skill=json.get(macro.args,0)]
 [h: ability=json.get(macro.args,1)]
 
@@ -1707,6 +1828,38 @@ hindered. If restrained by another character, the restrained character is immobi
 [h: skill = if(startsWith(skill, "Profession"),"Profession",skill)]
 
 [frame("KnowledgeSkills"): {
+<html>
+<head>
+<title>[r: skill] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+<center><b>[r: skill]</b> ([r: ability])</center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(skill+"@this"):""]
+</body>
+</html>
+}]
+
+!!
+@@ @ActiveSkillsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: skill=json.get(macro.args,0)]
+[h: ability=json.get(macro.args,1)]
+
+<!-- Skills that can have multiple fields get a prefix -->
+[h: skill = if(startsWith(skill, "Exotic Melee"),"Exotic Melee",skill)]
+[h: skill = if(startsWith(skill, "Exotic Ranged"),"Exotic Ranged",skill)]
+[h: skill = if(startsWith(skill, "Hardware"),"Hardware",skill)]
+[h: skill = if(startsWith(skill, "Medicine"),"Medicine",skill)]
+[h: skill = if(startsWith(skill, "Networking"),"Networking",skill)]
+[h: skill = if(startsWith(skill, "Pilot"),"Pilot",skill)]
+
+[frame("ActiveSkills"): {
 <html>
 <head>
 <title>[r: skill] Info</title>
@@ -2254,7 +2407,7 @@ hindered. If restrained by another character, the restrained character is immobi
 
 !!
 @@ @Academics
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <b>Type:</b> Field, Knowledge
 <p>
 <b>Linked Aptitude:</b> COG
@@ -2269,7 +2422,7 @@ hindered. If restrained by another character, the restrained character is immobi
 
 !!
 @@ @Art
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <b>Type:</b> Field, Knowledge
 <p>
 <b>Linked Aptitude:</b> INT
@@ -2284,7 +2437,7 @@ hindered. If restrained by another character, the restrained character is immobi
 
 !!
 @@ @Interest
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <b>Type:</b> Field, Knowledge
 <p>
 <b>Linked Aptitude:</b> COG
@@ -2299,7 +2452,7 @@ hindered. If restrained by another character, the restrained character is immobi
 
 !!
 @@ @Language
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <b>Type:</b> Field, Knowledge
 <p>
 <b>Linked Aptitude:</b> INT
@@ -2452,7 +2605,7 @@ Each trauma applies a cumulative -10 modifier to all of the character's actions 
 
 !!
 @@ @Profession
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <b>Type:</b> Field, Knowledge
 <p>
 <b>Linked Aptitude:</b> COG
@@ -2467,7 +2620,7 @@ Each trauma applies a cumulative -10 modifier to all of the character's actions 
 
 !!
 @@ @Slight of Hand
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You can perform dexterous feats of legerdemain such as palming small objects, picking pockets, slipping out of restraints, and so forth. Stage magicians use Sleight of Hand legitimately as a performance skill, but it is most commonly known for its criminal applications.
 <p>
 <b>Concealing:</b> You can use Sleight of Hand to conceal a small item on your person, making your check result the DC of an Investigation or Perception check to find it. 
@@ -2480,12 +2633,12 @@ You can perform dexterous feats of legerdemain such as palming small objects, pi
 
 !!
 @@ @Staggered
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A staggered character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Dazed",currentToken())]'>dazed</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Hindered",currentToken())]'>hindered</a></font>.
 
 !!
 @@ @Stealth
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You're skilled in going unnoticed. While using Stealth, you can move at your speed rank minus 1 with no penalty. Faster than that, up to your full speed, you take a -5 circumstance penalty to your Stealth checks. 
 <p>
 <b>Hiding:</b> If you have cover or concealment, make a Stealth check, opposed by an observer's Perception check, to hide and go unnoticed. 
@@ -2494,17 +2647,17 @@ You're skilled in going unnoticed. While using Stealth, you can move at your spe
 
 !!
 @@ @Stunned
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Stunned characters cannot take any actions, including free actions
 
 !!
 @@ @Surprised
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=bb ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 A surprised character is <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Stunned",currentToken())]'>stunned</a></font> and <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Vulnerable",currentToken())]'>vulnerable</a></font>, caught off-guard and therefore unable to act, and less able to avoid attacks.
 
 !!
 @@ @Technology
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Technology covers operating, building, repairing, and generally working with technological devices and equipment. Without the proper tools or equipment, you take a -5 penalty to Technology checks for highly unfavorable circumstances. 
 <p>
 <b>Operating:</b> Most routine operations of technological equipment don't require a skill check and can be done untrained. Using an unfamiliar device does require a check, with the DC determined by how foreign or unusual the device is, from simple (DC 10) to highly advanced (DC 25 or more). 
@@ -2523,13 +2676,13 @@ Technology covers operating, building, repairing, and generally working with tec
 
 !!
 @@ @Transformed
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Transformed characters have some or all of their traits altered by an outside agency. This may range from a change in the character’s appearance to a complete change in trait ranks, even the removal of some traits and the addition of others! The primary
 limit on the transformed condition is the character’s power point total cannot increase, although it can effectively decrease for the duration of the transformation, such as when a powerful superhero is turned into an otherwise powerless mouse or frog (obviously based on considerably fewer power points)
 
 !!
 @@ @Treatment
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 You're trained in treating injuries and ailments. 
 <p>
 <b>Diagnosis:</b> You can diagnose injuries and ailments with an eye toward further treatment. This takes at least a minute. At the GM's discretion, a successful diagnosis provides a +2 bonus for favorable circumstances on further Treatment checks. 
@@ -2544,34 +2697,34 @@ You're trained in treating injuries and ailments.
 
 !!
 @@ @Unaware
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 The character is completely unaware of his surroundings, unable to make interaction or Perception checks or perform any action based on them. If the condition applies to a specific sense or senses, they are added to the name of the condition, such as visually unaware, tactilely unaware (or numb), and so forth. Subjects have full concealment from all of a character’s unaware senses.
 
 !!
 @@ @Vehicles
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Use this skill to operate vehicles, from ground vehicles like cars to boats, planes, or even spaceships! See Vehicles in the Gadgets & Gear chapter for details. Routine tasks, such as ordinary operation of known vehicles, don't require a check and may even be done untrained for some vehicles, particularly common ones like cars. Make a check only when operating the vehicle in a stressful or dramatic situation like being chased or attacked, or trying to reach a destination in a limited amount of time.
 
 !!
 @@ @Vulnerable
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 Vulnerable characters are limited in their ability to defend themselves, halving their active defenses (round up the final value). <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Defenseless",currentToken())]'><b>Defenseless</b></a></font>
 supersedes vulnerable.
 
 !!
 @@ @Weakened
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 The character has temporarily lost power points in a trait. See the Weaken effect in the Powers chapter for more. <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none","Debilitated",currentToken())]'><b>Debilitated</b></a></font> supersedes weakened.
 
 !!
 @@ @AdvantageShowUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("AdvantageShow")): setProperty("AdvantageShow",0); setProperty("AdvantageShow",1)]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @AdvantagesUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: text = json.get(macro.args, "Text")]
 [h: text = encode(text)]
 [h: jsonData = json.append("[]",text)]
@@ -2584,7 +2737,7 @@ Advantages Updated
 
 !!
 @@ @ConditionsLink
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: temp = macro.args]
 
 [h: cond1Data = ""]
@@ -2620,7 +2773,7 @@ Advantages Updated
 
 !!
 @@ @ConditionsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [setAllStates(0)]
 [h: if(Bruises==0, "", setState("Bruises"+Bruises,1))]
 [h: data = json.remove(macro.args, "Submit")]
@@ -2633,7 +2786,7 @@ Advantages Updated
 
 !!
 @@ @DamageUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: status=input(
 "function|Increase, Decrease, Clear|Change Bruises|RADIO|ORIENT=H SPAN=TRUE"
 )]
@@ -2663,7 +2816,7 @@ Advantages Updated
 
 !!
 @@ @DamageUpdateDazed
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getState("Dazed")),code:{
 
 [if(getState("Incapacitated")),code:{
@@ -2687,7 +2840,7 @@ Advantages Updated
 
 !!
 @@ @DamageUpdateIncapacitated
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getState("Incapacitated")),code:{
 }; {
 [h, macro("IncapacitatedUpdate@this"):""]
@@ -2697,7 +2850,7 @@ Advantages Updated
 
 !!
 @@ @DamageUpdateQuick
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setState("Bruises"+Bruises,0)]
 [h: Bruises=Bruises+1]
 [h: setState("Bruises"+Bruises,1)]
@@ -2706,7 +2859,7 @@ Advantages Updated
 
 !!
 @@ @DamageUpdateStaggered
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getState("Staggered")),code:{
 
 [if(getState("Incapacitated")),code:{
@@ -2730,7 +2883,7 @@ Advantages Updated
 
 !!
 @@ @HeroPointsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: status=input(
 ".|Spend Hero Point||LABEL|SPAN=TRUE",
 "check|0|Restore Hero Point|CHECK|"
@@ -2783,13 +2936,13 @@ Advantages Updated
 
 !!
 @@ @OffenseShowUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("OffenseShow")): setProperty("OffenseShow",0); setProperty("OffenseShow",1)]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @OffenseUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: name = json.get(macro.args, "name")]
 [h: action = json.get(macro.args, "action")]
 [h: range = json.get(macro.args, "range")]
@@ -2826,13 +2979,13 @@ Offense Updated
 
 !!
 @@ @PowersShowUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("PowersShow")): setProperty("PowersShow",0); setProperty("PowersShow",1)]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @PowersUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: text = json.get(macro.args, "Text")]
 
 <!-- encode it -->
@@ -2844,7 +2997,7 @@ Powers Updated
 
 !!
 @@ @SetHeroPointsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: status=input(
 "hp|1|Hero Point(s)|TEXT",
 "function|Add, Subtract, Make Total|Set Hero Points|RADIO"
@@ -2872,7 +3025,7 @@ Powers Updated
 
 !!
 @@ @SkillsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [foreach(tempAbility, json.fields(Skills), ""), code: {
 [h: propRank = json.get(macro.args, tempAbility+"Rank")]
 [h: propAttribute = json.get(macro.args, tempAbility+"Attribute")]
@@ -2938,7 +3091,7 @@ Skills Updated
 
 !!
 @@ @KnowSkillsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [foreach(tempAbility, json.fields(KnowledgeSkills), ""), code: {
   [h: propDelete = json.get(macro.args, tempAbility+"Delete")]
   [h, if(propDelete!=""), code: 
@@ -3004,15 +3157,92 @@ Skills Updated
 Knowledge Skills Updated
 
 !!
+@@ @ActiveSkillsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[foreach(tempAbility, json.fields(ActiveSkills), ""), code: {
+  [h: propDelete = json.get(macro.args, tempAbility+"Delete")]
+  [h, if(propDelete!=""), code: 
+  {
+    [h: ActiveSkills = json.remove(ActiveSkills,tempAbility)]
+  };{
+    [h: propBase = json.get(macro.args, tempAbility+"Base")]
+    [h: propBonus = json.get(macro.args, tempAbility+"Bonus")]
+    [h: propAptitude = json.get(macro.args, tempAbility+"Aptitude")]
+    [h: propDefault = json.get(macro.args, tempAbility+"Default")]
+    [h: propSpec = json.get(macro.args, tempAbility+"Spec")]
+    [h: propData = json.append("[]", propBase, propBonus, propAptitude, propDefault, propSpec)]
+    [h: ActiveSkills = json.set(ActiveSkills, tempAbility, propData)]
+  }]
+}]
+
+[h: newActive = json.get(macro.args, "newExoticMelee")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Exotic Melee: "+newActive]
+  [h: propBase = json.get(macro.args, "newExoticMeleeBase")]
+  [h: propBonus = json.get(macro.args, "newExoticMeleeBonus")]
+  [h: propSpec = json.get(macro.args, "newExoticMeleeSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "SOM", 1, propSpec)]
+  [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newExoticRanged")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Exotic Ranged: "+newActive]
+  [h: propBase = json.get(macro.args, "newExoticRangedBase")]
+  [h: propBonus = json.get(macro.args, "newExoticRangedBonus")]
+  [h: propSpec = json.get(macro.args, "newExoticRangedSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "COO", 1, propSpec)]
+  [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newHardware")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Hardware: "+newActive]
+  [h: propBase = json.get(macro.args, "newHardwareBase")]
+  [h: propBonus = json.get(macro.args, "newHardwareBonus")]
+  [h: propSpec = json.get(macro.args, "newHardwareSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG", 1, propSpec)]
+  [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newMedicine")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Medicine: "+newActive]
+  [h: propBase = json.get(macro.args, "newMedicineBase")]
+  [h: propBonus = json.get(macro.args, "newMedicineBonus")]
+  [h: propSpec = json.get(macro.args, "newMedicineSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG", 1, propSpec)]
+  [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newNetworking")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Networking: "+newActive]
+  [h: propBase = json.get(macro.args, "newNetworkingBase")]
+  [h: propBonus = json.get(macro.args, "newNetworkingBonus")]
+  [h: propSpec = json.get(macro.args, "newNetworkingSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"SAV", 1, propSpec)]
+  [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newPilot")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Pilot: "+newActive]
+  [h: propBase = json.get(macro.args, "newPilotBase")]
+  [h: propBonus = json.get(macro.args, "newPilotBonus")]
+  [h: propSpec = json.get(macro.args, "newPilotSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"REF", 1, propSpec)]
+  [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+Active Skills Updated
+
+!!
 @@ @StatesUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: temp=json.get(macro.args, 0)]
 [r, macro(temp+"Update@this"):""]
 [h, macro("SheetLoad@Lib:MnM"):""]
 
 !!
 @@ @StatesUpdateRemove
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: temp=json.get(macro.args, 0)]
 [r, macro(temp+"Update@this"):""]
 [h, macro("SheetLoad@Lib:MnM"):""]
@@ -3020,7 +3250,7 @@ Knowledge Skills Updated
 
 !!
 @@ @TraitsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("COG", json.get(macro.args, "COG"))]
 [h: setProperty("COO", json.get(macro.args, "COO"))]
 [h: setProperty("INT", json.get(macro.args, "INT"))]
@@ -3045,7 +3275,7 @@ Traits Updated
 
 !!
 @@ @AptitudesUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("COG", json.get(macro.args, "COG"))]
 [h: setProperty("COO", json.get(macro.args, "COO"))]
 [h: setProperty("INT", json.get(macro.args, "INT"))]
@@ -3058,7 +3288,7 @@ Aptitudes Updated
 
 !!
 @@ @StatsUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("MOX", json.get(macro.args, "MOX"))]
 [h: setProperty("MOX_base", json.get(macro.args, "MOX_base"))]
 [h: setProperty("TT", json.get(macro.args, "TT"))]
@@ -3075,7 +3305,7 @@ Stats Updated
 
 !!
 @@ @DamageStressUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("DAMAGE", json.get(macro.args, "DAMAGE"))]
 [h: setProperty("WOUNDS", json.get(macro.args, "WOUNDS"))]
 [h: setProperty("STRESS", json.get(macro.args, "STRESS"))]
@@ -3085,7 +3315,7 @@ Damage & Stress Updated
 
 !!
 @@ @RepUpdate
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("A-Rep", json.get(macro.args, "A-Rep"))]
 [h: setProperty("c-Rep", json.get(macro.args, "c-Rep"))]
 [h: setProperty("e-Rep", json.get(macro.args, "e-Rep"))]
@@ -3098,7 +3328,7 @@ Reputation Updated
 
 !!
 @@ @AdvantagesUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Advantages", "temporary=0; input=1; noframe=0"): {
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
@@ -3140,7 +3370,7 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 
 !!
 @@ @ColorUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [h: number = 0]
 [h, if(PageColor == "Bright Green"): number = 1; number = number]
 [h, if(PageColor == "Dark Blue"): number = 2; number = number]
@@ -3162,7 +3392,7 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 
 !!
 @@ @ConditionsUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Conditions", "width=300; height=405; temporary=0; input=1; noframe=0"): {
 
 <html>
@@ -3224,7 +3454,7 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 
 !!
 @@ @OffenseUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [h: name = macro.args]
 [h: data = json.get(Attacks, name)]
 
@@ -3349,7 +3579,7 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
 
 !!
 @@ @OffenseUpdateDialogNew
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Offense Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
 <head>
 <title>Offense Update</title>
@@ -3470,7 +3700,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @PowersUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Powers", "height = 520; width=400; temporary=0; input=1; noframe=0"): {
 [h: text = getProperty("Powers")]
 
@@ -3500,7 +3730,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @SkillsUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Skills Update", "temporary=0; input=1; noframe=0; closebutton=0"): {
 <html>
 <head>
@@ -3616,7 +3846,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @KnowSkillsUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Knowledge Skills Update", "width=550; height=400; temporary=0; input=1; noframe=0; closebutton=0"): {
 <html>
 <head>
@@ -3641,7 +3871,6 @@ Area: <select name="area" selected="">
       <td>
         <label for="Bonus">Bonus: </label><input type="text" name="[r: tempAbility+"Bonus"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 1)]" size="2"></input>
         <input type="hidden" name="[r: tempAbility+"Aptitude"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 2)]"></input>
-        <input type="hidden" name="[r: tempAbility+"Default"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 3)]"></input>
       </td>
       <td>
         <label for="Spec">Spec.: </label><input type="text" name="[r: tempAbility+"Spec"]" value="[r: json.get(json.get(KnowledgeSkills, tempAbility), 4)]" size="10"></input>
@@ -3739,8 +3968,146 @@ Area: <select name="area" selected="">
 } ]
 
 !!
+@@ @ActiveSkillsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Active Skills Update", "width=550; height=400; temporary=0; input=1; noframe=0; closebutton=0"): {
+<html>
+<head>
+<title>Active Skills Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="ActiveSkillsUpdate" action="[r:macroLinkText('ActiveSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+  <table>
+  [h: color = "#ededed"]
+  [h: propListunsort = json.fields(ActiveSkills)]
+  [h: propList = listsort(propListunsort, "A")]
+
+  [foreach(tempAbility, propList, ""), code: {
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>[r: tempAbility]</b></label>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="[r: tempAbility+"Base"]" value="[r: json.get(json.get(ActiveSkills, tempAbility), 0)]" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="[r: tempAbility+"Bonus"]" value="[r: json.get(json.get(ActiveSkills, tempAbility), 1)]" size="2"></input>
+        <input type="hidden" name="[r: tempAbility+"Aptitude"]" value="[r: json.get(json.get(ActiveSkills, tempAbility), 2)]"></input>
+        <input type="hidden" name="[r: tempAbility+"Default"]" value="[r: json.get(json.get(ActiveSkills, tempAbility), 3)]"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="[r: tempAbility+"Spec"]" value="[r: json.get(json.get(ActiveSkills, tempAbility), 4)]" size="10"></input>
+      </td>
+      [h,if(indexOf(tempAbility,":")!=-1): delStr = ""; delStr = '<td><label for="del">Delete: </label><input type="checkbox" name="'+tempAbility+"Delete"+'" value="1"></input></td>']
+      {delStr}
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+  }]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Exotic Melee: </b></label><input type="text" name="newExoticMelee" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newExoticMeleeBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newExoticMeleeBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newExoticMeleeSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Exotic Ranged: </b></label><input type="text" name="newExoticRanged" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newExoticRangedBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newExoticRangedBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newExoticRangedSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Hardware: </b></label><input type="text" name="newHardware" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newHardwareBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newHardwareBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newHardwareSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Medicine: </b></label><input type="text" name="newMedicine" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newMedicineBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newMedicineBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newMedicineSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Networking: </b></label><input type="text" name="newNetworking" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newNetworkingBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newNetworkingBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newNetworkingSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Pilot: </b></label><input type="text" name="newPilot" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newPilotBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newPilotBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newPilotSpec" value="" size="10"></input>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center" colspan="4">
+        <input type='submit' name='Submit' value='Submit'></input>
+      </td>
+    </tr>
+  </table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
 @@ @TraitsUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Traits Update", "temporary=0; height=380; width=320; input=1; noframe=0"): {
 <html>
 <head>
@@ -3920,7 +4287,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AptitudesUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Aptitudes Update", "temporary=0; height=200; width=270; input=1; noframe=0"): {
 <html>
 <head>
@@ -4033,7 +4400,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @StatsUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Stats Update", "temporary=1; height=200; width=440; input=1; noframe=0"): {
 <html>
 <head>
@@ -4194,7 +4561,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @DamageStressUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Stats Update", "temporary=1; height=250; width=265; input=1; noframe=0"): {
 <html>
 <head>
@@ -4271,7 +4638,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @RepUpdateDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Reputation Update", "temporary=0; height=200; width=335; input=1; noframe=0"): {
 <html>
 <head>
@@ -4384,7 +4751,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @VsCheckDialog
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [h: abilityList=" ,COG,COO,INT,REF,SAV,SOM,WIL"]
 [h: defenseList= " ,Dodge,Parry,Fortitude,Toughness,Will"]
 [h: skillListunsort = json.fields(Skills)]
@@ -4427,7 +4794,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @VsCheckDialogDM
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [h:status=input(
 
 "DC|0|Target DC|TEXT|",
@@ -4441,7 +4808,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AdvantagesUpdateDisplay
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
 [dialog("Advantages", "temporary=0; input=1; noframe=0"): {
 <html>
 <head>
@@ -4467,7 +4834,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AreaEntry
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <head>
 <title>Area Attack Modifiers</title>
 <meta name="input" content="true">
@@ -4511,7 +4878,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AttackArea
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <table width="100%"  bgcolor="white">
 	<tr>
 		<td alignt="center">
@@ -4522,12 +4889,12 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AttackDamage
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 
 
 !!
 @@ @AttackEntry
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 [h: name =  json.get(macro.args,0)]
 [h: range =  json.get(json.get(Attacks,name),1)]
 [h: area =  json.get(json.get(Attacks,name),2)]
@@ -4576,7 +4943,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AttackMods
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <table width="100%"  bgcolor="white">
 	<tr>
 		<td align="left">
@@ -4590,7 +4957,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AttackRangeMods
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <table width="100%"  bgcolor="white">
 	<tr>
 		<td>
@@ -4626,12 +4993,12 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AttackResistance
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 
 
 !!
 @@ @AttackTarget
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td><center><b> Attack Target:</b> 
@@ -4650,7 +5017,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @Critical
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 [h: Roll = json.get(macro.args,0)]
 [h: Crit = json.get(macro.args,1)]
 [h: Crit = if(Crit=="",20,Crit)]
@@ -4662,17 +5029,17 @@ Area: <select name="area" selected="">
 
 !!
 @@ @AsleepUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Asleep")): setState("Asleep",0); setState("Asleep",1)]
 
 !!
 @@ @BlindUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Blind")): setState("Blind",0); setState("Blind",1)]
 
 !!
 @@ @BoundUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Bound")): ""; setState("Hindered",0)]
 [if(getState("Bound")): ""; setState("Vulnerable",0)]
 [if(getState("Bound")): ""; setState("Restrained",0)]
@@ -4680,51 +5047,51 @@ Area: <select name="area" selected="">
 
 !!
 @@ @Clear AllUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [setAllStates(0)]
 [h: if(Bruises==0, "", setState("Bruises"+Bruises,1))]
 
 !!
 @@ @CompelledUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Compelled")): setState("Compelled",0); setState("Compelled",1)]
 
 !!
 @@ @ControlledUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Controlled")): setState("Controlled",0); setState("Controlled",1)]
 [setState("Compelled", 0)]
 
 !!
 @@ @DazedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Dazed")): setState("Dazed",0); setState("Dazed",1)]
 
 !!
 @@ @DeafUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Deaf")): setState("Deaf",0); setState("Deaf",1)]
 
 !!
 @@ @DebilitatedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Debilitated")): setState("Debilitated",0); setState("Debilitated",1)]
 
 !!
 @@ @DefenselessUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Defenseless")): setState("Defenseless",0); setState("Defenseless",1)]
 [setState("Vulnerable",0)]
 
 !!
 @@ @DisabledUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Disabled")): setState("Disabled",0); setState("Disabled",1)]
 [setState("Impaired",0)]
 
 !!
 @@ @DyingUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Dying")): ""; setState("Dazed",0))]
 [if(getState("Dying")): ""; setState("Hindered",0))]
 [if(getState("Dying")): ""; setState("Staggered",0))]
@@ -4733,43 +5100,43 @@ Area: <select name="area" selected="">
 
 !!
 @@ @EntrancedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Entranced")): setState("Entranced",0); setState("Entranced",1)]
 
 !!
 @@ @ExhaustedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Exhausted")): setState("Exhausted",0); setState("Exhausted",1)]
 
 !!
 @@ @FatiguedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Fatigued")): setState("Fatigued",0); setState("Fatigued",1)]
 
 !!
 @@ @GrabUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=aa ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=aa ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Grab")): setState("Grab",0); setState("Grab",1)]]
 
 !!
 @@ @HinderedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Hindered")): setState("Hindered",0); setState("Hindered",1)]
 
 !!
 @@ @ImmobileUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Immobile")): setState("Immobile",0); setState("Immobile",1)]
 [setState("Hindered",0)]
 
 !!
 @@ @ImpairedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Impaired")): setState("Impaired",0); setState("Impaired",1)]
 
 !!
 @@ @IncapacitatedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Incapacitated")): ""; setState("Dazed",0))]
 [if(getState("Incapacitated")): ""; setState("Hindered",0))]
 [if(getState("Incapacitated")): ""; setState("Staggered",0))]
@@ -4778,64 +5145,64 @@ Area: <select name="area" selected="">
 
 !!
 @@ @ParalyzedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Paralyzed")): setState("Paralyzed",0); setState("Paralyzed",1)]
 
 !!
 @@ @ProneUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Prone")): setState("Prone",0); setState("Prone",1)]
 
 !!
 @@ @Reset BruisesUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=b ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [h: setState("Bruises"+Bruises,0)]
 [h: Bruises=0]
 
 !!
 @@ @RestrainedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Restrained")): setState("Restrained",0); setState("Restrained",1)]
 
 !!
 @@ @StaggeredUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Staggered")): setState("Staggered",0); setState("Staggered",1)]
 
 !!
 @@ @StunnedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Stunned")): setState("Stunned",0); setState("Stunned",1)]
 [setState("Dazed",0)]
 
 !!
 @@ @SurprisedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=a ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Surprised")): setState("Surprised",0); setState("Surprised",1)]
 
 !!
 @@ @TransformedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Transformed")): setState("Transformed",0); setState("Transformed",1)]
 
 !!
 @@ @UnawareUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Unaware")): setState("Unaware",0); setState("Unaware",1)]
 
 !!
 @@ @VulnerableUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Vulnerable")): setState("Vulnerable",0); setState("Vulnerable",1)]
 
 !!
 @@ @WeakenedUpdate
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=States ; tooltip= ; minWidth= ; 
 [if(getState("Weakened")): setState("Weakened",0); setState("Weakened",1)]
 
 !!
 @@ @Attack
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Check ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Check ; tooltip= ; minWidth= ; 
 [h: name=macro.args]
 
 [h: Roll = d20]
@@ -4886,7 +5253,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @CharSheet
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [h: page = getStrProp(macro.args, "Page")]
 [h: tempPage = getStrProp(CharPage, "Page")]
 
@@ -4896,18 +5263,21 @@ Area: <select name="area" selected="">
 [h: icon = tblImage("Header",1)]
 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
-<table width="100%" cellpadding="2" border="0" bgcolor="[r: table(PageColor,2)]" background="
-[r: tblImage('Icons',2)]">
-	<tr >
+<table width="100%" cellpadding="2" border="0" bgcolor="[r: table(PageColor,2)]" background="[r: tblImage('Icons',2)]">
+	<tr>
 		<td width="30%" rowspan="2">
 			<a href="[r: macroLinktext("ColorUpdate@this", "none", "", currentToken())]"><image src='[r:getTokenImage(75)]' border="0"></image></a>
 		</td>
-		<td width="45%" align="center" >
-		<a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Stats", currentToken())]">
+		<td width="30%" align="center" >
+      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Stats", currentToken())]">
 			<font color="[r: if(page=="Stats","yellow","white")]" size="4"><b>Stats</b></font></a>
 		</td>
-		<td width="45%" align="center" >
-		<a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Powers", currentToken())]">
+    <td width="30%" align="center" >
+      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=ActiveSkills", currentToken())]">
+			<font color="[r: if(page=="ActiveSkills","yellow","white")]" size="4"><b>Active Skills</b></font></a>
+		</td>
+		<td width="30%" align="center" >
+      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Powers", currentToken())]">
 			<font color="[r: if(page=="Powers","yellow","white")]" size="4"><b>Powers</b></font></a>
 		</td>
 	</tr>
@@ -4923,7 +5293,7 @@ Area: <select name="area" selected="">
 <table width="100%" cellpadding="2" border="0">
 	<tr>
 		<td>
-<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+      <image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
 		</td>
 	</tr>
 </table>
@@ -4931,7 +5301,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @HeaderSheet
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="2" border="0">
 	<tr bgcolor="[r: table(PageColor,4)]">
     <td>
@@ -4981,7 +5351,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @PowersSheet
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0">
 	<tr>
 		<td valign="top" align="center" width="100%"><!--Left side of character sheet-->
@@ -5010,7 +5380,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @Sheet
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
@@ -5038,7 +5408,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @SheetLoad
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [H: OwnedCurrent = listContains(getOwned(getPlayerName()), currentToken())]
 [H: OwnedSelected = listContains(getOwned(getPlayerName()), getSelected())]
 
@@ -5054,7 +5424,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @StatsSheet
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0">
 	<tr>
 		<td width="100%" valign="top">
@@ -5092,8 +5462,19 @@ Area: <select name="area" selected="">
 </table>
 
 !!
+@@ @ActiveSkillsSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1">
+  <tr>
+    <td width="100%">
+      [r, macro("ActiveSkillsDisplayTop@this"):""]
+    </td>
+  </tr>
+</table>
+
+!!
 @@ @D20basic
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
 [h:status=input(
 
 "rollName|"+json.get(macro.args,0)+"|Roll Name",
@@ -5108,7 +5489,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @D20mod
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
 [h: name=json.get(macro.args,0)]
 [h:status=input(
 
@@ -5121,7 +5502,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @D20rollbasic
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dice ; tooltip= ; minWidth= ; 
 [h: rollName = json.get(macro.args, 0)]
 [h: rollBonus = json.get(macro.args, 1)]
 [h: rollType = json.get(macro.args, 2)]
@@ -5133,7 +5514,7 @@ Area: <select name="area" selected="">
 
 !!
 @@ @DamageCheck
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
 [h: Roll = d20]
 [h: Effect =  json.get(macro.args,"effect")]
 
@@ -5182,7 +5563,7 @@ case 4: {
 
 !!
 @@ @DamageEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
 <head>
 <title>Damage Resistance Check</title>
 <meta name="input" content="true">
@@ -5250,7 +5631,7 @@ case 4: {
 
 !!
 @@ @ResistanceCheck
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
 [h: Roll = d20]
 [h: Effect =  json.get(macro.args,"effect")]
 
@@ -5282,7 +5663,7 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 !!
 @@ @ResistanceEntry
-@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Damage ; tooltip= ; minWidth= ; 
 <head>
 <title>Resistance Check</title>
 <meta name="input" content="true">
@@ -5349,12 +5730,12 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 !!
 @@ @GMLoad
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [r, macro("GMSheet@this"): macro.args]
 
 !!
 @@ @GMSheet
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [frame("GM"):{
 <html>
 <head><title>GM Screen</title></head>
@@ -5372,7 +5753,7 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 !!
 @@ @Measurements Table
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [dialog("Measurements Table","width=400; height=600; temporary=1; noframe=0; "): {
 
 <table bgcolor="[r: table(PageColor,4)]">
@@ -5651,7 +6032,7 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 !!
 @@ @Size Rank Modifiers
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [dialog("Size Rank Modifiers","width=475; height=353; temporary=1; noframe=0; "): {
 
 <table bgcolor="[r: table(PageColor,4)]">
@@ -5785,7 +6166,7 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 !!
 @@ @StatesDisplayGM
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [h:theList = getTokenStates(",","Basic Conditions")]
 [h: theList=listSort(theList,"A")]
 [r, foreach(item, theList, ""),code:{
@@ -5807,7 +6188,7 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 !!
 @@ @TableLoad
-@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [status=input(
 "chart|Measurements Table,Size Rank Modifiers|Choose Table|RADIO|VALUE=STRING SPAN=TRUE"
 )]
@@ -5991,8 +6372,7 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),"</b>, <b>")}</b>) Favors remaining for {repName}.
 
 !!
-
-@@ @SpecUpdate
+@@ @KnowSpecUpdate
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
 [h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
 [h,if(json.contains(macro.args,"knowName")):knowName = json.get(macro.args, "knowName");knowName = ""]
@@ -6007,6 +6387,25 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h: knowArray = json.get(KnowledgeSkills, knowName)]
 [h: knowArray = json.set(knowArray, 4, spec)]
 [h: KnowledgeSkills = json.set(KnowledgeSkills, knowName, knowArray)]
+
+[h, macro("SheetLoad@this"):""]
+
+!!
+@@ @ActiveSpecUpdate
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
+[h,if(json.contains(macro.args,"activeName")):activeName = json.get(macro.args, "activeName");activeName = ""]
+
+[h: status = input(
+  ".|<html><b>"+activeName+"</b>|Active Skill|LABEL",
+  "spec|"+specName+"|Specialization"
+)]
+[h: abort(status)]
+[h,if(spec == "0"): abort(0)]
+
+[h: activeArray = json.get(ActiveSkills, activeName)]
+[h: activeArray = json.set(activeArray, 4, spec)]
+[h: ActiveSkills = json.set(ActiveSkills, activeName, activeArray)]
 
 [h, macro("SheetLoad@this"):""]
 
