@@ -464,6 +464,9 @@
   [h: base = json.get(json.get(KnowledgeSkills,skill),0)]
   [h: bonus =  json.get(json.get(KnowledgeSkills,skill),1)]
   [h: aptitude = json.get(json.get(KnowledgeSkills,skill),2)]
+  [h: default = json.get(json.get(KnowledgeSkills,skill),3)]
+  [h: spec = json.get(json.get(KnowledgeSkills,skill),4)]
+  [h,if(length(spec)==0): specText = "no";specText = "yes"]
   [h: knowTotal = base+bonus]
   <td align="left">
     [h: jsonData=json.set("{}","name",skill,"base",knowTotal,"modifier",0)]
@@ -471,13 +474,16 @@
     <font color="black"><a href='[r:macroLinkText("KnowSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
   </td>
   <td align="center" width="15%">
-    <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: base]</a></font>
+    [h: specData=json.set("{}","specName",spec,"knowName",skill)]
+    <font color="black"><a href='[r:macroLinkText("SpecUpdate@this","none", specData, currentToken())]'>[r: specText]</a></font>
   </td>
   <td align="left" width="15%">
-    <font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: aptitude]</a></font>
+    [h: jsonData = json.append("[]",aptitude,strformat(" %s Aptitude check",aptitude),"Aptitude")]	
+    [h,if(default): outputter = "<font color='black'><a href='"+macroLinkText("Entry@this","none",jsonData, currentToken())+"'>"+aptitude+"</font></a>"; outputter = "<font color='black'>"+aptitude+"</font>"]
+    {outputter}
   </td>
   <td width="15%" align="right">
-    [h: jsonData = json.append("[]",skill,knowTotal,"KnowSkill")]
+    [h: jsonData = json.append("[]",skill,knowTotal,"KnowSkill",strformat(" %s skill check",skill),spec)]
     (<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: knowTotal]</a></font>)
   </td>
 
@@ -712,7 +718,8 @@
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">
-			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>					
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>	
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
 			<input type="hidden" name="ExeMacro" value="die100"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
@@ -735,7 +742,7 @@
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td color="white">
-			<center><b>[r: json.get(macro.args,0)]</center>
+			<center><b>[r: json.get(macro.args,0)] [r: strformat("%s (%d)",json.get(macro.args,0),getProperty(json.get(macro.args,0)))]</center>
 		</td>
 	</tr>
 </table>
@@ -1280,68 +1287,45 @@ I set my initative to
 !!
 @@ @KnowSkillEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: specValue = json.get(macro.args,4)]
 <head>
 <title>Knowledge Skill Check</title>
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="KnowSkillCheck" action="[r:macroLinkText('KnowSkillAltType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="KnowSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td color="white">
-			<center><b>[r: json.get(macro.args,0)]</center>
+			<center><b>[r: strformat("%s (%d)",json.get(macro.args,0),json.get(macro.args,1))]</center>
 		</td>
 	</tr>
 </table>
 <table width="100%" bgcolor="white">
 	<tr>
 		<td>
-			<b>Difficulty Class:</b>
+			Teamwork:
 		</td>
 		<td align="left">
-			<input type="text" name="DC" value="" size="5"></input>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Alternate Ability:
-		</td>
-		<td align="left">
-			<select name="ability" selected="">
-			<option value='No'>No</option>
-      <option value='COG'>COG</option>	
-			<option value='COO'>COO</option>			
-			<option value='INT'>INT</option>      
-      <option value='REF'>REF</option>
-			<option value='SAV'>SAV</option>
-			<option value='SOM'>SOM</option>
-      <option value='WIL'>WIL</option>
+			<select name="teamWork" selected="">
+        <option value='0'>None</option>
+        <option value='1'>One</option>
+        <option value='2'>Two</option>
+        <option value='3'>Three</option>
 			</select>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			Aid Another:
-		</td>
-		<td align="left">
-			[H: pcList=getExposedTokenNames()]
-			[h: pcList = replace(pcList,token.name+",","")]
-			[h: pcList = "No,"+pcList]
-			<select name="aid" selected="">
-			[foreach(name,pcList,""),code:{
-			<option value='[r: name]'>[r: name]</option>
-			}]</select>
-		</td>
-	</tr>
-	<tr>
+  <tr>
 		<td>
 			<b>Modifier:</b>
 		</td>
 		<td align="left">
-			<input type="text" name="modifier" value="" size="5"></input>
+			<input type="text" name="mods" value="" size="5"></input>
 		</td>
 	</tr>
+  [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
+  {specRow}
 </table>
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
@@ -1356,8 +1340,11 @@ I set my initative to
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">
-			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
-			<input type="hidden" name="ExeMacro" value="d20Check"></input>
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,3)]"></input>					
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+      <input type="hidden" name="specName" value="[r: specValue]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -2961,9 +2948,8 @@ Skills Updated
     [h: propBase = json.get(macro.args, tempAbility+"Base")]
     [h: propBonus = json.get(macro.args, tempAbility+"Bonus")]
     [h: propAptitude = json.get(macro.args, tempAbility+"Aptitude")]
-    [h: propDefault = json.get(macro.args, tempAbility+"Default")]
     [h: propSpec = json.get(macro.args, tempAbility+"Spec")]
-    [h: propData = json.append("[]", propBase, propBonus, propAptitude, propDefault, propSpec)]
+    [h: propData = json.append("[]", propBase, propBonus, propAptitude, 1, propSpec)]
     [h: KnowledgeSkills = json.set(KnowledgeSkills, tempAbility, propData)]
   }]
 }]
@@ -3631,7 +3617,7 @@ Area: <select name="area" selected="">
 !!
 @@ @KnowSkillsUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=true ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Knowledge Skills Update", "temporary=0; input=1; noframe=0; closebutton=0"): {
+[dialog("Knowledge Skills Update", "width=550; height=400; temporary=0; input=1; noframe=0; closebutton=0"): {
 <html>
 <head>
 <title>Knowledge Skills Update</title>
@@ -5833,6 +5819,8 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(json.contains(macro.args,"rollerName")):rollerName = json.get(macro.args, "rollerName");rollerName = getPlayerName()]
 [h,if(json.contains(macro.args,"teamWork")):teamWork = json.get(macro.args, "teamWork");teamWork = 0]
 [h,if(json.contains(macro.args,"secondaryTargetNumber")):secondaryTargetNumber = json.get(macro.args, "secondaryTargetNumber");secondaryTargetNumber = 0]
+[h,if(json.contains(macro.args,"useSpec")):useSpec = json.get(macro.args, "useSpec");useSpec = 0]
+[h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
 
 [h,if(isNumber(mods)==0): mods = 0]
 [h,if(isNumber(targetNumber)==0): targetNumber = 0]
@@ -5840,6 +5828,8 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(targetNumber==0): targetNumber = secondaryTargetNumber]
 [h,if(mods==0): modsText = ""; modsText = strformat(" + %d",mods)]
 [h,if(number(teamWork)==0): teamWorkText = ""; teamWorkText = strformat(" + %d (with %d assisting)",number(teamWork)*10,number(teamWork))]
+[h,if(useSpec==0): useSpecText = ""; useSpecText = strformat(" + 10 (with %s spec)",specName)]
+[h,if(useSpec): specMod = 10; specMod = 0]
 
 [h:dieRoll1=1d10-1]
 [h:dieRoll2=1d10-1]
@@ -5847,15 +5837,15 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(dieRoll1 == 0 && dieRoll1 == dieRoll2): dieRollText = "00"; dieRollText = string(dieRoll)]
 
 [h,if(dieRoll1 == dieRoll2): result = "CRITICAL "; result = ""]
-[h,if(dieRoll <= targetNumber + mods + number(teamWork)*10): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
-[h,if(dieRoll <= targetNumber + mods + number(teamWork)*10): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - (targetNumber + mods + number(teamWork)*10)) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - (targetNumber + mods + number(teamWork)*10))]
+[h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
+[h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - (targetNumber + mods + specMod + number(teamWork)*10)) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - (targetNumber + mods + specMod + number(teamWork)*10))]
 
 <p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
 <br>The total rolled is <b>{dieRollText}</b>.
-<br>The Target Number is <b>{targetNumber + mods + number(teamWork)*10}</b>.
+<br>The Target Number is <b>{targetNumber + mods + specMod + number(teamWork)*10}</b>.
 <br>Result: <b>{result}</b>.
 <br>{margin}
-<br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}</small>.</p>
+<br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}{useSpecText}</small>.</p>
 
 !!
 @@ @UseMoxie
@@ -5993,5 +5983,25 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 <p><span bgcolor=#cccccc><b>{rollerName}</b> {outStr} for {repName}.</span><br>
 Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),"</b>, <b>")}</b>) Favors remaining for {repName}.
+
+!!
+
+@@ @SpecUpdate
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
+[h,if(json.contains(macro.args,"knowName")):knowName = json.get(macro.args, "knowName");knowName = ""]
+
+[h: status = input(
+  ".|<html><b>"+knowName+"</b>|Knowledge Skill|LABEL",
+  "spec|"+specName+"|Specialization"
+)]
+[h: abort(status)]
+[h,if(spec == "0"): abort(0)]
+
+[h: knowArray = json.get(KnowledgeSkills, knowName)]
+[h: knowArray = json.set(knowArray, 4, spec)]
+[h: KnowledgeSkills = json.set(KnowledgeSkills, knowName, knowArray)]
+
+[h, macro("SheetLoad@this"):""]
 
 !!
