@@ -3999,8 +3999,9 @@ Area: <select name="area" selected="">
       <td>
         <label for="Spec">Spec.: </label><input type="text" name="[r: tempAbility+"Spec"]" value="[r: json.get(json.get(ActiveSkills, tempAbility), 4)]" size="10"></input>
       </td>
-      [h,if(indexOf(tempAbility,":")!=-1): delStr = ""; delStr = '<td><label for="del">Delete: </label><input type="checkbox" name="'+tempAbility+"Delete"+'" value="1"></input></td>']
-      {delStr}
+      [h: tmpStr = tempAbility + "Delete"]
+      [h,if(indexOf(tempAbility,":")==-1): delStr = ""; delStr = '<td><label for="del">Delete: </label><input type="checkbox" name="'+tmpStr+'" value="1"></input></td>']
+      [r: delStr]
     </tr>
     [h: color=if(color=="#ededed","white","#ededed")]
   }]
