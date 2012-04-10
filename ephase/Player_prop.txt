@@ -22,12 +22,12 @@ ParryNorm:{""}
 FortitudeNorm:{""}
 ToughnessNorm:{""}
 WillNorm:{""}
-*#HeroPointsShow (Hero Points):{if(isPC(),HeroPoints,"")}
-*@DodgeShow (Dodge):{Dodge}{if(DodgeNorm=="","","/"+DodgeNorm)}
-*@ParryShow (Parry):{Parry}{if(ParryNorm=="","","/"+ParryNorm)}
-*@FortitudeShow (Fortitude):{Fortitude}{if(FortitudeNorm=="","","/"+FortitudeNorm)}
-*@ToughnessShow (Toughness):{Toughness}{if(ToughnessNorm=="","","/"+ToughnessNorm)}
-*@WillShow (Will):{Will}{if(WillNorm=="","","/"+WillNorm)}
+#HeroPointsShow (Hero Points):{if(isPC(),HeroPoints,"")}
+@DodgeShow (Dodge):{Dodge}{if(DodgeNorm=="","","/"+DodgeNorm)}
+@ParryShow (Parry):{Parry}{if(ParryNorm=="","","/"+ParryNorm)}
+@FortitudeShow (Fortitude):{Fortitude}{if(FortitudeNorm=="","","/"+FortitudeNorm)}
+@ToughnessShow (Toughness):{Toughness}{if(ToughnessNorm=="","","/"+ToughnessNorm)}
+@WillShow (Will):{Will}{if(WillNorm=="","","/"+WillNorm)}
 -----Combat-----
 Initiative:{Agility}
 Bruises:0

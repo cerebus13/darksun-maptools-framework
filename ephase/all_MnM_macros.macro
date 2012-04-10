@@ -5274,8 +5274,8 @@ Area: <select name="area" selected="">
 			<font color="[r: if(page=="Stats","yellow","white")]" size="4"><b>Stats</b></font></a>
 		</td>
     <td width="30%" align="center" >
-      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=ActiveSkills", currentToken())]">
-			<font color="[r: if(page=="ActiveSkills","yellow","white")]" size="4"><b>Active Skills</b></font></a>
+      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Skills", currentToken())]">
+			<font color="[r: if(page=="Skills","yellow","white")]" size="4"><b>Skills</b></font></a>
 		</td>
 		<td width="30%" align="center" >
       <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Powers", currentToken())]">
@@ -5454,21 +5454,21 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 </table>
-<table width="100%" cellpadding="0" border="1">
-  <tr>
-    <td width="100%">
-      [r, macro("KnowSkillsDisplayTop@this"):""]
-    </td>
-  </tr>
-</table>
 
 !!
-@@ @ActiveSkillsSheet
+@@ @SkillsSheet
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1">
   <tr>
     <td width="100%">
       [r, macro("ActiveSkillsDisplayTop@this"):""]
+    </td>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" border="1">
+  <tr>
+    <td width="100%">
+      [r, macro("KnowSkillsDisplayTop@this"):""]
     </td>
   </tr>
 </table>
