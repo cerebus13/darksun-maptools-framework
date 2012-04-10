@@ -2466,6 +2466,244 @@ hindered. If restrained by another character, the restrained character is immobi
 <b>Specializations:</b> As appropriate to the field, representing dialects, technical jargon, and subcultural slang
 
 !!
+@@ @Animal Handling
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Skilled animal handlers are able to train and control a wide variety of natural and transgenic animals, including partial uplifts. Though many animal species went extinct during the Fall, a few ark and zoo habitats keep some species alive, and many others can be resurrected from genetic samples. Exotic animals are considered a sign of prestige among the hypercorp elites, and guard animals are occasionally used to protect high-security installations. Likewise, many habitats and settlements employ small armies of partially uplifted, genetically modified, and behavior-controlled creatures for sanitation or other purposes. Many new and strange breeds of animal are created daily to serve a variety of roles.
+<p>
+<b>When you use it:</b> Animal Handling is used whenever you are trying to manipulate an animal, whether your intent is to calm it down, keep it from attacking, intimidate it, acquire its trust, or goad it into attacking. Your Margin of Success determines how effective you are at convincing the creature. At the gamemasters discretion, modifiers may be applied to the test. Likewise, winning an animal over may sometimes take time and so could be handled as a Task Action with a timeframe of five minutes or more.
+<p>
+<b>Specializations:</b> Per animal species (dogs, horses, smart rats, etc.)
+<h3>Training Animals</h3>
+Training animals is a time-consuming task requiring repeated efforts and rewards to reinforce the trained behavior. Treat this as a Task Action with a timeframe of one day to one month, depending on the complexity of the action. Apply modifiers to this test based on the relative intelligence of the animal being trained, how domestic it is, and the complexity of the task.
+<p>
+Once an animal has been trained, commanding it is treated as a Simple Success Test (see p. 118) except for unusual or stressful situations, in which case the trainer receives a +30 modifier on their Animal Handling Tests when convincing the animal to complete the trained action.
+
+!!
+@@ @Beam Weapons
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> The Beam Weapons skill covers the usage and maintenance of standard coherent beam energy weapons such as lasers, particle beam weapons, plasma rifles, and microwave weapons (p. 338).
+<p>
+<b>When you use it:</b> A player uses their Beam Weapons skill whenever attacking with a beam weapon in combat (p. 191). Beam Weapons may also be used for tests involving maintenance of the weapon, but not for repairing or modifying the weapon (that would be Hardware: Armorer skill).
+<p>
+<b>Specializations:</b> Lasers, Microwave Weapons, Particle Beam Weapons, Plasma Rifles
+
+!!
+@@ @Blades
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> The Blades skill covers the usage and maintenance of standard bladed weapons (p. 334).
+<p>
+<b>When you use it:</b> A player uses their Blades skill whenever attacking with a blade weapon in melee combat (p. 191). Blades may also be used for tests involving maintenance of the weapon, but not for repairing or modifying the weapon (that would be Hardware: Armorer skill). This skill is used for blade weapons implanted in the body at the end of an appendage (hands, forearms, feet, octomorph arms, etc.), but the Exotic Melee Weapon skill is used for blades implanted in other parts of the body.
+<p>
+<b>Specializations:</b> Axes, Implant Blades, Knives, Swords
+
+!!
+@@ @Climbing
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> Climbing is the skill of ascending and descending sheer surfaces with or without the aid of specialized equipment.
+<p>
+<b>When you use it:</b> This skill is used whenever a character wishes to scale a climbable surface. For heights greater than one story, climbing is handled as a Task Action with a timeframe equivalent to one meter per Combat Turn. For rappelling, the timeframe for descent is 50 meters per Action Turn. Climbing gear (Grip Pads, p. 305; Traction Pads, p. 317; Spindle Climber, p. 333) provides appropriate modifiers.
+<p>
+<b>Specializations:</b> Assisted, Freehand, Rappelling
+
+!!
+@@ @Clubs
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> The Clubs skill covers the usage and maintenance of standard blunt melee weapons such as batons or sticks (see Clubs, p. 334).
+<p>
+<b>When you use it:</b> Players use their Clubs skill whenever they want to attack with a blunt weapon in melee combat (p. 191). The Clubs skill may also be used for tests involving maintenance of the weapon, but not for repairing or modifying the weapon (that would be Hardware: Armorer skill).
+<p>
+<b>Specializations:</b> Batons, Hammers, Staffs
+
+!!
+@@ @Control
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental, Psi
+<p>
+<b>Linked Aptitude:</b> WIL (no defaulting)
+<p>
+<b>What it is:</b> Control is the use of psi to manipulate individuals or actively penetrate their mental processes. This skill is only available to characters with the Psi trait, (p. 147).
+<p>
+<b>When you use it:</b> Use Control when taking a psionic tour through a foreign ego - messing around included. See Psi, p. 220
+<p>
+<b>Specializations:</b> By sleight
+
+!!
+@@ @Deception
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Deception is your ability to act, bluff, con, fast talk, lie, misrepresent, and pretend. Accomplished users of deception are able to convince anyone of nearly anything. This skill does not include using a physical disguise or passing yourself off as another person (the Disguise and Impersonate skills cover those areas).
+<p>
+<b>When you use it:</b> Use this skill whenever you want to deceive someone with words or gestures. A successful skill test means that you have passed off your deception convincingly. At the gamemasters discretion, someone who is actively alert for signs of deception may make an Opposed Test using the Kinesics skill.
+<p>
+<b>Specializations:</b> Acting, Bluffing, Fast Talk
+
+!!
+@@ @Demolitions
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG (no defaulting)
+<p>
+<b>What it is:</b> Demolitions covers the use of controlled explosives.
+<p>
+<b>When you use it:</b> Use it when making, placing, and disarming explosives and explosive devices. see Demolitions, p. 197
+<p>
+<b>Specializations:</b> Commercial Explosives, Disarming, Improvised Explosives
+
+!!
+@@ @Disguise
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Disguise is the art of physically altering your appearance so that you look like someone else. This includes both the use of props (wigs, contacts, skin pigments) and the altering of subtle physical 
+characteristics (gait, posture, poise).
+<p>
+<b>When you use it:</b> Use Disguise to fool someone into thinking you are someone you are not. This can be used to hide your identity or to make yourself look like someone in particular. When used against someone who knows your true look or the appearance of the person you are imitating, this is handled as an Opposed Test against Perception or Investigation.
+<p>
+<b>Specializations:</b> Cosmetic, Theatrical
+
+!!
+@@ @Exotic Melee Weapon
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Active, Combat
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> The Exotic Melee Weapon skill covers the use and maintenance of all melee weapons not covered by the Clubs or Blades skills (see p. 334).
+<p>
+<b>When you use it:</b> Use the Exotic Melee Weapon skill when attacking someone with an exotic melee weapon in melee combat (see p. 191).
+<p>
+<b>Sample Fields:</b> Morning Star, Spear, Whip
+<p>
+<b>Specializations:</b> N/A
+
+!!
+@@ @Exotic Ranged Weapon
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Active, Combat
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> Exotic Ranged Weapon skill includes the use and maintenance of all ranged weapons not covered by the Beam, Kinetic, Seeker, Spray, or Throwing Weapons skills.
+<p>
+<b>When you use it:</b> Use this skill whenever attacking with an exotic ranged weapon in ranged combat (see p. 191).
+<p>
+<b>Sample Fields:</b> Blowgun, Crossbow, Slingshot
+<p>
+<b>Specializations:</b> N/A
+
+!!
+@@ @Flight
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> Flight is the skill of using your body to fly. This skill is used when sleeved in or jamming a winged or otherwise flight-capable morph (manual and remote-control flight are handled using Pilot skill).
+<p>
+<b>When you use it:</b> Use this skill whenever you need to make an aerial maneuver, land in difficult conditions, maintain your course in steep winds, or otherwise keep from crashing or falling.
+<p>
+<b>Specializations:</b> Diving, Landing, Takeoff, specific maneuvers
+
+!!
+@@ @Fray
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> REF
+<p>
+<b>What it is:</b> Fray is the ability to get out of the way of incoming attacks, debris, or inconvenient passers-by. Characters that have a high Fray score are able to react quicker than others when dodging or maneuvering.
+<p>
+<b>When you use it:</b> Whenever a character is physically attacked by an opponent in melee combat, roll Fray to avoid getting hit (see Step 2: Declare Defense, p. 191). Fray may also be used to dodge other events that may harm the character, such as avoiding a charging vehicle or jumping out of the way of a collapsing stack of crates.
+<p>
+<b>Specializations:</b> Blades, Clubs, Full Defense, Unarmed
+
+!!
+@@ @Free Fall
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> REF
+<p>
+<b>What it is:</b> Free Fall is about moving in free-fall and microgravity environments.
+<p>
+<b>When you use it:</b> Use whenever you need to maneuver in a zero-g situation, such as propelling yourself across a large open space or making sure you do not accidentally send yourself spinning off into space. Free Fall is also used when moving with spacesuit maneuvering jets and when parachuting.
+<p>
+<b>Specializations:</b> Microgravity, Parachuting, Vacsuits
+
+!!
+@@ @Freerunning
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> Freerunning is part running, part gymnastics. It is about moving fast, maneuvering over/under/around/through obstacles, and placing your body where it needs to go. Freerunning/parkour is a popular pastime in habitats where open space is limited.
+<p>
+<b>When you use it:</b> Use Freerunning whenever you need to overcome an obstacle via movement, such as hurdling a railing, rolling across the hood of a car, jumping across a pit, or swinging around a pole. Freerunning is also used for sprinting (p. 191) and full defense against attacks (p. 198).
+<p>
+<b>Specializations:</b> Balance, Gymnastics, Jumping, Running
+
+!!
+@@ @Gunnery
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Gunnery skill covers the use and maintenance of large, vehicular, or non-portable weapons systems. Firing these weapons is more like playing a video game than firing a gun.
+<p>
+<b>When you use it:</b> Use Gunnery when attacking with a vehicle-mounted weapon or weapon emplacement in ranged combat (p. 191).
+<p>
+<b>Specializations:</b> Artillery, Missiles
+
+!!
+@@ @Hardware
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> This skill encompasses the ability to build, repair, physically hack, and upgrade equipment of a specific type.
+<p>
+<b>When you use it:</b> Hardware is primarily used to repair devices, vehicles, habitat systems, or synthetic morphs. See Building, Repairing, and Modifying below.
+<p>
+<b>Sample Fields:</b> Aerospace (all air and space vehicles), Armorer (armor and weapons), Electronics (all computerized devices), Groundcraft, Implants, Industrial (habitat, factory, and life support systems), Nautical (watercraft and submarines), Robotics (synthetic morphs).
+<p>
+<b>Specializations:</b> As appropriate to the field.
+<h3>Building</h3>
+Creating an item from scratch is handled as a Task Action with a timeframe determined by the gamemaster. The timeframe should be set according to the complexity of the object and could range from an hour (constructing a set of shelves) to days (assembling a robot from spare parts) or even months (building a house). Numerous factors may apply modifiers to the test, such as the use of entoptic blueprints/help manuals (+20) or poor working conditions (–10 to –30). Tools are also a factor, perhaps making the job easier (superior tools +10 to +30), more difficult (poor or inadequate tools, –10 to –30), or even impossible (lack of required tools).
+<h3>Repairing</h3>
+Damaged items may be repaired in a similar manner. See the rules for Synthmorph and Object Repair, p. 208.
+<h3>Modifying</h3>
+Altering an objects design and function follows the same basic rules as build and repair, above. The timeframe is determined by the gamemaster as appropriate to the modification.
+
+!!
 @@ @TT
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <p>
