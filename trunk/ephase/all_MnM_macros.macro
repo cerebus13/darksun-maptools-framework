@@ -2477,7 +2477,7 @@ hindered. If restrained by another character, the restrained character is immobi
 <b>When you use it:</b> Animal Handling is used whenever you are trying to manipulate an animal, whether your intent is to calm it down, keep it from attacking, intimidate it, acquire its trust, or goad it into attacking. Your Margin of Success determines how effective you are at convincing the creature. At the gamemasters discretion, modifiers may be applied to the test. Likewise, winning an animal over may sometimes take time and so could be handled as a Task Action with a timeframe of five minutes or more.
 <p>
 <b>Specializations:</b> Per animal species (dogs, horses, smart rats, etc.)
-<h3>Training Animals</h3>
+<h2>Training Animals</h2>
 Training animals is a time-consuming task requiring repeated efforts and rewards to reinforce the trained behavior. Treat this as a Task Action with a timeframe of one day to one month, depending on the complexity of the action. Apply modifiers to this test based on the relative intelligence of the animal being trained, how domestic it is, and the complexity of the task.
 <p>
 Once an animal has been trained, commanding it is treated as a Simple Success Test (see p. 118) except for unusual or stressful situations, in which case the trainer receives a +30 modifier on their Animal Handling Tests when convincing the animal to complete the trained action.
@@ -2696,12 +2696,382 @@ characteristics (gait, posture, poise).
 <b>Sample Fields:</b> Aerospace (all air and space vehicles), Armorer (armor and weapons), Electronics (all computerized devices), Groundcraft, Implants, Industrial (habitat, factory, and life support systems), Nautical (watercraft and submarines), Robotics (synthetic morphs).
 <p>
 <b>Specializations:</b> As appropriate to the field.
-<h3>Building</h3>
+<h2>Building</h2>
 Creating an item from scratch is handled as a Task Action with a timeframe determined by the gamemaster. The timeframe should be set according to the complexity of the object and could range from an hour (constructing a set of shelves) to days (assembling a robot from spare parts) or even months (building a house). Numerous factors may apply modifiers to the test, such as the use of entoptic blueprints/help manuals (+20) or poor working conditions (–10 to –30). Tools are also a factor, perhaps making the job easier (superior tools +10 to +30), more difficult (poor or inadequate tools, –10 to –30), or even impossible (lack of required tools).
-<h3>Repairing</h3>
+<h2>Repairing</h2>
 Damaged items may be repaired in a similar manner. See the rules for Synthmorph and Object Repair, p. 208.
-<h3>Modifying</h3>
+<h2>Modifying</h2>
 Altering an objects design and function follows the same basic rules as build and repair, above. The timeframe is determined by the gamemaster as appropriate to the modification.
+
+!!
+@@ @Impersonation
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Impersonation is the skill of trying to pass yourself off as someone else in social situations, including virtual ones. This includes copying mannerisms and speech patterns and using accumulated information to convince others that you are that person. In a universe where appearance is highly variable, the question of identity is largely one of both trust and picking up on behavioral quirks and verbal cues to recognize a given individual.
+<p>
+<b>When you use it:</b> Sometimes it is fun to pretend you are someone else, and sometimes it is profitable or lifesaving. Use this skill whenever you attempt to convince someone that you are actually someone else through some sort of social or online interaction. Forks use this skill when passing themselves off as their alpha ego. Impersonate is handled as an Opposed Test against the Kinesics skill.
+<p>
+<b>Specializations:</b> Avatar, Face-to-Face, Verbal
+
+!!
+@@ @Infiltration
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> The art of escaping detection.
+<p>
+<b>When you use it:</b> Use Infiltration whenever you need to physically hide or move with stealth to avoid someone sensing you, whether you are hiding behind a tree, sneaking past a guard, or blending into a crowd. Infiltration can also be used to follow people (shadowing) without them detecting you. Infiltration is an Opposed Test against the Perception of whom -ever you are hiding from. The gamemaster may wish to roll such tests in secret so the player does not know whether they have succeeded or failed.
+<p>
+<b>Specializations:</b> Blending In, Hiding, Shadowing, Sneaking
+
+!!
+@@ @Infosec
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG (no defaulting)
+<p>
+<b>What it is:</b> Infosec is short for "information security." It encompasses training in electronic intrusion and counterintrusion techniques as well as encryption and decryption.
+<p>
+<b>When you use it:</b> Infosec is used both for hacking into electronic devices and mesh networks and for protecting them. See The Mesh chapter, p. 234, for more details.
+<p>
+<b>Specializations:</b> Brute-Force Hacking, Decryption, Probing, Security, Sniffing, Spoofing
+
+!!
+@@ @Interfacing
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> Interfacing is about using computerized electronic devices and software.
+<p>
+<b>When you use it:</b> Use Interfacing to understand an electronic device you are not familiar with, use a program according to its normal operating param-eters, manipulate electronic files of various types (including images, video, XP, and audio files), scan for wireless devices, and otherwise interact with and command your ecto, muse, and other computerized devices. Some Interfacing actions may be Task Actions with a timeframe determined by the gamemaster. For more detail, see The Mesh chapter, p. 234.
+<p>
+<b>Specializations:</b> Forgery, Scanning, Stealthing, by program
+
+!!
+@@ @Intimidation
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Intimidation is convincing someone to do what you want based on direct threats (implied or actual) or sheer force of personality.
+<p>
+<b>When you use it:</b> Use Intimidation to scare someone into submission, browbeat them into getting your way, command them to follow your orders, or berate them into giving up information. Influence is handled as an Opposed Test, pitted against the targets WIL + WIL + SAV.
+<p>
+<b>Specializations:</b> Interrogation, Physical, Verbal
+
+!!
+@@ @Investigation
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Investigation is the art of analyzing evidence, piecing together clues, solving mysteries, and making logical deductions from groups of facts. Investigation differs from Perception in that it is the conscious search for clues or pieces of a puzzle.
+<p>
+<b>When you use it:</b> Use Investigation to draw conclusions from assorted details. For example, Investigation could be used to determine the likely sequence of events at a crime scene, determine a possible social connection between two people, or deduce how an enemy made their escape. Investigation is a great way to provide clues to players, especially when the subject matter is something their character might know well but the player does not.
+<p>
+<b>Specializations:</b> Evidence Analysis, Logical Deduc -tions, Physical Investigation, Physical Tracking
+
+!!
+@@ @Kinesics
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Kinesics is the art of empathy and non-vocal communication.
+<p>
+<b>When you use it:</b> Use Kinesics to read body language, tells, social cues, and other subconscious indicators. It can also be used to emote more effectively. Kinesics is used defensively whenever someone is trying to deceive you; make an Opposed Test against that persons Deception or Impersonation skill.
+<p>
+Though synthetic morphs are also designed to emote, reading them is not as easy. Apply a –30 modifier when judging a synthetic morph inhabited by a character or AGI. Likewise, standard AIs are also difficult to read; apply a –60 modifier when judging a synthetic morph or pod operated by an AI.
+<p>
+<b>Specializations:</b> Judge Intent, Nonvocal Communication
+<h2>Judging Emotions and Intentions</h2>
+Transhumans are empathic beings and so you can attempt to gauge the demeanor and/or intent of someone you are dealing with by rolling a Kinesics Test. This attempt to read someone is far from exact, however, and it is easy to misjudge. The gamemaster should make this test in secret and only allow a hint if successful - it is not possible to read someone with absolute certainty. If the person being judged is intentionally trying to deceive the character, this should be an Opposed Test against their Deception skill.
+<h2>Nonvocal Communication</h2>
+Experts in Kinesics can effectively communicate with each other simply by posture, stances, gestures, demeanors, and looks. Such communication is necessarily limited in the amount of information it can convey, but feelings, attitudes, affirmation/negation, and simple concepts may be passed. To effectively communicate complex concepts, the gamemaster may require successful Kinesics Tests from both parties, applying modifiers as appropriate.
+
+!!
+@@ @Kinetic Weapons
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> Kinetic Weapons covers the use and maintenance of standard kinetic projectile weapons like firearms and railguns (p. 335).
+<p>
+<b>When you use it:</b> Use this skill whenever attacking with a kinetic weapon in ranged combat (p. 191).
+<p>
+<b>Specializations:</b> Assault Rifles, Machine Guns, Pistols, Sniper Rifles, Submachine Guns
+
+!!
+@@ @Medicine
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> Medicine is the applied care and maintenance of biological beings and life.
+<p>
+<b>When you use it:</b> Use Medicine whenever you need to apply medical care beyond the immediate help provided by first responders. This includes conducting physical exams, diagnosing ailments, treating problems and illnesses, surgery, using biotech and nanotech medical tools, and long-term care. See Healing and Repair, p. 208.
+<p>
+<b>Sample Fields:</b> Biosculpting, Exotic Biomorphs, Gene Therapy, General Practice, Implant Surgery, Nanomedicine, Paramedic, Pods, Psychiatry, Remote Surgery, Trauma Surgery, Uplifts (by type), Veterinary
+<p>
+<b>Specializations:</b> As appropriate to the field
+
+!!
+@@ @Navigation
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Navigation is the art of finding your way, whether using AR maps, a compass, the stars, or an astrogation AI.
+<p>
+<b>When you use it:</b> Use Navigation whenever you need to plot out a course, determine a direction, or otherwise keep from getting lost.
+<p>
+<b>Specializations:</b> Astrogation, Map Making, Map Reading
+
+!!
+@@ @Networking
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Networking is your skill at working your contacts, trading favors, and keeping your finger on the pulse of a particular faction or cultural grouping.
+<p>
+<b>When you use it:</b> Use Networking to gather information or call on services using your Reputation (see Reputation and Social Networks, p. 285).
+<p>
+<b>Sample Fields:</b> Autonomists (@-rep), Criminals (g-rep), Ecologists (e-rep), Firewall (i-rep), Hypercorps (c-rep), Media (f-rep), Scientists (r-rep). At the gamemasters discretion, this list can be expanded to other (sub) cultural groupings.
+<p>
+<b>Specializations:</b> As appropriate to the field
+
+!!
+@@ @Palming
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> Palming is the skill of handling items quickly and nimbly without others noticing. Palming is not only about dexterous manipulation of objects but also relies heavily on obfuscation, timing, and misdirection.
+<p>
+<b>When you use it:</b> Use Palming any time you are trying to conceal an item on your person, shoplift, pick a pocket, surreptitiously discard something, or perform a magic trick. Palming is an Opposed Test against the Perception of any onlookers. The gamemaster may wish to make this roll secretly.
+<p>
+<b>Specializations:</b> Pickpocketing, Shoplifting, Tricks
+
+!!
+@@ @Perception
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Perception is the use of your physical senses (including cybernetic) and awareness of the physical world around you. Perception differs from Investigation in that it is noticing things by chance, rather than actively searching for something.
+<p>
+<b>When you use it:</b> Use Perception whenever you want to take a detailed account of your surroundings (see Detailed Perception, p. 190). Perception can also be considered an Automatic Action (see Basic Perception, p. 190) and so the gamemaster may call for a Perception Test to determine if you notice something; it is recommended that such tests be rolled secretly by the gamemaster. Perception is also used as an Opposed Test whenever someone around you is trying to be sneaky with Infiltration or Palming.
+<p>
+<b>Specializations:</b> Aural, Olfactory, Tactile, Taste, Visual
+
+!!
+@@ @Persuasion
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Persuasion is the art of convincing someone to do what you want through the use of words and gestures. This does not include persuasion through threats or force (that is covered by Intimidation) or by lying (covered by Deception).
+<p>
+<b>When you use it:</b> Use Persuasion any time you are trying to bargain with, convince, or manipulate someone. This can include motivating your subordinates or peers to take action, seducing a companion, winning a political debate, or negotiating a contract, among other things. Persuasion is handled as an Opposed Test against the targets WIL + WIL + SAV when one person is simply trying to win over another. If both parties are trying to convince each other, make it an Opposed Test between Persuasion skills.
+<p>
+<b>Specializations:</b> Diplomacy, Morale Boosting, Negotiating, Seduction
+
+!!
+@@ @Pilot
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Field, Active, Vehicle
+<p>
+<b>Linked Aptitude:</b> REF
+<p>
+<b>What it is:</b> Pilot is your skill at driving/flying a vehicle of a particular type.
+<p>
+<b>When you use it:</b> You use Pilot skill whenever you need to maneuver, control, or avoid crashing a vehicle, whether you are in the pilots seat, remote controlling a robot, or directly jamming a vehicle with VR. Each 
+vehicle has a Handling modifier that applies to this test, along with other situational modifiers (see Bots, Synthmorphs, and Vehicles, p. 195).
+<p>
+<b>Sample Fields:</b> Aircraft, Anthroform (walkers), Exotic Vehicle, Groundcraft (wheeled or tracked), Spacecraft, Watercraft
+<p>
+<b>Specializations:</b> As appropriate to the field
+
+!!
+@@ @Programming
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG (no defaulting)
+<p>
+<b>What it is:</b> Programming is your talent at writing and modifying software code.
+<p>
+<b>When you use it:</b> Use Programming to write new programs, modify or patch existing software, break copy protection, find or introduce exploitable flaws, write viruses or worms, design virtual settings, and so on. See  The Mesh chapter, p. 234. Programming is also applied when using nanofabrication devices.
+<p>
+<b>Specializations:</b> AI Code, Malware, Nanofabrication, Piracy, Simulspace Code
+<h2>Nanofabrication</h2>
+Nanofabrication is use of Programming skill to create objects using a cornucopia machine, fabber, or maker (see Nanofabricators, p. 327). If you have appropriate blueprints and raw materials, most uses of a nanofabricator can be treated as a Simple Success Test, p. 118. If you wish to create an item for which you do not have blueprints or the proper raw materials, however, or you wish to alter an items design, then a Nanofabrication Test is called for. See Nanofabrication, p. 284.
+<p>
+<b>Specializations:</b> Art, Clothing, Electronics, Food, Forgery, Weapons
+
+!!
+@@ @Protocol
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Social
+<p>
+<b>Linked Aptitude:</b> SAV
+<p>
+<b>What it is:</b> Protocol is the art of making a good impression in social settings. This includes keeping up with the latest memes, trends, gossip, interests and habits of various (sub)cultural groups.
+<p>
+<b>When you use it:</b> Use Protocol whenever you need to choose your words carefully, determine who is the appropriate person to speak to, impress someone with your grasp of customs, or otherwise fit into a specific social/cultural grouping. Part etiquette, part streetwise, Protocol allows you to navigate treacherous social waters and put people at ease. If the character is dealing with a suspicious or hostile audience, make this an Opposed Test against the targets WIL + WIL + SAV.
+<p>
+<b>Specializations:</b> Anarchist, Brinker, Criminal, Factor, Hypercorp, Infomorph, Mercurial, Reclaimer, Pres-ervationist, Scum, Ultimate
+<h2>Negating Social Gaffes</h2>
+Sometimes a player will make a mistake that their character never would, whether thats failing to stand in the presence of hypercorp royalty, confusing a gang leader for a peon, or accidentally insulting someones heritage. In cases like this, the player may make a Protocol Test for the appropriate field in order to negate the gaffe. If successful, the character never actually screwed up or at least managed to cover their tracks without ruffling any feathers.
+
+!!
+@@ @Psi Assault
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental, Psi
+<p>
+<b>Linked Aptitude:</b> WIL (no defaulting)
+<p>
+<b>What it is:</b> Psi Assault is the skill of damaging another egos mind. It can only be purchased by characters with the Psi trait (p. 147).
+<p>
+<b>When you use it:</b> Use Psi Assault when attacking another egos mind in psi combat.
+<p>
+<b>Specializations:</b> By sleight
+
+!!
+@@ @Psychosurgery
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Technical
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Psychosurgery is the use of machine-aided psychological techniques to repair, damage, or manipulate the psyche.
+<p>
+<b>When you use it:</b> Use Psychosurgery to attempt the tricky process of editing someones mind (see Psychosurgery, p. 229). Psychosurgery can be used beneficially to help patients who remember their deaths, feel disconnected after remorphing, or have experienced other sorts of mental traumas. This skill may also be used to interrogate, torture, or otherwise mess with captive minds in a VR environment.
+<p>
+<b>Specializations:</b> Memory Manipulation, Personality Editing, Psychotherapy
+
+!!
+@@ @Research
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Technical
+<p>
+<b>Linked Aptitude:</b> COG
+<p>
+<b>What it is:</b> Research is the skill for looking up infor-mation on the mesh: searching, sifting, mining, and interpreting data. This includes knowing where to look, what links to follow, and how to optimize your queries.
+<p>
+<b>When you use it:</b> Use the Research skill whenever you need to look up the answer to a question, find databases, search archives, or track down anything online. Research is typically a Task Action with the timeframe and difficulty modifier determined by the gamemaster. See Online Research, p. 249.
+<p>
+<b>Specializations:</b> Tracking, by information type
+
+!!
+@@ @Scrounging
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental
+<p>
+<b>Linked Aptitude:</b> INT
+<p>
+<b>What it is:</b> Scrounging is your ability to find things, particularly things of use or value that are concealed, buried, or hard to find. This includes knowing where to look and what to look for. Scrounging differs from both Perception and Investigation in that it is about finding items hidden among others, and in most cases about finding something in particular (food, valuables, etc.).
+<p>
+<b>When you use it:</b> Use Scrounging to dumpster-dive a meal, search ruins for relics, find bargains at a bazaar, forage berries in the forest, locate a spacesuit in an abandoned ship, etc. Scrounging is typically handled as a Task Action with a timeframe and difficulty modifier determined by the gamemaster.
+<p>
+<b>Specializations:</b> Bazaars, Forests, Habitats, Ruins
+
+!!
+@@ @Seeker Weapons
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> Seeker Weapons covers the use and main-tenance of seeker launchers and seeker missiles (p. 340).
+<p>
+<b>When you use it:</b> Use this skill when attacking with a seeker in ranged combat (p. 191).
+<p>
+<b>Specializations:</b> Armband, Pistol, Rifle, Underbarrel
+
+!!
+@@ @Sense
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Mental, Psi
+<p>
+<b>Linked Aptitude:</b> INT (no defaulting)
+<p>
+<b>What it is:</b> Sense is the use of psi to scan egos. Only characters with the Psi trait (p. 147) may purchase this skill.
+<p>
+<b>When you use it:</b> see Psi, p. 220.
+<p>
+<b>Specializations:</b> By sleight
+
+!!
+@@ @Spray Weapons
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> The Spray Weapons skill covers the use and maintenance of cone-effect ranged weapons (see Spray Weapons, p. 340).
+<p>
+<b>When you use it:</b> A player uses their Spray Weapons skill whenever they are attacking with a spray weapon in ranged combat (p. 191).
+<p>
+<b>Specializations:</b> Buzzer, Freezer, Shard, Shredder, Torch
+
+!!
+@@ @Swimming
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Physical
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> Swimming is the art of moving and not drowning within fluids. It includes floating, surface swimming, snorkeling, diving, and related equipment use.
+<p>
+<b>When you use it:</b> Use Swimming whenever you need to move and survive in water or another liquid environment. Swimming in a non-threatening environment can be handled as a Simple Success Test. Swimming over a long distance could be handled as a Task Action. Diving off a cliff into a lake, preventing yourself from being swept away in a raging river current, or making sure you have set a proper gas mix for a deep-sea dive, among other things, requires a Success Test.
+<p>
+<b>Specializations:</b> Diving, Freestyle, Underwater Diving
+
+!!
+@@ @Throwing Weapons
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> COO
+<p>
+<b>What it is:</b> Throwing Weapons skill covers the use and maintenance of standard throwing weapons, like grenades (p. 340).
+<p>
+<b>When you use it:</b> Use Throwing Weapons skill whenever you are attacking with a throwing weapon in ranged combat (p. 191).
+<p>
+<b>Specializations:</b> Grenades, Knives, Rocks
+
+!!
+@@ @Unarmed Combat
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<b>Type:</b> Active, Combat
+<p>
+<b>Linked Aptitude:</b> SOM
+<p>
+<b>What it is:</b> Unarmed Combat is your ability to attack and defend without using weapons.
+<p>
+<b>When you use it:</b> Use Unarmed Combat whenever you want to attack someone with your fists, feet, elbows, knees, or other body parts in melee combat (p. 191).
+<p>
+<b>Specializations:</b> Implant Weaponry, Kick, Punch, Subdual
 
 !!
 @@ @TT
