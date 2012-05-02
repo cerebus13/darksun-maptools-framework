@@ -21,8 +21,8 @@
 [h,if(Choice!=0): imgLink=strformat(" <img src='%s' align='middle'></img>",getStateImage(stateChoice,30)); imgLink=""]
 
 [h,if(dieRoll>=10): 
-  output=strformat("Save <font color='green'>SUCCESS</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)));
-  output=strformat("Save <font color='red'>FAILED</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d)",dieRoll-misc,misc),string(dieRoll)))
+  output=strformat("Save <font color='green'>SUCCESS</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d) + bonus(%d)",dieRoll-misc-saveBon,misc,saveBon),string(dieRoll)));
+  output=strformat("Save <font color='red'>FAILED</font> vs: %s%s<br>Roll: %s",stateChoice,imgLink,customTooltip(strformat("d20(%d) + misc(%d) + bonus(%d)",dieRoll-misc-saveBon,misc,saveBon),string(dieRoll)))
 ]
 <p>{output}</p>
 [h,if(dieRoll>=10 && Choice != 0): setState(stateChoice,0)]
