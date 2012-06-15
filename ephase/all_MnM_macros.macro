@@ -277,6 +277,126 @@
 </table>}; {</table>}]
 
 !!
+@@ @EgoTraitsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>EGO TRAITS</b></font>
+		</td>
+		<td width="5%">
+			<a href='[r:macroLinkText("EgoTraitsShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("EgoTraitsShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
+	</tr>
+[if(EgoTraitsShow),code:
+{
+</table>
+<table border="0" cellpadding="2" width="100%">
+	[h: color = table(PageColor,4)]
+  [h,if(json.isEmpty(EgoTraits)): propList = ""; propList = json.fields(EgoTraits)]
+  [h: propList=listSort(propList,"A")]
+  [foreach(prop, propList, ""), code: 
+  {
+	<tr bgcolor="[r: color]">
+		<td width="100%">
+      [h: propDetails = json.get(EgoTraits, prop)]
+      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("EgoTraitsUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+		</td>
+	</tr>
+  [h: colorcheck = table(PageColor,4)]
+  [h, if(color == colorcheck): color = "white"; color = colorcheck]
+  }]
+	<tr bgcolor="[r:table(PageColor,3)]">
+		<td>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Ego Trait", encode(""))]<a href='[r:macroLinkText("EgoTraitsUpdateDialog@this","none",jsonData,currentToken())]'>Add New Ego Trait</a></font></center></b>
+		</td>
+	</tr>
+</table>
+}
+; 
+{</table>}
+]
+
+!!
+@@ @MorphTraitsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>MORPH TRAITS</b></font>
+		</td>
+		<td width="5%">
+			<a href='[r:macroLinkText("MorphTraitsShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("MorphTraitsShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
+	</tr>
+[if(MorphTraitsShow),code:
+{
+</table>
+<table border="0" cellpadding="2" width="100%">
+	[h: color = table(PageColor,4)]
+  [h,if(json.isEmpty(MorphTraits)): propList = ""; propList = json.fields(MorphTraits)]
+  [h: propList=listSort(propList,"A")]
+  [foreach(prop, propList, ""), code: 
+  {
+	<tr bgcolor="[r: color]">
+		<td width="100%">
+      [h: propDetails = json.get(MorphTraits, prop)]
+      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("MorphTraitsUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+		</td>
+	</tr>
+  [h: colorcheck = table(PageColor,4)]
+  [h, if(color == colorcheck): color = "white"; color = colorcheck]
+  }]
+	<tr bgcolor="[r:table(PageColor,3)]">
+		<td>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Morph Trait", encode(""))]<a href='[r:macroLinkText("MorphTraitsUpdateDialog@this","none",jsonData,currentToken())]'>Add New Morph Trait</a></font></center></b>
+		</td>
+	</tr>
+</table>
+}
+; 
+{</table>}
+]
+
+!!
+@@ @ImplantsEnhancementsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>IMPLANTS & ENHANCEMENTS</b></font>
+		</td>
+		<td width="5%">
+			<a href='[r:macroLinkText("ImplantsEnhancementsShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("ImplantsEnhancementsShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
+	</tr>
+[if(ImplantsEnhancementsShow),code:
+{
+</table>
+<table border="0" cellpadding="2" width="100%">
+	[h: color = table(PageColor,4)]
+  [h,if(json.isEmpty(ImplantsEnhancements)): propList = ""; propList = json.fields(ImplantsEnhancements)]
+  [h: propList=listSort(propList,"A")]
+  [foreach(prop, propList, ""), code: 
+  {
+	<tr bgcolor="[r: color]">
+		<td width="100%">
+      [h: propDetails = json.get(ImplantsEnhancements, prop)]
+      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("ImplantsEnhancementsUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+		</td>
+	</tr>
+  [h: colorcheck = table(PageColor,4)]
+  [h, if(color == colorcheck): color = "white"; color = colorcheck]
+  }]
+	<tr bgcolor="[r:table(PageColor,3)]">
+		<td>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Implant or Enhancement", encode(""))]<a href='[r:macroLinkText("ImplantsEnhancementsUpdateDialog@this","none",jsonData,currentToken())]'>Add New Implant or Enhancement</a></font></center></b>
+		</td>
+	</tr>
+</table>
+}
+; 
+{</table>}
+]
+
+!!
 @@ @DamageDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%">
@@ -3331,6 +3451,24 @@ The character has temporarily lost power points in a trait. See the Weaken effec
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
+@@ @EgoTraitsShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("EgoTraitsShow")): setProperty("EgoTraitsShow",0); setProperty("EgoTraitsShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @MorphTraitsShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("MorphTraitsShow")): setProperty("MorphTraitsShow",0); setProperty("MorphTraitsShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @ImplantsEnhancementsShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("ImplantsEnhancementsShow")): setProperty("ImplantsEnhancementsShow",0); setProperty("ImplantsEnhancementsShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
 @@ @AdvantagesUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: text = json.get(macro.args, "Text")]
@@ -3342,6 +3480,42 @@ The character has temporarily lost power points in a trait. See the Weaken effec
 [if( json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: Advantages = json.remove(Advantages, json.get(macro.args, "overwrite"))]}; {}]
 [h, macro("SheetLoad@this"):""]
 Advantages Updated
+
+!!
+@@ @EgoTraitsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+[h: text = encode(text)]
+[h: jsonData = json.append("[]",text)]
+[h: EgoTraits = json.set(EgoTraits, json.get(macro.args, "Name"), jsonData)]
+[if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: EgoTraits = json.remove(EgoTraits, json.get(macro.args, "Name"))]}; {}]
+[if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: EgoTraits = json.remove(EgoTraits, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@this"):""]
+Ego Traits Updated
+
+!!
+@@ @MorphTraitsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+[h: text = encode(text)]
+[h: jsonData = json.append("[]",text)]
+[h: MorphTraits = json.set(MorphTraits, json.get(macro.args, "Name"), jsonData)]
+[if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: MorphTraits = json.remove(MorphTraits, json.get(macro.args, "Name"))]}; {}]
+[if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: MorphTraits = json.remove(MorphTraits, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@this"):""]
+Morph Traits Updated
+
+!!
+@@ @ImplantsEnhancementsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+[h: text = encode(text)]
+[h: jsonData = json.append("[]",text)]
+[h: ImplantsEnhancements = json.set(ImplantsEnhancements, json.get(macro.args, "Name"), jsonData)]
+[if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: ImplantsEnhancements = json.remove(ImplantsEnhancements, json.get(macro.args, "Name"))]}; {}]
+[if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: ImplantsEnhancements = json.remove(ImplantsEnhancements, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@this"):""]
+Implants & Enhancements Updated
 
 !!
 @@ @ConditionsLink
@@ -3975,6 +4149,129 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 </body>
 </html>
 } ]
+
+!!
+@@ @EgoTraitsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("EgoTraits", "temporary=0; input=1; noframe=0"): 
+{
+[h: name = json.get(macro.args, 0)]
+[h: text = json.get(macro.args, 1)]
+<html>
+  <head>
+    <title>Ego Traits Update</title>
+    <meta name="input" content="true">
+  </head>
+  <body>
+    <form method="json" name="EgoTraitsUpdate" action="[r:macroLinkText('EgoTraitsUpdate@Lib:MnM', 'none', '', currentToken())]">
+      <table>
+        <tr>
+          <td valign="top" align="center">
+            <label for="Name"><b>Ego Trait Name and Level: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            Delete this Ego Trait? <input type="checkbox" name="Deletecheck" value="1"></input>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+            <input type='submit' name='Submit' value='Submit'></input>
+          </td>
+        </tr>
+      </table> 
+    </form>
+</body></html>
+}]
+
+!!
+@@ @MorphTraitsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("MorphTraits", "temporary=0; input=1; noframe=0"): 
+{
+[h: name = json.get(macro.args, 0)]
+[h: text = json.get(macro.args, 1)]
+<html>
+  <head>
+    <title>Morph Traits Update</title>
+    <meta name="input" content="true">
+  </head>
+  <body>
+    <form method="json" name="MorphTraitsUpdate" action="[r:macroLinkText('MorphTraitsUpdate@Lib:MnM', 'none', '', currentToken())]">
+      <table>
+        <tr>
+          <td valign="top" align="center">
+            <label for="Name"><b>Morph Trait Name and Level: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            Delete this Morph Trait? <input type="checkbox" name="Deletecheck" value="1"></input>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+            <input type='submit' name='Submit' value='Submit'></input>
+          </td>
+        </tr>
+      </table> 
+    </form>
+</body></html>
+}]
+
+!!
+@@ @ImplantsEnhancementsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("ImplantsEnhancements", "temporary=0; input=1; noframe=0"): 
+{
+[h: name = json.get(macro.args, 0)]
+[h: text = json.get(macro.args, 1)]
+<html>
+  <head>
+    <title>Implants & Enhancements Update</title>
+    <meta name="input" content="true">
+  </head>
+  <body>
+    <form method="json" name="ImplantsEnhancementsUpdate" action="[r:macroLinkText('ImplantsEnhancementsUpdate@Lib:MnM', 'none', '', currentToken())]">
+      <table>
+        <tr>
+          <td valign="top" align="center">
+            <label for="Name"><b>Implant or Enhancement Name: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            Delete this Implant or Enhancement? <input type="checkbox" name="Deletecheck" value="1"></input>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+            <input type='submit' name='Submit' value='Submit'></input>
+          </td>
+        </tr>
+      </table> 
+    </form>
+</body></html>
+}]
 
 !!
 @@ @ColorUpdate
@@ -5442,6 +5739,84 @@ Area: <select name="area" selected="">
 }]
 
 !!
+@@ @EgoTraitsUpdateDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("EgoTraits", "temporary=0; input=1; noframe=0"): {
+<html>
+  <head>
+    <title>Ego Traits Display</title>
+  </head>
+  <body>
+    <table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+      <tr bgcolor="[r: table(PageColor,2)]" color="white">
+        <td align="center" width="98%">
+          <font size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+        </td>
+        <td align="right" width="1%">
+          <font color="white"><a href="[r: macroLinkText("EgoTraitsUpdateDialog@this", "none", macro.args, currentToken())]"><image src="[r: tableImage("Buttons",5)]" border="0"></image></a></font>
+        </td>
+      </tr>
+      <tr>	
+        <td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+      </tr>
+    </table>
+  </body>
+</html>
+}]
+
+!!
+@@ @MorphTraitsUpdateDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("MorphTraits", "temporary=0; input=1; noframe=0"): {
+<html>
+  <head>
+    <title>Morph Traits Display</title>
+  </head>
+  <body>
+    <table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+      <tr bgcolor="[r: table(PageColor,2)]" color="white">
+        <td align="center" width="98%">
+          <font size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+        </td>
+        <td align="right" width="1%">
+          <font color="white"><a href="[r: macroLinkText("MorphTraitsUpdateDialog@this", "none", macro.args, currentToken())]"><image src="[r: tableImage("Buttons",5)]" border="0"></image></a></font>
+        </td>
+      </tr>
+      <tr>	
+        <td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+      </tr>
+    </table>
+  </body>
+</html>
+}]
+
+!!
+@@ @ImplantsEnhancementsUpdateDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("ImplantsEnhancements", "temporary=0; input=1; noframe=0"): {
+<html>
+  <head>
+    <title>Implants & Enhancements Display</title>
+  </head>
+  <body>
+    <table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+      <tr bgcolor="[r: table(PageColor,2)]" color="white">
+        <td align="center" width="98%">
+          <font size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+        </td>
+        <td align="right" width="1%">
+          <font color="white"><a href="[r: macroLinkText("ImplantsEnhancementsUpdateDialog@this", "none", macro.args, currentToken())]"><image src="[r: tableImage("Buttons",5)]" border="0"></image></a></font>
+        </td>
+      </tr>
+      <tr>	
+        <td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+      </tr>
+    </table>
+  </body>
+</html>
+}]
+
+!!
 @@ @AreaEntry
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <head>
@@ -5961,28 +6336,44 @@ Area: <select name="area" selected="">
 !!
 @@ @PowersSheet
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
-<table width="100%" cellpadding="0">
+<table width="100%" cellpadding="0" valign="top">
 	<tr>
-		<td valign="top" align="center" width="100%"><!--Left side of character sheet-->
-			<table width="100%" cellpadding="0">
-				<tr>
-					<td>
-						[r, macro("OffenseDisplayTop@this"):""]
-					</td>
-				</tr>
-<table width="100%" cellpadding="2" border="0">
-	<tr>
-		<td>
-<image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
-		</td>
-	</tr>
-</table>
-				<tr>
-					<td>
-						[r, macro("PowersDisplay@this"):""]
-					</td>
-				</tr>
+		<td width="45%">
+			<table width="100%" cellpadding="0" border="1">
+        [r, macro("EgoTraitsDisplay@this"):""]
 			</table>
+      <table width="100%" cellpadding="2" border="0">
+        <tr>
+          <td>
+            <image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" border="1">
+        [r, macro("MorphTraitsDisplay@this"):""]
+      </table>
+      <table width="100%" cellpadding="2" border="0">
+        <tr>
+          <td>
+            <image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" border="1">
+        [r, macro("ImplantsEnhancementsDisplay@this"):""]
+      </table>
+    </td>
+    <table width="100%" cellpadding="1" border="0">
+      <tr>
+        <td>
+          <image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+        </td>
+      </tr>
+    </table>
+		<td width="55%">
+      <table width="100%" cellpadding="0" border="1">
+        [r, macro("SkillsDisplayTop@this"):""]
+      </table>
 		</td>
 	</tr>
 </table>
