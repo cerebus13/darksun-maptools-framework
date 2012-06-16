@@ -4239,6 +4239,9 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 {
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
+[h: text = decode(text)]
+[h: text = replace(text,"<","{")]
+[h: text = replace(text,">","}")]
 <html>
   <head>
     <title>Implants & Enhancements Update</title>
@@ -4254,7 +4257,7 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
         </tr>
         <tr>
           <td valign="top">
-            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
         </tr>
         <tr>
@@ -4264,7 +4267,7 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
         </tr>
         <tr>
           <td align="center">
-            <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+            <input type='hidden' name='overwrite' value='[r: overwrite = json.get(macro.args, 0)]'></input>
             <input type='submit' name='Submit' value='Submit'></input>
           </td>
         </tr>
