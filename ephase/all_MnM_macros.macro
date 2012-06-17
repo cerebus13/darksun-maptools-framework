@@ -317,6 +317,86 @@
 ]
 
 !!
+@@ @PsiSleightsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>PSI SLEIGHTS</b></font>
+		</td>
+		<td width="5%">
+			<a href='[r:macroLinkText("PsiSleightsShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("PsiSleightsShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
+	</tr>
+[if(PsiSleightsShow),code:
+{
+</table>
+<table border="0" cellpadding="2" width="100%">
+	[h: color = table(PageColor,4)]
+  [h,if(json.isEmpty(PsiSleights)): propList = ""; propList = json.fields(PsiSleights)]
+  [h: propList=listSort(propList,"A")]
+  [foreach(prop, propList, ""), code: 
+  {
+	<tr bgcolor="[r: color]">
+		<td width="100%">
+      [h: propDetails = json.get(PsiSleights, prop)]
+      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("PsiSleightsUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+		</td>
+	</tr>
+  [h: colorcheck = table(PageColor,4)]
+  [h, if(color == colorcheck): color = "white"; color = colorcheck]
+  }]
+	<tr bgcolor="[r:table(PageColor,3)]">
+		<td>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Psi Sleight", encode(""))]<a href='[r:macroLinkText("PsiSleightsUpdateDialog@this","none",jsonData,currentToken())]'>Add Psi Sleight Trait</a></font></center></b>
+		</td>
+	</tr>
+</table>
+}
+; 
+{</table>}
+]
+
+!!
+@@ @GearDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><b>GEAR</b></font>
+		</td>
+		<td width="5%">
+			<a href='[r:macroLinkText("GearShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("GearShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
+	</tr>
+[if(GearShow),code:
+{
+</table>
+<table border="0" cellpadding="2" width="100%">
+	[h: color = table(PageColor,4)]
+  [h,if(json.isEmpty(Gear)): propList = ""; propList = json.fields(Gear)]
+  [h: propList=listSort(propList,"A")]
+  [foreach(prop, propList, ""), code: 
+  {
+	<tr bgcolor="[r: color]">
+		<td width="100%">
+      [h: propDetails = json.get(Gear, prop)]
+      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("GearUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+		</td>
+	</tr>
+  [h: colorcheck = table(PageColor,4)]
+  [h, if(color == colorcheck): color = "white"; color = colorcheck]
+  }]
+	<tr bgcolor="[r:table(PageColor,3)]">
+		<td>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Gear", encode(""))]<a href='[r:macroLinkText("GearUpdateDialog@this","none",jsonData,currentToken())]'>Add Gear Trait</a></font></center></b>
+		</td>
+	</tr>
+</table>
+}
+; 
+{</table>}
+]
+
+!!
 @@ @MorphTraitsDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="2" width="100%">
@@ -3457,6 +3537,18 @@ The character has temporarily lost power points in a trait. See the Weaken effec
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
+@@ @PsiSleightsShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("PsiSleightsShow")): setProperty("PsiSleightsShow",0); setProperty("PsiSleightsShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @GearShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("GearShow")): setProperty("GearShow",0); setProperty("GearShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
 @@ @MorphTraitsShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("MorphTraitsShow")): setProperty("MorphTraitsShow",0); setProperty("MorphTraitsShow",1)]
@@ -3492,6 +3584,30 @@ Advantages Updated
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: EgoTraits = json.remove(EgoTraits, json.get(macro.args, "overwrite"))]}; {}]
 [h, macro("SheetLoad@this"):""]
 Ego Traits Updated
+
+!!
+@@ @PsiSleightsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+[h: text = encode(text)]
+[h: jsonData = json.append("[]",text)]
+[h: PsiSleights = json.set(PsiSleights, json.get(macro.args, "Name"), jsonData)]
+[if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: PsiSleights = json.remove(PsiSleights, json.get(macro.args, "Name"))]}; {}]
+[if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: PsiSleights = json.remove(PsiSleights, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@this"):""]
+Psi Sleights Updated
+
+!!
+@@ @GearUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: text = json.get(macro.args, "Text")]
+[h: text = encode(text)]
+[h: jsonData = json.append("[]",text)]
+[h: Gear = json.set(Gear, json.get(macro.args, "Name"), jsonData)]
+[if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: Gear = json.remove(Gear, json.get(macro.args, "Name"))]}; {}]
+[if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: Gear = json.remove(Gear, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@this"):""]
+Gear Updated
 
 !!
 @@ @MorphTraitsUpdate
@@ -4157,6 +4273,9 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 {
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
+[h: text = decode(text)]
+[h: text = replace(text,"<","^")]
+[h: text = replace(text,">","@")]
 <html>
   <head>
     <title>Ego Traits Update</title>
@@ -4172,12 +4291,109 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
         </tr>
         <tr>
           <td valign="top">
-            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
+        </tr>
+        <tr>
+          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
             Delete this Ego Trait? <input type="checkbox" name="Deletecheck" value="1"></input>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+            <input type='submit' name='Submit' value='Submit'></input>
+          </td>
+        </tr>
+      </table> 
+    </form>
+</body></html>
+}]
+
+!!
+@@ @PsiSleightsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("PsiSleights", "temporary=0; input=1; noframe=0"): 
+{
+[h: name = json.get(macro.args, 0)]
+[h: text = json.get(macro.args, 1)]
+[h: text = decode(text)]
+[h: text = replace(text,"<","^")]
+[h: text = replace(text,">","@")]
+<html>
+  <head>
+    <title>Psi Sleights Update</title>
+    <meta name="input" content="true">
+  </head>
+  <body>
+    <form method="json" name="PsiSleightsUpdate" action="[r:macroLinkText('PsiSleightsUpdate@Lib:MnM', 'none', '', currentToken())]">
+      <table>
+        <tr>
+          <td valign="top" align="center">
+            <label for="Name"><b>Psi Sleight Name and Level: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
+          </td>
+        </tr>
+        <tr>
+          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
+        </tr>
+        <tr>
+          <td align="center">
+            Delete this Psi Sleight? <input type="checkbox" name="Deletecheck" value="1"></input>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
+            <input type='submit' name='Submit' value='Submit'></input>
+          </td>
+        </tr>
+      </table> 
+    </form>
+</body></html>
+}]
+
+!!
+@@ @GearUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Gear", "temporary=0; input=1; noframe=0"): 
+{
+[h: name = json.get(macro.args, 0)]
+[h: text = json.get(macro.args, 1)]
+[h: text = decode(text)]
+[h: text = replace(text,"<","^")]
+[h: text = replace(text,">","@")]
+<html>
+  <head>
+    <title>Gear Update</title>
+    <meta name="input" content="true">
+  </head>
+  <body>
+    <form method="json" name="GearUpdate" action="[r:macroLinkText('GearUpdate@Lib:MnM', 'none', '', currentToken())]">
+      <table>
+        <tr>
+          <td valign="top" align="center">
+            <label for="Name"><b>Gear Name and Level: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
+          </td>
+        </tr>
+        <tr>
+          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
+        </tr>
+        <tr>
+          <td align="center">
+            Delete this Gear? <input type="checkbox" name="Deletecheck" value="1"></input>
           </td>
         </tr>
         <tr>
@@ -4198,6 +4414,9 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 {
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
+[h: text = decode(text)]
+[h: text = replace(text,"<","^")]
+[h: text = replace(text,">","@")]
 <html>
   <head>
     <title>Morph Traits Update</title>
@@ -4213,8 +4432,11 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
         </tr>
         <tr>
           <td valign="top">
-            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: decode(text)]</textarea>
+            <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
+        </tr>
+        <tr>
+          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -4240,8 +4462,8 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
 [h: text = decode(text)]
-[h: text = replace(text,"<","{")]
-[h: text = replace(text,">","}")]
+[h: text = replace(text,"<","^")]
+[h: text = replace(text,">","@")]
 <html>
   <head>
     <title>Implants & Enhancements Update</title>
@@ -4259,6 +4481,9 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
           <td valign="top">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
+        </tr>
+        <tr>
+          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -5768,6 +5993,58 @@ Area: <select name="area" selected="">
 }]
 
 !!
+@@ @PsiSleightsUpdateDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("PsiSleights", "temporary=0; input=1; noframe=0"): {
+<html>
+  <head>
+    <title>Psi Sleights Display</title>
+  </head>
+  <body>
+    <table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+      <tr bgcolor="[r: table(PageColor,2)]" color="white">
+        <td align="center" width="98%">
+          <font size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+        </td>
+        <td align="right" width="1%">
+          <font color="white"><a href="[r: macroLinkText("PsiSleightsUpdateDialog@this", "none", macro.args, currentToken())]"><image src="[r: tableImage("Buttons",5)]" border="0"></image></a></font>
+        </td>
+      </tr>
+      <tr>	
+        <td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+      </tr>
+    </table>
+  </body>
+</html>
+}]
+
+!!
+@@ @GearUpdateDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("Gear", "temporary=0; input=1; noframe=0"): {
+<html>
+  <head>
+    <title>Gear Display</title>
+  </head>
+  <body>
+    <table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+      <tr bgcolor="[r: table(PageColor,2)]" color="white">
+        <td align="center" width="98%">
+          <font size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+        </td>
+        <td align="right" width="1%">
+          <font color="white"><a href="[r: macroLinkText("GearUpdateDialog@this", "none", macro.args, currentToken())]"><image src="[r: tableImage("Buttons",5)]" border="0"></image></a></font>
+        </td>
+      </tr>
+      <tr>	
+        <td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+      </tr>
+    </table>
+  </body>
+</html>
+}]
+
+!!
 @@ @MorphTraitsUpdateDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
 [dialog("MorphTraits", "temporary=0; input=1; noframe=0"): {
@@ -6375,7 +6652,17 @@ Area: <select name="area" selected="">
     </table>
 		<td width="55%">
       <table width="100%" cellpadding="0" border="1">
-        [r, macro("SkillsDisplayTop@this"):""]
+        [r, macro("PsiSleightsDisplay@this"):""]
+			</table>
+      <table width="100%" cellpadding="2" border="0">
+        <tr>
+          <td>
+            <image src='[r: tableImage("Actions", 1)]' border="0" align="middle"></image>
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" border="1">
+        [r, macro("GearDisplay@this"):""]
       </table>
 		</td>
 	</tr>

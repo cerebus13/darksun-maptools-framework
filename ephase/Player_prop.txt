@@ -108,11 +108,13 @@ EgoTraits:{"Benefit 4 (Multi-millionare)":[""],"Close Attack 7":[""],"Defensive 
 MorphTraitsShow:0
 MorphTraits:{"Benefit 4 (Multi-millionare)":[""],"Close Attack 7":[""],"Defensive Roll":[""],"Equipment 6":[""],"Inventor":[""],"Jack-of-all-trades":[""],"Move-by Action":[""],"Power Attack":[""],"Quick Draw":[""],"Well-Informed":[""]}
 -----Psi Sleights-----
+PsiSleightsShow:0
 PsiSleights:{}
 -----Implants and Enhancements-----
 ImplantsEnhancementsShow:0
 ImplantsEnhancements:{}
 -----Gear-----
+GearShow:0
 Gear:{}
 -----Muse Stats-----
 COG_Muse:0
