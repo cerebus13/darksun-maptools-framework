@@ -128,7 +128,7 @@ TT_Muse:0
 LUC_Muse:0
 IR_Muse:0
 -----Muse Skills-----
-MuseSkills:{"Academics: ":[0,0,"COG",0],"Art: ":[0,0,"INT",0],"Interest: ":[0,0,"COG",0],"Language: ":[0,0,"INT",0],"Profession: ":[0,0,"COG",0]}
+MuseSkills:{"Academics: One":[0,0,"COG_Muse",1,""],"Art: Two":[0,0,"INT_Muse",1,""],"Interest: Three":[0,0,"COG_Muse",1,""],"Language: Four":[0,0,"INT_Muse",1,""],"Profession: Five":[0,0,"COG_Muse",1,""]}
 
 --------------------------------COMMENTS--------------------------------
 Skills are stored as a Json Object: Key = skill name, Value = Json Array.  Some skills have a focus/concentration which is in the name after a : symbol.  If one of these skills gets in the list without anything following the : then it will probably throw an error.
