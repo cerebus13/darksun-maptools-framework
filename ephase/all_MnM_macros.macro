@@ -97,6 +97,48 @@
 </table>
 
 !!
+@@ @MuseAptitudesDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1" bgcolor="white">
+<table border="0" cellpadding="2" width="100%">
+
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>MUSE APTITUDES</b></font>
+		</td>
+		<td  align="right" colspan="2"><a href='[r:macroLinkText("MuseAptitudesUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
+		</td>		
+	</tr>[h: num = 1]
+[h: abilityList = "COG,COO,INT,REF,SAV,SOM,WIL"]
+[foreach(abl, abilityList,""),code:{
+  [h:museAbl = abl+"_Muse"]
+  [if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
+		<td>
+			<table width="100%">
+				[h:jsonData=json.set("{}","targetNumber",getProperty(museAbl)*3,"mods",0,"rollerName",getName(currentToken()),"rollTitle",strformat("default %s Muse Aptitude check",museAbl))]
+				<tr>
+          <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
+            <font color="white"><b><a href='[r:macroLinkText("die100@this","all",jsonData, currentToken())]'>[r: table("Aptitudes",num)]</a></b>
+					</td>
+				</tr>
+				<tr>
+        [h: jsonData = json.append("[]",museAbl,strformat(" %s Muse Aptitude check",museAbl),"MuseAptitude")]	
+          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
+            <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>[r: getProperty(museAbl)]</b></font></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+
+[if(roll.count == 3||roll.count==7),code:{</tr>}; {}]
+[h: num = num+1]
+}]
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+!!
 @@ @StatsDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
@@ -136,6 +178,49 @@
 				<tr>
           <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
             <font color="white"><b><a href='[r:macroLinkText("StatsInfoDisplay@this","none",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b></font>
+					</td>
+				</tr>
+				<tr>
+          <td align="center" width="100%" bgcolor="[r: table(PageColor,3)]">
+            <font color="black"><b>[r: getProperty(stat)]</b></font>
+					</td>
+				</tr>
+			</table>
+		</td>
+
+    [if(roll.count == 4||roll.count==9),code:{</tr>}; {}]
+    [h: num = num+1]
+    }]
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @MuseStatsDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1" bgcolor="white">
+<table border="0" cellpadding="2" width="100%">
+
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td  valign="middle" colspan="2">&nbsp; &nbsp; <font color="white"><b>MUSE STATS</b></font>
+		</td>
+		<td  align="right" colspan="3"><a href='[r:macroLinkText("MuseStatsUpdateDialog@this","none","", currentToken())]'><image src='[r: tableImage("Buttons", 5)]' border="0" align="middle"></image></a>&nbsp; 
+		</td>		
+	</tr>
+  <tr>
+    [h: statList = "TT_Muse,LUC_Muse,IR_Muse"]    
+    [h: num = 2]
+    [foreach(stat, statList,""),code:{
+
+    [if(roll.count==4),code:{<tr>}; {}]
+		<td>
+			<table width="100%">
+				[h:jsonData=json.append("[]",stat)]
+				<tr>
+          <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
+            <font color="white"><b><a href='[r:macroLinkText("MuseStatsInfoDisplay@this","none",jsonData, currentToken())]'>[r: table("Stats",num)]</a></b></font>
 					</td>
 				</tr>
 				<tr>
@@ -692,6 +777,43 @@
 [h: macro.return = if(color == colorcheck,"white", colorcheck)]
 
 !!
+@@ @MuseSkillsDisplayBottom
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: color = json.get(macro.args,1)]
+<tr bgcolor="[r: color]">
+  [h: base = json.get(json.get(MuseSkills,skill),0)]
+  [h: bonus =  json.get(json.get(MuseSkills,skill),1)]
+  [h: aptitude = json.get(json.get(MuseSkills,skill),2)]
+  
+  [h: default = json.get(json.get(MuseSkills,skill),3)]
+  [h: spec = json.get(json.get(MuseSkills,skill),4)]
+  [h,if(length(spec)==0): specText = "no";specText = "yes"]
+  [h: museSkillTotal = base+bonus]
+  <td align="left">
+    [h: jsonData=json.set("{}","name",skill,"base",museSkillTotal,"modifier",0)]
+    [h: info=json.append("[]",skill,json.get(json.get(MuseSkills,skill),2))]
+    <font color="black"><a href='[r:macroLinkText("MuseSkillsInfoDisplay@this","none",info, currentToken())]'>[r: skill]</a></font>
+  </td>
+  <td align="center" width="15%">
+    [h: specData=json.set("{}","specName",spec,"museName",skill)]
+    <font color="black"><a href='[r:macroLinkText("MuseSpecUpdate@this","none", specData, currentToken())]'>[r: specText]</a></font>
+  </td>
+  <td align="left" width="15%">
+    [h: jsonData = json.append("[]",aptitude,strformat(" %s Muse Aptitude check",aptitude),"MuseAptitude")]	
+    [h,if(default): outputter = "<font color='black'><a href='"+macroLinkText("Entry@this","none",jsonData, currentToken())+"'>"+aptitude+"</font></a>"; outputter = "<font color='black'>"+aptitude+"</font>"]
+    {outputter}
+  </td>
+  <td width="15%" align="right">
+    [h: jsonData = json.append("[]",skill,museSkillTotal,"MuseSkill",strformat(" %s Muse skill check",skill),spec)]
+    (<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>+[r: museSkillTotal]</a></font>)
+  </td>
+
+</tr>
+[h: colorcheck = table(PageColor,4)]
+[h: macro.return = if(color == colorcheck,"white", colorcheck)]
+
+!!
 @@ @ActiveSkillsDisplayBottom
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 [h: skill = json.get(macro.args,0)]
@@ -833,6 +955,40 @@
 </table>
 
 !!
+@@ @MuseSkillsDisplayTop
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="0" cellpadding="2" width="100%" bgcolor="white">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td valign="middle">&nbsp; &nbsp; <font color="white"><a href='[r:macroLinkText("MuseSkillsUpdateDialog@this","none","", currentToken())]'><b>MUSE SKILLS</b></a></font>
+		</td>
+		<td align="center" width="15%" color="white">
+			<b>Spec.</b>
+		</td>
+    <td align="left" width="15%" color="white">
+			<b>Aptitude</b>
+		</td>
+		<td align="right" width="15%" color="white">
+			<b>Total</b>
+		</td>
+	</tr>
+  [h,if(json.isEmpty(MuseSkills)): skillListunsort = ""; skillListunsort = json.fields(MuseSkills)]
+  [h: skillList = listsort(skillListunsort, "A")]
+  [h: color = table(PageColor,4)]
+  [foreach(skill, skillList, ""), code: 
+  {
+    [h: skillDetails = json.get(MuseSkills, skill)]
+    [h: skillBase = json.get(skillDetails,0)]
+    [h: skillBonus = json.get(skillDetails,1)]
+    [if(skillBonus==0&&skillBase==0), code: {}; 
+    {
+      [h: jsonData = json.append("[]", skill,color)]
+      [r, macro("MuseSkillsDisplayBottom@this"):jsonData]
+      [h: color = macro.return]
+    }]
+  }]
+</table>
+
+!!
 @@ @StatesDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 [h:theList = getTokenStates(",","Combined Conditions")]
@@ -923,6 +1079,91 @@
 </head>
 <body>
 <form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: strformat("%s (%d)",json.get(macro.args,0),getProperty(json.get(macro.args,0)))]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			<b>Pre-made Target Numbers:</b>
+		</td>
+		<td align="left">
+      <select name="targetNumber" selected="">
+        <option value='0'>Custom</option>
+        <option value='[r: getProperty(json.get(macro.args,0)) * 3]'>Aptitude x 3</option>
+        <option value='[r: getProperty(json.get(macro.args,0)) * 2]'>Aptitude x 2</option>
+        <option value='[r: getProperty(json.get(macro.args,0))]'>Aptitude</option>
+			</select>
+		</td>
+	</tr>
+  <tr>
+		<td>
+			<b>Custom Target Number:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="secondaryTargetNumber" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Teamwork:
+		</td>
+		<td align="left">
+			<select name="teamWork" selected="">
+        <option value='0'>None</option>
+        <option value='1'>One</option>
+        <option value='2'>Two</option>
+        <option value='3'>Three</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>	
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @MuseAptitudeEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Muse Aptitude Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="MuseAptitudeCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1342,7 +1583,9 @@
 "Moxie", "305, 320",
 "Rep", "520, 325",
 "KnowSkill", "305, 320",
-"ActiveSkill", "305, 320"
+"ActiveSkill", "305, 320",
+"MuseAptitude", "305, 212",
+"MuseSkill", "305, 223"
 
 )]
 
@@ -1615,6 +1858,75 @@ I set my initative to
 </head>
 <body>
 <form method="json" name="ActiveSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: strformat("%s (%d)",json.get(macro.args,0),json.get(macro.args,1))]</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+	<tr>
+		<td>
+			Teamwork:
+		</td>
+		<td align="left">
+			<select name="teamWork" selected="">
+        <option value='0'>None</option>
+        <option value='1'>One</option>
+        <option value='2'>Two</option>
+        <option value='3'>Three</option>
+			</select>
+		</td>
+	</tr>
+  <tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+  [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
+  {specRow}
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,3)]"></input>					
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+      <input type="hidden" name="specName" value="[r: specValue]"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @MuseSkillEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: specValue = json.get(macro.args,4)]
+<head>
+<title>Muse Skill Check</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="MuseSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -2078,6 +2390,43 @@ hindered. If restrained by another character, the restrained character is immobi
 }]
 
 !!
+@@ @MuseSkillsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: skill=json.get(macro.args,0)]
+[h: ability=json.get(macro.args,1)]
+
+<!-- Skills that can have multiple fields get a prefix -->
+[h: skill = if(startsWith(skill, "Academics"),"Academics",skill)]
+[h: skill = if(startsWith(skill, "Art"),"Art",skill)]
+[h: skill = if(startsWith(skill, "Interest"),"Interest",skill)]
+[h: skill = if(startsWith(skill, "Language"),"Language",skill)]
+[h: skill = if(startsWith(skill, "Profession"),"Profession",skill)]
+[h: skill = if(startsWith(skill, "Exotic Melee"),"Exotic Melee",skill)]
+[h: skill = if(startsWith(skill, "Exotic Ranged"),"Exotic Ranged",skill)]
+[h: skill = if(startsWith(skill, "Hardware"),"Hardware",skill)]
+[h: skill = if(startsWith(skill, "Medicine"),"Medicine",skill)]
+[h: skill = if(startsWith(skill, "Networking"),"Networking",skill)]
+[h: skill = if(startsWith(skill, "Pilot"),"Pilot",skill)]
+
+[frame("MuseSkills"): {
+<html>
+<head>
+<title>[r: skill] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+<center><b>[r: skill]</b> ([r: ability])</center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(skill+"@this"):""]
+</body>
+</html>
+}]
+
+!!
 @@ @StatsInfoDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: statShort=json.get(macro.args,0)]
@@ -2109,6 +2458,43 @@ hindered. If restrained by another character, the restrained character is immobi
 	</tr>
 </table>
 [r, macro(statShort+"@this"):""]
+</body>
+</html>
+}]
+
+!!
+@@ @MuseStatsInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: statShort=json.get(macro.args,0)]
+
+[h,switch(statShort):
+  case "TT_Muse": statLong = "Trauma Threshold";
+  case "LUC_Muse": statLong = "Lucidity";
+  case "IR_Muse": statLong = "Insanity Rating";
+  default: statLong = ""
+]
+
+[h,switch(statShort):
+  case "TT_Muse": statAbbrev = "TT";
+  case "LUC_Muse": statAbbrev = "LUC";
+  case "IR_Muse": statAbbrev = "IR";
+  default: statAbbrev = ""
+]
+
+[frame("StatsInfo"): {
+<html>
+<head>
+<title>[r: statLong] Info</title>
+</head>
+<body bgcolor="white">
+<table border="0" cellpadding="0" width="100%" height="50%">
+	<tr bgcolor="[r: table(PageColor,2)]"  color="white" valign="middle">
+		<td><font size="5">
+      <center><b>[r: statLong]</b> ([r: statShort])</center><p>
+		</font></td>
+	</tr>
+</table>
+[r, macro(statAbbrev+"@this"):""]
 </body>
 </html>
 }]
@@ -4132,6 +4518,129 @@ Knowledge Skills Updated
 Active Skills Updated
 
 !!
+@@ @MuseSkillsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[foreach(tempAbility, json.fields(MuseSkills), ""), code: {
+  [h: propDelete = json.get(macro.args, tempAbility+"Delete")]
+  [h, if(propDelete!=""), code: 
+  {
+    [h: MuseSkills = json.remove(MuseSkills,tempAbility)]
+  };{
+    [h: propBase = json.get(macro.args, tempAbility+"Base")]
+    [h: propBonus = json.get(macro.args, tempAbility+"Bonus")]
+    [h: propAptitude = json.get(macro.args, tempAbility+"Aptitude")]
+    [h: propDefault = json.get(macro.args, tempAbility+"Default")]
+    [h: propSpec = json.get(macro.args, tempAbility+"Spec")]
+    [h: propData = json.append("[]", propBase, propBonus, propAptitude, propDefault, propSpec)]
+    [h: MuseSkills = json.set(MuseSkills, tempAbility, propData)]
+  }]
+}]
+
+[h: newActive = json.get(macro.args, "newExoticMelee")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Exotic Melee: "+newActive]
+  [h: propBase = json.get(macro.args, "newExoticMeleeBase")]
+  [h: propBonus = json.get(macro.args, "newExoticMeleeBonus")]
+  [h: propSpec = json.get(macro.args, "newExoticMeleeSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "SOM_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newExoticRanged")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Exotic Ranged: "+newActive]
+  [h: propBase = json.get(macro.args, "newExoticRangedBase")]
+  [h: propBonus = json.get(macro.args, "newExoticRangedBonus")]
+  [h: propSpec = json.get(macro.args, "newExoticRangedSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "COO_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newHardware")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Hardware: "+newActive]
+  [h: propBase = json.get(macro.args, "newHardwareBase")]
+  [h: propBonus = json.get(macro.args, "newHardwareBonus")]
+  [h: propSpec = json.get(macro.args, "newHardwareSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newMedicine")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Medicine: "+newActive]
+  [h: propBase = json.get(macro.args, "newMedicineBase")]
+  [h: propBonus = json.get(macro.args, "newMedicineBonus")]
+  [h: propSpec = json.get(macro.args, "newMedicineSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newNetworking")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Networking: "+newActive]
+  [h: propBase = json.get(macro.args, "newNetworkingBase")]
+  [h: propBonus = json.get(macro.args, "newNetworkingBonus")]
+  [h: propSpec = json.get(macro.args, "newNetworkingSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"SAV_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newActive = json.get(macro.args, "newPilot")]
+[if(newActive == ""),code:{}; {
+  [h: name = "Pilot: "+newActive]
+  [h: propBase = json.get(macro.args, "newPilotBase")]
+  [h: propBonus = json.get(macro.args, "newPilotBonus")]
+  [h: propSpec = json.get(macro.args, "newPilotSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"REF_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newKnow = json.get(macro.args, "newAcademics")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Academics: "+newKnow]
+  [h: propBase = json.get(macro.args, "newAcademicsBase")]
+  [h: propBonus = json.get(macro.args, "newAcademicsBonus")]
+  [h: propSpec = json.get(macro.args, "newAcademicsSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "COG_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newKnow = json.get(macro.args, "newArt")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Art: "+newKnow]
+  [h: propBase = json.get(macro.args, "newArtBase")]
+  [h: propBonus = json.get(macro.args, "newArtBonus")]
+  [h: propSpec = json.get(macro.args, "newArtSpec")]
+  [h: propData = json.append("[]", propBase, propBonus, "INT_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newKnow = json.get(macro.args, "newInterest")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Interest: "+newKnow]
+  [h: propBase = json.get(macro.args, "newInterestBase")]
+  [h: propBonus = json.get(macro.args, "newInterestBonus")]
+  [h: propSpec = json.get(macro.args, "newInterestSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newKnow = json.get(macro.args, "newLanguage")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Language: "+newKnow]
+  [h: propBase = json.get(macro.args, "newLanguageBase")]
+  [h: propBonus = json.get(macro.args, "newLanguageBonus")]
+  [h: propSpec = json.get(macro.args, "newLanguageSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"INT_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+[h: newKnow = json.get(macro.args, "newProfession")]
+[if(newKnow == ""),code:{}; {
+  [h: name = "Profession: "+newKnow]
+  [h: propBase = json.get(macro.args, "newProfessionBase")]
+  [h: propBonus = json.get(macro.args, "newProfessionBonus")]
+  [h: propSpec = json.get(macro.args, "newProfessionSpec")]
+  [h: propData = json.append("[]", propBase, propBonus,"COG_Muse", 1, propSpec)]
+  [h: MuseSkills = json.set(MuseSkills, name, propData)]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+Muse Skills Updated
+
+!!
+
 @@ @StatesUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: temp=json.get(macro.args, 0)]
@@ -4185,6 +4694,19 @@ Traits Updated
 Aptitudes Updated
 
 !!
+@@ @MuseAptitudesUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: setProperty("COG_Muse", json.get(macro.args, "COG_Muse"))]
+[h: setProperty("COO_Muse", json.get(macro.args, "COO_Muse"))]
+[h: setProperty("INT_Muse", json.get(macro.args, "INT_Muse"))]
+[h: setProperty("REF_Muse", json.get(macro.args, "REF_Muse"))]
+[h: setProperty("SAV_Muse", json.get(macro.args, "SAV_Muse"))]
+[h: setProperty("SOM_Muse", json.get(macro.args, "SOM_Muse"))]
+[h: setProperty("WIL_Muse", json.get(macro.args, "WIL_Muse"))]
+[h, macro("SheetLoad@this"):""]
+Muse Aptitudes Updated
+
+!!
 @@ @StatsUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: setProperty("MOX", json.get(macro.args, "MOX"))]
@@ -4200,6 +4722,15 @@ Aptitudes Updated
 [h: setProperty("DB", json.get(macro.args, "DB"))]
 [h, macro("SheetLoad@this"):""]
 Stats Updated
+
+!!
+@@ @MuseStatsUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: setProperty("TT_Muse", json.get(macro.args, "TT_Muse"))]
+[h: setProperty("LUC_Muse", json.get(macro.args, "LUC_Muse"))]
+[h: setProperty("IR_Muse", json.get(macro.args, "IR_Muse"))]
+[h, macro("SheetLoad@this"):""]
+Muse Stats Updated
 
 !!
 @@ @DamageStressUpdate
@@ -5240,6 +5771,218 @@ Area: <select name="area" selected="">
 } ]
 
 !!
+@@ @MuseSkillsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Muse Skills Update", "width=550; height=400; temporary=0; input=1; noframe=0; closebutton=0"): {
+<html>
+<head>
+<title>Muse Skills Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="MuseSkillsUpdate" action="[r:macroLinkText('MuseSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+  <table>
+  [h: color = "#ededed"]
+  [h: propListunsort = json.fields(MuseSkills)]
+  [h: propList = listsort(propListunsort, "A")]
+
+  [foreach(tempAbility, propList, ""), code: {
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>[r: tempAbility]</b></label>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="[r: tempAbility+"Base"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 0)]" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="[r: tempAbility+"Bonus"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 1)]" size="2"></input>
+        <input type="hidden" name="[r: tempAbility+"Aptitude"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 2)]"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="[r: tempAbility+"Spec"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 4)]" size="10"></input>
+      </td>
+      <td>
+        <label for="del">Delete: </label><input type="checkbox" name="[r: tempAbility+"Delete"]" value="1"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+  }]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Academics: </b></label><input type="text" name="newAcademics" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newAcademicsBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newAcademicsBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newAcademicsSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Art: </b></label><input type="text" name="newArt" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newArtBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newArtBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newArtSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Interest: </b></label><input type="text" name="newInterest" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newInterestBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newInterestBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newInterestSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Language: </b></label><input type="text" name="newLanguage" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newLanguageBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newLanguageBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newLanguageSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Profession: </b></label><input type="text" name="newProfession" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newProfessionBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newProfessionBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newProfessionSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Exotic Melee: </b></label><input type="text" name="newExoticMelee" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newExoticMeleeBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newExoticMeleeBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newExoticMeleeSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Exotic Ranged: </b></label><input type="text" name="newExoticRanged" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newExoticRangedBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newExoticRangedBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newExoticRangedSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Hardware: </b></label><input type="text" name="newHardware" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newHardwareBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newHardwareBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newHardwareSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Medicine: </b></label><input type="text" name="newMedicine" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newMedicineBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newMedicineBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newMedicineSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Networking: </b></label><input type="text" name="newNetworking" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newNetworkingBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newNetworkingBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newNetworkingSpec" value="" size="10"></input>
+      </td>
+    </tr>
+    [h: color=if(color=="#ededed","white","#ededed")]
+    <tr bgcolor="[r: color]">
+      <td>
+        <label for="Name"><b>Pilot: </b></label><input type="text" name="newPilot" value="" size="8"></input>
+      </td>
+      <td>
+        <label for="Base">Base: </label><input type="text" name="newPilotBase" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Bonus">Bonus: </label><input type="text" name="newPilotBonus" value="0" size="2"></input>
+      </td>
+      <td>
+        <label for="Spec">Spec.: </label><input type="text" name="newPilotSpec" value="" size="10"></input>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center" colspan="4">
+        <input type='submit' name='Submit' value='Submit'></input>
+      </td>
+    </tr>
+  </table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
 @@ @TraitsUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Traits Update", "temporary=0; height=380; width=320; input=1; noframe=0"): {
@@ -5533,6 +6276,119 @@ Area: <select name="area" selected="">
 } ]
 
 !!
+@@ @MuseAptitudesUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Muse Aptitudes Update", "temporary=0; height=200; width=270; input=1; noframe=0"): {
+<html>
+<head>
+<title>Muse Aptitudes Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="MuseAptitudesUpdate" action="[r:macroLinkText('MuseAptitudesUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+	<tr>
+		<td bgcolor="black" valign="middle" colspan="7">&nbsp; &nbsp; <font color="white"><b>Muse APTITUDES</b></font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>COG</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="COG_Muse" value="[r: getProperty("COG_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>COO</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="COO_Muse" value="[r: getProperty("COO_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>INT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="INT_Muse" value="[r: getProperty("INT_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>REF</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="REF_Muse" value="[r: getProperty("REF_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SAV</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SAV_Muse" value="[r: getProperty("SAV_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>SOM</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="SOM_Muse" value="[r: getProperty("SOM_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>WIL</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="WIL_Muse" value="[r: getProperty("WIL_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+<tr>
+<td align="center" colspan="8">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
 @@ @StatsUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Stats Update", "temporary=1; height=200; width=440; input=1; noframe=0"): {
@@ -5677,6 +6533,71 @@ Area: <select name="area" selected="">
 				</tr>
 				<tr>
 					<td align="center" width="100%"><b><input type="text" name="DB" value="[r: getProperty("DB")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+<tr>
+<td align="center" colspan="11">
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table> 
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @MuseStatsUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Muse Stats Update", "temporary=1; height=200; width=175; input=1; noframe=0"): {
+<html>
+<head>
+<title>Muse Stats Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="MuseStatsUpdate" action="[r:macroLinkText('MuseStatsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+	<tr>
+		<td bgcolor="black" valign="middle" colspan="11">&nbsp; &nbsp; <font color="white"><b>MUSE STATS</b></font>
+		</td>
+	</tr>
+	<tr>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>TT</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="TT_Muse" value="[r: getProperty("TT_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>LUC</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="LUC_Muse" value="[r: getProperty("LUC_Muse")]" size="2"></input></b>
+					</td>
+				</tr>
+			</table>
+		</td>
+    <td>
+			<table width="100%">
+				<tr>
+					<td bgcolor="black" color="white" align="center" width="100%"><b>IR</b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" width="100%"><b><input type="text" name="IR_Muse" value="[r: getProperty("IR_Muse")]" size="2"></input></b>
 					</td>
 				</tr>
 			</table>
@@ -6544,6 +7465,14 @@ Area: <select name="area" selected="">
       <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Powers", currentToken())]">
 			<font color="[r: if(page=="Powers","yellow","white")]" size="4"><b>Powers</b></font></a>
 		</td>
+    <td width="30%" align="center" >
+      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Muse", currentToken())]">
+			<font color="[r: if(page=="Muse","yellow","white")]" size="4"><b>Muse</b></font></a>
+		</td>
+    <td width="30%" align="center" >
+      <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Combat", currentToken())]">
+			<font color="[r: if(page=="Combat","yellow","white")]" size="4"><b>Combat</b></font></a>
+		</td>
 	</tr>
 	<tr>
 		<td align="right" colspan="2" color="white">
@@ -6740,6 +7669,31 @@ Area: <select name="area" selected="">
 	<tr>
 		<td width="100%" valign="top">
 			[r, macro("RepDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+
+!!
+@@ @MuseSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("MuseAptitudesDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("MuseStatsDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("MuseSkillsDisplayTop@this"):""]
 		</td>
 	</tr>
 </table>
@@ -7696,6 +8650,25 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h: activeArray = json.get(ActiveSkills, activeName)]
 [h: activeArray = json.set(activeArray, 4, spec)]
 [h: ActiveSkills = json.set(ActiveSkills, activeName, activeArray)]
+
+[h, macro("SheetLoad@this"):""]
+
+!!
+@@ @MuseSpecUpdate
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
+[h,if(json.contains(macro.args,"museName")):museName = json.get(macro.args, "museName");museName = ""]
+
+[h: status = input(
+  ".|<html><b>"+museName+"</b>|Muse Skill|LABEL",
+  "spec|"+specName+"|Specialization"
+)]
+[h: abort(status)]
+[h,if(spec == "0"): abort(0)]
+
+[h: museArray = json.get(MuseSkills, museName)]
+[h: museArray = json.set(museArray, 4, spec)]
+[h: MuseSkills = json.set(MuseSkills, museName, museArray)]
 
 [h, macro("SheetLoad@this"):""]
 
