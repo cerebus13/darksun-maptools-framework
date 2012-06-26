@@ -785,7 +785,7 @@
   [h: base = json.get(json.get(MuseSkills,skill),0)]
   [h: bonus =  json.get(json.get(MuseSkills,skill),1)]
   [h: aptitude = json.get(json.get(MuseSkills,skill),2)]
-  
+  [h: aptAbbr = substring(aptitude,0,length(aptitude) - 5)]
   [h: default = json.get(json.get(MuseSkills,skill),3)]
   [h: spec = json.get(json.get(MuseSkills,skill),4)]
   [h,if(length(spec)==0): specText = "no";specText = "yes"]
@@ -800,8 +800,8 @@
     <font color="black"><a href='[r:macroLinkText("MuseSpecUpdate@this","none", specData, currentToken())]'>[r: specText]</a></font>
   </td>
   <td align="left" width="15%">
-    [h: jsonData = json.append("[]",aptitude,strformat(" %s Muse Aptitude check",aptitude),"MuseAptitude")]	
-    [h,if(default): outputter = "<font color='black'><a href='"+macroLinkText("Entry@this","none",jsonData, currentToken())+"'>"+aptitude+"</font></a>"; outputter = "<font color='black'>"+aptitude+"</font>"]
+    [h: jsonData = json.append("[]",aptitude,strformat(" %s Muse Aptitude check",aptAbbr),"MuseAptitude")]	
+    [h,if(default): outputter = "<font color='black'><a href='"+macroLinkText("Entry@this","none",jsonData, currentToken())+"'>"+aptAbbr+"</font></a>"; outputter = "<font color='black'>"+aptAbbr+"</font>"]
     {outputter}
   </td>
   <td width="15%" align="right">
@@ -2394,6 +2394,7 @@ hindered. If restrained by another character, the restrained character is immobi
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: skill=json.get(macro.args,0)]
 [h: ability=json.get(macro.args,1)]
+[h: ability = substring(ability,0,length(ability) - 5)]
 
 <!-- Skills that can have multiple fields get a prefix -->
 [h: skill = if(startsWith(skill, "Academics"),"Academics",skill)]
@@ -3283,7 +3284,7 @@ characteristics (gait, posture, poise).
 <p>
 <b>Specializations:</b> As appropriate to the field.
 <h2>Building</h2>
-Creating an item from scratch is handled as a Task Action with a timeframe determined by the gamemaster. The timeframe should be set according to the complexity of the object and could range from an hour (constructing a set of shelves) to days (assembling a robot from spare parts) or even months (building a house). Numerous factors may apply modifiers to the test, such as the use of entoptic blueprints/help manuals (+20) or poor working conditions (–10 to –30). Tools are also a factor, perhaps making the job easier (superior tools +10 to +30), more difficult (poor or inadequate tools, –10 to –30), or even impossible (lack of required tools).
+Creating an item from scratch is handled as a Task Action with a timeframe determined by the gamemaster. The timeframe should be set according to the complexity of the object and could range from an hour (constructing a set of shelves) to days (assembling a robot from spare parts) or even months (building a house). Numerous factors may apply modifiers to the test, such as the use of entoptic blueprints/help manuals (+20) or poor working conditions (-10 to -30). Tools are also a factor, perhaps making the job easier (superior tools +10 to +30), more difficult (poor or inadequate tools, -10 to -30), or even impossible (lack of required tools).
 <h2>Repairing</h2>
 Damaged items may be repaired in a similar manner. See the rules for Synthmorph and Object Repair, p. 208.
 <h2>Modifying</h2>
@@ -5797,13 +5798,14 @@ Area: <select name="area" selected="">
       <td>
         <label for="Bonus">Bonus: </label><input type="text" name="[r: tempAbility+"Bonus"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 1)]" size="2"></input>
         <input type="hidden" name="[r: tempAbility+"Aptitude"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 2)]"></input>
+        <input type="hidden" name="[r: tempAbility+"Default"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 3)]"></input>
       </td>
       <td>
         <label for="Spec">Spec.: </label><input type="text" name="[r: tempAbility+"Spec"]" value="[r: json.get(json.get(MuseSkills, tempAbility), 4)]" size="10"></input>
       </td>
-      <td>
-        <label for="del">Delete: </label><input type="checkbox" name="[r: tempAbility+"Delete"]" value="1"></input>
-      </td>
+      [h: tmpStr = tempAbility + "Delete"]
+      [h,if(indexOf(tempAbility,":")==-1): delStr = ""; delStr = '<td><label for="del">Delete: </label><input type="checkbox" name="'+tmpStr+'" value="1"></input></td>']
+      [r: delStr]
     </tr>
     [h: color=if(color=="#ededed","white","#ededed")]
   }]
@@ -7690,7 +7692,7 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 </table>
-<table width="100%" cellpadding="0">
+<table width="100%" cellpadding="0" border="1">
 	<tr>
 		<td width="100%" valign="top">
 			[r, macro("MuseSkillsDisplayTop@this"):""]
