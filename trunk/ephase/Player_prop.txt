@@ -78,11 +78,13 @@ DR:0
 INIT:0
 SPD:0
 DB:0
+TotalPenalty:{Armor_Penalty-(WOUNDS*10)}
 -----Damage and Stress-----
 DAMAGE:0
 WOUNDS:0
 STRESS:0
 TRAUMA:0
+DefenseShow:1
 -----Reputation-----
 A-Rep:0
 A-Rep_favors:[]
@@ -116,6 +118,9 @@ ImplantsEnhancements:{}
 -----Gear-----
 GearShow:0
 Gear:{}
+Armor_Penalty:0
+Armor_Energy:0
+Armor_Kinetic:0
 -----Muse Stats-----
 COG_Muse:0
 COO_Muse:0
