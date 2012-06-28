@@ -627,6 +627,48 @@
 </table>
 
 !!
+@@ @CombatDefenseDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="1" cellpadding="0" width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]" align="center">
+		<font color="white"><b>DEFENSES</b></font>
+  </tr>
+  <tr bgcolor="[r: table(PageColor,4)]" align="center">
+    <b>SKILLS</b>
+  </tr>
+</table>
+
+<!--
+<table border="0" cellpadding="2" width="100%"  align="center" bgcolor="white">
+
+[h: color = table(PageColor,4)]
+
+[h: defenseList = "Dodge,Parry,Fortitude,Toughness,Will"]
+[foreach(def,defenseList,""),code:{
+		
+				<tr bgcolor="[r: color]">
+	<td>
+		[h:jsonData=json.set("{}","name",def,"rank",getProperty(def),"modifier",0)]
+		<font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: def]</a></font>
+					</td>
+					<td align="center">
+[h: jsonData = json.append("[]", def, getProperty(def),"Defense")]
+<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>[r: getProperty(def)]</a></font>[if(getProperty(def+"Norm")==""),code:{}; {[h: jsonData = json.append("[]", def, getProperty(def+"Norm"),"Defense")]/<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>[r: getProperty(def+"Norm")]</a></font>*}]
+					</td>
+</tr>
+[h: color = if(color == table(PageColor,4),"white", table(PageColor,4))]
+
+}]
+
+[if(DodgeNorm==""&&ParryNorm==""&&FortitudeNorm==""&&ToughnessNorm==""&&WillNorm==""),code:{
+}; {
+<tr><td align="center" colspan="2" ><font size="2">*without bonus</font></td></tr>
+}]				
+				
+</table>
+-->
+
+!!
 @@ @OffenseDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="0" cellpadding="0" width="100%"  align="center">
@@ -7699,6 +7741,33 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 </table>
+
+!!
+@@ @CombatSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+<table width="100%" cellpadding="0" border="1">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("CombatDefenseDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<!--
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("MuseAptitudesDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("MuseStatsDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+-->
 
 !!
 @@ @SkillsSheet
