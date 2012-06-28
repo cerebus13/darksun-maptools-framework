@@ -472,7 +472,7 @@
   }]
 	<tr bgcolor="[r:table(PageColor,3)]">
 		<td>
-			<b><center><font color="black">[h: jsonData = json.append("[]", "New Gear", encode(""))]<a href='[r:macroLinkText("GearUpdateDialog@this","none",jsonData,currentToken())]'>Add Gear Trait</a></font></center></b>
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Gear", encode(""))]<a href='[r:macroLinkText("GearUpdateDialog@this","none",jsonData,currentToken())]'>Add Gear</a></font></center></b>
 		</td>
 	</tr>
 </table>
@@ -629,14 +629,229 @@
 !!
 @@ @CombatDefenseDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
-<table border="1" cellpadding="0" width="100%">
+[h: frayArray = json.get(ActiveSkills,"Fray")]
+[h: frayRating = json.get(frayArray, 0) + json.get(frayArray, 1)]
+[h: fraySpec = json.get(frayArray, 4)]
+[h: freeArray = json.get(ActiveSkills,"Freerunning")]
+[h: freeRating = json.get(freeArray, 0) + json.get(freeArray, 1)]
+[h: freeSpec = json.get(freeArray, 4)]
+[h: bladeArray = json.get(ActiveSkills,"Blades")]
+[h: bladeRating = json.get(bladeArray, 0) + json.get(bladeArray, 1)]
+[h: bladeSpec = json.get(bladeArray, 4)]
+[h: clubArray = json.get(ActiveSkills,"Clubs")]
+[h: clubRating = json.get(clubArray, 0) + json.get(clubArray, 1)]
+[h: clubSpec = json.get(clubArray, 4)]
+[h: unarmedArray = json.get(ActiveSkills,"Unarmed Combat")]
+[h: unarmedRating = json.get(unarmedArray, 0) + json.get(unarmedArray, 1)]
+[h: unarmedSpec = json.get(unarmedArray, 4)]
+
+<!-- Loop through all ActiveSkills looking for Exotic Melee -->
+[h: tmpArray = json.fields(ActiveSkills, "json")]
+[h: exoticArray = "[]"]
+[h,foreach(tmp,tmpArray,""), code:
+  {
+    [h,if(indexOf(tmp,"Exotic Melee:") != -1): exoticArray = json.append(exoticArray,json.append("[]",tmp,json.get(ActiveSkills,tmp))); ""]
+  }
+]
+
+<table border="0" cellpadding="0" width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]" align="center">
-		<font color="white"><b>DEFENSES</b></font>
+    <td colspan="4"> 
+      <font color="white"><b>DEFENSES</b></font>
+    </td>
+    <td width="5%">
+			<a href='[r:macroLinkText("DefenseShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("DefenseShow"))]' border="0" align="middle"></image></a>&nbsp; 
+		</td>
   </tr>
-  <tr bgcolor="[r: table(PageColor,4)]" align="center">
-    <b>SKILLS</b>
+  
+[if(DefenseShow),code:
+{
+  
+[h: useColor = "white")]
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp;<b>ARMOR</b>
+		</td>
+		<td align="center" width="15%">
+			<b>Energy</b>
+		</td>
+    <td align="center" width="15%">
+			<b>Kinetic</b>
+		</td>
+		<td align="center" width="15%">
+			<b>Penalty</b>
+		</td>
+  </tr> 
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp;(edit)
+		</td>
+		<td align="center" width="15%">
+			[r: Armor_Energy]
+		</td>
+    <td align="center" width="15%">
+			[r: Armor_Kinetic]
+		</td>
+		<td align="center" width="15%">
+			[r: Armor_Penalty]
+		</td>
+  </tr>  
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
+  <tr bgcolor="[r: useColor]" align="center">
+    <td colspan="4">
+      <b>SKILLS</b>
+    </td>
   </tr>
-</table>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; <b>NAME</b>
+		</td>
+		<td align="center" width="15%">
+			<b>Spec.</b>
+		</td>
+    <td align="center" width="15%">
+			<b>Aptitude</b>
+		</td>
+		<td align="right" width="15%">
+			<b>Total</b>&nbsp;
+		</td>
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; Fray
+		</td>
+    <td align="center" width="15%">
+			[r,if(length(fraySpec) > 0): fraySpec; "None"]
+		</td>
+    <td align="center" width="15%">
+			REF [r: REF]
+		</td>
+		<td align="right" width="15%">
+			+[r: frayRating]&nbsp;
+		</td>
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]    
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; Freerunning
+		</td>
+    <td align="center" width="15%">
+			[r,if(length(freeSpec) > 0): freeSpec; "None"]
+		</td>
+    <td align="center" width="15%">
+			SOM [r: SOM]
+		</td>
+		<td align="right" width="15%">
+			+[r: freeRating]&nbsp;
+		</td>
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]      
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; Blades
+		</td>
+    <td align="center" width="15%">
+			[r,if(length(bladeSpec) > 0): bladeSpec; "None"]
+		</td>
+    <td align="center" width="15%">
+			SOM [r: SOM]
+		</td>
+		<td align="right" width="15%">
+			+[r: bladeRating]&nbsp;
+		</td>    
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]      
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; Clubs
+		</td>
+    <td align="center" width="15%">
+			[r,if(length(clubSpec) > 0): clubSpec; "None"]
+		</td>
+    <td align="center" width="15%">
+			SOM [r: SOM]
+		</td>
+		<td align="right" width="15%">
+			+[r: clubRating]&nbsp;
+		</td>
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]   
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; Unarmed Combat
+		</td>
+    <td align="center" width="15%">
+			[r,if(length(unarmedSpec) > 0): unarmedSpec; "None"]
+		</td>
+    <td align="center" width="15%">
+			SOM [r: SOM]
+		</td>
+		<td align="right" width="15%">
+			+[r: unarmedRating]&nbsp;
+		</td>    
+  </tr>
+[foreach(tmp2,exoticArray,""), code:
+  {
+  [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  [h: loopSpec = json.get(json.get(tmp2,1),4)]
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; [r: json.get(tmp2,0)]
+		</td>
+    <td align="center" width="15%">
+			[r,if(length(loopSpec) > 0): loopSpec; "None"]
+		</td>
+    <td align="center" width="15%">
+			SOM [r: SOM]
+		</td>
+		<td align="right" width="15%">
+			+[r: json.get(json.get(tmp2,1),0) + json.get(json.get(tmp2,1),1)]&nbsp;
+		</td>
+  </tr>
+  }
+]
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  <tr bgcolor="[r: useColor]" align="center">
+    <td colspan="4">
+      <b>PSI DEFENSE</b>
+    </td> 
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; WIL ([r: WIL])
+		</td>
+    <td align="center" width="45%" colspan="3">
+			[r: WIL * 2] (x2)
+		</td>
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  <tr bgcolor="[r: useColor]" align="center">
+    <td colspan="4">
+      <b>SHOCK DEFENSE</b> (DUR - Damage + Energy Armor)
+    </td> 
+  </tr>
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; DUR ([r: DUR])
+		</td>
+    <td align="center" width="45%" colspan="3">
+			[r: DUR - DAMAGE + Armor_Energy]
+		</td>
+  </tr>  
+</table>  
+};
+{</table>} 
+]
+
+
+    
+
 
 <!--
 <table border="0" cellpadding="2" width="100%"  align="center" bgcolor="white">
@@ -3981,6 +4196,12 @@ The character has temporarily lost power points in a trait. See the Weaken effec
 @@ @MorphTraitsShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("MorphTraitsShow")): setProperty("MorphTraitsShow",0); setProperty("MorphTraitsShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
+@@ @DefenseShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("DefenseShow")): setProperty("DefenseShow",0); setProperty("DefenseShow",1)]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
@@ -7705,13 +7926,6 @@ Area: <select name="area" selected="">
 <table width="100%" cellpadding="0">
 	<tr>
 		<td width="100%" valign="top">
-			[r, macro("DamageStressDisplay@this"):""]
-		</td>
-	</tr>
-</table>
-<table width="100%" cellpadding="0">
-	<tr>
-		<td width="100%" valign="top">
 			[r, macro("RepDisplay@this"):""]
 		</td>
 	</tr>
@@ -7749,6 +7963,13 @@ Area: <select name="area" selected="">
 	<tr>
 		<td width="100%" valign="top">
 			[r, macro("CombatDefenseDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("DamageStressDisplay@this"):""]
 		</td>
 	</tr>
 </table>
