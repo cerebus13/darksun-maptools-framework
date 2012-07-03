@@ -918,6 +918,39 @@
 </table>
 
 !!
+@@ @WeaponDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+[h: color = table(PageColor,4)]
+[h,if(json.isEmpty(Attacks)): propList = ""; propList = json.fields(Attacks)]
+[foreach(prop, propList, ""), code: 
+{
+  [h, if(color == "white"): color = table(PageColor,4); color = "white"]
+  <tr bgcolor="[r: color]">
+    <td align="left">
+      <font color="black"><a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><b>[r: prop]</b></a></font>
+    </td>
+    <td align="left">
+      [r: json.get(json.get(Attacks,prop),1)]
+      [r: if(json.get(json.get(Attacks,prop),1)!=""&&json.get(json.get(Attacks,prop),2)!="",", ","")]
+      [r: if(json.get(json.get(Attacks,prop),2)!="",json.get(json.get(Attacks,prop),2)+" Area","")]
+    </td>
+    <td align="right">
+      [h:jsonData=json.set("{}","name",prop)]
+      <a href='[r:macroLinkText("AttackCheck@this","all", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 2)]' border="0"></image></a>
+    </td>
+    [h: jsonData = json.append("[]", prop, "", "Attack")]			
+    <td align="right">
+      [h: Rank =  json.get(json.get(Attacks,prop),3)]
+      [if(Rank==""),code:
+        {
+          <a href='[r:macroLinkText("Entry@this","none", json.append("[]", prop, "", "Area"), currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>
+        };{
+          <a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>
+      }]
+    </td>
+  </tr>
+}]
+!!
 @@ @OffenseDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 <table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
@@ -939,6 +972,46 @@
 
 <center>
 <a href='[r:macroLinkText("OffenseUpdateDialogNew@this","none","",currentToken())]'><b><font color="black">Add New Attack</font></b></a></center>
+}; {}]
+</table>
+
+!!
+@@ @WeaponDisplayTop
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
+<table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
+  <tr bgcolor="[r:table(PageColor,2)]">
+    <td></td><td></td><td></td><td></td><td></td>
+    <td align="right">
+      <a href='[r:macroLinkText("WeaponShowUpdate@this","none","",currentToken())]'><image src='[r: tableImage("OpenClose", getProperty("WeaponShow"))]' border="0" align="middle"></image></a>&nbsp; 
+    </td>
+  </tr>
+  <tr bgcolor="[r:table(PageColor,2)]">
+    <th>
+      &nbsp; <font color="white">WEAPONS</font>
+    </th>
+    <th>
+      <font color="white">AP</font>
+    </th>
+    <th>
+      <font color="white">DV</font>
+    </th>
+    <th>
+      <font color="white">Firing Mode</font>
+    </th>
+    <th>
+      <font color="white">Ammo</font>
+    </th>
+    <th>
+      <font color="white">Actions</font>
+    </th>
+  </tr>
+[if(WeaponShow),code:{
+  [r, macro("WeaponDisplay@this"):""]
+  <tr>
+    <td colspan="6" align="center">
+      <a href='[r:macroLinkText("WeaponUpdateDialogNew@this","none","",currentToken())]'><b><font color="black">Add New Weapon</font></b></a>
+    </td>
+  </tr>
 }; {}]
 </table>
 
@@ -1842,7 +1915,8 @@
 "KnowSkill", "305, 320",
 "ActiveSkill", "305, 320",
 "MuseAptitude", "305, 212",
-"MuseSkill", "305, 223"
+"MuseSkill", "305, 223",
+"Weapon", "405, 256"
 
 )]
 
@@ -4489,6 +4563,12 @@ Implants & Enhancements Updated
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
+@@ @WeaponShowUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[if(getProperty("WeaponShow")): setProperty("WeaponShow",0); setProperty("WeaponShow",1)]
+[r, macro("SheetLoad@this"):macro.args]
+
+!!
 @@ @OffenseUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: name = json.get(macro.args, "name")]
@@ -4524,6 +4604,43 @@ Implants & Enhancements Updated
 [if(name != json.get(macro.args, "overwrite")),code:{[h: Attacks = json.remove(Attacks, json.get(macro.args, "overwrite"))]}; {}]
 [h, macro("SheetLoad@Lib:MnM"):""]
 Offense Updated
+
+!!
+@@ @WeaponUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: name = json.get(macro.args, "name")]
+[h: action = json.get(macro.args, "action")]
+[h: range = json.get(macro.args, "range")]
+[h: area = json.get(macro.args, "area")]
+
+[h: attackbonus = json.get(macro.args, "attackbonus")]
+[h: defenseclass = json.get(macro.args, "defenseclass")]
+[h: critical = json.get(macro.args, "critical")]
+
+[h: resistance = json.get(macro.args, "resistance")]
+[h: effectrank = json.get(macro.args, "effectrank")]
+[h: damage = json.get(macro.args, "damage")]
+[h: strengthrank = json.get(macro.args, "strengthrank")]
+
+[h: notes = json.get(macro.args, "notes")]
+
+[h: delete = json.get(macro.args, "delete")]
+
+[h: condData = ""]
+[h: condList = "Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable, Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned, Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[foreach( temp, condList, ""),code:{[h: tempName = json.get(macro.args,temp)][if(tempName !=""),code:{[h: condData =listappend(condData, tempName)]}; {}]
+}]
+[h: cond = condData]
+
+[if (delete == 1), code:{
+[h: Attacks = json.remove(Attacks, name)]
+}; {
+[h: jsonData = json.append("[]",action,range,area,attackbonus,defenseclass,critical,resistance,effectrank,strengthrank,damage,notes,cond)]
+[h: Attacks = json.set(Attacks, name, jsonData)]
+}]
+[if(name != json.get(macro.args, "overwrite")),code:{[h: Attacks = json.remove(Attacks, json.get(macro.args, "overwrite"))]}; {}]
+[h, macro("SheetLoad@Lib:MnM"):""]
+Weapons Updated
 
 !!
 @@ @PowersShowUpdate
@@ -5506,6 +5623,132 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
 }]
 
 !!
+@@ @WeaponUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[h: name = macro.args]
+[h: data = json.get(Attacks, name)]
+
+[dialog("Weapon Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
+<head>
+<title>Weapon Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="Weapon Update" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			<b>Name: </b> <input type="text" name="name" value="[r: name]"></input>
+		</td>
+		<td align="center">		
+	 Delete? <input type="checkbox" name="delete" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			Action: <select name="action" selected="[r: action = json.get(data,0)]">
+<option value="No Action" [r: if(action == "No Action", "selected", "")]>No Action</option>
+<option value="Standard" [r: if(action == "Standard", "selected", "")]>Standard</option>
+<option value="Move" [r: if(action == "Move", "selected", "")]>Move</option>
+<option value="Free" [r: if(action == "Free", "selected", "")]>Free</option>
+<option value="Reaction" [r: if(action == "Reaction", "selected", "")]>Reaction</option>
+</select>
+Range: <select name="range" selected="[r: range = json.get(data,1)]">
+<option value="" [r: if(range == "", "selected", "")]></option>
+<option value="Close" [r: if(range == "Close", "selected", "")]>Close</option>
+<option value="Ranged" [r: if(range == "Ranged", "selected", "")]>Ranged</option>
+<option value="Perception" [r: if(range == "Perception", "selected", "")]>Perception</option>
+</select>  
+Area: <select name="area" selected="[r: area = json.get(data,2)]">
+<option value="" [r: if(area == "", "selected", "")]></option>
+<option value="Burst" [r: if(area == "Burst", "selected", "")]>Burst</option>
+<option value="Cloud" [r: if(area == "Cloud", "selected", "")]>Cloud</option>
+<option value="Cone" [r: if(area == "Cone", "selected", "")]>Cone</option>
+<option value="Cylinder" [r: if(area == "Cylinder", "selected", "")]>Cylinder</option>
+<option value="Line" [r: if(area == "Line", "selected", "")]>Line</option>
+<option value="Perception" [r: if(area == "Perception", "selected", "")]>Perception</option>
+<option value="Shapeable" [r: if(area == "Shapeable", "selected", "")]>Shapeable</option>
+</select><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Attack Bonus: <input type="text" name="attackbonus" value="[r: attackbonus = json.get(data,3)]" size="2"></input> vs. <select name="defenseclass" selected="[r: defenseclass = json.get(data,4)]">
+<option value="" [r: if(defenseclass == "", "selected", "")]></option>
+<option value="Dodge" [r: if(defenseclass == "Dodge", "selected", "")]>Dodge</option>
+<option value="Parry" [r: if(defenseclass == "Parry", "selected", "")]>Parry</option>
+<option value="Toughness" [r: if(defenseclass == "Toughness", "selected", "")]>Toughness</option>
+<option value="Fortitude" [r: if(defenseclass == "Fortitude", "selected", "")]>Fortitude</option>
+<option value="Will" [r: if(defenseclass == "Will", "selected", "")]>Will</option>
+</select> Critical on: <input type="text" name="critical" value="[r: critical = json.get(data,5)]" size="2"></input>+
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<select name="resistance" selected="[r: resistance = json.get(data,6)]">
+<option value="" [r: if(resistance == "", "selected", "")]></option>
+<option value="Toughness" [r: if(resistance == "Toughness", "selected", "")]>Toughness</option>
+<option value="Fortitude" [r: if(resistance == "Fortitude", "selected", "")]>Fortitude</option>
+<option value="Will" [r: if(resistance == "Will", "selected", "")]>Will</option>
+<option value="Dodge" [r: if(resistance == "Dodge", "selected", "")]>Dodge</option>
+<option value="Parry" [r: if(resistance == "Parry", "selected", "")]>Parry</option>
+</select>  vs. Effect Rank: <input type="text" name="effectrank" value="[r: effectrank = json.get(data,7)]" size="2"></input> + Strength? <input type="checkbox" name="strengthrank" value="1" [r, if(json.get(data,8)=="1"):"CHECKED"; ""]></input>  
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Non-Damage Effect/Conditions Only: <input type="checkbox" name="damage" value="1" [r,  if(json.get(data,9)=="1"):"CHECKED"; ""]></input><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Notes: <textarea name="notes" value="[r: notes = json.get(data,10)]" rows="2" cols="40">[r: notes = json.get(data,10)]</textarea>
+		</td>
+	</tr>
+[h: cond = json.get(data, 11)]
+	<tr>
+		<td>
+			<label for="cond"><b>Conditions: </b></label><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td>
+						1st Degree<br>
+[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable"]
+[FOREACH(cond1, cond1List, "<br>"),code:{<input type="checkbox" name="[r: cond1]" value="[r: cond1]" [r, if(listContains(cond,cond1)):"checked"; ""]></input> <font size = "2">[r: cond1]</font>}]
+					</td>
+					<td>
+						2nd Degree<br>
+[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned"]
+[FOREACH(cond2, cond2List, "<br>"),code:{<input type="checkbox" name="[r: cond2]" value="[r: cond2]" [r, if(listContains(cond,cond2)):"checked"; ""]></input> <font size = "2">[r: cond2]</font>}]
+					</td>
+					<td>
+3rd Degree<br>
+[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[FOREACH(cond3, cond3List, "<br>"),code:{<input type="checkbox" name="[r: cond3]" value="[r: cond3]" [r, if(listContains(cond,cond3)):"checked"; ""]></input> <font size = "2">[r: cond3]</font>}]
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><input type='hidden' name='overwrite' value='[r: name]'></input>
+			<input type='submit' name='Submit' value='Submit'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+}]
+
+!!
+
 @@ @OffenseUpdateDialogNew
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
 [dialog("Offense Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
@@ -5515,6 +5758,127 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
 </head>
 <body>
 <form method="json" name="Offense Update" action="[r:macroLinkText('OffenseUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			<b>Name: </b> <input type="text" name="name" value="New Power"></input>
+		</td>
+		<td align="center">		
+	 Delete? <input type="checkbox" name="delete" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%" valign="top">
+	<tr>
+		<td>
+			Action: <select name="action" selected="">
+<option value="No Action" >No Action</option>
+<option value="Standard" >Standard</option>
+<option value="Move" >Move</option>
+<option value="Free" >Free</option>
+<option value="Reaction" >Reaction</option>
+</select>
+Range: <select name="range" selected="">
+<option value="" ></option>
+<option value="Close" >Close</option>
+<option value="Ranged" >Ranged</option>
+<option value="Perception" >Perception</option>
+</select>  
+Area: <select name="area" selected="">
+<option value="" ></option>
+<option value="Burst" >Burst</option>
+<option value="Cloud" >Cloud</option>
+<option value="Cone" >Cone</option>
+<option value="Cylinder" >Cylinder</option>
+<option value="Line" >Line</option>
+<option value="Perception" >Perception</option>
+<option value="Shapeable" >Shapeable</option>
+</select><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Attack Bonus: <input type="text" name="attackbonus" value="" size="2"></input> vs. <select name="defenseclass" selected="">
+<option value="" ></option>
+<option value="Dodge" >Dodge</option>
+<option value="Parry" >Parry</option>
+<option value="Toughness" >Toughness</option>
+<option value="Fortitude" >Fortitude</option>
+<option value="Will" >Will</option>
+</select> Critical on: <input type="text" name="critical" value="" size="2"></input>+
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<select name="resistance" selected="">
+<option value="" ></option>
+<option value="Toughness" >Toughness</option>
+<option value="Fortitude" >Fortitude</option>
+<option value="Will" >Will</option>
+<option value="Dodge" >Dodge</option>
+<option value="Parry" >Parry</option>
+</select>  vs. Effect Rank: <input type="text" name="effectrank" value="" size="2"></input> + Strength? <input type="checkbox" name="strengthrank" value="1" ></input>  
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Non-Damage Effect/Conditions Only: <input type="checkbox" name="damage" value="1"></input><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Notes: <textarea name="notes" value="" rows="2" cols="40"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label for="cond"><b>Conditions: </b></label><hr>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tr>
+					<td>
+						1st Degree<br>
+[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable"]
+[FOREACH(cond1, cond1List, "<br>"),code:{<input type="checkbox" name="[r: cond1]" value="[r: cond1]" ></input> <font size = "2">[r: cond1]</font>}]
+					</td>
+					<td>
+						2nd Degree<br>
+[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned"]
+[FOREACH(cond2, cond2List, "<br>"),code:{<input type="checkbox" name="[r: cond2]" value="[r: cond2]" ></input> <font size = "2">[r: cond2]</font>}]
+					</td>
+					<td>
+3rd Degree<br>
+[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
+[FOREACH(cond3, cond3List, "<br>"),code:{<input type="checkbox" name="[r: cond3]" value="[r: cond3]" ></input> <font size = "2">[r: cond3]</font>}]
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><input type='hidden' name='overwrite' value=''></input>
+			<input type='submit' name='Submit' value='Submit'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+}]
+
+!!
+@@ @WeaponUpdateDialogNew
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Weapons Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
+<head>
+<title>Weapons Update</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="Weapon Update" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
 <table width="100%" valign="top">
 	<tr>
 		<td>
@@ -7392,6 +7756,55 @@ Area: <select name="area" selected="">
 </html>
 
 !!
+@@ @WeaponEntry
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
+[h: name =  json.get(macro.args,0)]
+[h: range =  json.get(json.get(Attacks,name),1)]
+[h: area =  json.get(json.get(Attacks,name),2)]
+
+<head>
+<title>Attack Modifiers</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: json.get(macro.args,0)]</center>
+		</td>
+	</tr>
+</table>
+	
+[if(range=="Perception"||area!=""),code:{[r, macro("AttackArea@this"):""]}; {
+	[r, macro("AttackTarget@this"):""]
+	[r, macro("AttackRangeMods@this"):""]
+	[r, macro("AttackMods@this"):""]
+}]
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="ExeMacro" value="AttackCheck"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
 @@ @AttackMods
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <table width="100%"  bgcolor="white">
@@ -7970,6 +8383,13 @@ Area: <select name="area" selected="">
 	<tr>
 		<td width="100%" valign="top">
 			[r, macro("DamageStressDisplay@this"):""]
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0">
+	<tr>
+		<td width="100%" valign="top">
+			[r, macro("WeaponDisplayTop@this"):""]
 		</td>
 	</tr>
 </table>
