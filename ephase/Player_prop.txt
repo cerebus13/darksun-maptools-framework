@@ -121,6 +121,8 @@ Gear:{}
 Armor_Penalty:0
 Armor_Energy:0
 Armor_Kinetic:0
+Weapons:{}
+WeaponShow:1
 -----Muse Stats-----
 COG_Muse:0
 COO_Muse:0
