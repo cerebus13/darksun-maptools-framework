@@ -921,32 +921,30 @@
 @@ @WeaponDisplay
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
 [h: color = table(PageColor,4)]
-[h,if(json.isEmpty(Attacks)): propList = ""; propList = json.fields(Attacks)]
+[h,if(json.isEmpty(Weapons)): propList = ""; propList = json.fields(Weapons)]
 [foreach(prop, propList, ""), code: 
 {
+  [h: jsonWeap = json.get(Weapons,prop)]
   [h, if(color == "white"): color = table(PageColor,4); color = "white"]
   <tr bgcolor="[r: color]">
     <td align="left">
       <font color="black"><a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><b>[r: prop]</b></a></font>
     </td>
-    <td align="left">
-      [r: json.get(json.get(Attacks,prop),1)]
-      [r: if(json.get(json.get(Attacks,prop),1)!=""&&json.get(json.get(Attacks,prop),2)!="",", ","")]
-      [r: if(json.get(json.get(Attacks,prop),2)!="",json.get(json.get(Attacks,prop),2)+" Area","")]
+    <td align="center">
+      [r: json.get(jsonWeap,0)]
     </td>
-    <td align="right">
-      [h:jsonData=json.set("{}","name",prop)]
-      <a href='[r:macroLinkText("AttackCheck@this","all", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 2)]' border="0"></image></a>
+    <td align="center">
+      [r: json.get(jsonWeap,1)]
+    </td>		
+    <td align="center">
+      [r: json.ToList(json.get(jsonWeap,2),"/")]
     </td>
-    [h: jsonData = json.append("[]", prop, "", "Attack")]			
-    <td align="right">
-      [h: Rank =  json.get(json.get(Attacks,prop),3)]
-      [if(Rank==""),code:
-        {
-          <a href='[r:macroLinkText("Entry@this","none", json.append("[]", prop, "", "Area"), currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>
-        };{
-          <a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>
-      }]
+    <td align="center">
+    </td>
+    <td>
+      <image src='[r: tableImage("Buttons", 2)]' border="0"></image>
+      <image src='[r: tableImage("Buttons", 1)]' border="0"></image>
+      <image src='[r: tableImage("Buttons", 12)]' border="0"></image>
     </td>
   </tr>
 }]
