@@ -928,7 +928,8 @@
   [h, if(color == "white"): color = table(PageColor,4); color = "white"]
   <tr bgcolor="[r: color]">
     <td align="left">
-      <font color="black"><a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><b>[r: prop]</b></a></font>
+      [h: jsonData = json.append("[]", prop, json.get(jsonWeap, 7))]
+      &nbsp; <font color="black"><a href='[r:macroLinkText("WeaponDescriptionDisplay@this","none",jsonData,currentToken())]'><b>[r: prop]</b></a></font>
     </td>
     <td align="center">
       [r: json.get(jsonWeap,0)]
@@ -937,17 +938,27 @@
       [r: json.get(jsonWeap,1)]
     </td>		
     <td align="center">
-      [r: json.ToList(json.get(jsonWeap,2),"/")]
+      [r: json.toList(json.get(jsonWeap,2),"/")]
     </td>
     <td align="center">
+      <a href='[r:macroLinkText("WeaponReload@this","all",prop,currentToken())]'>[r: json.get(jsonWeap,3) + "/" + json.get(jsonWeap,4)]</a>
     </td>
-    <td>
+    <td align="center">
       <image src='[r: tableImage("Buttons", 2)]' border="0"></image>
       <image src='[r: tableImage("Buttons", 1)]' border="0"></image>
       <image src='[r: tableImage("Buttons", 12)]' border="0"></image>
+      <a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><image src='[r: tableImage("Buttons", 13)]' border="0"></image></a>
     </td>
   </tr>
 }]
+!!
+@@ @WeaponReload
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+  [h: jsonWeap = json.get(Weapons,macro.args)]
+  [h: currAmmo = json.get(jsonWeap,3)]
+  [h: maxAmmo = json.get(jsonWeap,4)]
+  [h,if(currAmmo==maxAmmo || maxAmmo==0): input(".|blah is at full ammo, or has no ammo to reload!||LABEL|SPAN=TRUE")]
+  [h,if(currAmmo==maxAmmo || maxAmmo==0): abort(0)]
 !!
 @@ @OffenseDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
@@ -976,7 +987,7 @@
 !!
 @@ @WeaponDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
-<table border="1" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
+<table border="0" cellpadding="0" width="100%"   bgcolor="[r:table(PageColor,3)]">
   <tr bgcolor="[r:table(PageColor,2)]">
     <td></td><td></td><td></td><td></td><td></td>
     <td align="right">
@@ -7645,6 +7656,29 @@ Area: <select name="area" selected="">
 }]
 
 !!
+@@ @WeaponDescriptionDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Display ; tooltip= ; minWidth= ; 
+[dialog("Weapons", "temporary=0; input=1; noframe=0"): {
+<html>
+  <head>
+    <title>Weapon Display</title>
+  </head>
+  <body>
+    <table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+      <tr bgcolor="[r: table(PageColor,2)]" color="white">
+        <td align="center" width="98%">
+          <font size="5"><b>[r: json.get(macro.args, 0)]</b></font>
+        </td>
+      </tr>
+      <tr>	
+        <td colspan="2">[r: decode(json.get(macro.args,1))]</td>
+      </tr>
+    </table>
+  </body>
+</html>
+}]
+
+!!
 @@ @AreaEntry
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <head>
@@ -8384,7 +8418,7 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 </table>
-<table width="100%" cellpadding="0">
+<table width="100%" cellpadding="0" border="1">
 	<tr>
 		<td width="100%" valign="top">
 			[r, macro("WeaponDisplayTop@this"):""]
