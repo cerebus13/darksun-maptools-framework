@@ -954,11 +954,46 @@
 !!
 @@ @WeaponReload
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-  [h: jsonWeap = json.get(Weapons,macro.args)]
+  [h: weapName = macro.args]
+  [h: jsonWeap = json.get(Weapons,weapName)]
   [h: currAmmo = json.get(jsonWeap,3)]
   [h: maxAmmo = json.get(jsonWeap,4)]
-  [h,if(currAmmo==maxAmmo || maxAmmo==0): input(".|blah is at full ammo, or has no ammo to reload!||LABEL|SPAN=TRUE")]
-  [h,if(currAmmo==maxAmmo || maxAmmo==0): abort(0)]
+  [h,if(maxAmmo==0): input(".|"+weapName+" has no ammo to reload or adjust!||LABEL|SPAN=TRUE")]
+  [h,if(maxAmmo==0): abort(0)]
+  
+  [h:choice = input(
+      strformat(".|Weapon: %s||LABEL|SPAN=TRUE ",weapName),
+      strformat(".|Ammo: %s / %s||LABEL|SPAN=TRUE ",currAmmo,maxAmmo),
+      "pick|Reload (Complex Action),Reload (Quick Action), Change ammo manually|Choose Option|RADIO",
+      "manualAmmo|0|Manual ammo adjust|TEXT|"
+  )]
+  [h:abort(choice)]
+  
+  [h,switch(pick),code:
+    case 0:
+    {
+      [h: currAmmo = maxAmmo]
+      [h: outStr = "uses a Complex Action to reload "]
+    };
+    case 1: 
+    {
+      [h: currAmmo = maxAmmo]
+      [h: outStr = "uses a Simple Action to reload "]
+    };
+    case 2:
+    {
+      [h,if(manualAmmo <= 0 || isNumber(manualAmmo) != 1): input(".|Entered amount for manual ammo adjustment is invalid!||LABEL|SPAN=TRUE")]
+      [h,if(manualAmmo <= 0 || isNumber(manualAmmo) != 1): abort(0)]
+      [h: currAmmo = manualAmmo]
+      [h: outStr = "manually adjusts the ammo to be " + manualAmmo + " in "]
+    }
+  ]
+  [h: jsonWeap = json.set(jsonWeap,3,currAmmo)]
+  [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
+  
+  [h: pName = getName(currentToken())]
+  <p><span bgcolor=#cccccc><b>{pName}</b> {outStr}{weapName}.</span>
+  [h, macro("SheetLoad@this"):""]
 !!
 @@ @OffenseDisplayTop
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet Display ; tooltip= ; minWidth= ; 
