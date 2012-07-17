@@ -4652,21 +4652,17 @@ Offense Updated
 !!
 @@ @WeaponUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
-[h: name = json.get(macro.args, "name")]
-[h: action = json.get(macro.args, "action")]
-[h: range = json.get(macro.args, "range")]
-[h: area = json.get(macro.args, "area")]
-
-[h: attackbonus = json.get(macro.args, "attackbonus")]
-[h: defenseclass = json.get(macro.args, "defenseclass")]
-[h: critical = json.get(macro.args, "critical")]
-
-[h: resistance = json.get(macro.args, "resistance")]
-[h: effectrank = json.get(macro.args, "effectrank")]
-[h: damage = json.get(macro.args, "damage")]
-[h: strengthrank = json.get(macro.args, "strengthrank")]
-
-[h: notes = json.get(macro.args, "notes")]
+[h: weapName = json.get(macro.args, "weapName")]
+[h: weapAP = json.get(macro.args, "weapAP")]
+[h: weapDV = json.get(macro.args, "weapDV")]
+[h: weapAmmo = json.get(macro.args, "weapAmmo")]
+[h: weapFModes1 = json.get(macro.args, "weapFModes1")]
+[h: weapFModes2 = json.get(macro.args, "weapFModes2")]
+[h: weapFModes3 = json.get(macro.args, "weapFModes3")]
+[h: weapSkill = json.get(macro.args, "weapSkill")]
+[h: weapExotic = json.get(macro.args, "weapExotic")]
+[h: weapText = json.get(macro.args, "weapText")]
+[h: weapDesc = json.get(macro.args, "weapDesc")]
 
 [h: delete = json.get(macro.args, "delete")]
 
@@ -5916,119 +5912,111 @@ Area: <select name="area" selected="">
 !!
 @@ @WeaponUpdateDialogNew
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Weapons Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
+[dialog("New Weapon", "temporary=0; height=480; width=400; input=1; noframe=0"): 
+{
+<html>
 <head>
-<title>Weapons Update</title>
+<title>New Weapon</title>
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="Weapon Update" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
-<table width="100%" valign="top">
-	<tr>
-		<td>
-			<b>Name: </b> <input type="text" name="name" value="New Power"></input>
-		</td>
-		<td align="center">		
-	 Delete? <input type="checkbox" name="delete" value="1"></input>
-		</td>
-	</tr>
-</table>
-<table width="100%" valign="top">
-	<tr>
-		<td>
-			Action: <select name="action" selected="">
-<option value="No Action" >No Action</option>
-<option value="Standard" >Standard</option>
-<option value="Move" >Move</option>
-<option value="Free" >Free</option>
-<option value="Reaction" >Reaction</option>
-</select>
-Range: <select name="range" selected="">
-<option value="" ></option>
-<option value="Close" >Close</option>
-<option value="Ranged" >Ranged</option>
-<option value="Perception" >Perception</option>
-</select>  
-Area: <select name="area" selected="">
-<option value="" ></option>
-<option value="Burst" >Burst</option>
-<option value="Cloud" >Cloud</option>
-<option value="Cone" >Cone</option>
-<option value="Cylinder" >Cylinder</option>
-<option value="Line" >Line</option>
-<option value="Perception" >Perception</option>
-<option value="Shapeable" >Shapeable</option>
-</select><hr>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Attack Bonus: <input type="text" name="attackbonus" value="" size="2"></input> vs. <select name="defenseclass" selected="">
-<option value="" ></option>
-<option value="Dodge" >Dodge</option>
-<option value="Parry" >Parry</option>
-<option value="Toughness" >Toughness</option>
-<option value="Fortitude" >Fortitude</option>
-<option value="Will" >Will</option>
-</select> Critical on: <input type="text" name="critical" value="" size="2"></input>+
-		</td>
-	</tr>	
-	<tr>
-		<td>
-			<select name="resistance" selected="">
-<option value="" ></option>
-<option value="Toughness" >Toughness</option>
-<option value="Fortitude" >Fortitude</option>
-<option value="Will" >Will</option>
-<option value="Dodge" >Dodge</option>
-<option value="Parry" >Parry</option>
-</select>  vs. Effect Rank: <input type="text" name="effectrank" value="" size="2"></input> + Strength? <input type="checkbox" name="strengthrank" value="1" ></input>  
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Non-Damage Effect/Conditions Only: <input type="checkbox" name="damage" value="1"></input><hr>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Notes: <textarea name="notes" value="" rows="2" cols="40"></textarea>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<label for="cond"><b>Conditions: </b></label><hr>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table width="100%">
-				<tr>
-					<td>
-						1st Degree<br>
-[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable"]
-[FOREACH(cond1, cond1List, "<br>"),code:{<input type="checkbox" name="[r: cond1]" value="[r: cond1]" ></input> <font size = "2">[r: cond1]</font>}]
-					</td>
-					<td>
-						2nd Degree<br>
-[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned"]
-[FOREACH(cond2, cond2List, "<br>"),code:{<input type="checkbox" name="[r: cond2]" value="[r: cond2]" ></input> <font size = "2">[r: cond2]</font>}]
-					</td>
-					<td>
-3rd Degree<br>
-[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
-[FOREACH(cond3, cond3List, "<br>"),code:{<input type="checkbox" name="[r: cond3]" value="[r: cond3]" ></input> <font size = "2">[r: cond3]</font>}]
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td align="center"><input type='hidden' name='overwrite' value=''></input>
-			<input type='submit' name='Submit' value='Submit'></input>
-		</td>
-	</tr>
-</table>
+<form method="json" name="New Weapon" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
+  <table width="100%" valign="top">
+    <tr>
+      <td>
+        <b>Name: </b> <input type="text" name="weapName" value="New Weapon"></input>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" >
+    <tr>
+      <td>
+        AP: <input type="text" name="weapAP" value="0" size="3"></input>
+        DV (# or spc): <input type="text" name="weapDV" value="0" size="3"></input>
+        Ammo: <input type="text" name="weapAmmo" value="0" size="3"></input>
+        <hr>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Firing Modes (pick none for all if not applicable)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        1st: <select name="weapFModes1">
+          <option value="none" selected="selected">None</option>
+          <option value="SS">SS</option>
+          <option value="SA">SA</option>
+          <option value="BF">BF</option>
+          <option value="FA">FA</option>
+        </select>
+        2nd: <select name="weapFModes2">
+          <option value="none" selected="selected">None</option>
+          <option value="SS">SS</option>
+          <option value="SA">SA</option>
+          <option value="BF">BF</option>
+          <option value="FA">FA</option>
+        </select>
+        3rd: <select name="weapFModes3">
+          <option value="none" selected="selected">None</option>
+          <option value="SS">SS</option>
+          <option value="SA">SA</option>
+          <option value="BF">BF</option>
+          <option value="FA">FA</option>
+        </select>
+      </td>
+    </tr>	
+    <tr>
+      <td>
+        Skill (Exotic has text entry)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <select name="weapSkill">
+          <option value="Beam Weapons" selected="selected">Beam Weapons</option>
+          <option value="Blades">Blades</option>
+          <option value="Clubs">Clubs</option>
+          <option value="Exotic Melee">Exotic Melee</option>
+          <option value="Exotic Ranged">Exotic Ranged</option>
+          <option value="Gunnery">Gunnery</option>
+          <option value="Kinetic Weapons">Kinetic Weapons</option>
+          <option value="Seeker Weapons">Seeker Weapons</option>
+          <option value="Spray Weapons">Spray Weapons</option>
+          <option value="Throwing Weapons">Throwing Weapons</option>
+          <option value="Unarmed Combat">Unarmed Combat</option>
+        </select>
+        <input type="text" name="weapExotic" value=""></input>
+        <hr>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Text to print with attack:
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" name="weapText" value="" size="50"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Description (html supported): 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <textarea name="weapDesc" value="" rows="10" cols="50"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type='submit' name='Submit' value='Submit'></input>
+      </td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>
