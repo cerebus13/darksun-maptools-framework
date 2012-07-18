@@ -1,5 +1,6 @@
 @@ @onCampaignLoad
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h:defineFunction("pause", "pause@"+getMacroLocation(), 1, 0 ) ] 
 [h:defineFunction("die100", "die100@"+getMacroLocation(), 0, 0 ) ]
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
@@ -4669,7 +4670,7 @@ Offense Updated
 [h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
 [h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
 [h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
-[h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc)]
+[h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc))]
 [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
 
 [h, macro("SheetLoad@Lib:MnM"):""]
@@ -5658,123 +5659,155 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
 !!
 @@ @WeaponUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[h: name = macro.args]
-[h: data = json.get(Attacks, name)]
+[h: weapName = macro.args]
+[h: weapJson = json.get(Weapons, weapName)]
+[h: weapDesc = json.get(weapJson, 7)]
+[h: weapDesc = decode(weapDesc)]
+[h: weapDesc = replace(weapDesc,"<","^")]
+[h: weapDesc = replace(weapDesc,">","@")]
+[h: weapFModes = json.get(weapJson, 2)]
+[h: fm1 = json.append("[]"," selected","","","","")]
+[h: fm2 = json.append("[]"," selected","","","","")]
+[h: fm3 = json.append("[]"," selected","","","","")]
+[h: loop = 1]
+[foreach(fm, weapFModes, ""), code: 
+{
+  [h,switch(fm):
+    case "SS": tmpJson = json.append("[]",""," selected","","",""); 
+    case "SA": tmpJson = json.append("[]","",""," selected","",""); 
+    case "BF": tmpJson = json.append("[]","","",""," selected",""); 
+    case "FA": tmpJson = json.append("[]","","","",""," selected")
+  ]
+  [h,switch(loop):
+    case 1: fm1 = tmpJson;
+    case 2: fm2 = tmpJson;
+    case 3: fm3 = tmpJson
+  ]
+  [h: loop = loop + 1]
+}]
+[h: weaponSkill = json.get(weapJson,5)]
+[h: exoticText = ""]
+[h,switch(weaponSkill):
+    case "Beam Weapons": tmpJson = json.append("[]"," selected","","","","","","","","","",""); 
+    case "Blades": tmpJson = json.append("[]",""," selected","","","","","","","","",""); 
+    case "Clubs": tmpJson = json.append("[]","",""," selected","","","","","","","",""); 
+    case "Gunnery": tmpJson = json.append("[]","","","","",""," selected","","","","","");
+    case "Kinetic Weapons": tmpJson = json.append("[]","","","","","",""," selected","","","","");
+    case "Seeker Weapons": tmpJson = json.append("[]","","","","","","",""," selected","","","");
+    case "Spray Weapons": tmpJson = json.append("[]","","","","","","","",""," selected","","");
+    case "Throwing Weapons": tmpJson = json.append("[]","","","","","","","","",""," selected","");
+    case "Unarmed Combat": tmpJson = json.append("[]","","","","","","","","","",""," selected");
+    default: exoticText = substring(weaponSkill,indexOf(weaponSkill,":")+2)
+]
+[h,if(startsWith(weaponSkill,"Exotic Melee")): tmpJson = json.append("[]","","",""," selected","","","","","","","")]
+[h,if(startsWith(weaponSkill,"Exotic Ranged")): tmpJson = json.append("[]","","","","","selected","","","","","","")]
+[h: ws = tmpJson]
 
-[dialog("Weapon Update", "temporary=0; height=480; width=400; input=1; noframe=0"): {<html>
+[dialog("Edit Weapon", "temporary=0; height=480; width=400; input=1; noframe=0"): 
+{
+<html>
 <head>
-<title>Weapon Update</title>
+<title>Edit Weapon: {weapName}</title>
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="Weapon Update" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
-<table width="100%" valign="top">
-	<tr>
-		<td>
-			<b>Name: </b> <input type="text" name="name" value="[r: name]"></input>
-		</td>
-		<td align="center">		
-	 Delete? <input type="checkbox" name="delete" value="1"></input>
-		</td>
-	</tr>
-</table>
-<table width="100%" valign="top">
-	<tr>
-		<td>
-			Action: <select name="action" selected="[r: action = json.get(data,0)]">
-<option value="No Action" [r: if(action == "No Action", "selected", "")]>No Action</option>
-<option value="Standard" [r: if(action == "Standard", "selected", "")]>Standard</option>
-<option value="Move" [r: if(action == "Move", "selected", "")]>Move</option>
-<option value="Free" [r: if(action == "Free", "selected", "")]>Free</option>
-<option value="Reaction" [r: if(action == "Reaction", "selected", "")]>Reaction</option>
-</select>
-Range: <select name="range" selected="[r: range = json.get(data,1)]">
-<option value="" [r: if(range == "", "selected", "")]></option>
-<option value="Close" [r: if(range == "Close", "selected", "")]>Close</option>
-<option value="Ranged" [r: if(range == "Ranged", "selected", "")]>Ranged</option>
-<option value="Perception" [r: if(range == "Perception", "selected", "")]>Perception</option>
-</select>  
-Area: <select name="area" selected="[r: area = json.get(data,2)]">
-<option value="" [r: if(area == "", "selected", "")]></option>
-<option value="Burst" [r: if(area == "Burst", "selected", "")]>Burst</option>
-<option value="Cloud" [r: if(area == "Cloud", "selected", "")]>Cloud</option>
-<option value="Cone" [r: if(area == "Cone", "selected", "")]>Cone</option>
-<option value="Cylinder" [r: if(area == "Cylinder", "selected", "")]>Cylinder</option>
-<option value="Line" [r: if(area == "Line", "selected", "")]>Line</option>
-<option value="Perception" [r: if(area == "Perception", "selected", "")]>Perception</option>
-<option value="Shapeable" [r: if(area == "Shapeable", "selected", "")]>Shapeable</option>
-</select><hr>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Attack Bonus: <input type="text" name="attackbonus" value="[r: attackbonus = json.get(data,3)]" size="2"></input> vs. <select name="defenseclass" selected="[r: defenseclass = json.get(data,4)]">
-<option value="" [r: if(defenseclass == "", "selected", "")]></option>
-<option value="Dodge" [r: if(defenseclass == "Dodge", "selected", "")]>Dodge</option>
-<option value="Parry" [r: if(defenseclass == "Parry", "selected", "")]>Parry</option>
-<option value="Toughness" [r: if(defenseclass == "Toughness", "selected", "")]>Toughness</option>
-<option value="Fortitude" [r: if(defenseclass == "Fortitude", "selected", "")]>Fortitude</option>
-<option value="Will" [r: if(defenseclass == "Will", "selected", "")]>Will</option>
-</select> Critical on: <input type="text" name="critical" value="[r: critical = json.get(data,5)]" size="2"></input>+
-		</td>
-	</tr>	
-	<tr>
-		<td>
-			<select name="resistance" selected="[r: resistance = json.get(data,6)]">
-<option value="" [r: if(resistance == "", "selected", "")]></option>
-<option value="Toughness" [r: if(resistance == "Toughness", "selected", "")]>Toughness</option>
-<option value="Fortitude" [r: if(resistance == "Fortitude", "selected", "")]>Fortitude</option>
-<option value="Will" [r: if(resistance == "Will", "selected", "")]>Will</option>
-<option value="Dodge" [r: if(resistance == "Dodge", "selected", "")]>Dodge</option>
-<option value="Parry" [r: if(resistance == "Parry", "selected", "")]>Parry</option>
-</select>  vs. Effect Rank: <input type="text" name="effectrank" value="[r: effectrank = json.get(data,7)]" size="2"></input> + Strength? <input type="checkbox" name="strengthrank" value="1" [r, if(json.get(data,8)=="1"):"CHECKED"; ""]></input>  
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Non-Damage Effect/Conditions Only: <input type="checkbox" name="damage" value="1" [r,  if(json.get(data,9)=="1"):"CHECKED"; ""]></input><hr>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Notes: <textarea name="notes" value="[r: notes = json.get(data,10)]" rows="2" cols="40">[r: notes = json.get(data,10)]</textarea>
-		</td>
-	</tr>
-[h: cond = json.get(data, 11)]
-	<tr>
-		<td>
-			<label for="cond"><b>Conditions: </b></label><hr>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table width="100%">
-				<tr>
-					<td>
-						1st Degree<br>
-[h: cond1List="Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable"]
-[FOREACH(cond1, cond1List, "<br>"),code:{<input type="checkbox" name="[r: cond1]" value="[r: cond1]" [r, if(listContains(cond,cond1)):"checked"; ""]></input> <font size = "2">[r: cond1]</font>}]
-					</td>
-					<td>
-						2nd Degree<br>
-[h: cond2List="Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned"]
-[FOREACH(cond2, cond2List, "<br>"),code:{<input type="checkbox" name="[r: cond2]" value="[r: cond2]" [r, if(listContains(cond,cond2)):"checked"; ""]></input> <font size = "2">[r: cond2]</font>}]
-					</td>
-					<td>
-3rd Degree<br>
-[h: cond3List="Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
-[FOREACH(cond3, cond3List, "<br>"),code:{<input type="checkbox" name="[r: cond3]" value="[r: cond3]" [r, if(listContains(cond,cond3)):"checked"; ""]></input> <font size = "2">[r: cond3]</font>}]
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td align="center"><input type='hidden' name='overwrite' value='[r: name]'></input>
-			<input type='submit' name='Submit' value='Submit'></input>
-		</td>
-	</tr>
-</table>
+<form method="json" name="Edit Weapon" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
+  <table width="100%" valign="top">
+    <tr>
+      <td>
+        <b>Name: </b> <input type="text" name="weapName" value="[r: weapName]"></input>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" >
+    <tr>
+      <td>
+        AP: <input type="text" name="weapAP" value="[r: json.get(weapJson,0)]" size="3"></input>
+        DV (# or spc): <input type="text" name="weapDV" value="[r: json.get(weapJson,1)]" size="3"></input>
+        Ammo: <input type="text" name="weapAmmo" value="[r: json.get(weapJson,4)]" size="3"></input>
+        <hr>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Firing Modes (pick none for all if not applicable)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        1st: <select name="weapFModes1">
+          <option value="none"[r: json.get(fm1, 0)]>None</option>
+          <option value="SS"[r: json.get(fm1, 1)]>SS</option>
+          <option value="SA"[r: json.get(fm1, 2)]>SA</option>
+          <option value="BF"[r: json.get(fm1, 3)]>BF</option>
+          <option value="FA"[r: json.get(fm1, 4)]>FA</option>
+        </select>
+        2nd: <select name="weapFModes2">
+          <option value="none"[r: json.get(fm2, 0)]>None</option>
+          <option value="SS"[r: json.get(fm2, 1)]>SS</option>
+          <option value="SA"[r: json.get(fm2, 2)]>SA</option>
+          <option value="BF"[r: json.get(fm2, 3)]>BF</option>
+          <option value="FA"[r: json.get(fm2, 4)]>FA</option>
+        </select>
+        3rd: <select name="weapFModes3">
+          <option value="none"[r: json.get(fm3, 0)]>None</option>
+          <option value="SS"[r: json.get(fm3, 1)]>SS</option>
+          <option value="SA"[r: json.get(fm3, 2)]>SA</option>
+          <option value="BF"[r: json.get(fm3, 3)]>BF</option>
+          <option value="FA"[r: json.get(fm3, 4)]>FA</option>
+        </select>
+      </td>
+    </tr>	
+    <tr>
+      <td>
+        Skill (Exotic has text entry)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <select name="weapSkill">
+          <option value="Beam Weapons"[r: json.get(ws, 0)]>Beam Weapons</option>
+          <option value="Blades"[r: json.get(ws, 1)]>Blades</option>
+          <option value="Clubs"[r: json.get(ws, 2)]>Clubs</option>
+          <option value="Exotic Melee"[r: json.get(ws, 3)]>Exotic Melee</option>
+          <option value="Exotic Ranged"[r: json.get(ws, 4)]>Exotic Ranged</option>
+          <option value="Gunnery"[r: json.get(ws, 5)]>Gunnery</option>
+          <option value="Kinetic Weapons"[r: json.get(ws, 6)]>Kinetic Weapons</option>
+          <option value="Seeker Weapons"[r: json.get(ws, 7)]>Seeker Weapons</option>
+          <option value="Spray Weapons"[r: json.get(ws, 8)]>Spray Weapons</option>
+          <option value="Throwing Weapons"[r: json.get(ws, 9)]>Throwing Weapons</option>
+          <option value="Unarmed Combat"[r: json.get(ws, 10)]>Unarmed Combat</option>
+        </select>
+        <input type="text" name="weapExotic" value="[r: exoticText]"></input>
+        <hr>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Text to print with attack:
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" name="weapText" value="[r: json.get(weapJson,6)]" size="50"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Description (^ and @ replace HTML tag brackets due to maptools bug): 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <textarea name="weapDesc" value="[r: weapDesc]" rows="10" cols="50">[r: weapDesc]</textarea>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type='submit' name='Submit' value='Submit'></input>
+      </td>
+    </tr>
+  </table>
 </form>
 </body>
 </html>
@@ -9431,5 +9464,43 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h: MuseSkills = json.set(MuseSkills, museName, museArray)]
 
 [h, macro("SheetLoad@this"):""]
+
+!!
+@@ @pause
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=User-Defined Functions;tooltip=
+[ toolkit.DebugVariableCount = argCount() ]
+[ toolkit.DebugVariableArray = macro.args ]
+[ toolkit.DebugInputParameter = ".|<html>" +
+    "<table cellspacing='2' cellpadding='0' style='background-color:#595751'>" +
+    "<tr><td>" +
+    "<table width='300px' cellspacing='0' cellpadding='2' style='background-color:#FAF9F5;'>" +
+    "%{toolkit.DebugVariableRows}</table></td></tr></html>" +
+    "|Debugger|LABEL|SPAN=TRUE"
+]
+[ toolkit.DebugVariableRow = "<tr %{toolkit.DebugVariableRowStyle}><td>" +
+    "<b>%{toolkit.DebugVariableName}</b></td><td>%{toolkit.DebugVariableContent}" +
+    "</td></tr>"
+]
+[ toolkit.DebugVariableRows = "<tr style='background-color:#E0DDD5; font-size:1.1em;'><td><b>Variable</b></td><td><b>Value</b></td></tr>" ]
+[ count( toolkit.DebugVariableCount ), code:
+{
+    [ toolkit.DebugVariableRowStyle = "" ]
+    [ toolkit.DebugVariableName = json.get( toolkit.DebugVariableArray, roll.count ) ]
+    [ toolkit.DebugVariableContent = eval( toolkit.DebugVariableName ) ]    <!-- this may not be compatible with a custom eval function (which would overwrite macro.args) -->
+    [ if( floor( roll.count/2 ) == roll.count/2 ), code:
+    {
+        [ toolkit.DebugVariableRowStyle = "style='background-color:#EDECE8;'" ]
+    } ]
+    [ toolkit.DebugVariableRows = toolkit.DebugVariableRows +
+        strformat( toolkit.DebugVariableRow )
+    ]
+} ]
+[ if( toolkit.DebugVariableCount == 0 ), code:
+{
+    [ toolkit.DebugVariableRows = "<tr><td style='font-size: 1.4em' align='center'><b>Pause</b></td></tr>" ]
+} ]
+
+[ toolkit.DebugBreak = input( strformat( toolkit.DebugInputParameter ) )]
+[ abort( toolkit.DebugBreak ) ] 
 
 !!
