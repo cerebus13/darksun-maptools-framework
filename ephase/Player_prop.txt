@@ -156,4 +156,4 @@ Json Array has the following values at indexes:
 4 = Max Ammo
 5 = Name of skill used to operate weapon
 6 = Special text to print when using an attack with weapon
-7 = Description of weapon
+7 = Description of weapon (encoded to support HTML better)
