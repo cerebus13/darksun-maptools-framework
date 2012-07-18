@@ -4655,32 +4655,25 @@ Offense Updated
 [h: weapName = json.get(macro.args, "weapName")]
 [h: weapAP = json.get(macro.args, "weapAP")]
 [h: weapDV = json.get(macro.args, "weapDV")]
-[h: weapAmmo = json.get(macro.args, "weapAmmo")]
 [h: weapFModes1 = json.get(macro.args, "weapFModes1")]
 [h: weapFModes2 = json.get(macro.args, "weapFModes2")]
 [h: weapFModes3 = json.get(macro.args, "weapFModes3")]
+[h: weapAmmo = json.get(macro.args, "weapAmmo")]
 [h: weapSkill = json.get(macro.args, "weapSkill")]
 [h: weapExotic = json.get(macro.args, "weapExotic")]
 [h: weapText = json.get(macro.args, "weapText")]
 [h: weapDesc = json.get(macro.args, "weapDesc")]
 
-[h: delete = json.get(macro.args, "delete")]
+[h: jsonFModes = "[]"]
+[h,if(weapFModes1 != "none"): jsonFModes = json.append(jsonFModes, weapFModes1); jsonFModes = jsonFModes]
+[h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
+[h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
+[h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
+[h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc)]
+[h: Weapons = json.set(Weapons,weapName,jsonWeap)]
 
-[h: condData = ""]
-[h: condList = "Dazed, Entranced, Fatigued, Hindered, Impaired, Vulnerable, Compelled, Defenseless, Disabled, Exhausted, Immobile, Prone, Stunned, Asleep, Controlled, Incapacitated, Paralyzed, Transformed, Unaware"]
-[foreach( temp, condList, ""),code:{[h: tempName = json.get(macro.args,temp)][if(tempName !=""),code:{[h: condData =listappend(condData, tempName)]}; {}]
-}]
-[h: cond = condData]
-
-[if (delete == 1), code:{
-[h: Attacks = json.remove(Attacks, name)]
-}; {
-[h: jsonData = json.append("[]",action,range,area,attackbonus,defenseclass,critical,resistance,effectrank,strengthrank,damage,notes,cond)]
-[h: Attacks = json.set(Attacks, name, jsonData)]
-}]
-[if(name != json.get(macro.args, "overwrite")),code:{[h: Attacks = json.remove(Attacks, json.get(macro.args, "overwrite"))]}; {}]
 [h, macro("SheetLoad@Lib:MnM"):""]
-Weapons Updated
+New Weapon Added
 
 !!
 @@ @PowersShowUpdate
