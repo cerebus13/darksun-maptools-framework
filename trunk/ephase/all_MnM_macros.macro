@@ -947,7 +947,6 @@
     <td align="center">
       <image src='[r: tableImage("Buttons", 2)]' border="0"></image>
       <image src='[r: tableImage("Buttons", 1)]' border="0"></image>
-      <image src='[r: tableImage("Buttons", 12)]' border="0"></image>
       <a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><image src='[r: tableImage("Buttons", 13)]' border="0"></image></a>
     </td>
   </tr>
@@ -4653,25 +4652,31 @@ Offense Updated
 !!
 @@ @WeaponUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[h: delete = json.get(macro.args, "delete")]
 [h: weapName = json.get(macro.args, "weapName")]
-[h: weapAP = json.get(macro.args, "weapAP")]
-[h: weapDV = json.get(macro.args, "weapDV")]
-[h: weapFModes1 = json.get(macro.args, "weapFModes1")]
-[h: weapFModes2 = json.get(macro.args, "weapFModes2")]
-[h: weapFModes3 = json.get(macro.args, "weapFModes3")]
-[h: weapAmmo = json.get(macro.args, "weapAmmo")]
-[h: weapSkill = json.get(macro.args, "weapSkill")]
-[h: weapExotic = json.get(macro.args, "weapExotic")]
-[h: weapText = json.get(macro.args, "weapText")]
-[h: weapDesc = json.get(macro.args, "weapDesc")]
+[if (delete == 1), code:
+{
+  [h: Weapons = json.remove(Weapons,weapName)]
+};{
+  [h: weapAP = json.get(macro.args, "weapAP")]
+  [h: weapDV = json.get(macro.args, "weapDV")]
+  [h: weapFModes1 = json.get(macro.args, "weapFModes1")]
+  [h: weapFModes2 = json.get(macro.args, "weapFModes2")]
+  [h: weapFModes3 = json.get(macro.args, "weapFModes3")]
+  [h: weapAmmo = json.get(macro.args, "weapAmmo")]
+  [h: weapSkill = json.get(macro.args, "weapSkill")]
+  [h: weapExotic = json.get(macro.args, "weapExotic")]
+  [h: weapText = json.get(macro.args, "weapText")]
+  [h: weapDesc = json.get(macro.args, "weapDesc")]
 
-[h: jsonFModes = "[]"]
-[h,if(weapFModes1 != "none"): jsonFModes = json.append(jsonFModes, weapFModes1); jsonFModes = jsonFModes]
-[h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
-[h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
-[h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
-[h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc))]
-[h: Weapons = json.set(Weapons,weapName,jsonWeap)]
+  [h: jsonFModes = "[]"]
+  [h,if(weapFModes1 != "none"): jsonFModes = json.append(jsonFModes, weapFModes1); jsonFModes = jsonFModes]
+  [h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
+  [h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
+  [h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
+  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc))]
+  [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
+}]
 
 [h, macro("SheetLoad@Lib:MnM"):""]
 New Weapon Added
@@ -5716,6 +5721,9 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
     <tr>
       <td>
         <b>Name: </b> <input type="text" name="weapName" value="[r: weapName]"></input>
+      </td>
+      <td align="center">		
+        Delete? <input type="checkbox" name="delete" value="1"></input>
       </td>
     </tr>
   </table>
