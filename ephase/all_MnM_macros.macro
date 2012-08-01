@@ -945,7 +945,8 @@
       <a href='[r:macroLinkText("WeaponReload@this","all",prop,currentToken())]'>[r: json.get(jsonWeap,3) + "/" + json.get(jsonWeap,4)]</a>
     </td>
     <td align="center">
-      <image src='[r: tableImage("Buttons", 2)]' border="0"></image>
+      [h:jsonData=json.set("{}","weapName",prop)]
+      <a href='[r:macroLinkText("WeaponCheck@this","all", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 2)]' border="0"></image></a>
       <image src='[r: tableImage("Buttons", 1)]' border="0"></image>
       <a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><image src='[r: tableImage("Buttons", 13)]' border="0"></image></a>
     </td>
@@ -1851,6 +1852,47 @@
 [r: macroLink(json.get(json.get(Attacks,name),6),"Entry@this","none",jsondata,'selected')]  vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t(Effect + Num+ Bonus): Effect + Num + Misc]}; {[t(Effect + Num + Bonus):Effect + Num + Bonus]}][r: CritTotal]
 <br>
 <i>[r, macro("ConditionsLink@this"):json.get(json.get(Attacks,name),11)]</i>
+
+!!
+@@ @WeaponCheck
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: weapUseFM = json.get(macro.args, "weapUseFM")]
+
+[h: weapName = json.get(macro.args,"weapName")]
+[h: weapJson = json.get(Weapons,weapName)]
+[h: weapAP = json.get(weapJson,0)]
+[h: weapDV = json.get(weapJson,1)]
+[h: weapFM = json.get(weapJson,2)]
+[h: weapCurrAmmo = json.get(weapJson,3)]
+[h: weapMaxAmmo = json.get(weapJson,4)]
+[h: weapSkill = json.get(weapJson,5)]
+[h: weapText = json.get(weapJson,6)]
+[h: weapSpec = json.get(weapJson,8)]
+
+[h: skillJson = json.get(ActiveSkills,weapSkill)]
+[h: skillBase = json.get(skillJson,0)]
+[h: skillMod = json.get(skillJson,1)]
+[h: skillApt = json.get(skillJson,2)]
+[h: skillDefApt = json.get(skillJson,3)]
+[h: skillSpec = json.get(skillJson,4)]
+
+[h,if(weapSpec && length(skillSpec) > 0): useMod = 10; useMod = 0]
+[h,if(skillDefApt): myApt = getProperty(skillApt)*3; myApt = -1]
+[h,if(myApt > skillBase + skillMod): useTN = myApt; useTN = skillBase + SkillMod]
+
+[h: jsonData=json.set("{}",
+                      "targetNumber",useTN,
+                      "mods",useMod,
+                      "rollerName",getName(currentToken()),
+                      "rollTitle",strformat("default %s Weapon check",weapName),
+                      "useSpec", weapSpec,
+                      "specName", skillSpec,
+                      "extraText", if(length(weapText)>0,"<br><b>Special:</b> "+weapText,""),
+                      "weapCheck", 1,
+                      "weapDV", weapDV,
+                      "weapAP", weapAP
+                      )]
+[evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 
 !!
 @@ @DefenseEntry
@@ -4668,13 +4710,15 @@ Offense Updated
   [h: weapExotic = json.get(macro.args, "weapExotic")]
   [h: weapText = json.get(macro.args, "weapText")]
   [h: weapDesc = json.get(macro.args, "weapDesc")]
+  [h: weapSpec = json.get(macro.args, "weapSpec")]
+  [h,if(weapSpec == ""): weapSpec = 0]
 
   [h: jsonFModes = "[]"]
   [h,if(weapFModes1 != "none"): jsonFModes = json.append(jsonFModes, weapFModes1); jsonFModes = jsonFModes]
   [h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
   [h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
   [h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
-  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc))]
+  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc), weapSpec)]
   [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
 }]
 
@@ -5733,6 +5777,7 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
         AP: <input type="text" name="weapAP" value="[r: json.get(weapJson,0)]" size="3"></input>
         DV (# or spc): <input type="text" name="weapDV" value="[r: json.get(weapJson,1)]" size="3"></input>
         Ammo: <input type="text" name="weapAmmo" value="[r: json.get(weapJson,4)]" size="3"></input>
+        Have Spec? <input type="checkbox" name="weapSpec" value="1"[r,if(json.get(weapJson,8)): ' checked="checked"';""]></input>
         <hr>
       </td>
     </tr>
@@ -5968,6 +6013,7 @@ Area: <select name="area" selected="">
         AP: <input type="text" name="weapAP" value="0" size="3"></input>
         DV (# or spc): <input type="text" name="weapDV" value="0" size="3"></input>
         Ammo: <input type="text" name="weapAmmo" value="0" size="3"></input>
+        Have Spec? <input type="checkbox" name="weapSpec" value="1"></input>
         <hr>
       </td>
     </tr>
@@ -9253,6 +9299,11 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(json.contains(macro.args,"secondaryTargetNumber")):secondaryTargetNumber = json.get(macro.args, "secondaryTargetNumber");secondaryTargetNumber = 0]
 [h,if(json.contains(macro.args,"useSpec")):useSpec = json.get(macro.args, "useSpec");useSpec = 0]
 [h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
+[h,if(json.contains(macro.args,"extraText")):extraText = json.get(macro.args, "extraText");extraText = ""]
+
+[h,if(json.contains(macro.args,"weapCheck")):weapCheck = json.get(macro.args, "weapCheck");weapCheck = 0]
+[h,if(json.contains(macro.args,"weapDV")):weapDV = json.get(macro.args, "weapDV");weapDV = 0]
+[h,if(json.contains(macro.args,"weapAP")):weapAP = json.get(macro.args, "weapAP");weapAP = 0]
 
 [h,if(isNumber(mods)==0): mods = 0]
 [h,if(isNumber(targetNumber)==0): targetNumber = 0]
@@ -9270,13 +9321,22 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 [h,if(dieRoll1 == dieRoll2): result = "CRITICAL "; result = ""]
 [h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
+[h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): marginNum = dieRoll; marginNum = dieRoll - (targetNumber + mods + specMod + number(teamWork)*10)]
 [h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - (targetNumber + mods + specMod + number(teamWork)*10)) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - (targetNumber + mods + specMod + number(teamWork)*10))]
+
+[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): extraDV = " <small>(+5 from MoS)</small>"; extraDV = ""]
+[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): weapDV = weapDV + 5]
+[h,if(weapCheck && marginNum > 60 && weapDV != "spc"): extraDV = " <small>(+10 from MoS)</small>"]
+[h,if(weapCheck && marginNum > 60 && weapDV != "spc"): weapDV = weapDV + 10]
+[h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">Damage Value</font> = <b>%s</b>%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">Armor Piercing</font> = <b>%s</b>',weapDV,extraDV,weapAP); weapText = ""]
 
 <p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
 <br>The total rolled is <b>{dieRollText}</b>.
 <br>The Target Number is <b>{targetNumber + mods + specMod + number(teamWork)*10}</b>.
 <br>Result: <b>{result}</b>.
 <br>{margin}
+{weapText}
+{extraText}
 <br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}{useSpecText}</small>.</p>
 
 !!
