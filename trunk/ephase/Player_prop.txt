@@ -58,6 +58,7 @@ Morph:None
 LibPlayer:Lib:Player
 LibMorph:Lib:Morph
 LibWeapon:Lib:Weapon
+LibFunction:Lib:MnM
 -----Aptitudes-----
 COG:0
 COO:0
@@ -146,7 +147,7 @@ Json Array has the following values at indexes:
 3 = 1 if Skill can be defaulted to Aptitude, 0 if not
 4 = name of Specialization if there is one, "" if not
 
-{"Freezer":[0,0,["SA"],20,20,"Spray Weapons","Targets hit must make a REF * 3 Test or become trapped. Apply a -30 modifier to this test if attack had an MoS 30+.","Freezers spew out a fast-hardening foam that immediately begins to harden. They are primarily used as a non-lethal method of immobilizing or securing a target. Struck characters must immediately make a REF * 3 Test or become trapped. Apply a -30 modifier to this test if the attacker scored an Excellent Success (MoS 30+). The foam allows characters to breath even if their mouth and nose are covered, but it may impede sight. Freezer foam can be spiked with contact toxins or drugs to additionally sedate the target. It can also be used to construct temporary barricades or cover. Hardened foam has an Armor of 10 and Durability of 20. It slowly breaks down and degrades over a 12 hour period. Freezers are two-handed.<br><br><b>[Moderate]</b>"]}
+{"Freezer":[0,0,["SA"],20,20,"Spray Weapons","Targets hit must make a REF * 3 Test or become trapped. Apply a -30 modifier to this test if attack had an MoS 30+.","Freezers spew out a fast-hardening foam that immediately begins to harden. They are primarily used as a non-lethal method of immobilizing or securing a target. Struck characters must immediately make a REF * 3 Test or become trapped. Apply a -30 modifier to this test if the attacker scored an Excellent Success (MoS 30+). The foam allows characters to breath even if their mouth and nose are covered, but it may impede sight. Freezer foam can be spiked with contact toxins or drugs to additionally sedate the target. It can also be used to construct temporary barricades or cover. Hardened foam has an Armor of 10 and Durability of 20. It slowly breaks down and degrades over a 12 hour period. Freezers are two-handed.<br><br><b>[Moderate]</b>",0]}
 Weapons are stored as a Json Object: Key = weapon's name, Value = Json Array.
 Json Array has the following values at indexes:
 0 = Armor Piercing (AP) value (negative implies it goes through armor better, positive the opposite)
@@ -157,3 +158,4 @@ Json Array has the following values at indexes:
 5 = Name of skill used to operate weapon
 6 = Special text to print when using an attack with weapon
 7 = Description of weapon (encoded to support HTML better)
+8 = Boolean 1 if player has Spec to cover this weapon, 0 if not
