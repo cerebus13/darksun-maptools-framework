@@ -947,8 +947,9 @@
     <td align="center">
       [h:jsonData=json.set("{}","weapName",prop)]
       <a href='[r:macroLinkText("WeaponCheck@this","all", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 2)]' border="0"></image></a>
-      <image src='[r: tableImage("Buttons", 1)]' border="0"></image>
-      <a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><image src='[r: tableImage("Buttons", 13)]' border="0"></image></a>
+      [h: jsonData = json.append("[]",prop,0,"Weapon")]
+      <a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'><image src='[r: tableImage("Buttons", 1)]' border="0"></image></a>
+      <a href='[r:macroLinkText("WeaponUpdateDialog@this","none", prop, currentToken())]'><image src='[r: tableImage("Buttons", 13)]' border="0"></image></a>      
     </td>
   </tr>
 }]
@@ -7922,30 +7923,64 @@ Area: <select name="area" selected="">
 !!
 @@ @WeaponEntry
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
-[h: name =  json.get(macro.args,0)]
-[h: range =  json.get(json.get(Attacks,name),1)]
-[h: area =  json.get(json.get(Attacks,name),2)]
+[h: weapName = json.get(macro.args,0)]
+[h: weapJson = json.get(Weapons,weapName)]
+[h: weapAP = json.get(weapJson,0)]
+[h: weapDV = json.get(weapJson,1)]
+[h: weapFM = json.get(weapJson,2)]
+[h: weapCurrAmmo = json.get(weapJson,3)]
+[h: weapMaxAmmo = json.get(weapJson,4)]
+[h: weapSkill = json.get(weapJson,5)]
+[h: weapText = json.get(weapJson,6)]
+[h: weapSpec = json.get(weapJson,8)]
+
+[h: skillJson = json.get(ActiveSkills,weapSkill)]
+[h: skillBase = json.get(skillJson,0)]
+[h: skillMod = json.get(skillJson,1)]
+[h: skillApt = json.get(skillJson,2)]
+[h: skillDefApt = json.get(skillJson,3)]
+[h: skillSpec = json.get(skillJson,4)]
 
 <head>
-<title>Attack Modifiers</title>
+<title>Weapon Attack</title>
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="WeaponCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td color="white">
-			<center><b>[r: json.get(macro.args,0)]</center>
+			<center><b>[r: weapName]</center>
 		</td>
 	</tr>
 </table>
-	
-[if(range=="Perception"||area!=""),code:{[r, macro("AttackArea@this"):""]}; {
-	[r, macro("AttackTarget@this"):""]
-	[r, macro("AttackRangeMods@this"):""]
-	[r, macro("AttackMods@this"):""]
-}]
+<table width="100%" bgcolor="white">
+  <!-- this guy is not used for weapons, remove it -->
+	<tr>
+		<td>
+			Teamwork:
+		</td>
+		<td align="left">
+			<select name="teamWork" selected="">
+        <option value='0'>None</option>
+        <option value='1'>One</option>
+        <option value='2'>Two</option>
+        <option value='3'>Three</option>
+			</select>
+		</td>
+	</tr>
+  <tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+  [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
+  {specRow}
+</table>
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -7959,7 +7994,11 @@ Area: <select name="area" selected="">
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">
-			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="ExeMacro" value="AttackCheck"></input>
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,3)]"></input>					
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+      <input type="hidden" name="specName" value="[r: specValue]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -9360,10 +9399,8 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = <b>%s</b>%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',weapDV,extraDV,weapAP); weapText = ""]
 
 <p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
-<br>The total rolled is <b>{dieRollText}</b>.
-<br>The Target Number is <b>{targetNumber + mods + specMod + number(teamWork)*10}</b>.
-<br>Result: <b>{result}</b>.
-<br>{margin}
+<br>The total rolled is <b>{dieRollText}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>{targetNumber + mods + specMod + number(teamWork)*10}</b>.
+<br>Result: <b>{result}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{margin}
 {weapText}
 {extraText}
 <br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}{useSpecText}</small>.</p>
