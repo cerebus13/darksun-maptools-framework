@@ -1857,9 +1857,14 @@
 !!
 @@ @WeaponCheck
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
-[h: weapUseFM = json.get(macro.args, "weapUseFM")]
+[h: argz = macro.args]
+[h: weapUseFM = json.get(argz, "weapUseFM")]
+[h,if(json.contains(argz,"useApt")):useApt = json.get(argz, "useApt");useApt = 0]
+[h,if(json.contains(argz,"useSpec")):useSpec = json.get(argz, "useSpec");useSpec = 1]
+[h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
+[h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 
-[h: weapName = json.get(macro.args,"weapName")]
+[h: weapName = json.get(argz,"weapName")]
 [h: weapJson = json.get(Weapons,weapName)]
 [h: weapAP = json.get(weapJson,0)]
 [h: weapDV = json.get(weapJson,1)]
@@ -1868,7 +1873,7 @@
 [h: weapMaxAmmo = json.get(weapJson,4)]
 [h: weapSkill = json.get(weapJson,5)]
 [h: weapText = json.get(weapJson,6)]
-[h: weapSpec = json.get(weapJson,8)]
+[h,if(useSpec): weapSpec = json.get(weapJson,8); weapSpec = 0]
 
 [h: skillJson = json.get(ActiveSkills,weapSkill)]
 [h: skillBase = json.get(skillJson,0)]
@@ -1877,10 +1882,10 @@
 [h: skillDefApt = json.get(skillJson,3)]
 [h: skillSpec = json.get(skillJson,4)]
 
-[h,if(weapSpec && length(skillSpec) > 0): useMod = 10; useMod = 0]
-[h,if(skillDefApt): myApt = getProperty(skillApt)*3; myApt = -1]
-[h,if(myApt > skillBase + skillMod): useTN = myApt; useTN = skillBase + skillMod]
-[h,if(json.isEmpty(weapFM)): weapFMvalue = ""; weapFMvalue = json.get(weapFM,0)]
+[h,if(skillDefApt): myApt = getProperty(skillApt); myApt = -1]
+[h,if(myApt > skillBase + skillMod || useApt): useTN = myApt; useTN = skillBase + skillMod]
+[h,if(json.isEmpty(weapFM) || length(weapUseFM) > 0): weapFMvalue = ""; weapFMvalue = json.get(weapFM,0)]
+[h,if(length(weapUseFM) > 0): weapFmvalue = weapUseFM]
 [h,if(length(weapFMvalue) <= 0): weapFMTxt = ""; weapFMTxt = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FF00FF'>Mode</font> = <b>" + weapFMvalue + "</b>"]
 [h,switch(weapFMvalue):
   case "SS": usedAmmo = 1;
@@ -1889,7 +1894,7 @@
   case "FA": usedAmmo = 10;
   default: usedAmmo = 0
 ]
-[h,if(usedAmmo > weapCurrAmmo): input(".|You do not have enough ammo to use the default attack for this weapon! RELOAD!||LABEL|SPAN=TRUE")]
+[h,if(usedAmmo > weapCurrAmmo): input(".|You do not have enough ammo to use "+weapFMvalue+" Firing Mode for this weapon! RELOAD!||LABEL|SPAN=TRUE")]
 [h,if(usedAmmo > weapCurrAmmo): abort(0)]
 [h: useAmmo = weapCurrAmmo - usedAmmo]
 [h,if(usedAmmo != 0): weapFMTxt = weapFMTxt + strformat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FF00FF'>Ammo</font> = <b>%s/%s</b>",useAmmo,weapMaxAmmo)]
@@ -1901,7 +1906,7 @@
                       "targetNumber",useTN,
                       "mods",useMod,
                       "rollerName",getName(currentToken()),
-                      "rollTitle",strformat("default %s Weapon check",weapName),
+                      "rollTitle",strformat("%s%s Weapon check",if(yesDialog,"","default "),weapName),
                       "useSpec", weapSpec,
                       "specName", skillSpec,
                       "extraText", weapText,
@@ -4726,6 +4731,7 @@ Offense Updated
   [h: weapFModes2 = json.get(macro.args, "weapFModes2")]
   [h: weapFModes3 = json.get(macro.args, "weapFModes3")]
   [h: weapAmmo = json.get(macro.args, "weapAmmo")]
+  [h: weapCurrAmmo = json.get(macro.args, "weapCurrAmmo")]
   [h: weapSkill = json.get(macro.args, "weapSkill")]
   [h: weapExotic = json.get(macro.args, "weapExotic")]
   [h: weapText = json.get(macro.args, "weapText")]
@@ -4738,7 +4744,7 @@ Offense Updated
   [h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
   [h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
   [h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
-  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, weapAmmo, weapAmmo, weapSkill, weapText, encode(weapDesc), weapSpec)]
+  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, if(weapCurrAmmo == -1,weapAmmo,weapCurrAmmo), weapAmmo, weapSkill, weapText, encode(weapDesc), weapSpec)]
   [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
 }]
 
@@ -5882,6 +5888,7 @@ Area: <select name="area" selected="[r: area = json.get(data,2)]">
     </tr>
     <tr>
       <td align="center">
+        <input type='hidden' name='weapCurrAmmo' value="[r: json.get(weapJson,3)]"></input>
         <input type='submit' name='Submit' value='Submit'></input>
       </td>
     </tr>
@@ -6123,6 +6130,7 @@ Area: <select name="area" selected="">
     </tr>
     <tr>
       <td align="center">
+        <input type='hidden' name='weapCurrAmmo' value="-1"></input>
         <input type='submit' name='Submit' value='Submit'></input>
       </td>
     </tr>
@@ -7945,31 +7953,23 @@ Area: <select name="area" selected="">
 <title>Weapon Attack</title>
 <meta name="input" content="true">
 </head>
-<body>
+<body>      
+[h: jsonData = json.append("[]",weapName,0,"Weapon")]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
 <form method="json" name="WeaponCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
 		<td color="white">
-			<center><b>[r: weapName]</center>
+			<center><b>[r: weapName] ([r: weapSkill])</center>
 		</td>
 	</tr>
 </table>
 <table width="100%" bgcolor="white">
-  <!-- this guy is not used for weapons, remove it -->
-	<tr>
-		<td>
-			Teamwork:
-		</td>
-		<td align="left">
-			<select name="teamWork" selected="">
-        <option value='0'>None</option>
-        <option value='1'>One</option>
-        <option value='2'>Two</option>
-        <option value='3'>Three</option>
-			</select>
-		</td>
-	</tr>
+  [h: fmSelect = ""]
+  [h,foreach(tmpFM,weapFM,""): fmSelect = fmSelect + strformat('<option value="%s">%s</option>',tmpFM,tmpFM)]
+  [h,if(json.isEmpty(weapFM)): fmRow = ""; fmRow = strformat('<tr><td><b>Firing Mode: </b></td><td align="left"><select name="weapUseFM" selected="">%s</select></td></tr>',fmSelect)]
+  {fmRow}
   <tr>
 		<td>
 			<b>Modifier:</b>
@@ -7978,9 +7978,20 @@ Area: <select name="area" selected="">
 			<input type="text" name="mods" value="" size="5"></input>
 		</td>
 	</tr>
-  [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
+  [h,if(weapSpec): specRow = '<tr><td>Use Specialization ('+skillSpec+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1" checked="checked"></input></td></tr>'; specRow = ""]
   {specRow}
+  <tr>
+    <td>
+      Use Aptitude ([r: skillApt] = [r: getProperty(skillApt)]):
+    </td>
+    <td align="left">
+      <input type="checkbox" name="useApt" value="1"></input>
+    </td>
+  </tr>
 </table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -7994,11 +8005,9 @@ Area: <select name="area" selected="">
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,4)]">
 		<td align="center">
-			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,3)]"></input>					
-			<input type="hidden" name="ExeMacro" value="die100"></input>
-      <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
-      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
-      <input type="hidden" name="specName" value="[r: specValue]"></input>
+      <input type="hidden" name="yesDialog" value="1"></input>
+			<input type="hidden" name="ExeMacro" value="WeaponCheck"></input>
+      <input type="hidden" name="weapName" value="[r: weapName]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
