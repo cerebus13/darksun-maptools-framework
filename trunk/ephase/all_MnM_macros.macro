@@ -687,7 +687,7 @@
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp;(edit)
+      &nbsp; &nbsp;<a href='[r:macroLinkText("EditArmor@this","none","",currentToken())]'>(edit)</a>
 		</td>
 		<td align="center" width="15%">
 			[r: Armor_Energy]
@@ -723,76 +723,76 @@
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]  
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; Fray
+      &nbsp; &nbsp; <a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Fray"),currentToken())]'>Fray</a>
 		</td>
     <td align="center" width="15%">
 			[r,if(length(fraySpec) > 0): fraySpec; "None"]
 		</td>
     <td align="center" width="15%">
-			REF [r: REF]
+			<a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Fray","useApt",1),currentToken())]'>REF [r: REF]</a>
 		</td>
 		<td align="right" width="15%">
-			+[r: frayRating]&nbsp;
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Fray",0,"Defense"), currentToken())]'>+[r: frayRating]</a>&nbsp;
 		</td>
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]    
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; Freerunning
+      &nbsp; &nbsp; <a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Freerunning"),currentToken())]'>Freerunning</a>
 		</td>
     <td align="center" width="15%">
 			[r,if(length(freeSpec) > 0): freeSpec; "None"]
 		</td>
     <td align="center" width="15%">
-			SOM [r: SOM]
+			<a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Freerunning","useApt",1),currentToken())]'>SOM [r: SOM]</a>
 		</td>
 		<td align="right" width="15%">
-			+[r: freeRating]&nbsp;
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Freerunning",0,"Defense"), currentToken())]'>+[r: freeRating]</a>&nbsp;
 		</td>
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]      
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; Blades
+      &nbsp; &nbsp; <a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Blades"),currentToken())]'>Blades</a>
 		</td>
     <td align="center" width="15%">
 			[r,if(length(bladeSpec) > 0): bladeSpec; "None"]
 		</td>
     <td align="center" width="15%">
-			SOM [r: SOM]
+			<a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Blades","useApt",1),currentToken())]'>SOM [r: SOM]</a>
 		</td>
 		<td align="right" width="15%">
-			+[r: bladeRating]&nbsp;
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Blades",0,"Defense"), currentToken())]'>+[r: bladeRating]</a>&nbsp;
 		</td>    
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]      
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; Clubs
+      &nbsp; &nbsp; <a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Clubs"),currentToken())]'>Clubs</a>
 		</td>
     <td align="center" width="15%">
 			[r,if(length(clubSpec) > 0): clubSpec; "None"]
 		</td>
     <td align="center" width="15%">
-			SOM [r: SOM]
+			<a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Clubs","useApt",1),currentToken())]'>SOM [r: SOM]</a>
 		</td>
 		<td align="right" width="15%">
-			+[r: clubRating]&nbsp;
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Clubs",0,"Defense"), currentToken())]'>+[r: clubRating]</a>&nbsp;
 		</td>
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]   
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; Unarmed Combat
+      &nbsp; &nbsp; <a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Unarmed Combat"),currentToken())]'>Unarmed Combat</a>
 		</td>
     <td align="center" width="15%">
 			[r,if(length(unarmedSpec) > 0): unarmedSpec; "None"]
 		</td>
     <td align="center" width="15%">
-			SOM [r: SOM]
+			<a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName","Unarmed Combat","useApt",1),currentToken())]'>SOM [r: SOM]</a>
 		</td>
 		<td align="right" width="15%">
-			+[r: unarmedRating]&nbsp;
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Unarmed Combat",0,"Defense"), currentToken())]'>+[r: unarmedRating]</a>&nbsp;
 		</td>    
   </tr>
 [foreach(tmp2,exoticArray,""), code:
@@ -801,16 +801,16 @@
   [h: loopSpec = json.get(json.get(tmp2,1),4)]
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; [r: json.get(tmp2,0)]
+      &nbsp; &nbsp; <a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName",json.get(tmp2,0)),currentToken())]'>[r: json.get(tmp2,0)]</a>
 		</td>
     <td align="center" width="15%">
 			[r,if(length(loopSpec) > 0): loopSpec; "None"]
 		</td>
     <td align="center" width="15%">
-			SOM [r: SOM]
+			<a href='[r:macroLinkText("DefenseCheck@this","all",json.set("{}","skillName",json.get(tmp2,0),"useApt",1),currentToken())]'>SOM [r: SOM]</a>
 		</td>
 		<td align="right" width="15%">
-			+[r: json.get(json.get(tmp2,1),0) + json.get(json.get(tmp2,1),1)]&nbsp;
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]",json.get(tmp2,0),0,"Defense"), currentToken())]'>+[r: json.get(json.get(tmp2,1),0) + json.get(json.get(tmp2,1),1)]</a>&nbsp;
 		</td>
   </tr>
   }
@@ -824,10 +824,10 @@
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; WIL ([r: WIL])
+      &nbsp; &nbsp; <a href='[r:macroLinkText("OtherDefenseCheck@this","all",json.set("{}","otherDefense","Psi"),currentToken())]'>WIL ([r: WIL])</a>
 		</td>
     <td align="center" width="45%" colspan="3">
-			[r: WIL * 2] (x2)
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Psi",0,"OtherDefense"), currentToken())]'>[r: WIL * 2] (x2)</a>
 		</td>
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
@@ -839,50 +839,16 @@
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
   <tr bgcolor="[r: useColor]">
     <td valign="middle">
-      &nbsp; &nbsp; DUR ([r: DUR])
+      &nbsp; &nbsp; <a href='[r:macroLinkText("OtherDefenseCheck@this","all",json.set("{}","otherDefense","Shock"),currentToken())]'>DUR ([r: DUR])</a>
 		</td>
     <td align="center" width="45%" colspan="3">
-			[r: DUR - DAMAGE + Armor_Energy]
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Shock",0,"OtherDefense"), currentToken())]'>[r: DUR - DAMAGE + Armor_Energy]</a>
 		</td>
   </tr>  
 </table>  
 };
 {</table>} 
 ]
-
-
-    
-
-
-<!--
-<table border="0" cellpadding="2" width="100%"  align="center" bgcolor="white">
-
-[h: color = table(PageColor,4)]
-
-[h: defenseList = "Dodge,Parry,Fortitude,Toughness,Will"]
-[foreach(def,defenseList,""),code:{
-		
-				<tr bgcolor="[r: color]">
-	<td>
-		[h:jsonData=json.set("{}","name",def,"rank",getProperty(def),"modifier",0)]
-		<font color="black"><a href='[r:macroLinkText("d20Check@this","all", jsonData, currentToken())]'>[r: def]</a></font>
-					</td>
-					<td align="center">
-[h: jsonData = json.append("[]", def, getProperty(def),"Defense")]
-<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>[r: getProperty(def)]</a></font>[if(getProperty(def+"Norm")==""),code:{}; {[h: jsonData = json.append("[]", def, getProperty(def+"Norm"),"Defense")]/<font color="black"><a href='[r:macroLinkText("Entry@this","none", jsonData, currentToken())]'>[r: getProperty(def+"Norm")]</a></font>*}]
-					</td>
-</tr>
-[h: color = if(color == table(PageColor,4),"white", table(PageColor,4))]
-
-}]
-
-[if(DodgeNorm==""&&ParryNorm==""&&FortitudeNorm==""&&ToughnessNorm==""&&WillNorm==""),code:{
-}; {
-<tr><td align="center" colspan="2" ><font size="2">*without bonus</font></td></tr>
-}]				
-				
-</table>
--->
 
 !!
 @@ @OffenseDisplay
@@ -1906,7 +1872,7 @@
                       "targetNumber",useTN,
                       "mods",useMod,
                       "rollerName",getName(currentToken()),
-                      "rollTitle",strformat("%s%s Weapon check",if(yesDialog,"","default "),weapName),
+                      "rollTitle",strformat("%s%s%s Weapon check",if(yesDialog,"","default "),weapName,if(useApt," (Aptitude based)","")),
                       "useSpec", weapSpec,
                       "specName", skillSpec,
                       "extraText", weapText,
@@ -1920,76 +1886,53 @@
 [h, macro("SheetLoad@Lib:MnM"):""]
 
 !!
-@@ @DefenseEntry
+@@ @DefenseCheck
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
-<head>
-<title>Defense Check</title>
-<meta name="input" content="true">
-</head>
-<body>
-<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+[h: argz = macro.args]
+[h: skillName = json.get(argz,"skillName")]
+[h,if(json.contains(argz,"useApt")):useApt = json.get(argz, "useApt");useApt = 0]
+[h,if(json.contains(argz,"useSpec")):useSpec = json.get(argz, "useSpec");useSpec = 0]
+[h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
+[h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 
-<table width="100%">
-	<tr bgcolor="[r: table(PageColor,2)]">
-		<td color="white">
-			<center><b>[r: json.get(macro.args,0)]</center>
-		</td>
-	</tr>
-</table>
-<table width="100%" bgcolor="white">
-	<tr>
-		<td>
-			<b>Difficulty Class:</b>
-		</td>
-		<td align="left">
-			<input type="text" name="DC" value="" size="5"></input>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			Aid Another:
-		</td>
-		<td align="left">
-			[H: pcList=getExposedTokenNames()]
-			[h: pcList = replace(pcList,token.name+",","")]
-			[h: pcList = "No,"+pcList]
-			<select name="aid" selected="">
-			[foreach(name,pcList,""),code:{
-			<option value='[r: name]'>[r: name]</option>
-			}]</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>Modifier:</b>
-		</td>
-		<td align="left">
-			<input type="text" name="modifier" value="" size="5"></input>
-		</td>
-	</tr>
-</table>
-<table width="100%">
-	<tr  bgcolor="[r: table(PageColor,3)]">
-		<td align="left">
-			Private: <input type="checkbox" name="Output" value="Private"></input>
-		</td>
-		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
-		</td>
-	</tr>
-</table>
-<table width="100%">
-	<tr  bgcolor="[r: table(PageColor,4)]">
-		<td align="center">
-			<input type="hidden" name="name" value="[r: json.get(macro.args,0)]"></input>					<input type="hidden" name="rank" value="[r: json.get(macro.args,1)]"></input>
-			<input type="hidden" name="ExeMacro" value="d20Check"></input>
-			<input type='submit' name='Roll' value='Roll'></input>
-		</td>
-	</tr>
-</table>
-</form>
-</body>
-</html>
+[h: skillJson = json.get(ActiveSkills,skillName)]
+[h: skillBase = json.get(skillJson,0)]
+[h: skillMod = json.get(skillJson,1)]
+[h: skillApt = json.get(skillJson,2)]
+[h: skillDefApt = json.get(skillJson,3)]
+[h: skillSpec = json.get(skillJson,4)]
+
+[h,if(skillDefApt): myApt = getProperty(skillApt); myApt = 0]
+[h,if(useApt): useTN = myApt; useTN = skillBase + skillMod]
+[h: jsonData=json.set("{}",
+                      "targetNumber",useTN,
+                      "mods",useMod,
+                      "rollerName",getName(currentToken()),
+                      "rollTitle",strformat("%s%s%s Defense check",if(yesDialog,"","default "),skillName,if(useApt," (Aptitude based)","")),
+                      "useSpec", useSpec,
+                      "specName", skillSpec,
+                      "extraText", "",
+                      "weapCheck", 0
+                      )]
+[evalMacro('[macro("die100@"+LibFunction): jsonData]')]
+
+!!
+@@ @OtherDefenseCheck
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: argz = macro.args]
+[h: otherDefense = json.get(argz,"otherDefense")]
+[h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
+[h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
+
+[h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
+[h: jsonData=json.set("{}",
+                      "targetNumber",useTN,
+                      "mods",useMod,
+                      "rollerName",getName(currentToken()),
+                      "rollTitle",strformat("%s%s Defense check",if(yesDialog,"","default "),otherDefense),
+                      "extraText", ""
+                      )]
+[evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 
 !!
 @@ @Entry
@@ -2018,7 +1961,6 @@
 "Skill", "305, 223",
 "Ability", "305, 196",
 "Aptitude", "305, 212",
-"Defense", "305, 196",
 "Initiative", "305, 146",
 "Area","305, 150",
 "Moxie", "305, 320",
@@ -2027,7 +1969,9 @@
 "ActiveSkill", "305, 320",
 "MuseAptitude", "305, 212",
 "MuseSkill", "305, 223",
-"Weapon", "405, 256"
+"Weapon", "405, 256",
+"Defense", "405, 256",
+"OtherDefense", "405, 256"
 
 )]
 
@@ -8017,6 +7961,139 @@ Area: <select name="area" selected="">
 </html>
 
 !!
+@@ @DefenseEntry
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: argz = macro.args]
+[h: skillName = json.get(argz,0)]
+[h: skillJson = json.get(ActiveSkills,skillName)]
+[h: skillBase = json.get(skillJson,0)]
+[h: skillMod = json.get(skillJson,1)]
+[h: skillApt = json.get(skillJson,2)]
+[h: skillDefApt = json.get(skillJson,3)]
+[h: skillSpec = json.get(skillJson,4)]
+
+<head>
+<title>Defense Check</title>
+<meta name="input" content="true">
+</head>
+<body>      
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", json.append("[]",skillName,0,"Defense"), currentToken())]'></link>
+<form method="json" name="DefenseEntry" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: skillName] ([r: skillBase + skillMod])</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+  <tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+  [h,if(length(skillSpec) > 0): specRow = '<tr><td>Use Specialization ('+skillSpec+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1" checked="checked"></input></td></tr>'; specRow = ""]
+  {specRow}
+  <tr>
+    <td>
+      Use Aptitude ([r: skillApt] = [r: getProperty(skillApt)]):
+    </td>
+    <td align="left">
+      <input type="checkbox" name="useApt" value="1"></input>
+    </td>
+  </tr>
+</table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+      <input type="hidden" name="yesDialog" value="1"></input>
+			<input type="hidden" name="ExeMacro" value="DefenseCheck"></input>
+      <input type="hidden" name="skillName" value="[r: skillName]"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
+@@ @OtherDefenseEntry
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: argz = macro.args]
+[h: otherDefense = json.get(argz,0)]
+[h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
+
+<head>
+<title>Other Defense Check</title>
+<meta name="input" content="true">
+</head>
+<body>      
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", json.append("[]",otherDefense,0,"OtherDefense"), currentToken())]'></link>
+<form method="json" name="OtherDefenseEntry" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>[r: otherDefense] ([r: useTN])</center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+  <tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+      <input type="hidden" name="yesDialog" value="1"></input>
+			<input type="hidden" name="ExeMacro" value="OtherDefenseCheck"></input>
+      <input type="hidden" name="otherDefense" value="[r: otherDefense]"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
 @@ @AttackMods
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Attack ; tooltip= ; minWidth= ; 
 <table width="100%"  bgcolor="white">
@@ -9550,6 +9627,21 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 
 <p><span bgcolor=#cccccc><b>{rollerName}</b> {outStr} for {repName}.</span><br>
 Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),"</b>, <b>")}</b>) Favors remaining for {repName}.
+
+!!
+@@ @EditArmor
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Update;tooltip=
+[h:choice = input(
+      strformat("energyChoice|%s|Energy armor bonus",Armor_Energy),
+      strformat("kineticChoice|%s|Kinetic armor bonus",Armor_Kinetic),
+      strformat("penaltyChoice|%s|Armor penalty",Armor_Penalty)
+)]
+[h:abort(choice)]
+
+[h,if(energyChoice != Armor_Energy): Armor_Energy = energyChoice]
+[h,if(kineticChoice != Armor_Kinetic): Armor_Kinetic = kineticChoice]
+[h,if(penaltyChoice != Armor_Penalty): Armor_Penalty = penaltyChoice]
+[h, macro("SheetLoad@this"):""]
 
 !!
 @@ @KnowSpecUpdate
