@@ -115,7 +115,7 @@
   [if(roll.count == 0||roll.count==4),code:{<tr>}; {}]
 		<td>
 			<table width="100%">
-				[h:jsonData=json.set("{}","targetNumber",getProperty(museAbl)*3,"mods",0,"rollerName",getName(currentToken()),"rollTitle",strformat("default %s Muse Aptitude check",museAbl))]
+				[h:jsonData=json.set("{}","targetNumber",getProperty(museAbl)*3,"mods",0,"rollerName",getName(currentToken()),"rollTitle",strformat("default %s Muse Aptitude check",museAbl),"useWounds",0,"useTrauma",0,"useArmorPenalty",0)]
 				<tr>
           <td bgcolor="[r: table(PageColor,2)]" color="white" align="center" width="100%">
             <font color="white"><b><a href='[r:macroLinkText("die100@this","all",jsonData, currentToken())]'>[r: table("Aptitudes",num)]</a></b>
@@ -1473,6 +1473,9 @@
 		</td>
 	</tr>
 </table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -1489,6 +1492,7 @@
 			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>	
       <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
 			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="extraText" value="[r: '<br><b>Targets:</b> ' + targList]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -1558,6 +1562,9 @@
 		</td>
 	</tr>
 </table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -1573,7 +1580,11 @@
 		<td align="center">
 			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>	
       <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+      <input type="hidden" name="useWounds" value="0"></input>
+      <input type="hidden" name="useTrauma" value="0"></input>
+      <input type="hidden" name="useArmorPenalty" value="0"></input>
 			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="extraText" value="[r: '<br><b>Targets:</b> ' + targList]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -1829,6 +1840,7 @@
 [h,if(json.contains(argz,"useSpec")):useSpec = json.get(argz, "useSpec");useSpec = 1]
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
+[h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
 
 [h: weapName = json.get(argz,"weapName")]
 [h: weapJson = json.get(Weapons,weapName)]
@@ -1866,7 +1878,10 @@
 [h,if(usedAmmo != 0): weapFMTxt = weapFMTxt + strformat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FF00FF'>Ammo</font> = <b>%s/%s</b>",useAmmo,weapMaxAmmo)]
 
 [h,if(length(weapText) > 0): weapText = "<br><b>Special:</b> "+weapText]
+[h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): weapText = "<br><b>Targets:</b> " + targList + weapText]
 [h,if(length(weapFMTxt) > 0): weapText = weapFMTxt + weapText]
+
 
 [h: jsonData=json.set("{}",
                       "targetNumber",useTN,
@@ -1894,6 +1909,7 @@
 [h,if(json.contains(argz,"useSpec")):useSpec = json.get(argz, "useSpec");useSpec = 0]
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
+[h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
 
 [h: skillJson = json.get(ActiveSkills,skillName)]
 [h: skillBase = json.get(skillJson,0)]
@@ -1904,6 +1920,10 @@
 
 [h,if(skillDefApt): myApt = getProperty(skillApt); myApt = 0]
 [h,if(useApt): useTN = myApt; useTN = skillBase + skillMod]
+
+[h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList]
+
 [h: jsonData=json.set("{}",
                       "targetNumber",useTN,
                       "mods",useMod,
@@ -1911,7 +1931,7 @@
                       "rollTitle",strformat("%s%s%s Defense check",if(yesDialog,"","default "),skillName,if(useApt," (Aptitude based)","")),
                       "useSpec", useSpec,
                       "specName", skillSpec,
-                      "extraText", "",
+                      "extraText", extraText,
                       "weapCheck", 0
                       )]
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
@@ -1923,14 +1943,19 @@
 [h: otherDefense = json.get(argz,"otherDefense")]
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
+[h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
 
 [h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
+
+[h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList]
+
 [h: jsonData=json.set("{}",
                       "targetNumber",useTN,
                       "mods",useMod,
                       "rollerName",getName(currentToken()),
                       "rollTitle",strformat("%s%s Defense check",if(yesDialog,"","default "),otherDefense),
-                      "extraText", ""
+                      "extraText", extraText
                       )]
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 
@@ -1960,18 +1985,18 @@
 "Resistance", "365, 204",
 "Skill", "305, 223",
 "Ability", "305, 196",
-"Aptitude", "305, 212",
+"Aptitude", "305, 235",
 "Initiative", "305, 146",
 "Area","305, 150",
 "Moxie", "305, 320",
-"Rep", "520, 325",
-"KnowSkill", "305, 320",
-"ActiveSkill", "305, 320",
-"MuseAptitude", "305, 212",
-"MuseSkill", "305, 223",
-"Weapon", "405, 256",
-"Defense", "405, 256",
-"OtherDefense", "405, 256"
+"Rep", "520, 270",
+"KnowSkill", "305, 210",
+"ActiveSkill", "305, 210",
+"MuseAptitude", "305, 235",
+"MuseSkill", "305, 185",
+"Weapon", "405, 230",
+"Defense", "405, 210",
+"OtherDefense", "405, 160"
 
 )]
 
@@ -2208,6 +2233,9 @@ I set my initative to
   [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
   {specRow}
 </table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -2226,6 +2254,7 @@ I set my initative to
       <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
       <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
       <input type="hidden" name="specName" value="[r: specValue]"></input>
+      <input type="hidden" name="extraText" value="[r: '<br><b>Targets:</b> ' + targList]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -2277,6 +2306,9 @@ I set my initative to
   [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
   {specRow}
 </table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -2295,6 +2327,7 @@ I set my initative to
       <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
       <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
       <input type="hidden" name="specName" value="[r: specValue]"></input>
+      <input type="hidden" name="extraText" value="[r: '<br><b>Targets:</b> ' + targList]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -2346,6 +2379,9 @@ I set my initative to
   [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
   {specRow}
 </table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
 <table width="100%">
 	<tr  bgcolor="[r: table(PageColor,3)]">
 		<td align="left">
@@ -2364,6 +2400,10 @@ I set my initative to
       <input type="hidden" name="targetNumber" value="[r: json.get(macro.args,1)]"></input>
       <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
       <input type="hidden" name="specName" value="[r: specValue]"></input>
+      <input type="hidden" name="useWounds" value="0"></input>
+      <input type="hidden" name="useTrauma" value="0"></input>
+      <input type="hidden" name="useArmorPenalty" value="0"></input>
+      <input type="hidden" name="extraText" value="[r: '<br><b>Targets:</b> ' + targList]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -7951,6 +7991,7 @@ Area: <select name="area" selected="">
 		<td align="center">
       <input type="hidden" name="yesDialog" value="1"></input>
 			<input type="hidden" name="ExeMacro" value="WeaponCheck"></input>
+      <input type="hidden" name="targList" value="[r: targList]"></input>
       <input type="hidden" name="weapName" value="[r: weapName]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
@@ -8025,6 +8066,7 @@ Area: <select name="area" selected="">
 		<td align="center">
       <input type="hidden" name="yesDialog" value="1"></input>
 			<input type="hidden" name="ExeMacro" value="DefenseCheck"></input>
+      <input type="hidden" name="targList" value="[r: targList]"></input>
       <input type="hidden" name="skillName" value="[r: skillName]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
@@ -8085,6 +8127,7 @@ Area: <select name="area" selected="">
       <input type="hidden" name="yesDialog" value="1"></input>
 			<input type="hidden" name="ExeMacro" value="OtherDefenseCheck"></input>
       <input type="hidden" name="otherDefense" value="[r: otherDefense]"></input>
+      <input type="hidden" name="targList" value="[r: targList]"></input>
 			<input type='submit' name='Roll' value='Roll'></input>
 		</td>
 	</tr>
@@ -8682,22 +8725,6 @@ Area: <select name="area" selected="">
 		</td>
 	</tr>
 </table>
-<!--
-<table width="100%" cellpadding="0">
-	<tr>
-		<td width="100%" valign="top">
-			[r, macro("MuseAptitudesDisplay@this"):""]
-		</td>
-	</tr>
-</table>
-<table width="100%" cellpadding="0">
-	<tr>
-		<td width="100%" valign="top">
-			[r, macro("MuseStatsDisplay@this"):""]
-		</td>
-	</tr>
-</table>
--->
 
 !!
 @@ @SkillsSheet
@@ -9459,6 +9486,10 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(json.contains(macro.args,"weapDV")):weapDV = json.get(macro.args, "weapDV");weapDV = 0]
 [h,if(json.contains(macro.args,"weapAP")):weapAP = json.get(macro.args, "weapAP");weapAP = 0]
 
+[h,if(json.contains(macro.args,"useWounds")):useWounds = json.get(macro.args, "useWounds");useWounds = 1]
+[h,if(json.contains(macro.args,"useTrauma")):useTrauma = json.get(macro.args, "useTrauma");useTrauma = 1]
+[h,if(json.contains(macro.args,"useArmorPenalty")):useArmorPenalty = json.get(macro.args, "useArmorPenalty");useArmorPenalty = 1]
+
 [h,if(isNumber(mods)==0): mods = 0]
 [h,if(isNumber(targetNumber)==0): targetNumber = 0]
 [h,if(isNumber(secondaryTargetNumber)==0): secondaryTargetNumber = 0]
@@ -9474,22 +9505,27 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(dieRoll1 == 0 && dieRoll1 == dieRoll2): dieRollText = "00"; dieRollText = string(dieRoll)]
 
 [h,if(dieRoll1 == dieRoll2): result = "CRITICAL "; result = ""]
-[h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
-[h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): marginNum = dieRoll; marginNum = dieRoll - (targetNumber + mods + specMod + number(teamWork)*10)]
-[h,if(dieRoll <= targetNumber + mods + specMod + number(teamWork)*10): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - (targetNumber + mods + specMod + number(teamWork)*10)) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - (targetNumber + mods + specMod + number(teamWork)*10))]
+[h: modifiedTN = targetNumber + mods + specMod + number(teamWork)*10 - if(useWounds,WOUNDS*10,0) - if(useTrauma,TRAUMA*10,0) - if(useArmorPenalty,Armor_Penalty,0)]
+[h,if(dieRoll <= modifiedTN): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
+[h,if(dieRoll <= modifiedTN): marginNum = dieRoll; marginNum = dieRoll - modifiedTN]
+[h,if(dieRoll <= modifiedTN): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - modifiedTN) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - modifiedTN)]
 
-[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): extraDV = " <small>(+5 from MoS)</small>"; extraDV = ""]
+[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): extraDV = " <small>+5 (from MoS)</small>"; extraDV = ""]
 [h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): weapDV = weapDV + 5]
-[h,if(weapCheck && marginNum > 60 && weapDV != "spc"): extraDV = " <small>(+10 from MoS)</small>"]
+[h,if(weapCheck && marginNum > 60 && weapDV != "spc"): extraDV = " <small>+10 (from MoS)</small>"]
 [h,if(weapCheck && marginNum > 60 && weapDV != "spc"): weapDV = weapDV + 10]
 [h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = <b>%s</b>%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',weapDV,extraDV,weapAP); weapText = ""]
 
+[h,if(useWounds && WOUNDS != 0): penText = strformat(" - %d (Wounds)",WOUNDS * 10); penText = ""]
+[h,if(useTrauma && TRAUMA != 0): penText = penText + strformat(" - %d (Trauma)",TRAUMA * 10)]
+[h,if(useArmorPenalty && Armor_Penalty != 0): penText = penText + strformat(" - %d (Armor)",Armor_Penalty)]
+
 <p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
-<br>The total rolled is <b>{dieRollText}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>{targetNumber + mods + specMod + number(teamWork)*10}</b>.
+<br>The total rolled is <b>{dieRollText}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>{modifiedTN}</b>.
 <br>Result: <b>{result}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{margin}
 {weapText}
 {extraText}
-<br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}{useSpecText}</small>.</p>
+<br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}{useSpecText}{penText}</small>.</p>
 
 !!
 @@ @UseMoxie
