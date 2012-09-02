@@ -1482,7 +1482,7 @@
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"></input>
 		</td>
 	</tr>
 </table>
@@ -1571,7 +1571,7 @@
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"></input>
 		</td>
 	</tr>
 </table>
@@ -1841,6 +1841,7 @@
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
+[h,if(json.contains(argz,"hideRoll")):hideRoll = json.get(argz, "hideRoll");hideRoll = 0]
 
 [h: weapName = json.get(argz,"weapName")]
 [h: weapJson = json.get(Weapons,weapName)]
@@ -1893,7 +1894,8 @@
                       "extraText", weapText,
                       "weapCheck", 1,
                       "weapDV", weapDV,
-                      "weapAP", weapAP
+                      "weapAP", weapAP,
+                      "hideRoll", hideRoll
                       )]
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 [h: weapJson = json.set(weapJson,3,useAmmo)]
@@ -1910,6 +1912,7 @@
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
+[h,if(json.contains(argz,"hideRoll")):hideRoll = json.get(argz, "hideRoll");hideRoll = 0]
 
 [h: skillJson = json.get(ActiveSkills,skillName)]
 [h: skillBase = json.get(skillJson,0)]
@@ -1932,7 +1935,8 @@
                       "useSpec", useSpec,
                       "specName", skillSpec,
                       "extraText", extraText,
-                      "weapCheck", 0
+                      "weapCheck", 0,
+                      "hideRoll", hideRoll
                       )]
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 
@@ -1944,6 +1948,7 @@
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
+[h,if(json.contains(argz,"hideRoll")):hideRoll = json.get(argz, "hideRoll");hideRoll = 0]
 
 [h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
 
@@ -1955,7 +1960,8 @@
                       "mods",useMod,
                       "rollerName",getName(currentToken()),
                       "rollTitle",strformat("%s%s Defense check",if(yesDialog,"","default "),otherDefense),
-                      "extraText", extraText
+                      "extraText", extraText,
+                      "hideRoll", hideRoll
                       )]
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 
@@ -2173,7 +2179,7 @@ I set my initative to
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -2242,7 +2248,7 @@ I set my initative to
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -2315,7 +2321,7 @@ I set my initative to
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -2388,7 +2394,7 @@ I set my initative to
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -7982,7 +7988,7 @@ Area: <select name="area" selected="">
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -8057,7 +8063,7 @@ Area: <select name="area" selected="">
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -8117,7 +8123,7 @@ Area: <select name="area" selected="">
 			Private: <input type="checkbox" name="Output" value="Private"></input>
 		</td>
 		<td alignt="right">
-			Hide Roll: <input type="checkbox" name="hide" value="1"]></input>
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"]></input>
 		</td>
 	</tr>
 </table>
@@ -9481,7 +9487,6 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(json.contains(macro.args,"useSpec")):useSpec = json.get(macro.args, "useSpec");useSpec = 0]
 [h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
 [h,if(json.contains(macro.args,"extraText")):extraText = json.get(macro.args, "extraText");extraText = ""]
-
 [h,if(json.contains(macro.args,"weapCheck")):weapCheck = json.get(macro.args, "weapCheck");weapCheck = 0]
 [h,if(json.contains(macro.args,"weapDV")):weapDV = json.get(macro.args, "weapDV");weapDV = 0]
 [h,if(json.contains(macro.args,"weapAP")):weapAP = json.get(macro.args, "weapAP");weapAP = 0]
@@ -9489,6 +9494,8 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(json.contains(macro.args,"useWounds")):useWounds = json.get(macro.args, "useWounds");useWounds = 1]
 [h,if(json.contains(macro.args,"useTrauma")):useTrauma = json.get(macro.args, "useTrauma");useTrauma = 1]
 [h,if(json.contains(macro.args,"useArmorPenalty")):useArmorPenalty = json.get(macro.args, "useArmorPenalty");useArmorPenalty = 1]
+
+[h,if(json.contains(macro.args,"hideRoll")):hideRoll = json.get(macro.args, "hideRoll");hideRoll = 0]
 
 [h,if(isNumber(mods)==0): mods = 0]
 [h,if(isNumber(targetNumber)==0): targetNumber = 0]
@@ -9510,22 +9517,26 @@ vs. DC [R, if(json.get(macro.args, "hide") == "1"), CODE:{[gt, st, t( Effect+10+
 [h,if(dieRoll <= modifiedTN): marginNum = dieRoll; marginNum = dieRoll - modifiedTN]
 [h,if(dieRoll <= modifiedTN): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - modifiedTN) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - modifiedTN)]
 
-[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): extraDV = " <small>+5 (from MoS)</small>"; extraDV = ""]
-[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc"): weapDV = weapDV + 5]
-[h,if(weapCheck && marginNum > 60 && weapDV != "spc"): extraDV = " <small>+10 (from MoS)</small>"]
-[h,if(weapCheck && marginNum > 60 && weapDV != "spc"): weapDV = weapDV + 10]
+[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+5 (from MoS)</small>"; extraDV = ""]
+[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): weapDV = weapDV + 5]
+[h,if(weapCheck && marginNum > 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+10 (from MoS)</small>"]
+[h,if(weapCheck && marginNum > 60 && weapDV != "spc" && dieRoll <= modifiedTN): weapDV = weapDV + 10]
 [h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = <b>%s</b>%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',weapDV,extraDV,weapAP); weapText = ""]
 
 [h,if(useWounds && WOUNDS != 0): penText = strformat(" - %d (Wounds)",WOUNDS * 10); penText = ""]
 [h,if(useTrauma && TRAUMA != 0): penText = penText + strformat(" - %d (Trauma)",TRAUMA * 10)]
 [h,if(useArmorPenalty && Armor_Penalty != 0): penText = penText + strformat(" - %d (Armor)",Armor_Penalty)]
 
+[h,if(hideRoll): totalModsLine = modsText + teamWorkText + useSpecText + penText; totalModsLine = dieRollText+" vs. "+targetNumber + modsText + teamWorkText + useSpecText + penText]
+[h,if(length(totalModsLine) > 0): totalModsLine = "<br><small>"+totalModsLine+"</small>.</p>"; totalModsLine = ""]
+[h,if(hideRoll): rollLine = ""; rollLine = "<br>The total rolled is <b>"+dieRollText+"</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>"+modifiedTN+"</b>."]
+
 <p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
-<br>The total rolled is <b>{dieRollText}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>{modifiedTN}</b>.
+{rollLine}
 <br>Result: <b>{result}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{margin}
 {weapText}
 {extraText}
-<br><small>{dieRollText} vs. {targetNumber}{modsText}{teamWorkText}{useSpecText}{penText}</small>.</p>
+{totalModsLine}
 
 !!
 @@ @UseMoxie
