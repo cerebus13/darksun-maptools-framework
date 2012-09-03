@@ -1420,6 +1420,8 @@
 <meta name="input" content="true">
 </head>
 <body>
+[h: jsonData = json.append("[]",json.get(macro.args,0),strformat(" %s Aptitude check",json.get(macro.args,0)),"Aptitude")]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
 <form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
@@ -1502,6 +1504,74 @@
 </html>
 
 !!
+@@ @RollEntry
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+<head>
+<title>Custom d100 Roll</title>
+<meta name="input" content="true">
+</head>
+<body>
+[h: jsonData = json.append("[]"," Custom d100 Roll",0,"Roll")]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
+<form method="json" name="RollCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+
+<table width="100%">
+	<tr bgcolor="[r: table(PageColor,2)]">
+		<td color="white">
+			<center><b>Custom d100 Roll</b></center>
+		</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="white">
+  <tr>
+		<td>
+			<b>Custom Target Number:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="targetNumber" value="" size="5"></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+</table>
+[h: targList = getSelectedNames(", ")]
+[h,if(length(targList) > 0): targString='<table width="100%"><tr bgcolor='+table(PageColor,4)+'>Targets:&nbsp;'+targList+'</tr></table>';targString = ""]
+{targString}
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,3)]">
+		<td align="left">
+			Private: <input type="checkbox" name="Output" value="Private"></input>
+		</td>
+		<td alignt="right">
+			Hide Roll: <input type="checkbox" name="hideRoll" value="1"></input>
+		</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr  bgcolor="[r: table(PageColor,4)]">
+		<td align="center">
+			<input type="hidden" name="rollTitle" value="[r: json.get(macro.args,1)]"></input>	
+      <input type="hidden" name="rollerName" value="[r: getName(currentToken())]"></input>
+			<input type="hidden" name="ExeMacro" value="die100"></input>
+      <input type="hidden" name="useWounds" value="0"></input>
+      <input type="hidden" name="useTrauma" value="0"></input>
+      <input type="hidden" name="useArmorPenalty" value="0"></input>
+      <input type="hidden" name="extraText" value="[r: '<br><b>Targets:</b> ' + targList]"></input>
+			<input type='submit' name='Roll' value='Roll'></input>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+!!
 @@ @MuseAptitudeEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 <head>
@@ -1509,6 +1579,8 @@
 <meta name="input" content="true">
 </head>
 <body>
+[h: jsonData = json.append("[]",json.get(macro.args,0),strformat(" %s Muse Aptitude check",json.get(macro.args,0)),"MuseAptitude")]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
 <form method="json" name="MuseAptitudeCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
@@ -1992,6 +2064,7 @@
 "Skill", "305, 223",
 "Ability", "305, 196",
 "Aptitude", "305, 235",
+"Roll", "305, 185",
 "Initiative", "305, 146",
 "Area","305, 150",
 "Moxie", "305, 320",
@@ -2199,12 +2272,18 @@ I set my initative to
 !!
 @@ @KnowSkillEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: base = json.get(json.get(KnowledgeSkills,skill),0)]
+[h: bonus =  json.get(json.get(KnowledgeSkills,skill),1)]
+[h: spec = json.get(json.get(KnowledgeSkills,skill),4)]
 [h: specValue = json.get(macro.args,4)]
 <head>
 <title>Knowledge Skill Check</title>
 <meta name="input" content="true">
 </head>
 <body>
+[h: jsonData = json.append("[]",skill,base+bonus,"KnowSkill",strformat(" %s skill check",skill),spec)]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
 <form method="json" name="KnowSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
@@ -2272,12 +2351,18 @@ I set my initative to
 !!
 @@ @ActiveSkillEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: base = json.get(json.get(ActiveSkills,skill),0)]
+[h: bonus =  json.get(json.get(ActiveSkills,skill),1)]
+[h: spec = json.get(json.get(ActiveSkills,skill),4)]
 [h: specValue = json.get(macro.args,4)]
 <head>
 <title>Active Skill Check</title>
 <meta name="input" content="true">
 </head>
 <body>
+[h: jsonData = json.append("[]",skill,base+bonus,"ActiveSkill",strformat(" %s skill check",skill),spec)]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
 <form method="json" name="ActiveSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
@@ -2345,12 +2430,18 @@ I set my initative to
 !!
 @@ @MuseSkillEntry
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
+[h: skill = json.get(macro.args,0)]
+[h: base = json.get(json.get(MuseSkills,skill),0)]
+[h: bonus =  json.get(json.get(MuseSkills,skill),1)]
+[h: spec = json.get(json.get(MuseSkills,skill),4)]
 [h: specValue = json.get(macro.args,4)]
 <head>
 <title>Muse Skill Check</title>
 <meta name="input" content="true">
 </head>
 <body>
+[h: jsonData = json.append("[]",skill,base+bonus,"MuseSkill",strformat(" %s Muse skill check",skill),spec)]
+<link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
 <form method="json" name="MuseSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
 
 <table width="100%">
@@ -8543,7 +8634,8 @@ Area: <select name="area" selected="">
 			<b><font color="black"><a href='[r: macroLinktext("RezPointsUpdate@this", "all", "Page=Stats", currentToken())]'>Rez Points:</a></font> [r: RezPoints]</b>
 		</td>
 		<td width="33%" align="center">
-
+      [h: jsonData = json.append("[]"," Custom d100 Roll",0,"Roll")]	
+      <font color="black"><a href='[r:macroLinkText("Entry@this","none",jsonData, currentToken())]'><b>Roll d100</b></a></font>
 		</td>	
 	</tr>
 </table>
