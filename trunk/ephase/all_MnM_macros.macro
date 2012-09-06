@@ -9878,3 +9878,52 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [ abort( toolkit.DebugBreak ) ] 
 
 !!
+@@ @AddAllToInitiative
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+
+[h:initGroup = getTokenNames("json",json.set("{}","layer",json.append("[]","TOKEN")))]
+
+[h,foreach(token,initGroup,""),CODE:
+{
+  [h,token(token),CODE:
+  {       
+    [h:addToInitiative()]
+    [h:dieRoll=eval("1d10")]
+    [h:token.init=dieRoll+if(getProperty("INIT")=="",0,getProperty("INIT"))]
+  }]
+}]
+[h: sortInitiative()]
+[h: nextInitiative()]
+[h: initJson = getInitiativeList()]
+[h: tokenJson = json.get(initJson,"tokens")]
+[h: speedCheck = 1]
+[h,foreach(thing,tokenJson,""),CODE:
+{
+  [h: tokId = json.get(thing,"tokenId")]
+  [h,if(getProperty("SPD",tokId) > speedCheck),CODE:
+  {
+    [h,token(tokId): addtoInitiative(1,0)]
+  }]
+}]
+[h: speedCheck = 2]
+[h,foreach(thing,tokenJson,""),CODE:
+{
+  [h: tokId = json.get(thing,"tokenId")]
+  [h,if(getProperty("SPD",tokId) > speedCheck),CODE:
+  {
+    [h,token(tokId): addtoInitiative(1,0)]
+  }]
+}]
+[h: speedCheck = 3]
+[h,foreach(thing,tokenJson,""),CODE:
+{
+  [h: tokId = json.get(thing,"tokenId")]
+  [h,if(getProperty("SPD",tokId) > speedCheck),CODE:
+  {
+    [h,token(tokId): addtoInitiative(1,0)]
+  }]
+}]
+
+All Tokens added to Initiative!
+
+!!
