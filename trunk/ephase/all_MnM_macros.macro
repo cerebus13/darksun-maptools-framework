@@ -2617,6 +2617,36 @@ A compelled character is directed by an outside force, but struggling against it
 }]
 
 !!
+@@ @DDInfoDisplay
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+[h: info=json.get(macro.args,0)]
+[frame("Conditions"): {
+<html>
+<head>
+<title>Condition Display</title>
+</head>
+<body bgcolor="white">
+<table width="100%" height="100%" cellpadding="2" align="center" border="0" bgcolor="white">
+	<tr bgcolor="[r: table(PageColor,2)]" color="white">
+		<td align="left" width="50">
+<image src="[r: getStateImage(info,50)]" border="0"></image>
+		</td>
+		<td align="left">
+		<font  size="5"><b>[r: info]</b></font>
+		</td>
+		<td align="right">
+		</td>
+	</tr>
+	<tr>	
+		<td></td>
+		<td colspan="2" aligh="left">[r, macro(info+"@this"):""]</td>
+	</tr>
+</table>
+</body>
+</html>
+}]
+
+!!
 @@ @ConditionsInfoRemove
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=c ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 [h: info=json.get(macro.args,0)]
@@ -4599,6 +4629,19 @@ Implants & Enhancements Updated
 [h, macro("SheetLoad@Lib:MnM"):""]
 
 !!
+@@ @DDUpdate
+@PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
+[setAllStates(0)]
+[h: if(Bruises==0, "", setState("Bruises"+Bruises,1))]
+[h: data = json.remove(macro.args, "Submit")]
+[h, foreach(item, data),code:{
+
+[r, macro(item+"Update@this"):""]
+}]
+
+[h, macro("SheetLoad@Lib:MnM"):""]
+
+!!
 @@ @DamageUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: status=input(
@@ -5658,6 +5701,67 @@ Delete this Advantage? <input type="checkbox" name="Deletecheck" value="1"></inp
 <tr bgcolor="[r: table(PageColor,2)]" color="white">
 <td colspan="3" ><center>
 <b>Combined Conditions</b></center>
+</td>
+</tr>
+[h:theList = getTokenStates(",","Combined Conditions")]
+[h: theList=listSort(theList,"A")]
+[h: columncheck = 1]
+[r, foreach(item, theList, ""),code:{
+[r, if(columncheck > 1):""; "<tr>"]
+<td>
+<input type="checkbox" name="[r: item]" value="1" [r: if(getState(item),"CHECKED","")]> <font color="black"><a href='[r:macroLinkText("ConditionsInfoDisplay@this","none",item,currentToken())]'>[r: item]</a></font></input>
+</td>
+[r, if(columncheck < 3):""; "</tr>"]
+[h: columncheck = if(columncheck == 3, 1, columncheck+1)]
+}]
+<tr>
+<td colspan="3"><hr><center>
+<input type="checkbox" name="Clear All" value="1"> Clear All</input></center
+</td>
+</tr>
+<tr>
+<td align="center" colspan="3"><hr>
+<input type='submit' name='Submit' value='Submit'></input>
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+} ]
+
+!!
+@@ @DDUpdateDialog
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
+[dialog("Derangements & Disorders", "width=300; height=405; temporary=0; input=1; noframe=0"): {
+
+<html>
+<head>
+<title>Derangements & Disorders</title>
+<meta name="input" content="true">
+</head>
+<body>
+<form method="json" name="DDUpdate" action="[r:macroLinkText('DDUpdate@Lib:MnM', 'none', '', currentToken())]">
+<table>
+<tr bgcolor="[r: table(PageColor,2)]" color="white">
+<td colspan="3"><center>
+<b>Derangements</b></center>
+</td>
+</tr>
+[h:theList = json.append("[]","Anxiety","Avoidance","Dizziness","Echolalia","Fixation","Hunger","Indecisiveness","Logorrhoea","Nausea","Chills","Confusion","Echopraxia","Mood Swings","Mute","Narcissism","Panic","Tremors","Blackout","Frenzy","Hallucinations","Hysteria","Irrationality","Paralysis","Psychosomatic Crippling")]
+[h: columncheck = 1]
+[r, foreach(item, theList, ""),code:{
+[r, if(columncheck > 1):""; "<tr>"]
+<td>
+<input type="checkbox" name="[r: item]" value="1" [r: if(json.contains(DandD,item),"CHECKED","")]> <font color="black"><a href='[r:macroLinkText("DDInfoDisplay@this","none",item,currentToken())]'>[r: item]</a></font></input>
+</td>
+[r, if(columncheck < 3):""; "</tr>"]
+[h: columncheck = if(columncheck == 3, 1, columncheck+1)]
+
+}]
+<tr bgcolor="[r: table(PageColor,2)]" color="white">
+<td colspan="3" ><center>
+<b>Disorders</b></center>
 </td>
 </tr>
 [h:theList = getTokenStates(",","Combined Conditions")]
@@ -8642,7 +8746,7 @@ Area: <select name="area" selected="">
 <table width="100%" cellpadding="5" border="0" valign="middle">
   <tr>
     <td  align="left" width="10%">
-      <b><font color="black"><a href='[r:macroLinkText("ConditionsUpdateDialog@this","none", "", currentToken())]'>Conditions:</a></font></b>
+      <b><font color="black"><a href='[r:macroLinkText("DDUpdateDialog@this","none", "", currentToken())]'>Derangements & Disorders:</a></font></b>
     </td>
     <td align="left">
        [r, macro("StatesDisplay@this"):""]

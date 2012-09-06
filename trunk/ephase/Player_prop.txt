@@ -86,6 +86,7 @@ WOUNDS:0
 STRESS:0
 TRAUMA:0
 DefenseShow:1
+DandD:[]
 -----Reputation-----
 A-Rep:0
 A-Rep_favors:[]
