@@ -12,6 +12,8 @@
     [h:token.init=dieRoll+if(getProperty("Initiative")=="",0,getProperty("Initiative"))]
   }]
 }]
+[h: sortInitiative()]
+[h: nextInitiative()]
 All Selected Tokens added to Initiative!
 
 !!
