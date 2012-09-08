@@ -5,7 +5,7 @@
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
-<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','','selected')]"></link>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
 <head><title>Character Sheet</title></head>
 <body>
 			<table width="100%">
@@ -9094,7 +9094,7 @@ Area: <select name="area" selected="">
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
-<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','','selected')]"></link>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
 <head><title>Character Sheet</title></head>
 <body>
 
@@ -9119,18 +9119,30 @@ Area: <select name="area" selected="">
 !!
 @@ @SheetLoad
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
-[H: OwnedCurrent = listContains(getOwned(getPlayerName()), currentToken())]
-[H: OwnedSelected = listContains(getOwned(getPlayerName()), getSelected())]
+[h: argz = macro.args]
+[r,if(argz == "fromClick" && hasImpersonated()),CODE:
+{
+  [h: selectedCount=listCount(getSelected())]
+  [h: getImpers = getImpersonated()]
+  [h: currentTok = currentToken()]
+  [h: getSel = getSelected()]
+  [r,if(selectedCount <= 1 && (getImpers == currentTok || getImpers == getSel)),CODE:
+  {
+    [r, macro("Sheet@this"): macro.args]
+  };{
+    [h: ""]
+  }]
+};{
+  [h: OwnedCurrent = listContains(getOwned(getPlayerName()), currentToken())]
+  [h: OwnedSelected = listContains(getOwned(getPlayerName()), getSelected())]
 
-[R, if(	OwnedCurrent == 1  ||
-		OwnedSelected == 1 ||
-		isGM() ), CODE:
-	{
-		[r, macro("Sheet@this"): macro.args]	
-	}; {
-		[h: ""]
-	}
-]
+  [r,if(OwnedCurrent == 1 || OwnedSelected == 1 || isGM()), CODE:
+  {
+    [r, macro("Sheet@this"): macro.args]	
+  };{
+    [h: ""]
+  }]
+}]
 
 !!
 @@ @StatsSheet
