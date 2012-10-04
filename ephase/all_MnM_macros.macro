@@ -693,8 +693,9 @@
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
   <tr bgcolor="[r: useColor]" align="center">
+    [h:jsonData=json.append("[]","SHOCK DAMAGE")]
     <td colspan="4">
-      <b>SHOCK DEFENSE</b> (DUR - Damage + Energy Armor)
+      <a href='[r:macroLinkText("DamageStressInfoDisplay@this","none",jsonData, currentToken())]'><b>SHOCK DEFENSE</b></a> (DUR - Damage + Energy Armor)
     </td> 
   </tr>
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
@@ -3538,6 +3539,17 @@ The Speed stat determines how often your character gets to act in an Action Turn
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
 <p>
 The Damage Bonus stat quantifies how much extra oomph your character is able to give their melee and thrown weapons attacks. Damage Bonus is determined by dividing your Somatics (SOM) aptitude by 10 and rounding down.
+
+!!
+@@ @SHOCK DAMAGE
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+<p align='justify'>
+Shock weapons use high-voltage electrical jolts to physically stun and incapacitate targets. Shock weapons are particularly effective against biomorphs and pods, even when heavily armored. Synthmorphs, bots, and vehicles are immune to shock weapon effects.
+</p><p align='justify'>
+A biomorph struck with a shock weapon must make a DUR + Energy Armor Test (using their current DUR score, reduced by damage they have taken). If they fail, they immediately lose neuromuscular control, fall down, and are incapacitated for 1 Action Turn per 10 full points of MoF (minimum of 3 Action Turns). During this time they are stunned and incapable of taking any action, possibly convulsing, suffering vertigo, nausea, etc. After this period, they may act but they remain stunned and shaken, suffering a -30 modifier to all actions. This modifier reduces by 10 per minute (so -20 after 1 minute, -10 after 2 minutes, and no modifier after 3 minutes). Many shock weapons also inflict DV, which is handled as normal.
+</p><p align='justify'>
+A biomorph that succeeds the DUR Test is still shocked but not incapacitated. They suffer half the listed DV and suffer a -30 modifier until the end of the next Action Turn. This modifier reduces by 10 per Action Turn. Modifiers from additional shocks are not cumulative, but will boost the modifier back to its maximum value.
+</p>
 
 !!
 @@ @DAMAGE
@@ -6474,10 +6486,10 @@ Reputation Updated
   [h: OwnedSelected = listContains(getOwned(getPlayerName()), getSelected())]
 
   [r,if(OwnedCurrent == 1 || OwnedSelected == 1 || isGM()), CODE:
-  {
-    [r, macro("Sheet@this"): macro.args]	
+	{
+		[r, macro("Sheet@this"): macro.args]	
   };{
-    [h: ""]
+		[h: ""]
   }]
 }]
 
@@ -7040,11 +7052,15 @@ Reputation Updated
 [h,if(dieRoll <= modifiedTN): marginNum = dieRoll; marginNum = dieRoll - modifiedTN]
 [h,if(dieRoll <= modifiedTN): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - modifiedTN) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - modifiedTN)]
 
+[h: evalDV = ""]
+[h,if(isNumber(weapDV) != 1 && weapDV != "spc"): evalDV = floor(eval(replace(weapDV,"SOM",SOM)))]
+
 [h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+5 (from MoS)</small>"; extraDV = ""]
-[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): weapDV = weapDV + 5]
-[h,if(weapCheck && marginNum > 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+10 (from MoS)</small>"]
-[h,if(weapCheck && marginNum > 60 && weapDV != "spc" && dieRoll <= modifiedTN): weapDV = weapDV + 10]
-[h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = <b>%s</b>%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',weapDV,extraDV,weapAP); weapText = ""]
+[h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): evalDV = evalDV + 5]
+[h,if(weapCheck && marginNum >= 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+10 (from MoS)</small>"]
+[h,if(weapCheck && marginNum >= 60 && weapDV != "spc" && dieRoll <= modifiedTN): evalDV = evalDV + 10]
+[h: finalDV = strformat("%s%s%s",if(evalDV == "","<b>","<small>"),weapDV,if(evalDV != "","</small> = <b>" + evalDV + "</b>","</b>"))]
+[h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = %s%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',finalDV,extraDV,weapAP); weapText = ""]
 
 [h,if(useWounds && WOUNDS != 0): penText = strformat(" - %d (Wounds)",WOUNDS * 10); penText = ""]
 [h,if(useTrauma && TRAUMA != 0): penText = penText + strformat(" - %d (Trauma)",TRAUMA * 10)]
