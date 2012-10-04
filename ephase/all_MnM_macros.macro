@@ -1,4 +1,4 @@
-@@ @onCampaignLoad
+﻿@@ @onCampaignLoad
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [h:defineFunction("pause", "pause@"+getMacroLocation(), 1, 0 ) ] 
 [h:defineFunction("die100", "die100@"+getMacroLocation(), 0, 0 ) ]
