@@ -4532,7 +4532,7 @@ Reputation Updated
 [h,if(startsWith(weaponSkill,"Exotic Ranged")): tmpJson = json.append("[]","","","","","selected","","","","","","")]
 [h: ws = tmpJson]
 
-[dialog("Edit Weapon", "temporary=0; height=480; width=400; input=1; noframe=0"): 
+[dialog("Edit Weapon", "temporary=0; height=520; width=400; input=1; noframe=0"): 
 {
 <html>
 <head>
@@ -4555,7 +4555,11 @@ Reputation Updated
     <tr>
       <td>
         AP: <input type="text" name="weapAP" value="[r: json.get(weapJson,0)]" size="3"></input>
-        DV (# or spc): <input type="text" name="weapDV" value="[r: json.get(weapJson,1)]" size="3"></input>
+        DV (#/formula/spc): <input type="text" name="weapDV" value="[r: json.get(weapJson,1)]" size="15"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
         Ammo: <input type="text" name="weapAmmo" value="[r: json.get(weapJson,4)]" size="3"></input>
         Have Spec? <input type="checkbox" name="weapSpec" value="1"[r,if(json.get(weapJson,8)): ' checked="checked"';""]></input>
         <hr>
@@ -4655,7 +4659,7 @@ Reputation Updated
 !!
 @@ @WeaponUpdateDialogNew
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("New Weapon", "temporary=0; height=480; width=400; input=1; noframe=0"): 
+[dialog("New Weapon", "temporary=0; height=500; width=400; input=1; noframe=0"): 
 {
 <html>
 <head>
@@ -4675,7 +4679,11 @@ Reputation Updated
     <tr>
       <td>
         AP: <input type="text" name="weapAP" value="0" size="3"></input>
-        DV (# or spc): <input type="text" name="weapDV" value="0" size="3"></input>
+        DV (#/formula/spc): <input type="text" name="weapDV" value="0" size="15"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
         Ammo: <input type="text" name="weapAmmo" value="0" size="3"></input>
         Have Spec? <input type="checkbox" name="weapSpec" value="1"></input>
         <hr>
