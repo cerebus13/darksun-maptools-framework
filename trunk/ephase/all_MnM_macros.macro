@@ -6287,10 +6287,15 @@ Reputation Updated
 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
 <table width="100%" cellpadding="2" border="0" bgcolor="[r: table(PageColor,2)]" background="[r: tblImage('Icons',2)]">
-	<tr>
-		<td width="30%" rowspan="2">
+  <tr>
+    <td width="30%" rowspan="2">
 			<a href="[r: macroLinktext("ColorUpdate@this", "none", "", currentToken())]"><image src='[r:getTokenImage(75)]' border="0"></image></a>
 		</td>
+		<td colspan="5" color="white">
+			<h2>[r: token.name]</h2>
+		</td>
+	</tr>
+	<tr>
 		<td width="30%" align="center" >
       <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Stats", currentToken())]">
 			<font color="[r: if(page=="Stats","yellow","white")]" size="4"><b>Stats</b></font></a>
@@ -6310,11 +6315,6 @@ Reputation Updated
     <td width="30%" align="center" >
       <a href="[r: macroLinktext("SheetLoad@this", "none", "Page=Combat", currentToken())]">
 			<font color="[r: if(page=="Combat","yellow","white")]" size="4"><b>Combat</b></font></a>
-		</td>
-	</tr>
-	<tr>
-		<td align="right" colspan="2" color="white">
-			<font size="6"><b>[r: token.name]</b>&nbsp; </font>
 		</td>
 	</tr>
 </table>
