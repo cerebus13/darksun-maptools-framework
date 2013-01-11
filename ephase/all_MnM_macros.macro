@@ -1428,6 +1428,7 @@
 [h: weapUseFM = json.get(argz, "weapUseFM")]
 [h,if(json.contains(argz,"useApt")):useApt = json.get(argz, "useApt");useApt = 0]
 [h,if(json.contains(argz,"useSpec")):useSpec = json.get(argz, "useSpec");useSpec = 1]
+[h,if(json.contains(argz,"useLaser")):useLaser = json.get(argz, "useLaser");useLaser = 1]
 [h,if(json.contains(argz,"yesDialog")):yesDialog = json.get(argz, "yesDialog");yesDialog = 0]
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
@@ -1443,6 +1444,7 @@
 [h: weapSkill = json.get(weapJson,5)]
 [h: weapText = json.get(weapJson,6)]
 [h,if(useSpec): weapSpec = json.get(weapJson,8); weapSpec = 0]
+[h,if(useLaser): weapLaser = json.get(weapJson,9); weapLaser = 0]
 
 [h: skillJson = json.get(ActiveSkills,weapSkill)]
 [h: skillBase = json.get(skillJson,0)]
@@ -1480,6 +1482,7 @@
                       "rollerName",getName(currentToken()),
                       "rollTitle",strformat("%s%s%s Weapon check",if(yesDialog,"","default "),weapName,if(useApt," (Aptitude based)","")),
                       "useSpec", weapSpec,
+                      "useLaser", weapLaser,
                       "specName", skillSpec,
                       "extraText", weapText,
                       "weapCheck", 1,
@@ -3814,13 +3817,15 @@ Implants & Enhancements Updated
   [h: weapDesc = json.get(macro.args, "weapDesc")]
   [h: weapSpec = json.get(macro.args, "weapSpec")]
   [h,if(weapSpec == ""): weapSpec = 0]
+  [h: weapLaser = json.get(macro.args, "weapLaser")]
+  [h,if(weapLaser == ""): weapLaser = 0]
 
   [h: jsonFModes = "[]"]
   [h,if(weapFModes1 != "none"): jsonFModes = json.append(jsonFModes, weapFModes1); jsonFModes = jsonFModes]
   [h,if(weapFModes2 != "none"): jsonFModes = json.append(jsonFModes, weapFModes2); jsonFModes = jsonFModes]
   [h,if(weapFModes3 != "none"): jsonFModes = json.append(jsonFModes, weapFModes3); jsonFModes = jsonFModes]
   [h,if(startsWith(weapSkill, "Exotic")): weapSkill = weapSkill + ": " + weapExotic; weapSkill = weapSkill]
-  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, if(weapCurrAmmo == -1,weapAmmo,weapCurrAmmo), weapAmmo, weapSkill, weapText, encode(weapDesc), weapSpec)]
+  [h: jsonWeap = json.append("[]", weapAP, weapDV, jsonFModes, if(weapCurrAmmo == -1,weapAmmo,weapCurrAmmo), weapAmmo, weapSkill, weapText, encode(weapDesc), weapSpec, weapLaser)]
   [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
 }]
 
@@ -4562,6 +4567,7 @@ Reputation Updated
       <td>
         Ammo: <input type="text" name="weapAmmo" value="[r: json.get(weapJson,4)]" size="3"></input>
         Have Spec? <input type="checkbox" name="weapSpec" value="1"[r,if(json.get(weapJson,8)): ' checked="checked"';""]></input>
+        Have Laser Sight/Smartlink? <input type="checkbox" name="weapLaser" value="1"[r,if(json.get(weapJson,9)): ' checked="checked"';""]></input>
         <hr>
       </td>
     </tr>
@@ -4686,6 +4692,7 @@ Reputation Updated
       <td>
         Ammo: <input type="text" name="weapAmmo" value="0" size="3"></input>
         Have Spec? <input type="checkbox" name="weapSpec" value="1"></input>
+        Have Laser Sight/Smartlink? <input type="checkbox" name="weapLaser" value="1"></input>
         <hr>
       </td>
     </tr>
@@ -6063,6 +6070,7 @@ Reputation Updated
 [h: weapSkill = json.get(weapJson,5)]
 [h: weapText = json.get(weapJson,6)]
 [h: weapSpec = json.get(weapJson,8)]
+[h: weapLaser = json.get(weapJson,9)]
 
 [h: skillJson = json.get(ActiveSkills,weapSkill)]
 [h: skillBase = json.get(skillJson,0)]
@@ -6102,6 +6110,8 @@ Reputation Updated
 	</tr>
   [h,if(weapSpec): specRow = '<tr><td>Use Specialization ('+skillSpec+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1" checked="checked"></input></td></tr>'; specRow = ""]
   {specRow}
+  [h,if(weapLaser): laserRow = '<tr><td>Use Laser Sight/Smartlink:</td><td align="left"><input type="checkbox" name="useLaser" value="1" checked="checked"></input></td></tr>'; laserRow = ""]
+  {laserRow}
   <tr>
     <td>
       Use Aptitude ([r: skillApt] = [r: getProperty(skillApt)]):
@@ -7028,6 +7038,7 @@ Reputation Updated
 [h,if(json.contains(macro.args,"teamWork")):teamWork = json.get(macro.args, "teamWork");teamWork = 0]
 [h,if(json.contains(macro.args,"secondaryTargetNumber")):secondaryTargetNumber = json.get(macro.args, "secondaryTargetNumber");secondaryTargetNumber = 0]
 [h,if(json.contains(macro.args,"useSpec")):useSpec = json.get(macro.args, "useSpec");useSpec = 0]
+[h,if(json.contains(macro.args,"useLaser")):useLaser = json.get(macro.args, "useLaser");useLaser = 0]
 [h,if(json.contains(macro.args,"specName")):specName = json.get(macro.args, "specName");specName = ""]
 [h,if(json.contains(macro.args,"extraText")):extraText = json.get(macro.args, "extraText");extraText = ""]
 [h,if(json.contains(macro.args,"weapCheck")):weapCheck = json.get(macro.args, "weapCheck");weapCheck = 0]
@@ -7048,6 +7059,8 @@ Reputation Updated
 [h,if(number(teamWork)==0): teamWorkText = ""; teamWorkText = strformat(" + %d (with %d assisting)",number(teamWork)*10,number(teamWork))]
 [h,if(useSpec==0): useSpecText = ""; useSpecText = strformat(" + 10 (with %s spec)",specName)]
 [h,if(useSpec): specMod = 10; specMod = 0]
+[h,if(useLaser==0): useLaserText = ""; useLaserText = " + 10 (with laser/smartlink)"]
+[h,if(useLaser): laserMod = 10; laserMod = 0]
 
 [h:dieRoll1=1d10-1]
 [h:dieRoll2=1d10-1]
@@ -7055,7 +7068,7 @@ Reputation Updated
 [h,if(dieRoll1 == 0 && dieRoll1 == dieRoll2): dieRollText = "00"; dieRollText = string(dieRoll)]
 
 [h,if(dieRoll1 == dieRoll2): result = "CRITICAL "; result = ""]
-[h: modifiedTN = targetNumber + mods + specMod + number(teamWork)*10 - if(useWounds,WOUNDS*10,0) - if(useTrauma,TRAUMA*10,0) - if(useArmorPenalty,Armor_Penalty,0)]
+[h: modifiedTN = targetNumber + mods + specMod + laserMod + number(teamWork)*10 - if(useWounds,WOUNDS*10,0) - if(useTrauma,TRAUMA*10,0) - if(useArmorPenalty,Armor_Penalty,0)]
 [h,if(dieRoll <= modifiedTN): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
 [h,if(dieRoll <= modifiedTN): marginNum = dieRoll; marginNum = dieRoll - modifiedTN]
 [h,if(dieRoll <= modifiedTN): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - modifiedTN) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - modifiedTN)]
@@ -7074,7 +7087,7 @@ Reputation Updated
 [h,if(useTrauma && TRAUMA != 0): penText = penText + strformat(" - %d (Trauma)",TRAUMA * 10)]
 [h,if(useArmorPenalty && Armor_Penalty != 0): penText = penText + strformat(" - %d (Armor)",Armor_Penalty)]
 
-[h,if(hideRoll): totalModsLine = modsText + teamWorkText + useSpecText + penText; totalModsLine = dieRollText+" vs. "+targetNumber + modsText + teamWorkText + useSpecText + penText]
+[h,if(hideRoll): totalModsLine = modsText + teamWorkText + useSpecText + useLaserText + penText; totalModsLine = dieRollText+" vs. "+targetNumber + modsText + teamWorkText + useSpecText + useLaserText + penText]
 [h,if(length(totalModsLine) > 0): totalModsLine = "<br><small>"+totalModsLine+"</small>.</p>"; totalModsLine = ""]
 [h,if(hideRoll): rollLine = ""; rollLine = "<br>The total rolled is <b>"+dieRollText+"</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>"+modifiedTN+"</b>."]
 
