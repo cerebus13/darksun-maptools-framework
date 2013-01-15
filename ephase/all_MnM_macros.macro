@@ -1506,6 +1506,7 @@
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
 [h,if(json.contains(argz,"hideRoll")):hideRoll = json.get(argz, "hideRoll");hideRoll = 0]
+[h,if(json.contains(argz,"halfSkill")):halfSkill = json.get(argz, "halfSkill");halfSkill = 0]
 
 [h: skillJson = json.get(ActiveSkills,skillName)]
 [h: skillBase = json.get(skillJson,0)]
@@ -1516,6 +1517,7 @@
 
 [h,if(skillDefApt): myApt = getProperty(skillApt); myApt = 0]
 [h,if(useApt): useTN = myApt; useTN = skillBase + skillMod]
+[h,if(halfSkill): useTN = floor(useTN / 2)]
 
 [h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
 [h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList]
@@ -1524,7 +1526,7 @@
                       "targetNumber",useTN,
                       "mods",useMod,
                       "rollerName",getName(currentToken()),
-                      "rollTitle",strformat("%s%s%s Defense check",if(yesDialog,"","default "),skillName,if(useApt," (Aptitude based)","")),
+                      "rollTitle",strformat("%s%s%s%s Defense check",if(yesDialog,"","default "),skillName,if(useApt," (Aptitude based)",""),if(halfSkill," (halved)","")),
                       "useSpec", useSpec,
                       "specName", skillSpec,
                       "extraText", extraText,
@@ -6193,6 +6195,14 @@ Reputation Updated
     </td>
     <td align="left">
       <input type="checkbox" name="useApt" value="1"></input>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Halve Skill?
+    </td>
+    <td align="left">
+      <input type="checkbox" name="halfSkill" value="1"></input>
     </td>
   </tr>
 </table>
