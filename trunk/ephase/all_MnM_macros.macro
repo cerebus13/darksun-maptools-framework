@@ -6884,6 +6884,492 @@ Reputation Updated
 [abort(0)]
 
 !!
+@@ @Weapon Ranges
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[dialog("Weapon Ranges","width=550; height=845; temporary=1; noframe=0; "): {
+
+<table bgcolor="[r: table(PageColor,4)]">
+	<tr bgcolor='[r: table(PageColor,2)]'>
+		<td ><span style="color:white"><b><center>Weapon (Type)</td>
+		<td ><span style="color:white"><b><center>Short Range</td>
+		<td ><span style="color:white"><b><center>Medium Range (-10)</td>
+		<td ><span style="color:white"><b><center>Long Range (-20)</td>
+		<td ><span style="color:white"><b><center>Extreme Range (-30)</td>
+	</tr><tr>
+<td colspan="7" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+</tr>
+	<tr bgcolor="white">
+		<td><b>Firearms</b></td>
+	</tr>
+	<tr>
+		<td ><center>Light Pistol</td>
+		<td ><center>0-10</td>
+		<td ><center>11-25</td>
+		<td ><center>26-40</td>
+		<td ><center>41-60</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Medium Pistol</td>
+		<td ><center>0-10</td>
+		<td ><center>11-30</td>
+		<td ><center>31-50</td>
+		<td ><center>51-70</td>
+	</tr>
+	<tr>
+		<td ><center>Heavy Pistol</td>
+		<td ><center>0-10</td>
+		<td ><center>11-35</td>
+		<td ><center>36-60</td>
+		<td ><center>61-80</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>SMG</td>
+		<td ><center>0-30</td>
+		<td ><center>31-80</td>
+		<td ><center>81-125</td>
+		<td ><center>126-230</td>
+	</tr>
+	<tr>
+		<td ><center>Assault Rifle</td>
+		<td ><center>0-150</td>
+		<td ><center>151-250</td>
+		<td ><center>251-500</td>
+		<td ><center>501-900</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Sniper Rifle</td>
+		<td ><center>0-180</td>
+		<td ><center>181-400</td>
+		<td ><center>401-1,100</td>
+		<td ><center>1,100-2,300</td>
+	</tr>
+	<tr>
+		<td ><center>Machine Gun</td>
+		<td ><center>0-100</td>
+		<td ><center>101-400</td>
+		<td ><center>401-1,000</td>
+		<td ><center>1,001-2,000</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><b>Railguns</b></td>
+	</tr>
+	<tr>
+    <td colspan="5"><center>as Firearms but increase the effective range in each category by +50%</td>
+	</tr>
+	<tr bgcolor="white">
+    <td><b>Beam Weapons</b></td>
+	</tr>
+	<tr>
+		<td ><center>Cybernetic Hand Laser</td>
+		<td ><center>0-30</td>
+		<td ><center>31-80</td>
+		<td ><center>81-125</td>
+		<td ><center>126-230</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Laser Pulser</td>
+		<td ><center>0-30</td>
+		<td ><center>31-100</td>
+		<td ><center>101-150</td>
+		<td ><center>151-250</td>
+	</tr>
+	<tr>
+		<td ><center>Microwave Agonizer</td>
+		<td ><center>0-5</td>
+		<td ><center>6-15</td>
+		<td ><center>16-30</td>
+		<td ><center>31-50</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Particle Beam Bolter</td>
+		<td ><center>0-30</td>
+		<td ><center>31-100</td>
+		<td ><center>101-150</td>
+		<td ><center>151-300</td>
+	</tr>
+	<tr>
+		<td ><center>Plasma Rifle</td>
+		<td ><center>0-20</td>
+		<td ><center>21-50</td>
+		<td ><center>51-100</td>
+		<td ><center>101-300</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Stunner</td>
+		<td ><center>0-10</td>
+		<td ><center>11-25</td>
+		<td ><center>26-40</td>
+		<td ><center>41-60</td>
+	</tr>
+	<tr>
+		<td ><b>Seekers</b></td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Seeker Micromissile</td>
+		<td ><center>5-70</td>
+		<td ><center>71-180</td>
+		<td ><center>181-600</td>
+		<td ><center>601-2,000</td>
+	</tr>
+	<tr>
+		<td ><center>Seeker Minimissile</td>
+		<td ><center>5-150</td>
+		<td ><center>151-300</td>
+		<td ><center>301-1,000</td>
+		<td ><center>1,001-3,000</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Seeker Standard Missile</td>
+		<td ><center>5-300</td>
+		<td ><center>301-1,000</td>
+		<td ><center>1001-3,000</td>
+		<td ><center>3001-10,000</td>
+	</tr>
+	<tr>
+		<td ><b>Spray Weapons</b></td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Buzzer</td>
+		<td ><center>0-5</td>
+		<td ><center>6-15</td>
+		<td ><center>16-30</td>
+		<td ><center>31-50</td>
+	</tr>
+	<tr>
+		<td ><center>Freezer</td>
+		<td ><center>0-5</td>
+		<td ><center>6-15</td>
+		<td ><center>16-30</td>
+		<td ><center>31-50</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Shard Pistol</td>
+		<td ><center>0-10</td>
+		<td ><center>11-30</td>
+		<td ><center>31-50</td>
+		<td ><center>51-70</td>
+	</tr>
+	<tr>
+		<td ><center>Shredder</td>
+		<td ><center>0-10</td>
+		<td ><center>11-40</td>
+		<td ><center>41-70</td>
+		<td ><center>71-100</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Sprayer</td>
+		<td ><center>0-5</td>
+		<td ><center>6-15</td>
+		<td ><center>16-30</td>
+		<td ><center>31-50</td>
+	</tr>
+	<tr>
+		<td ><center>Torch</td>
+		<td ><center>0-5</td>
+		<td ><center>6-15</td>
+		<td ><center>16-30</td>
+		<td ><center>31-50</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Vortex Ring Gun</td>
+		<td ><center>0-5</td>
+		<td ><center>6-15</td>
+		<td ><center>16-30</td>
+		<td ><center>31-50</td>
+	</tr>
+	<tr>
+		<td ><b>Thrown Weapons</b></td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Blades</td>
+		<td ><center>To SOM / 5</td>
+		<td ><center>To SOM / 2</td>
+		<td ><center>To SOM</td>
+		<td ><center>To SOM * 2</td>
+	</tr>
+	<tr>
+		<td ><center>Minigrenades</td>
+		<td ><center>To SOM / 2</td>
+		<td ><center>To SOM</td>
+		<td ><center>To SOM * 2</td>
+		<td ><center>To SOM * 3</td>
+	</tr>
+	<tr bgcolor="white">
+		<td ><center>Standard Grenades</td>
+		<td ><center>To SOM / 5</td>
+		<td ><center>To SOM / 2</td>
+		<td ><center>To SOM</td>
+		<td ><center>To SOM * 3</td>
+	</tr>
+</table>
+
+}]
+[abort(0)]
+
+!!
+@@ @Skill List
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
+[dialog("Skill List","width=430; height=845; temporary=1; noframe=0; "): {
+
+<table bgcolor="[r: table(PageColor,4)]">
+	<tr bgcolor='[r: table(PageColor,2)]'>
+		<td ><span style="color:white"><b><center>Skill</td>
+		<td ><span style="color:white"><b><center>Linked Aptitude</td>
+		<td ><span style="color:white"><b><center>Category</td>
+	</tr><tr>
+<td colspan="7" style="background-color:'[r: table(PageColor,3)]'  ; margin:0px; padding:0px; height:0px"><img src='[r: tblImage("Icons",10,5)]' border="0"></img></td>
+</tr>
+  <tr bgcolor="white">
+		<td><center>Academics: (Field)</td>
+		<td><center>COG</td>
+		<td><center>Knowledge</td>
+	</tr>
+	<tr>
+    <td><center>Animal Handling</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Art: (Field)</td>
+		<td><center>INT</td>
+		<td><center>Knowledge</td>
+  </tr>
+  <tr>
+		<td><center>Beam Weapons</td>
+		<td><center>COO</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Blades</td>
+		<td><center>SOM</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr>
+		<td><center>Climbing</td>
+		<td><center>SOM</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Clubs</td>
+		<td><center>SOM</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr>
+		<td><center>Control</td>
+		<td><center>WIL (no defaulting)</td>
+		<td><center>Active, Mental, Psi</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Deception</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr>
+		<td><center>Demolitions</td>
+		<td><center>COG (no defaulting)</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Disguise</td>
+		<td><center>INT</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr>
+		<td><center>Exotic Melee Weapon: (Field)</td>
+		<td><center>SOM</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Exotic Ranged Weapon: (Field)</td>
+		<td><center>COO</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr>
+		<td><center>Flight</td>
+		<td><center>SOM</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Fray</td>
+		<td><center>REF</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr>
+		<td><center>Free Fall</td>
+		<td><center>REF</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Freerunning</td>
+		<td><center>SOM</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr>
+		<td><center>Gunnery</td>
+		<td><center>INT</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Hardware: (Field)</td>
+		<td><center>COG</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr>
+		<td><center>Impersonation</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Infiltration</td>
+		<td><center>COO</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr>
+		<td><center>Infosec</td>
+		<td><center>COG (no defaulting)</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Interest: (Field)</td>
+		<td><center>COG</td>
+		<td><center>Knowledge</td>
+  </tr>
+  <tr>
+		<td><center>Interfacing</td>
+		<td><center>COG</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Intimidation</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr>
+		<td><center>Investigation</td>
+		<td><center>INT</td>
+		<td><center>Active, Mental</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Kinesics</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr>
+		<td><center>Kinetic Weapons</td>
+		<td><center>COO</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Language: (Field)</td>
+		<td><center>INT</td>
+		<td><center>Knowledge</td>
+  </tr>
+  <tr>
+		<td><center>Medicine: (Field)</td>
+		<td><center>COG</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Navigation</td>
+		<td><center>INT</td>
+		<td><center>Active, Mental</td>
+  </tr>
+  <tr>
+		<td><center>Networking: (Field)</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Palming</td>
+		<td><center>COO</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr>
+		<td><center>Perception</td>
+		<td><center>INT</td>
+		<td><center>Active, Mental</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Persuasion</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr>
+		<td><center>Pilot: (Field)</td>
+		<td><center>REF</td>
+		<td><center>Active, Vehicle</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Profession: (Field)</td>
+		<td><center>COG</td>
+		<td><center>Knowledge</td>
+  </tr>
+  <tr>
+		<td><center>Programming</td>
+		<td><center>COG (no defaulting)</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Protocol</td>
+		<td><center>SAV</td>
+		<td><center>Active, Social</td>
+  </tr>
+  <tr>
+		<td><center>Psi Assault</td>
+		<td><center>WIL (no defaulting)</td>
+		<td><center>Active, Mental, Psi</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Psychosurgery</td>
+		<td><center>INT</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr>
+		<td><center>Research</td>
+		<td><center>COG</td>
+		<td><center>Active, Technical</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Scrounging</td>
+		<td><center>INT</td>
+		<td><center>Active, Mental</td>
+  </tr>
+  <tr>
+		<td><center>Seeker Weapons</td>
+		<td><center>COO</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Sense</td>
+		<td><center>INT (no defaulting)</td>
+		<td><center>Active, Mental, Psi</td>
+  </tr>
+  <tr>
+		<td><center>Spray Weapons</td>
+		<td><center>COO</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Swimming</td>
+		<td><center>SOM</td>
+		<td><center>Active, Physical</td>
+  </tr>
+  <tr>
+		<td><center>Throwing Weapons</td>
+		<td><center>COO</td>
+		<td><center>Active, Combat</td>
+  </tr>
+  <tr bgcolor="white">
+		<td><center>Unarmed Combat</td>
+		<td><center>SOM</td>
+		<td><center>Active, Combat</td>
+  </tr>
+</table>
+
+}]
+[abort(0)]
+
+!!
 @@ @Size Rank Modifiers
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy=z ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [dialog("Size Rank Modifiers","width=475; height=353; temporary=1; noframe=0; "): {
@@ -7021,7 +7507,7 @@ Reputation Updated
 @@ @TableLoad
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=GM ; tooltip= ; minWidth= ; 
 [status=input(
-"chart|Measurements Table,Size Rank Modifiers|Choose Table|RADIO|VALUE=STRING SPAN=TRUE"
+"chart|Weapon Ranges,Skill List|Choose Table|RADIO|VALUE=STRING SPAN=TRUE"
 )]
 
 [h: abort(status)]
