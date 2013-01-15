@@ -1733,6 +1733,14 @@
 			<input type="text" name="mods" value="" size="5"></input>
 		</td>
 	</tr>
+  <tr>
+		<td>
+			<b>Halve Skill?</b>
+		</td>
+		<td align="left">
+			<input type="checkbox" name="halveSkill" value="1"></input>
+		</td>
+	</tr>
   [h,if(length(specValue)==0): specRow = "";specRow = '<tr><td>Use Specialization ('+specValue+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1"></input></td></tr>']
   {specRow}
 </table>
@@ -7540,6 +7548,7 @@ Reputation Updated
 [h,if(json.contains(macro.args,"weapCheck")):weapCheck = json.get(macro.args, "weapCheck");weapCheck = 0]
 [h,if(json.contains(macro.args,"weapDV")):weapDV = json.get(macro.args, "weapDV");weapDV = 0]
 [h,if(json.contains(macro.args,"weapAP")):weapAP = json.get(macro.args, "weapAP");weapAP = 0]
+[h,if(json.contains(macro.args,"halveSkill")):halveSkill = json.get(macro.args, "halveSkill");halveSkill = 0]
 
 [h,if(json.contains(macro.args,"useWounds")):useWounds = json.get(macro.args, "useWounds");useWounds = 1]
 [h,if(json.contains(macro.args,"useTrauma")):useTrauma = json.get(macro.args, "useTrauma");useTrauma = 1]
@@ -7557,6 +7566,9 @@ Reputation Updated
 [h,if(useSpec): specMod = 10; specMod = 0]
 [h,if(useLaser==0): useLaserText = ""; useLaserText = " + 10 (with laser/smartlink)"]
 [h,if(useLaser): laserMod = 10; laserMod = 0]
+
+[h,if(halveSkill): targetNumber = floor(targetNumber / 2)]
+[h,if(halveSkill): halveText = " (halved)";halveText = ""]
 
 [h:dieRoll1=1d10-1]
 [h:dieRoll2=1d10-1]
@@ -7587,7 +7599,7 @@ Reputation Updated
 [h,if(length(totalModsLine) > 0): totalModsLine = "<br><small>"+totalModsLine+"</small>.</p>"; totalModsLine = ""]
 [h,if(hideRoll): rollLine = ""; rollLine = "<br>The total rolled is <b>"+dieRollText+"</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Target Number is <b>"+modifiedTN+"</b>."]
 
-<p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}</i>.</span>
+<p><span bgcolor=#cccccc><b>{rollerName}</b> rolls a <i>{rollTitle}{halveText}</i>.</span>
 {rollLine}
 <br>Result: <b>{result}</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{margin}
 {weapText}
