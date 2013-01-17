@@ -6506,18 +6506,7 @@ Reputation Updated
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [h: argz = macro.args]
 [r,if(argz == "fromClick" && hasImpersonated()),CODE:
-{
-  [h: selectedCount=listCount(getSelected())]
-  [h: getImpers = getImpersonated()]
-  [h: currentTok = currentToken()]
-  [h: getSel = getSelected()]
-  [r,if(selectedCount <= 1 && (getImpers == currentTok || getImpers == getSel)),CODE:
-  {
-    [r, macro("Sheet@this"): macro.args]
-  };{
-    [h: ""]
-  }]
-};{
+{};{
   [h: OwnedCurrent = listContains(getOwned(getPlayerName()), currentToken())]
   [h: OwnedSelected = listContains(getOwned(getPlayerName()), getSelected())]
 
