@@ -1433,6 +1433,7 @@
 [h,if(json.contains(argz,"mods")):useMod = json.get(argz, "mods");useMod = 0]
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
 [h,if(json.contains(argz,"hideRoll")):hideRoll = json.get(argz, "hideRoll");hideRoll = 0]
+[h,if(json.contains(argz,"modsDV")):useModDV = json.get(argz, "modsDV");useModDV = 0]
 
 [h: weapName = json.get(argz,"weapName")]
 [h: weapJson = json.get(Weapons,weapName)]
@@ -1488,6 +1489,7 @@
                       "weapCheck", 1,
                       "weapDV", weapDV,
                       "weapAP", weapAP,
+                      "modsDV", useModDV,
                       "hideRoll", hideRoll
                       )]
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
@@ -1596,7 +1598,7 @@
 "ActiveSkill", "305, 210",
 "MuseAptitude", "305, 235",
 "MuseSkill", "305, 185",
-"Weapon", "405, 230",
+"Weapon", "405, 255",
 "Defense", "405, 210",
 "OtherDefense", "405, 160"
 
@@ -6112,10 +6114,18 @@ Reputation Updated
   {fmRow}
   <tr>
 		<td>
-			<b>Modifier:</b>
+			<b>Skill Modifier:</b>
 		</td>
 		<td align="left">
 			<input type="text" name="mods" value="" size="5"></input>
+		</td>
+	</tr>
+  <tr>
+		<td>
+			<b>DV Modifier:</b>
+		</td>
+		<td align="left">
+			<input type="text" name="modsDV" value="" size="5"></input>
 		</td>
 	</tr>
   [h,if(weapSpec): specRow = '<tr><td>Use Specialization ('+skillSpec+'):</td><td align="left"><input type="checkbox" name="useSpec" value="1" checked="checked"></input></td></tr>'; specRow = ""]
@@ -7537,6 +7547,7 @@ Reputation Updated
 [h,if(json.contains(macro.args,"weapCheck")):weapCheck = json.get(macro.args, "weapCheck");weapCheck = 0]
 [h,if(json.contains(macro.args,"weapDV")):weapDV = json.get(macro.args, "weapDV");weapDV = 0]
 [h,if(json.contains(macro.args,"weapAP")):weapAP = json.get(macro.args, "weapAP");weapAP = 0]
+[h,if(json.contains(macro.args,"modsDV")):modsDV = json.get(macro.args, "modsDV");modsDV = 0]
 [h,if(json.contains(macro.args,"halveSkill")):halveSkill = json.get(macro.args, "halveSkill");halveSkill = 0]
 
 [h,if(json.contains(macro.args,"useWounds")):useWounds = json.get(macro.args, "useWounds");useWounds = 1]
@@ -7571,14 +7582,18 @@ Reputation Updated
 [h,if(dieRoll <= modifiedTN): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - modifiedTN) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - modifiedTN)]
 
 [h: evalDV = ""]
-[h,if(isNumber(weapDV) != 1 && weapDV != "spc"): evalDV = floor(eval(replace(weapDV,"SOM",SOM)))]
+[h,if(length(modsDV)==0): modsDV = 0]
+[h,if(modsDV==0): modsDVText = ""; modsDVText = strformat("  <small>+%s (user mod)</small>",modsDV)]
+[h,if(isNumber(weapDV) != 1 && weapDV != "spc"): evalDV = floor(eval(replace(weapDV,"SOM",SOM)) + eval(replace(modsDV,"SOM",SOM)))]
+[h,if(length(evalDV)==0 && weapDV != "spc"): evalDV = floor(weapDV + eval(replace(modsDV,"SOM",SOM)))]
+[h,if(isNumber(weapDV) == 1 && length(evalDV)!=0): weapDV = strformat("%d+%s",weapDV,modsDV)]
 
 [h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+5 (from MoS)</small>"; extraDV = ""]
 [h,if(weapCheck && marginNum > 29 && marginNum < 60 && weapDV != "spc" && dieRoll <= modifiedTN): evalDV = evalDV + 5]
 [h,if(weapCheck && marginNum >= 60 && weapDV != "spc" && dieRoll <= modifiedTN): extraDV = " <small>+10 (from MoS)</small>"]
 [h,if(weapCheck && marginNum >= 60 && weapDV != "spc" && dieRoll <= modifiedTN): evalDV = evalDV + 10]
 [h: finalDV = strformat("%s%s%s",if(evalDV == "","<b>","<small>"),weapDV,if(evalDV != "","</small> = <b>" + evalDV + "</b>","</b>"))]
-[h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = %s%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',finalDV,extraDV,weapAP); weapText = ""]
+[h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = %s%s%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',finalDV,extraDV,modsDVText,weapAP); weapText = ""]
 
 [h,if(useWounds && WOUNDS != 0): penText = strformat(" - %d (Wounds)",WOUNDS * 10); penText = ""]
 [h,if(useTrauma && TRAUMA != 0): penText = penText + strformat(" - %d (Trauma)",TRAUMA * 10)]
