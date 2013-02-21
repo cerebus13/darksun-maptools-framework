@@ -35,6 +35,7 @@ INIT:0
 SPD:0
 DB:0
 TotalPenalty:{Armor_Penalty-(WOUNDS*10)}
+Movement:4/20
 -----Damage and Stress-----
 DAMAGE:0
 WOUNDS:0
