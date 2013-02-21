@@ -707,6 +707,21 @@
 			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","Shock",0,"OtherDefense"), currentToken())]'>[r: DUR - DAMAGE + Armor_Energy]</a>
 		</td>
   </tr>  
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  <tr bgcolor="[r: useColor]" align="center">
+    <td colspan="4">
+      <b>1+ WOUNDS suffered from same hit</b> (WT = [r: WT], DUR = [r: DUR], DR = [r: DR])
+    </td> 
+  </tr> 
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]   
+  <tr bgcolor="[r: useColor]">
+    <td valign="middle">
+      &nbsp; &nbsp; <a href='[r:macroLinkText("OtherDefenseCheck@this","all",json.set("{}","otherDefense","SOM x 3"),currentToken())]'>SOM x 3</a>
+		</td>
+    <td align="center" width="45%" colspan="3">
+			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","SOM x 3",0,"OtherDefense"), currentToken())]'>[r: SOM * 3]</a>
+		</td>
+  </tr>  
 </table>  
 };
 {</table>} 
@@ -1547,7 +1562,11 @@
 [h,if(json.contains(argz,"targList")):targList = json.get(argz, "targList");targList = ""]
 [h,if(json.contains(argz,"hideRoll")):hideRoll = json.get(argz, "hideRoll");hideRoll = 0]
 
-[h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
+[h,switch(otherDefense):
+  case "Psi": useTN = WIL * 2;
+  case "SOM x 3": useTN = SOM * 3;
+  default: useTN = DUR - DAMAGE + Armor_Energy
+]
 
 [h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
 [h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList; extraText = ""]
@@ -6257,7 +6276,11 @@ Reputation Updated
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Alpha ; tooltip= ; minWidth= ; 
 [h: argz = macro.args]
 [h: otherDefense = json.get(argz,0)]
-[h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
+[h,switch(otherDefense):
+  case "Psi": useTN = WIL * 2;
+  case "SOM x 3": useTN = SOM * 3;
+  default: useTN = DUR - DAMAGE + Armor_Energy
+]
 
 <head>
 <title>Other Defense Check</title>
@@ -6373,12 +6396,15 @@ Reputation Updated
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 <table width="100%" cellpadding="2" border="0">
 	<tr bgcolor="[r: table(PageColor,4)]">
-    <td>
+    <td width="67%">
 			<b><font color="black">Background:</b> [r: Background]</font>
+		</td>
+    <td width="33%">
+			<b><font color="black">Movement:</b> [r: Movement]</font>
 		</td>
   </tr>
   <tr bgcolor="[r: table(PageColor,4)]">
-    <td>
+    <td colspan="2">
       <b><font color="black">Motivations:</b> [r: Motivations]</font>
     </td>
   </tr>
