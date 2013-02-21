@@ -1522,7 +1522,7 @@
 [h,if(halfSkill): useTN = floor(useTN / 2)]
 
 [h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
-[h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList]
+[h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList; extraText = ""]
 
 [h: jsonData=json.set("{}",
                       "targetNumber",useTN,
@@ -1550,7 +1550,7 @@
 [h,if(otherDefense == "Psi"): useTN = WIL * 2; useTN = DUR - DAMAGE + Armor_Energy]
 
 [h,if(length(targList) <= 0): targList = getSelectedNames(", ")]
-[h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList]
+[h,if(length(targList) > 0): extraText = "<br><b>Targets:</b> " + targList; extraText = ""]
 
 [h: jsonData=json.set("{}",
                       "targetNumber",useTN,
