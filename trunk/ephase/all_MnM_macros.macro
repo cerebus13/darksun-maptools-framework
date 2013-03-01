@@ -4274,8 +4274,8 @@ Reputation Updated
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
 [h: text = decode(text)]
-[h: text = replace(text,"<","^")]
-[h: text = replace(text,">","@")]
+[h: text = replace(text,"<","&#x3C;")]
+[h: text = replace(text,">","&#x3E;")]
 <html>
   <head>
     <title>Ego Traits Update</title>
@@ -4293,9 +4293,6 @@ Reputation Updated
           <td valign="top">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
-        </tr>
-        <tr>
-          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -4321,8 +4318,8 @@ Reputation Updated
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
 [h: text = decode(text)]
-[h: text = replace(text,"<","^")]
-[h: text = replace(text,">","@")]
+[h: text = replace(text,"<","&#x3C;")]
+[h: text = replace(text,">","&#x3E;")]
 <html>
   <head>
     <title>Psi Sleights Update</title>
@@ -4340,9 +4337,6 @@ Reputation Updated
           <td valign="top">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
-        </tr>
-        <tr>
-          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -4368,8 +4362,8 @@ Reputation Updated
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
 [h: text = decode(text)]
-[h: text = replace(text,"<","^")]
-[h: text = replace(text,">","@")]
+[h: text = replace(text,"<","&#x3C;")]
+[h: text = replace(text,">","&#x3E;")]
 <html>
   <head>
     <title>Gear Update</title>
@@ -4387,9 +4381,6 @@ Reputation Updated
           <td valign="top">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
-        </tr>
-        <tr>
-          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -4415,8 +4406,8 @@ Reputation Updated
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
 [h: text = decode(text)]
-[h: text = replace(text,"<","^")]
-[h: text = replace(text,">","@")]
+[h: text = replace(text,"<","&#x3C;")]
+[h: text = replace(text,">","&#x3E;")]
 <html>
   <head>
     <title>Morph Traits Update</title>
@@ -4434,9 +4425,6 @@ Reputation Updated
           <td valign="top">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
-        </tr>
-        <tr>
-          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -4462,8 +4450,8 @@ Reputation Updated
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
 [h: text = decode(text)]
-[h: text = replace(text,"<","^")]
-[h: text = replace(text,">","@")]
+[h: text = replace(text,"<","&#x3C;")]
+[h: text = replace(text,">","&#x3E;")]
 <html>
   <head>
     <title>Implants & Enhancements Update</title>
@@ -4481,9 +4469,6 @@ Reputation Updated
           <td valign="top">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
-        </tr>
-        <tr>
-          When reading back from the property less than and greater than characters are replaced with the ^ and @ characters.  This is due to a Maptools bug that will not print them inside of Textareas.
         </tr>
         <tr>
           <td align="center">
@@ -4590,8 +4575,8 @@ Reputation Updated
 [h: weapJson = json.get(Weapons, weapName)]
 [h: weapDesc = json.get(weapJson, 7)]
 [h: weapDesc = decode(weapDesc)]
-[h: weapDesc = replace(weapDesc,"<","^")]
-[h: weapDesc = replace(weapDesc,">","@")]
+[h: weapDesc = replace(weapDesc,"<","&#x3C;")]
+[h: weapDesc = replace(weapDesc,">","&#x3E;")]
 [h: weapFModes = json.get(weapJson, 2)]
 [h: fm1 = json.append("[]"," selected","","","","")]
 [h: fm2 = json.append("[]"," selected","","","","")]
@@ -4735,7 +4720,7 @@ Reputation Updated
     </tr>
     <tr>
       <td>
-        Description (^ and @ replace HTML tag brackets due to maptools bug): 
+        Description: 
       </td>
     </tr>
     <tr>
