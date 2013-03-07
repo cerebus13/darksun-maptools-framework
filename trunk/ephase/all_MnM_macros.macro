@@ -710,7 +710,7 @@
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
   <tr bgcolor="[r: useColor]" align="center">
     <td colspan="4">
-      <b>1+ WOUNDS suffered from same hit</b> (WT = [r: WT], DUR = [r: DUR], DR = [r: DR])
+      <b>WOUNDS suffered from same hit: 1 = knockdown, 2 = unconscious</b>
     </td> 
   </tr> 
 [h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]   
@@ -722,6 +722,12 @@
 			<a href='[r:macroLinkText("Entry@this","none", json.append("[]","SOM x 3",0,"OtherDefense"), currentToken())]'>[r: SOM * 3]</a>
 		</td>
   </tr>  
+[h,if(useColor == "white"): useColor = table(PageColor,4); useColor = "white"]
+  <tr bgcolor="[r: useColor]" align="center">
+    <td colspan="4">
+      <b>Wound Threshold (WT)</b> = [r: WT]&nbsp; &nbsp; &nbsp; &nbsp; <b>Death Rating (DR)</b> = [r: DR]
+    </td> 
+  </tr>   
 </table>  
 };
 {</table>} 
