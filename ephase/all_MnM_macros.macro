@@ -2321,6 +2321,11 @@
   While schizophrenia is generally acknowledged as a genetic disorder that has an onset in early adulthood, it also seems to develop in a number of egos that undergo frequent morph changes. It has been theorized that this is due to some sort of repetitive error in the download process. Regardless, it remains a rare, yet persistent danger of dying and being brought back. Schizophrenia is a psychotic disorder where the subject loses their ability to discern reality from unreality. This can involve delusions, hallucinations (often in support of the delusions), and fragmented or disorganized speech. The subject will not be aware of these behaviors and will perceive themselves as functioning normally, often to the point of becoming paranoid that others are somehow involved in a grand deception.
   <p>
   <b>Suggested Game Effects:</b> Schizophrenia represents a total break from reality. A character that is schizophrenic may see and hear things and act on those delusions and hallucinations while seeing attempts by their friends to stop or explain to them as part of a wider conspiracy. Adding to this is the difficulty of communicating coherently. Characters that have become schizophrenic are only marginally functional and only for short periods of time until they have the disorder treated.
+  <h1>OPTIONAL EXTRA DISORDERS</h1>
+  <h2>Intermittent Explosive Disorder (IED)</h2>
+  The person suffering IED has frequent and often unpredictable episodes of extreme anger or physical outbursts that are disproportionate to the situation. Between episodes, there is typically no evidence of violence or physical threat.
+  <p>
+  <b>Suggested Game Effects:</b> Roll WIL x 3 (or harder, depending on situation) to resist going off a handle whenever there is any provocation, whether real or imagined.
 </body>
 </html>
 }]
@@ -2561,6 +2566,12 @@ Insomniacs find themselves unable to sleep, or unable to sleep for an extended p
 <p>
 <b>Suggested Game Effects:</b> Due to the lack of meaningful sleep, insomniacs should suffer from blanket penalties to perception-related tasks or anything requiring concentration or prolonged fine motor abilities.
 
+!!
+@@ @Intermittent Explosive Disorder
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
+The person suffering IED has frequent and often unpredictable episodes of extreme anger or physical outbursts that are disproportionate to the situation. Between episodes, there is typically no evidence of violence or physical threat.
+<p>
+<b>Suggested Game Effects:</b> Roll WIL x 3 (or harder, depending on situation) to resist going off a handle whenever there is any provocation, whether real or imagined.
 !!
 @@ @Megalomania
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Info ; tooltip= ; minWidth= ; 
@@ -4517,7 +4528,7 @@ Reputation Updated
 !!
 @@ @DDUpdateDialog
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Dialog ; tooltip= ; minWidth= ; 
-[dialog("Derangements & Disorders", "width=643; height=520; temporary=0; input=1; noframe=0"): {
+[dialog("Derangements & Disorders", "width=643; height=570; temporary=0; input=1; noframe=0"): {
 
 <html>
 <head>
@@ -4558,6 +4569,23 @@ Reputation Updated
 [r, if(columncheck < 3):""; "</tr>"]
 [h: columncheck = if(columncheck == 3, 1, columncheck+1)]
 }]
+
+<tr bgcolor="[r: table(PageColor,2)]" color="white">
+<td colspan="3" ><center>
+<b>Optional Extra Disorders</b></center>
+</td>
+</tr>
+[h:theList = json.append("[]","Intermittent Explosive Disorder")]
+[h: columncheck = 1]
+[r, foreach(item, theList, ""),code:{
+[r, if(columncheck > 1):""; "<tr>"]
+<td>
+<input type="checkbox" name="[r: item]" value="1" [r: if(json.contains(DandD,item),"CHECKED","")]> <font color="black"><a href='[r:macroLinkText("DDInfoDisplay@this","none",item,currentToken())]'>[r: item]</a></font></input>
+</td>
+[r, if(columncheck < 3):""; "</tr>"]
+[h: columncheck = if(columncheck == 3, 1, columncheck+1)]
+}]
+
 <tr>
 <td colspan="3"><hr><center>
 <input type="checkbox" name="Clear All" value="1"> Clear All</input></center
