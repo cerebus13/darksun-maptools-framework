@@ -1,6 +1,7 @@
 -----Sheet-----
 CharPage:{}
 PageColor:Gray
+SheetCache:""
 -----Biography
 Background
 Faction
