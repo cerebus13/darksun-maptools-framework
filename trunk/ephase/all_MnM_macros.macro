@@ -349,17 +349,22 @@
   [foreach(prop, propList, ""), code: 
   {
 	<tr bgcolor="[r: color]">
-		<td width="100%">
-      [h: propDetails = json.get(PsiSleights, prop)]
-      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0))]<font color="black"><a href='[r:macroLinkText("PsiSleightsUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
+    [h: propDetails = json.get(PsiSleights, prop)]
+    <td width="10%" align="center">
+      [h: jsonData = json.append("[]", getName(currentToken()), prop, json.get(propDetails, 0), json.get(propDetails,1), json.get(propDetails,2))]
+      <a href='[r:macroLinkText("PsiSleightsUse@this","none",jsonData,currentToken())]'>use</a>
+    </td>
+		<td width="80%">
+      [h: jsonData = json.append("[]", prop, json.get(propDetails, 0), json.get(propDetails, 1), json.get(propDetails, 2))]
+      <font color="black"><a href='[r:macroLinkText("PsiSleightsUpdateDisplay@this","none",jsonData,currentToken())]'>[r: prop]</a></font>
 		</td>
 	</tr>
   [h: colorcheck = table(PageColor,4)]
   [h, if(color == colorcheck): color = "white"; color = colorcheck]
   }]
 	<tr bgcolor="[r:table(PageColor,3)]">
-		<td>
-			<b><center><font color="black">[h: jsonData = json.append("[]", "New Psi Sleight", encode(""))]<a href='[r:macroLinkText("PsiSleightsUpdateDialog@this","none",jsonData,currentToken())]'>Add Psi Sleight Trait</a></font></center></b>
+		<td colspan="2">
+			<b><center><font color="black">[h: jsonData = json.append("[]", "New Psi Sleight", encode(""), "0", "DV")]<a href='[r:macroLinkText("PsiSleightsUpdateDialog@this","none",jsonData,currentToken())]'>Add Psi Sleight Trait</a></font></center></b>
 		</td>
 	</tr>
 </table>
@@ -3808,7 +3813,7 @@ Ego Traits Updated
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [h: text = json.get(macro.args, "Text")]
 [h: text = encode(text)]
-[h: jsonData = json.append("[]",text)]
+[h: jsonData = json.append("[]",text, json.get(macro.args,"Strain"), json.get(macro.args,"StrainType"))]
 [h: PsiSleights = json.set(PsiSleights, json.get(macro.args, "Name"), jsonData)]
 [if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: PsiSleights = json.remove(PsiSleights, json.get(macro.args, "Name"))]}; {}]
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: PsiSleights = json.remove(PsiSleights, json.get(macro.args, "overwrite"))]}; {}]
@@ -4334,6 +4339,8 @@ Reputation Updated
 {
 [h: name = json.get(macro.args, 0)]
 [h: text = json.get(macro.args, 1)]
+[h: strainValue = json.get(macro.args, 2)]
+[h: strainValueType = json.get(macro.args, 3)]
 [h: text = decode(text)]
 [h: text = replace(text,"<","&#x3C;")]
 [h: text = replace(text,">","&#x3E;")]
@@ -4346,22 +4353,35 @@ Reputation Updated
     <form method="json" name="PsiSleightsUpdate" action="[r:macroLinkText('PsiSleightsUpdate@Lib:MnM', 'none', '', currentToken())]">
       <table>
         <tr>
-          <td valign="top" align="center">
+          <td valign="top" align="center" colspan="2">
             <label for="Name"><b>Psi Sleight Name and Level: </b></label><br><input type="text" name="Name" value="[r: name]"></input>
           </td>
         </tr>
         <tr>
-          <td valign="top">
+          <td valign="top" align="center" width="50%">
+            <b>Strain: </b><br/>
+            <input type="text" name="Strain" value="[r: strainValue]"></input>
+          </td>
+          <td valign="top" align="center" width="50%">
+            <b>Strain Type:</b><br/>
+            <select name="StrainType">
+                <option value="DV"[r,if(strainValueType == "DV"): " selected"]>DV</option>
+                <option value="SV"[r,if(strainValueType == "SV"): " selected"]>SV</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" colspan="2">
             <textarea name="Text" value="[r: text]" rows="10" cols="50">[r: text]</textarea>
           </td>
         </tr>
         <tr>
-          <td align="center">
+          <td align="center" colspan="2">
             Delete this Psi Sleight? <input type="checkbox" name="Deletecheck" value="1"></input>
           </td>
         </tr>
         <tr>
-          <td align="center">
+          <td align="center" colspan="2">
             <input type='hidden' name='overwrite' value='[r: overwrite =  json.get(macro.args, 0)]'></input>
             <input type='submit' name='Submit' value='Submit'></input>
           </td>
@@ -8055,5 +8075,75 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 }]
 
 All Tokens added to Initiative!
+
+!!
+@@ @PsiSleightsUse
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+[h: rollerName = json.get(macro.args, 0)]
+[h: psiName = json.get(macro.args, 1)]
+[h: psiDetails = json.get(macro.args, 2)]
+[h: psiStrain = json.get(macro.args, 3)]
+[h: psiStrainType = json.get(macro.args, 4)]
+[h: hasSiphon = json.contains(PsiSleights,"Siphon (Chi)")]
+[h: hasEfficiency = json.contains(PsiSleights,"Psi Efficiency (Chi)")]
+[h,if(psiStrainType == "DV"): strainTypePick = 0;strainTypePick = 1]
+
+[h:choice = input(
+    strformat(".|%s||LABEL|SPAN=TRUE","Psi Power: " + psiName),
+    strformat(".|%s||LABEL|SPAN=TRUE","Psi Strain: " + psiStrain),
+    if(hasSiphon,
+       strformat("strainTypePick|Damage (DV),Stress (SV)|Choose Strain Type|RADIO|SELECT=%d",if(psiStrainType == "DV",0,1)),
+       strformat(".|%s||LABEL|SPAN=TRUE",if(psiStrainType == "DV","Damage (DV)","Stress (SV)"))),
+    "isPrivate|0|Private|CHECK"
+)]
+[h:abort(choice)]
+
+[h,if(psiStrain != "0"): theRoll = ceiling(eval(psiStrain)); theRoll = -1]
+[h,if(hasEfficiency && theRoll > 0): theRoll = theRoll - 1]
+[h: formulaLine = "<br/><small>Strain = " + psiStrain + if(hasEfficiency," -1 Psi Efficiency","") + "</small>"]
+
+[h: psiStrainText = "None"]
+[h: hurtLine = ""]
+
+[h,if(strainTypePick == 0 && theRoll > 0),code:
+  {
+    [h: psiStrainText = "Damage (DV)"]
+    [h: DAMAGE = DAMAGE + theRoll]
+    [h: oldWounds = WOUNDS]
+    [h,if(theRoll >= WT && theRoll < WT*2): WOUNDS = WOUNDS + 1]
+    [h,if(theRoll >= WT*2 && theRoll < WT*3): WOUNDS = WOUNDS + 2]
+    [h,if(theRoll >= WT*3 && theRoll < WT*4): WOUNDS = WOUNDS + 3]
+    [h,if(theRoll >= WT*4 && theRoll < WT*5): WOUNDS = WOUNDS + 4]
+    [h,if(oldWounds != WOUNDS): hurtLine = "<br/>Suffers <b>" + WOUNDS - oldWounds + "</b> Wound(s) from the excess Psi Strain!"]
+  };{}
+]
+[h,if(strainTypePick == 1 && theRoll > 0),code:
+  {
+    [h: psiStrainText = "Stress (SV)"]
+    [h: STRESS = STRESS + theRoll]
+    [h: oldTrauma = TRAUMA]
+    [h,if(theRoll >= TT && theRoll < TT*2): TRAUMA = TRAUMA + 1]
+    [h,if(theRoll >= TT*2 && theRoll < TT*3): TRAUMA = TRAUMA + 2]
+    [h,if(theRoll >= TT*3 && theRoll < TT*4): TRAUMA = TRAUMA + 3]
+    [h,if(theRoll >= TT*4 && theRoll < TT*5): TRAUMA = TRAUMA + 4]
+    [h,if(oldTrauma != TRAUMA): hurtLine = "<br/>Suffers <b>" + TRAUMA - oldTrauma + "</b> Trauma(s) from the excess Psi Strain!"]
+  };{}
+]
+
+[h, macro("SheetLoad@this"):""]
+
+[h: jsonData = json.append("[]",rollerName,psiName,theRoll,psiStrainText,hurtLine,formulaLine)]
+[h: link = macroLinkText("PsiSleightsUseOutput@this",if(isPrivate,if(isGM() == 1,"gm","gm-self"),"all"),jsonData,currentToken())]
+[r: execLink(link)]
+
+!!
+@@ @PsiSleightsUseOutput
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+[h: argz = macro.args]
+
+<p><span bgcolor=#cccccc><b>[r:json.get(argz,0)]</b> uses Psi Sleight: <i>[r:json.get(argz,1)]</i>.</span>
+<br/>Strain: <b>[r:json.get(argz,2)]</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Strain Type: <b>[r:json.get(argz,3)]</b>
+[r:json.get(argz,4)]
+[r:json.get(argz,5)]
 
 !!
