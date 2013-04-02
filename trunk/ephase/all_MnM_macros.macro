@@ -2,6 +2,7 @@
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [h:defineFunction("pause", "pause@"+getMacroLocation(), 1, 0 ) ] 
 [h:defineFunction("die100", "die100@"+getMacroLocation(), 0, 0 ) ]
+[h:defineFunction("CharSheet", "CharSheet@"+getMacroLocation(), 0, 0)]
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
@@ -6624,10 +6625,9 @@ Reputation Updated
 <link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
 <head><title>Character Sheet</title></head>
 <body>
-
 	[r, if(getPropertyType() != "Basic" && getPropertyType() != "zLibrary" && selectedCount <= 1), code:
 		{
-			[r, macro("CharSheet@this"): macro.args]
+			[r:decode(SheetCache)]
 		}; 
 		{
 			<table width="100%">
@@ -6642,7 +6642,6 @@ Reputation Updated
 </body>
 </html>
 }]
-
 !!
 @@ @SheetLoad
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
@@ -6654,11 +6653,16 @@ Reputation Updated
 
   [r,if(OwnedCurrent == 1 || OwnedSelected == 1 || isGM()), CODE:
 	{
-		[r, macro("Sheet@this"): macro.args]	
+    [r, macro("Sheet@this"): macro.args]
   };{
 		[h: ""]
   }]
 }]
+
+!!
+@@ @RecalcSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h:SheetCache = encode(CharSheet())]
 
 !!
 @@ @StatsSheet
