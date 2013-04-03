@@ -1587,6 +1587,7 @@
 [evalMacro('[macro("die100@"+LibFunction): jsonData]')]
 [h: weapJson = json.set(weapJson,3,useAmmo)]
 [h: Weapons = json.set(Weapons,weapName,weapJson)]
+[h: RecalcBottomSheet("Combat")]
 [h, macro("SheetLoad@Lib:MnM"):""]
 
 !!
@@ -3772,36 +3773,42 @@ Each trauma applies a cumulative -10 modifier to all of the character's actions 
 @@ @EgoTraitsShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("EgoTraitsShow")): setProperty("EgoTraitsShow",0); setProperty("EgoTraitsShow",1)]
+[h: RecalcBottomSheet("Powers")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @PsiSleightsShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("PsiSleightsShow")): setProperty("PsiSleightsShow",0); setProperty("PsiSleightsShow",1)]
+[h: RecalcBottomSheet("Powers")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @GearShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("GearShow")): setProperty("GearShow",0); setProperty("GearShow",1)]
+[h: RecalcBottomSheet("Powers")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @MorphTraitsShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("MorphTraitsShow")): setProperty("MorphTraitsShow",0); setProperty("MorphTraitsShow",1)]
+[h: RecalcBottomSheet("Powers")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @DefenseShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("DefenseShow")): setProperty("DefenseShow",0); setProperty("DefenseShow",1)]
+[h: RecalcBottomSheet("Combat")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
 @@ @ImplantsEnhancementsShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("ImplantsEnhancementsShow")): setProperty("ImplantsEnhancementsShow",0); setProperty("ImplantsEnhancementsShow",1)]
+[h: RecalcBottomSheet("Powers")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
@@ -3813,6 +3820,7 @@ Each trauma applies a cumulative -10 modifier to all of the character's actions 
 [h: EgoTraits = json.set(EgoTraits, json.get(macro.args, "Name"), jsonData)]
 [if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: EgoTraits = json.remove(EgoTraits, json.get(macro.args, "Name"))]}; {}]
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: EgoTraits = json.remove(EgoTraits, json.get(macro.args, "overwrite"))]}; {}]
+[h: RecalcBottomSheet("Powers")]
 [h, macro("SheetLoad@this"):""]
 Ego Traits Updated
 
@@ -3825,6 +3833,7 @@ Ego Traits Updated
 [h: PsiSleights = json.set(PsiSleights, json.get(macro.args, "Name"), jsonData)]
 [if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: PsiSleights = json.remove(PsiSleights, json.get(macro.args, "Name"))]}; {}]
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: PsiSleights = json.remove(PsiSleights, json.get(macro.args, "overwrite"))]}; {}]
+[h: RecalcBottomSheet("Powers")]
 [h, macro("SheetLoad@this"):""]
 Psi Sleights Updated
 
@@ -3837,6 +3846,7 @@ Psi Sleights Updated
 [h: Gear = json.set(Gear, json.get(macro.args, "Name"), jsonData)]
 [if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: Gear = json.remove(Gear, json.get(macro.args, "Name"))]}; {}]
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: Gear = json.remove(Gear, json.get(macro.args, "overwrite"))]}; {}]
+[h: RecalcBottomSheet("Powers")]
 [h, macro("SheetLoad@this"):""]
 Gear Updated
 
@@ -3849,6 +3859,7 @@ Gear Updated
 [h: MorphTraits = json.set(MorphTraits, json.get(macro.args, "Name"), jsonData)]
 [if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: MorphTraits = json.remove(MorphTraits, json.get(macro.args, "Name"))]}; {}]
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: MorphTraits = json.remove(MorphTraits, json.get(macro.args, "overwrite"))]}; {}]
+[h: RecalcBottomSheet("Powers")]
 [h, macro("SheetLoad@this"):""]
 Morph Traits Updated
 
@@ -3861,6 +3872,7 @@ Morph Traits Updated
 [h: ImplantsEnhancements = json.set(ImplantsEnhancements, json.get(macro.args, "Name"), jsonData)]
 [if(json.get(macro.args, "Deletecheck")=="1"), code:{[h: ImplantsEnhancements = json.remove(ImplantsEnhancements, json.get(macro.args, "Name"))]}; {}]
 [if(json.get(macro.args, "Name") != json.get(macro.args, "overwrite")),code:{[h: ImplantsEnhancements = json.remove(ImplantsEnhancements, json.get(macro.args, "overwrite"))]}; {}]
+[h: RecalcBottomSheet("Powers")]
 [h, macro("SheetLoad@this"):""]
 Implants & Enhancements Updated
 
@@ -3875,6 +3887,7 @@ Implants & Enhancements Updated
   [h: dataFields = json.fields(data,"json")]
   [h,if(json.equals(DandD,dataFields)): ""; DandD = dataFields]
 }]
+[h: RecalcTopSheet()]
 [h, macro("SheetLoad@Lib:MnM"):""]
 
 !!
@@ -3885,6 +3898,7 @@ Implants & Enhancements Updated
 [h,if(isNumber(rez) != 1): abort(0)]
 [h,if(rez < 0): abort(0)]
 [h: RezPoints = rez]
+[h: RecalcTopSheet()]
 [h, macro("SheetLoad@this"):""]
 [h: outputter = strformat("<span bgcolor=#cccccc>%s updated Rez Points to: <b>%d</b> !!</span>",getName(currentToken()),RezPoints)]
 {outputter}
@@ -3900,12 +3914,14 @@ Implants & Enhancements Updated
     [h,if(isNumber(val) != 1): abort(0)]
     [h,if(val < 1): abort(0)]
     [h: setProperty(argName, getProperty(argName) + val)]
+    [h: RecalcBottomSheet("Combat")]
     [h, macro("SheetLoad@this"):""]
     [h: outputter = strformat("<span bgcolor=#cccccc>%s took %s points: <b>%d</b> !! (new total: %d)</span>",getName(currentToken()),argName,val,getProperty(argName))]
     {outputter}
   };
   {
     [h: setProperty(argName, getProperty(argName) + 1)]
+    [h: RecalcBottomSheet("Combat")]
     [h, macro("SheetLoad@this"):""]
     [h: outputter = strformat("<span bgcolor=#cccccc>%s took 1 %s !! (new total: %d)</span>",getName(currentToken()),argName,getProperty(argName))]
     {outputter}
@@ -3916,6 +3932,7 @@ Implants & Enhancements Updated
 @@ @WeaponShowUpdate
 @PROPS@ fontColor=black ; autoExecute=false ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Update ; tooltip= ; minWidth= ; 
 [if(getProperty("WeaponShow")): setProperty("WeaponShow",0); setProperty("WeaponShow",1)]
+[h: RecalcBottomSheet("Combat")]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
@@ -3952,6 +3969,7 @@ Implants & Enhancements Updated
   [h: Weapons = json.set(Weapons,weapName,jsonWeap)]
 }]
 
+[h: RecalcBottomSheet("Combat")]
 [h, macro("SheetLoad@Lib:MnM"):""]
 New Weapon Added
 
@@ -4019,6 +4037,7 @@ New Weapon Added
   [h: KnowledgeSkills = json.set(KnowledgeSkills, name, propData)]
 }]
 
+[h: RecalcBottomSheet("Skills")]
 [h, macro("SheetLoad@Lib:MnM"):""]
 Knowledge Skills Updated
 
@@ -4096,6 +4115,7 @@ Knowledge Skills Updated
   [h: ActiveSkills = json.set(ActiveSkills, name, propData)]
 }]
 
+[h: RecalcBottomSheet("Skills")]
 [h, macro("SheetLoad@Lib:MnM"):""]
 Active Skills Updated
 
@@ -4218,6 +4238,7 @@ Active Skills Updated
   [h: MuseSkills = json.set(MuseSkills, name, propData)]
 }]
 
+[h: RecalcBottomSheet("Muse")]
 [h, macro("SheetLoad@Lib:MnM"):""]
 Muse Skills Updated
 
@@ -4231,6 +4252,7 @@ Muse Skills Updated
 [h: setProperty("SAV", json.get(macro.args, "SAV"))]
 [h: setProperty("SOM", json.get(macro.args, "SOM"))]
 [h: setProperty("WIL", json.get(macro.args, "WIL"))]
+[h: RecalcBottomSheet("Stats")]
 [h, macro("SheetLoad@this"):""]
 Aptitudes Updated
 
@@ -4244,6 +4266,7 @@ Aptitudes Updated
 [h: setProperty("SAV_Muse", json.get(macro.args, "SAV_Muse"))]
 [h: setProperty("SOM_Muse", json.get(macro.args, "SOM_Muse"))]
 [h: setProperty("WIL_Muse", json.get(macro.args, "WIL_Muse"))]
+[h: RecalcBottomSheet("Muse")]
 [h, macro("SheetLoad@this"):""]
 Muse Aptitudes Updated
 
@@ -4261,6 +4284,7 @@ Muse Aptitudes Updated
 [h: setProperty("INIT", json.get(macro.args, "INIT"))]
 [h: setProperty("SPD", json.get(macro.args, "SPD"))]
 [h: setProperty("DB", json.get(macro.args, "DB"))]
+[h: RecalcBottomSheet("Stats")]
 [h, macro("SheetLoad@this"):""]
 Stats Updated
 
@@ -4270,6 +4294,7 @@ Stats Updated
 [h: setProperty("TT_Muse", json.get(macro.args, "TT_Muse"))]
 [h: setProperty("LUC_Muse", json.get(macro.args, "LUC_Muse"))]
 [h: setProperty("IR_Muse", json.get(macro.args, "IR_Muse"))]
+[h: RecalcBottomSheet("Muse")]
 [h, macro("SheetLoad@this"):""]
 Muse Stats Updated
 
@@ -4280,6 +4305,7 @@ Muse Stats Updated
 [h: setProperty("WOUNDS", json.get(macro.args, "WOUNDS"))]
 [h: setProperty("STRESS", json.get(macro.args, "STRESS"))]
 [h: setProperty("TRAUMA", json.get(macro.args, "TRAUMA"))]
+[h: RecalcBottomSheet("Combat")]
 [h, macro("SheetLoad@this"):""]
 Damage & Stress Updated
 
@@ -4293,6 +4319,7 @@ Damage & Stress Updated
 [h: setProperty("g-Rep", json.get(macro.args, "g-Rep"))]
 [h: setProperty("i-Rep", json.get(macro.args, "i-Rep"))]
 [h: setProperty("r-Rep", json.get(macro.args, "r-Rep"))]
+[h: RecalcBottomSheet("Stats")]
 [h, macro("SheetLoad@this"):""]
 Reputation Updated
 
@@ -4551,6 +4578,12 @@ Reputation Updated
 )]
 [h: abort(status)]
 
+[h: RecalcBottomSheet("Stats")]
+[h: RecalcBottomSheet("Skills")]
+[h: RecalcBottomSheet("Powers")]
+[h: RecalcBottomSheet("Muse")]
+[h: RecalcBottomSheet("Combat")]
+[h: RecalcTopSheet()]
 [r, macro("SheetLoad@this"):macro.args]
 
 !!
@@ -6630,21 +6663,11 @@ Reputation Updated
 		{
       [h: argz = macro.args]
       [h,if(startsWith(argz,"Page=")): argPage = getStrProp(argz, "Page"); argPage = ""]
-      [h,if(getStrProp(CharPage, "Page") != argPage && length(argPage) > 0),code:
-        {
-          [h: CharPage = "Page=" + argPage]
-          [h: RecalcTopSheet()]
-          [r,switch(argPage): 
-            case "Stats": RecalcBottomSheet("Stats");
-            case "Skills": RecalcBottomSheet("Skills");
-            case "Powers": RecalcBottomSheet("Powers");
-            case "Muse": RecalcBottomSheet("Muse");
-            case "Combat": RecalcBottomSheet("Combat");
-            default: RecalcBottomSheet("Stats")
-          ]
-        };{}
-      ]
-      [h,if(length(CharPage) <= 0)): CharPage="Page=Stats"]
+      [h,if(getStrProp(CharPage, "Page") != argPage && length(argPage) > 0): newPage = 1; newPage = 0]
+      [h,if(newPage): CharPage = "Page=" + argPage]
+      [h,if(newPage): RecalcTopSheet()]
+      [h,if(length(SheetCache) <= 0): RecalcTopSheet()]
+      [h,if(length(StatsCache) <= 0): RecalcBottomSheet("Stats")]
       [h,if(length(StatsCache) <= 0): RecalcBottomSheet("Stats")]
       [h,if(length(SkillsCache) <= 0): RecalcBottomSheet("Skills")]
       [h,if(length(PowersCache) <= 0): RecalcBottomSheet("Powers")]
@@ -7850,6 +7873,7 @@ Reputation Updated
 [h:MOX = MOX - 1]
 <p><span bgcolor=#cccccc><b>{rollerName}</b> spends a Moxie point.</span>
 {res}
+[h: RecalcBottomSheet("Stats")]
 [h, macro("SheetLoad@this"):""]
 
 !!
@@ -7925,6 +7949,7 @@ Reputation Updated
   }
 ]
 
+[h: RecalcBottomSheet("Stats")]
 [h, macro("SheetLoad@this"):""]
 
 !!
@@ -7961,6 +7986,7 @@ Reputation Updated
   }
 ]
 [h,if(length(outStr)==0): abort(0)]
+[h: RecalcBottomSheet("Stats")]
 [h, macro("SheetLoad@this"):""]
 
 <p><span bgcolor=#cccccc><b>{rollerName}</b> {outStr} for {repName}.</span><br>
@@ -7979,6 +8005,7 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h,if(energyChoice != Armor_Energy): Armor_Energy = energyChoice]
 [h,if(kineticChoice != Armor_Kinetic): Armor_Kinetic = kineticChoice]
 [h,if(penaltyChoice != Armor_Penalty): Armor_Penalty = penaltyChoice]
+[h: RecalcBottomSheet("Combat")]
 [h, macro("SheetLoad@this"):""]
 
 !!
@@ -7998,6 +8025,7 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h: knowArray = json.set(knowArray, 4, spec)]
 [h: KnowledgeSkills = json.set(KnowledgeSkills, knowName, knowArray)]
 
+[h: RecalcBottomSheet("Skills")]
 [h, macro("SheetLoad@this"):""]
 
 !!
@@ -8017,6 +8045,7 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h: activeArray = json.set(activeArray, 4, spec)]
 [h: ActiveSkills = json.set(ActiveSkills, activeName, activeArray)]
 
+[h: RecalcBottomSheet("Skills")]
 [h, macro("SheetLoad@this"):""]
 
 !!
@@ -8036,6 +8065,7 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 [h: museArray = json.set(museArray, 4, spec)]
 [h: MuseSkills = json.set(MuseSkills, museName, museArray)]
 
+[h: RecalcBottomSheet("Muse")]
 [h, macro("SheetLoad@this"):""]
 
 !!
@@ -8179,6 +8209,7 @@ All Tokens added to Initiative!
   };{}
 ]
 
+[h: RecalcBottomSheet("Combat")]
 [h, macro("SheetLoad@this"):""]
 
 [h: jsonData = json.append("[]",rollerName,psiName,theRoll,psiStrainText,hurtLine,formulaLine)]
