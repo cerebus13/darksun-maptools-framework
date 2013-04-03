@@ -3,6 +3,13 @@
 [h:defineFunction("pause", "pause@"+getMacroLocation(), 1, 0 ) ] 
 [h:defineFunction("die100", "die100@"+getMacroLocation(), 0, 0 ) ]
 [h:defineFunction("CharSheet", "CharSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("StatsSheet","StatsSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("SkillsSheet","SkillsSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("PowersSheet","PowersSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("MuseSheet","MuseSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("CombatSheet","CombatSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("RecalcTopSheet","RecalcTopSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("RecalcBottomSheet","RecalcBottomSheet@"+getMacroLocation(), 0, 0)]
 [h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
@@ -6441,12 +6448,7 @@ Reputation Updated
 !!
 @@ @CharSheet
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
-[h: page = getStrProp(macro.args, "Page")]
-[h: tempPage = getStrProp(CharPage, "Page")]
-
-[h, if(page==""&&tempPage==""): page="Stats"]
-[h, if(page==""&&tempPage!=""): page=tempPage]
-[h: CharPage="Page="+page]
+[h: page = getStrProp(CharPage, "Page")]
 [h: icon = tblImage("Header",1)]
 
 <table width="100%" cellpadding="0" border="1" bgcolor="white">
@@ -6492,7 +6494,6 @@ Reputation Updated
 		</td>
 	</tr>
 </table>
-[r, macro(page+"Sheet@this"):macro.args]
 
 !!
 @@ @HeaderSheet
@@ -6627,7 +6628,38 @@ Reputation Updated
 <body>
 	[r, if(getPropertyType() != "Basic" && getPropertyType() != "zLibrary" && selectedCount <= 1), code:
 		{
+      [h: argz = macro.args]
+      [h,if(startsWith(argz,"Page=")): argPage = getStrProp(argz, "Page"); argPage = ""]
+      [h,if(getStrProp(CharPage, "Page") != argPage && length(argPage) > 0),code:
+        {
+          [h: CharPage = "Page=" + argPage]
+          [h: RecalcTopSheet()]
+          [r,switch(argPage): 
+            case "Stats": RecalcBottomSheet("Stats");
+            case "Skills": RecalcBottomSheet("Skills");
+            case "Powers": RecalcBottomSheet("Powers");
+            case "Muse": RecalcBottomSheet("Muse");
+            case "Combat": RecalcBottomSheet("Combat");
+            default: RecalcBottomSheet("Stats")
+          ]
+        };{}
+      ]
+      [h,if(length(CharPage) <= 0)): CharPage="Page=Stats"]
+      [h,if(length(StatsCache) <= 0): RecalcBottomSheet("Stats")]
+      [h,if(length(SkillsCache) <= 0): RecalcBottomSheet("Skills")]
+      [h,if(length(PowersCache) <= 0): RecalcBottomSheet("Powers")]
+      [h,if(length(MuseCache) <= 0): RecalcBottomSheet("Muse")]
+      [h,if(length(CombatCache) <= 0): RecalcBottomSheet("Combat")]
 			[r:decode(SheetCache)]
+      [h:cPage = getStrProp(CharPage, "Page")]
+      [r,switch(cPage): 
+        case "Stats": decode(StatsCache);
+        case "Skills": decode(SkillsCache);
+        case "Powers": decode(PowersCache);
+        case "Muse": decode(MuseCache);
+        case "Combat": decode(CombatCache);
+        default: decode(StatsCache)
+      ]
 		}; 
 		{
 			<table width="100%">
@@ -6660,9 +6692,22 @@ Reputation Updated
 }]
 
 !!
-@@ @RecalcSheet
+@@ @RecalcTopSheet
 @PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
 [h:SheetCache = encode(CharSheet())]
+
+!!
+@@ @RecalcBottomSheet
+@PROPS@ fontColor=black ; autoExecute=true ; fontSize=1.00em ; sortBy= ; color=default ; playerEditable=false ; applyToSelected=false ; group=Sheet ; tooltip= ; minWidth= ; 
+[h,if(argCount() > 0): cPage = arg(0); cPage = getStrProp(CharPage, "Page")]
+[h,switch(cPage): 
+  case "Stats": StatsCache = encode(StatsSheet());
+  case "Skills": SkillsCache = encode(SkillsSheet());
+  case "Powers": PowersCache = encode(PowersSheet());
+  case "Muse": MuseCache = encode(MuseSheet());
+  case "Combat": CombatCache = encode(CombatSheet());
+  default: StatsCache = encode(StatsSheet())
+]
 
 !!
 @@ @StatsSheet
