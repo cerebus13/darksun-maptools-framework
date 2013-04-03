@@ -1,7 +1,12 @@
 -----Sheet-----
 CharPage:{}
 PageColor:Gray
-SheetCache:""
+SheetCache
+StatsCache
+SkillsCache
+PowersCache
+MuseCache
+CombatCache
 -----Biography
 Background
 Faction
