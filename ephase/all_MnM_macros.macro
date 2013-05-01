@@ -823,6 +823,7 @@
   
   [h: pName = getName(currentToken())]
   <p><span bgcolor=#cccccc><b>{pName}</b> {outStr}{weapName}.</span>
+  [h: RecalcBottomSheet("Combat")]
   [h, macro("SheetLoad@this"):""]
 !!
 @@ @WeaponDisplayTop
