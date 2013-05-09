@@ -10,7 +10,6 @@
 [h:defineFunction("CombatSheet","CombatSheet@"+getMacroLocation(), 0, 0)]
 [h:defineFunction("RecalcTopSheet","RecalcTopSheet@"+getMacroLocation(), 0, 0)]
 [h:defineFunction("RecalcBottomSheet","RecalcBottomSheet@"+getMacroLocation(), 0, 0)]
-[h: selectedCount=listCount(getSelected())]
 [frame("Sheet"):{
 <html>
 <link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
@@ -3297,7 +3296,7 @@ Altering an objects design and function follows the same basic rules as build an
 <p>
 <b>What it is:</b> Intimidation is convincing someone to do what you want based on direct threats (implied or actual) or sheer force of personality.
 <p>
-<b>When you use it:</b> Use Intimidation to scare someone into submission, browbeat them into getting your way, command them to follow your orders, or berate them into giving up information. Influence is handled as an Opposed Test, pitted against the targets WIL + WIL + SAV.
+<b>When you use it:</b> Use Intimidation to scare someone into submission, browbeat them into getting your way, command them to follow your orders, or berate them into giving up information. Influence is handled as an Opposed Test, pitted against the targets WIL + WIL + SAV.
 <p>
 <b>Specializations:</b> Interrogation, Physical, Verbal
 
@@ -3312,7 +3311,7 @@ Altering an objects design and function follows the same basic rules as build an
 <p>
 <b>When you use it:</b> Use Investigation to draw conclusions from assorted details. For example, Investigation could be used to determine the likely sequence of events at a crime scene, determine a possible social connection between two people, or deduce how an enemy made their escape. Investigation is a great way to provide clues to players, especially when the subject matter is something their character might know well but the player does not.
 <p>
-<b>Specializations:</b> Evidence Analysis, Logical Deduc -tions, Physical Investigation, Physical Tracking
+<b>Specializations:</b> Evidence Analysis, Logical Deductions, Physical Investigation, Physical Tracking
 
 !!
 @@ @Kinesics
@@ -3325,7 +3324,7 @@ Altering an objects design and function follows the same basic rules as build an
 <p>
 <b>When you use it:</b> Use Kinesics to read body language, tells, social cues, and other subconscious indicators. It can also be used to emote more effectively. Kinesics is used defensively whenever someone is trying to deceive you; make an Opposed Test against that persons Deception or Impersonation skill.
 <p>
-Though synthetic morphs are also designed to emote, reading them is not as easy. Apply a –30 modifier when judging a synthetic morph inhabited by a character or AGI. Likewise, standard AIs are also difficult to read; apply a –60 modifier when judging a synthetic morph or pod operated by an AI.
+Though synthetic morphs are also designed to emote, reading them is not as easy. Apply a -30 modifier when judging a synthetic morph inhabited by a character or AGI. Likewise, standard AIs are also difficult to read; apply a -60 modifier when judging a synthetic morph or pod operated by an AI.
 <p>
 <b>Specializations:</b> Judge Intent, Nonvocal Communication
 <h2>Judging Emotions and Intentions</h2>
@@ -8111,6 +8110,8 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 @@ @AddAllToInitiative
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
 
+[h: abort(isGM())]
+
 [h:initGroup = getTokenNames("json",json.set("{}","layer",json.append("[]","TOKEN")))]
 
 [h,foreach(token,initGroup,""),CODE:
@@ -8226,5 +8227,65 @@ All Tokens added to Initiative!
 <br/>Strain: <b>[r:json.get(argz,2)]</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Strain Type: <b>[r:json.get(argz,3)]</b>
 [r:json.get(argz,4)]
 [r:json.get(argz,5)]
+
+!!
+@@ @ClearCache
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+
+[h: resetProperty("SheetCache")]
+[h: resetProperty("StatsCache")]
+[h: resetProperty("SkillsCache")]
+[h: resetProperty("PowersCache")]
+[h: resetProperty("MuseCache")]
+[h: resetProperty("CombatCache")]
+
+!!
+@@ @ClearAllTokenCache
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+
+<!-- Clears cache of all tokens on TOKEN layer -->
+
+[h: abort(isGM())]
+[h:selGroup = getTokenNames("json",json.set("{}","layer",json.append("[]","TOKEN")))]
+
+[h,foreach(token,selGroup,""),CODE:
+{
+  [h,token(token),CODE:
+  { 
+    [h,if(getPropertyType() == "Player"): resetProperty("SheetCache")]
+    [h,if(getPropertyType() == "Player"): resetProperty("StatsCache")]
+    [h,if(getPropertyType() == "Player"): resetProperty("SkillsCache")]
+    [h,if(getPropertyType() == "Player"): resetProperty("PowersCache")]
+    [h,if(getPropertyType() == "Player"): resetProperty("MuseCache")]
+    [h,if(getPropertyType() == "Player"): resetProperty("CombatCache")]
+  }]
+}]
+
+All Tokens on TOKEN layer cache cleared!
+
+!!
+@@ @SheetLost
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+
+<!-- Loads up the charsheet frame if you closed it -->
+
+[frame("Sheet"):{
+<html>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
+<head><title>Character Sheet</title></head>
+<body>
+			<table width="100%">
+				<tr>
+					<td align="center"><image src='[r: tableImage("Icons",1,300)]' border="0" align="middle"></image><br>
+						<font size = "5"><b>Loaded<br>Please select a token you own</b></font>
+					</td>
+				</tr>
+			</table>
+		}
+	]
+</body>
+</html>
+}]
+[h: abort(0)]
 
 !!
