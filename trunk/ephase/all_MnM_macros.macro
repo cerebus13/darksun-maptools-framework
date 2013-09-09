@@ -8291,7 +8291,6 @@ All Tokens on TOKEN layer cache cleared!
 !!
 @@ @ImportChar
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
-
 [h:'<!------------------------------------------------ Imports character to impersonated token from pasted text ----------------------------------------------------->']
 [frame("Import Character",	"width=100; height=900; temporary=0"): {
 <html>
@@ -8320,7 +8319,6 @@ All Tokens on TOKEN layer cache cleared!
 !!
 @@ @ImportChar2
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
-
 [h:'<!------------------------------------------------ 2nd step for character import ----------------------------------------------------->']
 [h: PasteChar = json.get(macro.args, "TextBox")]
 [frame("Import Character",	"width=100; height=900; temporary=0"): {
