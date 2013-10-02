@@ -8238,6 +8238,7 @@ All Tokens added to Initiative!
 [h: resetProperty("PowersCache")]
 [h: resetProperty("MuseCache")]
 [h: resetProperty("CombatCache")]
+[h, macro("SheetLost@Lib:MnM"):""]
 
 !!
 @@ @ClearAllTokenCache
@@ -8261,7 +8262,8 @@ All Tokens added to Initiative!
   }]
 }]
 
-All Tokens on TOKEN layer cache cleared!
+[r: broadcast("All Tokens on TOKEN layer cache cleared!")]
+[h, macro("SheetLost@Lib:MnM"):""]
 
 !!
 @@ @SheetLost
