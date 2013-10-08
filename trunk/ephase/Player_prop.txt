@@ -20,6 +20,7 @@ LibPlayer:Lib:Player
 LibMorph:Lib:Morph
 LibWeapon:Lib:Weapon
 LibFunction:Lib:MnM
+Version:1.0
 -----Aptitudes-----
 COG:0
 COO:0
