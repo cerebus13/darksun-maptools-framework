@@ -7780,7 +7780,9 @@ Reputation Updated
 [h,if(dieRoll1 == 0 && dieRoll1 == dieRoll2): dieRollText = "00"; dieRollText = string(dieRoll)]
 
 [h,if(dieRoll1 == dieRoll2): result = "CRITICAL "; result = ""]
-[h: modifiedTN = targetNumber + mods + specMod + laserMod + number(teamWork)*10 - if(useWounds,WOUNDS*10,0) - if(useTrauma,TRAUMA*10,0) - if(useArmorPenalty,Armor_Penalty,0)]
+[h,if(useWounds): woundMod = if((WOUNDS-NegateWounds)*10 < 0, 0, (WOUNDS-NegateWounds)*10); woundMod = 0]
+[h,if(useTrauma): traumaMod = if((TRAUMA-NegateTrauma)*10 < 0, 0, (TRAUMA-NegateTrauma)*10); traumaMod = 0]
+[h: modifiedTN = targetNumber + mods + specMod + laserMod + number(teamWork)*10 - woundMod - traumaMod - if(useArmorPenalty,Armor_Penalty,0)]
 [h,if(dieRoll <= modifiedTN): result = strformat('<font color="green">%sSUCCESS</font>',result); result = strformat('<font color="red">%sFAILURE</font>',result)]
 [h,if(dieRoll <= modifiedTN): marginNum = dieRoll; marginNum = dieRoll - modifiedTN]
 [h,if(dieRoll <= modifiedTN): margin = strformat('%sMargin of %s: <b>%d</b>.',if(dieRoll > 30,"<u>Excellent</u> ",""),"Success",dieRoll); margin = strformat('%sMargin of %s: <b>%d</b>.',if((dieRoll - modifiedTN) > 30,"<u>Severe</u> ",""),"Failure",dieRoll - modifiedTN)]
@@ -7799,8 +7801,8 @@ Reputation Updated
 [h: finalDV = strformat("%s%s%s",if(evalDV == "","<b>","<small>"),weapDV,if(evalDV != "","</small> = <b>" + evalDV + "</b>","</b>"))]
 [h,if(weapCheck): weapText = strformat('<br><font color="#FF00FF">DV</font> = %s%s%s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF00FF">AP</font> = <b>%s</b>',finalDV,extraDV,modsDVText,weapAP); weapText = ""]
 
-[h,if(useWounds && WOUNDS != 0): penText = strformat(" - %d (Wounds)",WOUNDS * 10); penText = ""]
-[h,if(useTrauma && TRAUMA != 0): penText = penText + strformat(" - %d (Trauma)",TRAUMA * 10)]
+[h,if(useWounds && woundMod != 0): penText = strformat(" - %d (Wounds)",woundMod); penText = ""]
+[h,if(useTrauma && traumaMod != 0): penText = penText + strformat(" - %d (Trauma)",traumaMod)]
 [h,if(useArmorPenalty && Armor_Penalty != 0): penText = penText + strformat(" - %d (Armor)",Armor_Penalty)]
 
 [h,if(hideRoll): totalModsLine = modsText + teamWorkText + useSpecText + useLaserText + penText; totalModsLine = dieRollText+" vs. "+targetNumber + modsText + teamWorkText + useSpecText + useLaserText + penText]

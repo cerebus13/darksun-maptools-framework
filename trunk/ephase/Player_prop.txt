@@ -50,6 +50,8 @@ STRESS:0
 TRAUMA:0
 DefenseShow:1
 DandD:[]
+NegateWounds:0
+NegateTrauma:0
 -----Reputation-----
 A-Rep:0
 A-Rep_favors:[]
