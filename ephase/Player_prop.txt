@@ -16,9 +16,7 @@ Motivations
 RezPoints(Rez):0
 Morph:None
 -----Lib Tokens-----
-LibPlayer:Lib:Player
-LibMorph:Lib:Morph
-LibWeapon:Lib:Weapon
+LibData:Lib:zData
 LibFunction:Lib:MnM
 Version:1.0
 -----Aptitudes-----
