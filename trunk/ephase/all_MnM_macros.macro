@@ -10,6 +10,7 @@
 [h:defineFunction("CombatSheet","CombatSheet@"+getMacroLocation(), 0, 0)]
 [h:defineFunction("RecalcTopSheet","RecalcTopSheet@"+getMacroLocation(), 0, 0)]
 [h:defineFunction("RecalcBottomSheet","RecalcBottomSheet@"+getMacroLocation(), 0, 0)]
+[h:defineFunction("listCleaner","listCleaner@"+getMacroLocation(), 0)]
 [frame("Sheet"):{
 <html>
 <link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
@@ -8316,14 +8317,14 @@ All Tokens added to Initiative!
 @@ @ImportChar
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
 [h:'<!------------------------------------------------ Imports character to impersonated token from pasted text ----------------------------------------------------->']
-[frame("Import Character",	"width=100; height=900; temporary=0"): {
+[dialog("Import Character",	"width=100; height=900; temporary=0"): {
 <html>
 <head>
 	<title>Paste Character Text</title>
 	<meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@'+LibFunction)]">
+<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@Lib:MnM')]">
 	<table>
 		<tr><th><label for="Name">Paste text block here</label></th></tr>
 		<tr><td><textarea rows="10" cols="500" name='TextBox'></textarea></td></tr>
@@ -8344,29 +8345,30 @@ All Tokens added to Initiative!
 @@ @ImportChar2
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
 [h:'<!------------------------------------------------ 2nd step for character import ----------------------------------------------------->']
-[h: PasteChar = json.get(macro.args, "TextBox")]
-[frame("Import Character",	"width=100; height=900; temporary=0"): {
-<html>
-<head>
-	<title>Paste Character Text</title>
-	<meta name="input" content="true">
-</head>
-<body>
-<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@'+LibFunction)]">
-	<table>
-		<tr><th><label for="Name">Paste text block here</label></th></tr>
-		<tr><td><textarea rows="10" cols="500" name='TextBox'></textarea></td></tr>
-	</table>
-  <table>
-    <tr>
-      <td align="center">
-        <input type="submit"	name="Save" value="Save"> </input>
-      </td>
-    </tr>
-  </table>
-</form>
-</body>
-</html>
-}]
+[h: pasteChar = json.get(macro.args, "TextBox")]
+[h: pasteChar = listCleaner(pasteChar)]
+
+[h: ids = getSelected()]
+[r, foreach(id, ids, "<br>"), CODE:
+  {
+    [h:switchToken(id)]
+    
+    [h: theName = ""]
+    [h: regEx = "Name::(.*?)@#@#@#"]
+    [h: theName = getGroup(strfind(pasteChar, regEx),1,1)]
+    [r: broadcast(theName)]
+  }
+]
+
+!!
+@@ @listCleaner
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
+[H: '<!----------------------------- listCleaner ----------------------------- -->']
+
+[h: text = arg(0)]
+[H: '<!-- replace all linebreaks for a substitute, so they can be parsed with regex easier -->']
+[h: text = replace(text,"\\n","@#@#@#")]
+
+[h:macro.return	= text]
 
 !!
