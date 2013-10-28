@@ -1,0 +1,9 @@
+r280
+
+* @Sheet updated to only refresh on Player or NonCombatPlayer token property types
+* added NonCombatPlayer property type, just a copy of Player
+* added zData property type, for Data lib token
+* updated @ClearAllTokenCache to refresh Player and NonCombatPlayer tokens
+* updated @AddAllToInitiative to only add Player token types to Init panel
+* cleaned up all hard references to Lib:MnM and changed to +LibFunction instead
+* finished ep_data spreadsheet, pasted all macros onto Lib:zData and populated it with all information

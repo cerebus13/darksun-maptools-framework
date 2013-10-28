@@ -1085,7 +1085,7 @@
 <body>
 [h: jsonData = json.append("[]",json.get(macro.args,0),strformat(" %s Aptitude check",json.get(macro.args,0)),"Aptitude")]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="SkillCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1177,7 +1177,7 @@
 <body>
 [h: jsonData = json.append("[]"," Custom d100 Roll",0,"Roll")]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="RollCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="RollCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1246,7 +1246,7 @@
 <body>
 [h: jsonData = json.append("[]"," Scatter Roll",0,"Scatter")]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="ScatterCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="ScatterCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1301,7 +1301,7 @@
 <body>
 [h: jsonData = json.append("[]",json.get(macro.args,0),strformat(" %s Muse Aptitude check",json.get(macro.args,0)),"MuseAptitude")]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="MuseAptitudeCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="MuseAptitudeCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1397,7 +1397,7 @@
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="MoxieEntry" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="MoxieEntry" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1457,7 +1457,7 @@
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="RepCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="RepCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1588,7 +1588,7 @@
 [h: weapJson = json.set(weapJson,3,useAmmo)]
 [h: Weapons = json.set(Weapons,weapName,weapJson)]
 [h: RecalcBottomSheet("Combat")]
-[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("SheetLoad@"+LibFunction):""]
 
 !!
 @@ @DefenseCheck
@@ -1723,7 +1723,7 @@
 <body>
 [h: jsonData = json.append("[]",skill,base+bonus,"KnowSkill",strformat(" %s skill check",skill),spec)]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="KnowSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="KnowSkillCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1803,7 +1803,7 @@
 <body>
 [h: jsonData = json.append("[]",skill,base+bonus,"ActiveSkill",strformat(" %s skill check",skill),spec)]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="ActiveSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="ActiveSkillCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -1891,7 +1891,7 @@
 <body>
 [h: jsonData = json.append("[]",skill,base+bonus,"MuseSkill",strformat(" %s Muse skill check",skill),spec)]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="MuseSkillCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="MuseSkillCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -3888,7 +3888,7 @@ Implants & Enhancements Updated
   [h,if(json.equals(DandD,dataFields)): ""; DandD = dataFields]
 }]
 [h: RecalcTopSheet()]
-[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("SheetLoad@"+LibFunction):""]
 
 !!
 @@ @RezPointsUpdate
@@ -3970,7 +3970,7 @@ Implants & Enhancements Updated
 }]
 
 [h: RecalcBottomSheet("Combat")]
-[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("SheetLoad@"+LibFunction):""]
 New Weapon Added
 
 !!
@@ -4038,7 +4038,7 @@ New Weapon Added
 }]
 
 [h: RecalcBottomSheet("Skills")]
-[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("SheetLoad@"+LibFunction):""]
 Knowledge Skills Updated
 
 !!
@@ -4116,7 +4116,7 @@ Knowledge Skills Updated
 }]
 
 [h: RecalcBottomSheet("Skills")]
-[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("SheetLoad@"+LibFunction):""]
 Active Skills Updated
 
 !!
@@ -4239,7 +4239,7 @@ Active Skills Updated
 }]
 
 [h: RecalcBottomSheet("Muse")]
-[h, macro("SheetLoad@Lib:MnM"):""]
+[h, macro("SheetLoad@"+LibFunction):""]
 Muse Skills Updated
 
 !!
@@ -4339,7 +4339,7 @@ Reputation Updated
     <meta name="input" content="true">
   </head>
   <body>
-    <form method="json" name="EgoTraitsUpdate" action="[r:macroLinkText('EgoTraitsUpdate@Lib:MnM', 'none', '', currentToken())]">
+    <form method="json" name="EgoTraitsUpdate" action="[r:macroLinkText('EgoTraitsUpdate@'+LibFunction, 'none', '', currentToken())]">
       <table>
         <tr>
           <td valign="top" align="center">
@@ -4385,7 +4385,7 @@ Reputation Updated
     <meta name="input" content="true">
   </head>
   <body>
-    <form method="json" name="PsiSleightsUpdate" action="[r:macroLinkText('PsiSleightsUpdate@Lib:MnM', 'none', '', currentToken())]">
+    <form method="json" name="PsiSleightsUpdate" action="[r:macroLinkText('PsiSleightsUpdate@'+LibFunction, 'none', '', currentToken())]">
       <table>
         <tr>
           <td valign="top" align="center" colspan="2">
@@ -4442,7 +4442,7 @@ Reputation Updated
     <meta name="input" content="true">
   </head>
   <body>
-    <form method="json" name="GearUpdate" action="[r:macroLinkText('GearUpdate@Lib:MnM', 'none', '', currentToken())]">
+    <form method="json" name="GearUpdate" action="[r:macroLinkText('GearUpdate@'+LibFunction, 'none', '', currentToken())]">
       <table>
         <tr>
           <td valign="top" align="center">
@@ -4486,7 +4486,7 @@ Reputation Updated
     <meta name="input" content="true">
   </head>
   <body>
-    <form method="json" name="MorphTraitsUpdate" action="[r:macroLinkText('MorphTraitsUpdate@Lib:MnM', 'none', '', currentToken())]">
+    <form method="json" name="MorphTraitsUpdate" action="[r:macroLinkText('MorphTraitsUpdate@'+LibFunction, 'none', '', currentToken())]">
       <table>
         <tr>
           <td valign="top" align="center">
@@ -4530,7 +4530,7 @@ Reputation Updated
     <meta name="input" content="true">
   </head>
   <body>
-    <form method="json" name="ImplantsEnhancementsUpdate" action="[r:macroLinkText('ImplantsEnhancementsUpdate@Lib:MnM', 'none', '', currentToken())]">
+    <form method="json" name="ImplantsEnhancementsUpdate" action="[r:macroLinkText('ImplantsEnhancementsUpdate@'+LibFunction, 'none', '', currentToken())]">
       <table>
         <tr>
           <td valign="top" align="center">
@@ -4597,7 +4597,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="DDUpdate" action="[r:macroLinkText('DDUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="DDUpdate" action="[r:macroLinkText('DDUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 <tr bgcolor="[r: table(PageColor,2)]" color="white">
 <td colspan="3"><center>
@@ -4718,7 +4718,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="Edit Weapon" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="Edit Weapon" action="[r:macroLinkText('WeaponUpdate@'+LibFunction, 'none', '', currentToken())]">
   <table width="100%" valign="top">
     <tr>
       <td>
@@ -4846,7 +4846,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="New Weapon" action="[r:macroLinkText('WeaponUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="New Weapon" action="[r:macroLinkText('WeaponUpdate@'+LibFunction, 'none', '', currentToken())]">
   <table width="100%" valign="top">
     <tr>
       <td>
@@ -4970,7 +4970,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="KnowSkillsUpdate" action="[r:macroLinkText('KnowSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="KnowSkillsUpdate" action="[r:macroLinkText('KnowSkillsUpdate@'+LibFunction, 'none', '', currentToken())]">
   <table>
   [h: color = "#ededed"]
   [h: propListunsort = json.fields(KnowledgeSkills)]
@@ -5093,7 +5093,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="ActiveSkillsUpdate" action="[r:macroLinkText('ActiveSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="ActiveSkillsUpdate" action="[r:macroLinkText('ActiveSkillsUpdate@'+LibFunction, 'none', '', currentToken())]">
   <table>
   [h: color = "#ededed"]
   [h: propListunsort = json.fields(ActiveSkills)]
@@ -5232,7 +5232,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="MuseSkillsUpdate" action="[r:macroLinkText('MuseSkillsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="MuseSkillsUpdate" action="[r:macroLinkText('MuseSkillsUpdate@'+LibFunction, 'none', '', currentToken())]">
   <table>
   [h: color = "#ededed"]
   [h: propListunsort = json.fields(MuseSkills)]
@@ -5445,7 +5445,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="AptitudesUpdate" action="[r:macroLinkText('AptitudesUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="AptitudesUpdate" action="[r:macroLinkText('AptitudesUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 	<tr>
 		<td bgcolor="black" valign="middle" colspan="7">&nbsp; &nbsp; <font color="white"><b>APTITUDES</b></font>
@@ -5558,7 +5558,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="MuseAptitudesUpdate" action="[r:macroLinkText('MuseAptitudesUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="MuseAptitudesUpdate" action="[r:macroLinkText('MuseAptitudesUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 	<tr>
 		<td bgcolor="black" valign="middle" colspan="7">&nbsp; &nbsp; <font color="white"><b>Muse APTITUDES</b></font>
@@ -5671,7 +5671,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="StatsUpdate" action="[r:macroLinkText('StatsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="StatsUpdate" action="[r:macroLinkText('StatsUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 	<tr>
 		<td bgcolor="black" valign="middle" colspan="11">&nbsp; &nbsp; <font color="white"><b>STATS</b></font>
@@ -5832,7 +5832,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="MuseStatsUpdate" action="[r:macroLinkText('MuseStatsUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="MuseStatsUpdate" action="[r:macroLinkText('MuseStatsUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 	<tr>
 		<td bgcolor="black" valign="middle" colspan="11">&nbsp; &nbsp; <font color="white"><b>MUSE STATS</b></font>
@@ -5897,7 +5897,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="DamageStressUpdate" action="[r:macroLinkText('DamageStressUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="DamageStressUpdate" action="[r:macroLinkText('DamageStressUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 	<tr>
 		<td bgcolor="black" valign="middle" colspan="10">&nbsp; &nbsp; <font color="white"><b>DAMAGE & STRESS</b></font>
@@ -5974,7 +5974,7 @@ Reputation Updated
 <meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="StatsUpdate" action="[r:macroLinkText('RepUpdate@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="StatsUpdate" action="[r:macroLinkText('RepUpdate@'+LibFunction, 'none', '', currentToken())]">
 <table>
 	<tr>
 		<td bgcolor="black" valign="middle" colspan="8">&nbsp; &nbsp; <font color="white"><b>REPUTATION</b></font>
@@ -6259,7 +6259,7 @@ Reputation Updated
 <body>      
 [h: jsonData = json.append("[]",weapName,0,"Weapon")]
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", jsonData, currentToken())]'></link>
-<form method="json" name="WeaponCheck" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="WeaponCheck" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -6348,7 +6348,7 @@ Reputation Updated
 </head>
 <body>      
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", json.append("[]",skillName,0,"Defense"), currentToken())]'></link>
-<form method="json" name="DefenseEntry" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="DefenseEntry" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -6430,7 +6430,7 @@ Reputation Updated
 </head>
 <body>      
 <link rel='onChangeSelection' type='macro' href='[r: macroLinkText("Entry@this", "none", json.append("[]",otherDefense,0,"OtherDefense"), currentToken())]'></link>
-<form method="json" name="OtherDefenseEntry" action="[r:macroLinkText('EntryType@Lib:MnM', 'none', '', currentToken())]">
+<form method="json" name="OtherDefenseEntry" action="[r:macroLinkText('EntryType@'+LibFunction, 'none', '', currentToken())]">
 
 <table width="100%">
 	<tr bgcolor="[r: table(PageColor,2)]">
@@ -6659,7 +6659,8 @@ Reputation Updated
 <link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
 <head><title>Character Sheet</title></head>
 <body>
-	[r, if(getPropertyType() != "Basic" && getPropertyType() != "zLibrary" && selectedCount <= 1), code:
+  [h: playerFlag = if(getPropertyType() == "Player" || getPropertyType() == "NonCombatPlayer",1,0)]
+	[r, if(playerFlag && selectedCount <= 1), code:
 		{
       [h: argz = macro.args]
       [h,if(startsWith(argz,"Page=")): argPage = getStrProp(argz, "Page"); argPage = ""]
@@ -8120,9 +8121,10 @@ Result: Has (<b>{json.toList(json.sort(json.difference(allFavors,updateFavors)),
 {
   [h,token(token),CODE:
   {       
-    [h:addToInitiative()]
-    [h:dieRoll=eval("1d10")]
-    [h:token.init=dieRoll+if(getProperty("INIT")=="",0,getProperty("INIT"))]
+    [h:doFlag = if(getPropertyType() == "Player",1,0)]
+    [h,if(doFlag): addToInitiative()]
+    [h,if(doFlag):dieRoll=eval("1d10")]
+    [h,if(doFlag):token.init=dieRoll+if(getProperty("INIT")=="",0,getProperty("INIT"))]
   }]
 }]
 [h: sortInitiative()]
@@ -8240,7 +8242,7 @@ All Tokens added to Initiative!
 [h: resetProperty("PowersCache")]
 [h: resetProperty("MuseCache")]
 [h: resetProperty("CombatCache")]
-[h, macro("SheetLost@Lib:MnM"):""]
+[h, macro("SheetLost@"+LibFunction):""]
 
 !!
 @@ @ClearAllTokenCache
@@ -8255,17 +8257,35 @@ All Tokens added to Initiative!
 {
   [h,token(token),CODE:
   { 
-    [h,if(getPropertyType() == "Player"): resetProperty("SheetCache")]
-    [h,if(getPropertyType() == "Player"): resetProperty("StatsCache")]
-    [h,if(getPropertyType() == "Player"): resetProperty("SkillsCache")]
-    [h,if(getPropertyType() == "Player"): resetProperty("PowersCache")]
-    [h,if(getPropertyType() == "Player"): resetProperty("MuseCache")]
-    [h,if(getPropertyType() == "Player"): resetProperty("CombatCache")]
+    [h: playerFlag = if(getPropertyType() == "Player" || getPropertyType() == "NonCombatPlayer",1,0)]
+    [h,if(playerFlag): resetProperty("SheetCache")]
+    [h,if(playerFlag): resetProperty("StatsCache")]
+    [h,if(playerFlag): resetProperty("SkillsCache")]
+    [h,if(playerFlag): resetProperty("PowersCache")]
+    [h,if(playerFlag): resetProperty("MuseCache")]
+    [h,if(playerFlag): resetProperty("CombatCache")]
   }]
 }]
 
 [r: broadcast("All Tokens on TOKEN layer cache cleared!")]
-[h, macro("SheetLost@Lib:MnM"):""]
+[frame("Sheet"):{
+<html>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
+<head><title>Character Sheet</title></head>
+<body>
+			<table width="100%">
+				<tr>
+					<td align="center"><image src='[r: tableImage("Icons",1,300)]' border="0" align="middle"></image><br>
+						<font size = "5"><b>Loaded<br>Please select a token you own</b></font>
+					</td>
+				</tr>
+			</table>
+		}
+	]
+</body>
+</html>
+}]
+[h: abort(0)]
 
 !!
 @@ @SheetLost
@@ -8303,7 +8323,7 @@ All Tokens added to Initiative!
 	<meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@Lib:MnM')]">
+<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@'+LibFunction)]">
 	<table>
 		<tr><th><label for="Name">Paste text block here</label></th></tr>
 		<tr><td><textarea rows="10" cols="500" name='TextBox'></textarea></td></tr>
@@ -8332,7 +8352,7 @@ All Tokens added to Initiative!
 	<meta name="input" content="true">
 </head>
 <body>
-<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@Lib:MnM')]">
+<form method="json" name="TokenInput" action="[r:macroLinkText('ImportChar2@'+LibFunction)]">
 	<table>
 		<tr><th><label for="Name">Paste text block here</label></th></tr>
 		<tr><td><textarea rows="10" cols="500" name='TextBox'></textarea></td></tr>
