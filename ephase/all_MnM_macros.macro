@@ -10,7 +10,6 @@
 [h:defineFunction("CombatSheet","CombatSheet@"+getMacroLocation(), 0, 0)]
 [h:defineFunction("RecalcTopSheet","RecalcTopSheet@"+getMacroLocation(), 0, 0)]
 [h:defineFunction("RecalcBottomSheet","RecalcBottomSheet@"+getMacroLocation(), 0, 0)]
-[h:defineFunction("listCleaner","listCleaner@"+getMacroLocation(), 0)]
 [frame("Sheet"):{
 <html>
 <link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
@@ -8317,7 +8316,10 @@ All Tokens added to Initiative!
 @@ @ImportChar
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
 [h:'<!------------------------------------------------ Imports character to impersonated token from pasted text ----------------------------------------------------->']
-[dialog("Import Character",	"width=100; height=900; temporary=0"): {
+[h: abort(isGM())]
+[h,if(hasImpersonated() != 1): input(".|You do not have a token impersonated, import aborted.||LABEL|SPAN=TRUE")]
+[h,if(hasImpersonated() != 1): abort(0)]
+[dialog("Import Character",	"width=400; height=900; temporary=0"): {
 <html>
 <head>
 	<title>Paste Character Text</title>
@@ -8346,29 +8348,145 @@ All Tokens added to Initiative!
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
 [h:'<!------------------------------------------------ 2nd step for character import ----------------------------------------------------->']
 [h: pasteChar = json.get(macro.args, "TextBox")]
-[h: pasteChar = listCleaner(pasteChar)]
+[h: pasteChar = replace(pasteChar,"\\n","@#@#@#")]
 
-[h: ids = getSelected()]
-[r, foreach(id, ids, "<br>"), CODE:
-  {
-    [h:switchToken(id)]
-    
-    [h: theName = ""]
-    [h: regEx = "Name::(.*?)@#@#@#"]
-    [h: theName = getGroup(strfind(pasteChar, regEx),1,1)]
-    [r: broadcast(theName)]
-  }
-]
+[h: switchToken(getImpersonated())]
 
-!!
-@@ @listCleaner
-@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
-[H: '<!----------------------------- listCleaner ----------------------------- -->']
+[h: setPropertyType("Player")]
 
-[h: text = arg(0)]
-[H: '<!-- replace all linebreaks for a substitute, so they can be parsed with regex easier -->']
-[h: text = replace(text,"\\n","@#@#@#")]
+[h: regEx = "Name::(.*?)@#@#@#"]
+[h: token.name = getGroup(strfind(pasteChar, regEx),1,1)]
+[r: broadcast("Name: " + token.name)]
 
-[h:macro.return	= text]
+[h: regEx = "Background::(.*?)@#@#@#"]
+[h: setProperty("Background",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Background: " + getProperty("Background"))]
+
+[h: regEx = "Faction::(.*?)@#@#@#"]
+[h: setProperty("Faction",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Faction: " + getProperty("Faction"))]
+
+[h: regEx = "Morph::(.*?)@#@#@#"]
+[h: setProperty("Morph",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Morph: " + getProperty("Morph"))]
+
+[h: regEx = "Gender::(.*?)@#@#@#"]
+[h: setProperty("Gender",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Gender: " + getProperty("Gender"))]
+
+[h: regEx = "Age::(.*?)@#@#@#"]
+[h: setProperty("Age",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Age: " + getProperty("Age"))]
+
+[h: regEx = "Motivations::(.*?)@#@#@#"]
+[h: setProperty("Motivations",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Motivations: " + getProperty("Motivations"))]
+
+[h: regEx = "Rez::(.*?)@#@#@#"]
+[h: setProperty("RezPoints",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("RezPoints: " + getProperty("RezPoints"))]
+
+[h: regEx = "COG::(.*?)@#@#@#"]
+[h: setProperty("COG",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("COG: " + getProperty("COG"))]
+
+[h: regEx = "COO::(.*?)@#@#@#"]
+[h: setProperty("COO",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("COO: " + getProperty("COO"))]
+
+[h: regEx = "INT::(.*?)@#@#@#"]
+[h: setProperty("INT",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("INT: " + getProperty("INT"))]
+
+[h: regEx = "REF::(.*?)@#@#@#"]
+[h: setProperty("REF",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("REF: " + getProperty("REF"))]
+
+[h: regEx = "SAV::(.*?)@#@#@#"]
+[h: setProperty("SAV",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("SAV: " + getProperty("SAV"))]
+
+[h: regEx = "SOM::(.*?)@#@#@#"]
+[h: setProperty("SOM",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("SOM: " + getProperty("SOM"))]
+
+[h: regEx = "WIL::(.*?)@#@#@#"]
+[h: setProperty("WIL",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("WIL: " + getProperty("WIL"))]
+
+[h: regEx = "TT::(.*?)@#@#@#"]
+[h: setProperty("TT",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("TT: " + getProperty("TT"))]
+
+[h: regEx = "LUC::(.*?)@#@#@#"]
+[h: setProperty("LUC",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("LUC: " + getProperty("LUC"))]
+
+[h: regEx = "IR::(.*?)@#@#@#"]
+[h: setProperty("IR",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("IR: " + getProperty("IR"))]
+
+[h: regEx = "WT::(.*?)@#@#@#"]
+[h: setProperty("WT",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("WT: " + getProperty("WT"))]
+
+[h: regEx = "DUR::(.*?)@#@#@#"]
+[h: setProperty("DUR",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("DUR: " + getProperty("DUR"))]
+
+[h: regEx = "DR::(.*?)@#@#@#"]
+[h: setProperty("DR",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("DR: " + getProperty("DR"))]
+
+[h: regEx = "MOX::(.*?)@#@#@#"]
+[h: setProperty("MOX",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: setProperty("MOX_base",getProperty("MOX"))]
+[h: broadcast("MOX: " + getProperty("MOX"))]
+
+[h: regEx = "INIT::(.*?)@#@#@#"]
+[h: setProperty("INIT",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("INIT: " + getProperty("INIT"))]
+
+[h: regEx = "DB::(.*?)@#@#@#"]
+[h: setProperty("DB",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("DB: " + getProperty("DB"))]
+
+[h: regEx = "EnergyArmor::(.*?)@#@#@#"]
+[h: setProperty("Armor_Energy",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Energy Armor: " + getProperty("Armor_Energy"))]
+
+[h: regEx = "KineticArmor::(.*?)@#@#@#"]
+[h: setProperty("Armor_Kinetic",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Kinetic Armor: " + getProperty("Armor_Kinetic"))]
+
+[h: regEx = "@-Rep::(.*?)@#@#@#"]
+[h: setProperty("A-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("@-Rep: " + getProperty("A-Rep"))]
+
+[h: regEx = "c-Rep::(.*?)@#@#@#"]
+[h: setProperty("c-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("c-Rep: " + getProperty("c-Rep"))]
+
+[h: regEx = "e-Rep::(.*?)@#@#@#"]
+[h: setProperty("e-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("e-Rep: " + getProperty("e-Rep"))]
+
+[h: regEx = "f-Rep::(.*?)@#@#@#"]
+[h: setProperty("f-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("f-Rep: " + getProperty("f-Rep"))]
+
+[h: regEx = "g-Rep::(.*?)@#@#@#"]
+[h: setProperty("g-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("g-Rep: " + getProperty("g-Rep"))]
+
+[h: regEx = "i-Rep::(.*?)@#@#@#"]
+[h: setProperty("i-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("i-Rep: " + getProperty("i-Rep"))]
+
+[h: regEx = "r-Rep::(.*?)@#@#@#"]
+[h: setProperty("r-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("r-Rep: " + getProperty("r-Rep"))]
+
+[h, macro("ClearCache@"+LibFunction):""]
 
 !!
