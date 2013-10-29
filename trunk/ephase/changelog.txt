@@ -1,3 +1,9 @@
+r281
+
+* removed listCleaner function, just moved the code to ImportChar2 instead
+* Import should now only work on an impersonated token, and only if you are a GM
+* ImportChar2 updated so that it parses and sets Name through Rep from the Import tab on the spreadsheet (not SPD yet, need to parse that differently)
+
 r280
 
 * @Sheet updated to only refresh on Player or NonCombatPlayer token property types
