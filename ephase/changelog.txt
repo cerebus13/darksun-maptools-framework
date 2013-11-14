@@ -1,3 +1,7 @@
+r284
+
+added u-rep and x-rep to import and to player properties (still need to implement on sheet)
+
 r281
 
 * removed listCleaner function, just moved the code to ImportChar2 instead
