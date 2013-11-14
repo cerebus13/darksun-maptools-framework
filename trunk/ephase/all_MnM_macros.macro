@@ -8487,6 +8487,14 @@ All Tokens added to Initiative!
 [h: setProperty("r-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
 [h: broadcast("r-Rep: " + getProperty("r-Rep"))]
 
+[h: regEx = "x-Rep::(.*?)@#@#@#"]
+[h: setProperty("x-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("x-Rep: " + getProperty("x-Rep"))]
+
+[h: regEx = "u-Rep::(.*?)@#@#@#"]
+[h: setProperty("u-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("u-Rep: " + getProperty("u-Rep"))]
+
 [h, macro("ClearCache@"+LibFunction):""]
 
 !!
