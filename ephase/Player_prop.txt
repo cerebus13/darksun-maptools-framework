@@ -65,6 +65,10 @@ i-Rep:0
 i-Rep_favors:[]
 r-Rep:0
 r-Rep_favors:[]
+x-Rep:0
+x-Rep_favors:[]
+u-Rep:0
+u-Rep_favors:[]
 -----Knowledge Skills-----
 KnowledgeSkills:{"Academics: One":[0,0,"COG",1,""],"Art: Two":[0,0,"INT",1,""],"Interest: Three":[0,0,"COG",1,""],"Language: Four":[0,0,"INT",1,""],"Profession: Five":[0,0,"COG",1,""]}
 -----Active Skills-----
