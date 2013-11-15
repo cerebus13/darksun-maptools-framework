@@ -1,3 +1,8 @@
+r286
+
+added Credits to player props
+added SPD and Credits parsing to import macro
+
 r284
 
 added u-rep and x-rep to import and to player properties (still need to implement on sheet)

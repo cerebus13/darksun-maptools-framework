@@ -8447,6 +8447,11 @@ All Tokens added to Initiative!
 [h: setProperty("INIT",getGroup(strfind(pasteChar, regEx),1,1))]
 [h: broadcast("INIT: " + getProperty("INIT"))]
 
+[h: regEx = "SPD::(\\d)(?:\\((\\d)\))?(?:/\\d)?@#@#@#"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getGroupCount(search) > 1): setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1)+getGroup(strfind(pasteChar, regEx),1,2)) ; setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("SPD: " + getProperty("SPD"))]
+
 [h: regEx = "DB::(.*?)@#@#@#"]
 [h: setProperty("DB",getGroup(strfind(pasteChar, regEx),1,1))]
 [h: broadcast("DB: " + getProperty("DB"))]
@@ -8494,6 +8499,10 @@ All Tokens added to Initiative!
 [h: regEx = "u-Rep::(.*?)@#@#@#"]
 [h: setProperty("u-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
 [h: broadcast("u-Rep: " + getProperty("u-Rep"))]
+
+[h: regEx = "Credits::(.*?)@#@#@#"]
+[h: setProperty("Credits",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: broadcast("Credits: " + getProperty("Credits"))]
 
 [h, macro("ClearCache@"+LibFunction):""]
 
