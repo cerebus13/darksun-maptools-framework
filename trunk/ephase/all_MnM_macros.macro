@@ -8504,6 +8504,21 @@ All Tokens added to Initiative!
 [h: setProperty("Credits",getGroup(strfind(pasteChar, regEx),1,1))]
 [h: broadcast("Credits: " + getProperty("Credits"))]
 
+[h:'<!-- looping for more complicated Property parsing -->']
+[h: regEx = "^Ego Traits::(.*)@#@#@#$"]
+[h: search = strfind(pasteChar, regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1): jsonArray = json.union(jsonArray,json.fromList(getGroup(strfind(pasteChar, regEx),i,1)))]
+[h,foreach(tmp, jsonArray),code:
+{
+  [h: regEx = "^([a-zA-Z\\s]*)\\s?(?:\\(([a-zA-Z\\s]*)\\))?\\s?(?:\\(Level (\\d)\\))?$"]
+  [h: tmpSearch = strfind(tmp, regEx)]
+  [h: tmpName = getGroup(tmpSearch,1,1)]
+  [h: tmpMod  = getGroup(tmpSearch,1,2)]
+  [h: tmpRank = getGroup(tmpSearch,1,3)]
+  [h: tmpLibItem = json.get(getLibProperty("TRAITS_LIBRARY", LibData),tmpName)]
+}]
+
 [h, macro("ClearCache@"+LibFunction):""]
 
 !!

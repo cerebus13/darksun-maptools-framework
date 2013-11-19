@@ -1,3 +1,7 @@
+r287
+
+started on Ego Trait import
+
 r286
 
 added Credits to player props
