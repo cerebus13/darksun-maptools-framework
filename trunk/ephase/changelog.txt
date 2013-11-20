@@ -1,3 +1,8 @@
+r288
+
+almost finished with Ego Trait import but have an annoying regex error popping up asking for an assignment, might be related to getting no matches for a group and still trying to reference it
+removed some defaults from the Player properties that weren't needed
+
 r287
 
 started on Ego Trait import

@@ -75,9 +75,9 @@ KnowledgeSkills:{"Academics: One":[0,0,"COG",1,""],"Art: Two":[0,0,"INT",1,""],"
 ActiveSkills:{"Animal Handling":[0,0,"SAV",1,""],"Beam Weapons":[0,0,"COO",1,""],"Blades":[0,0,"SOM",1,""],"Climbing":[0,0,"SOM",1,""],"Clubs":[0,0,"SOM",1,""],"Control":[0,0,"WIL",0,""],"Deception":[0,0,"SAV",1,""],"Demolitions":[0,0,"COG",0,""],"Disguise":[0,0,"INT",1,""],"Exotic Melee: Brooms":[0,0,"SOM",1,""],"Exotic Ranged: Boomstick":[0,0,"COO",1,""],"Flight":[0,0,"SOM",1,""],"Fray":[0,0,"REF",1,""],"Free Fall":[0,0,"REF",1,""],"Freerunning":[0,0,"SOM",1,""],"Gunnery":[0,0,"INT",1,""],"Hardware: Balls":[0,0,"COG",1,""],"Impersonation":[0,0,"SAV",1,""],"Infiltration":[0,0,"COO",1,""],"Infosec":[0,0,"COG",0,""],"Interfacing":[0,0,"COG",1,""],"Intimidation":[0,0,"AV",1,""],"Investigation":[0,0,"INT",1,""],"Kinesics":[0,0,"SAV",1,""],"Kinetic Weapons":[0,0,"COO",1,""],"Medicine: Herbs":[0,0,"COG",1,""],"Navigation":[0,0,"INT",1,""],"Networking: Cool Kids":[0,0,"SAV",1,""],"Palming":[0,0,"COO",1,""],"Perception":[0,0,"INT",1,""],"Persuasion":[0,0,"SAV",1,""],"Pilot: Planes":[0,0,"REF",1,""],"Programming":[0,0,"COG",0,""],"Protocol":[0,0,"SAV",1,""],"Psi Assault":[0,0,"WIL",0,""],"Psychosurgery":[0,0,"INT",1,""],"Research":[0,0,"COG",1,""],"Scrounging":[0,0,"INT",1,""],"Seeker Weapons":[0,0,"COO",1,""],"Sense":[0,0,"INT",0,""],"Spray Weapons":[0,0,"COO",1,""],"Swimming":[0,0,"SOM",1,""],"Throwing Weapons":[0,0,"COO",1,""],"Unarmed Combat":[0,0,"SOM",1,""]}
 -----Traits-----
 EgoTraitsShow:0
-EgoTraits:{"Benefit 4 (Multi-millionare)":[""],"Close Attack 7":[""],"Defensive Roll":[""],"Equipment 6":[""],"Inventor":[""],"Jack-of-all-trades":[""],"Move-by Action":[""],"Power Attack":[""],"Quick Draw":[""],"Well-Informed":[""]}
+EgoTraits:{}
 MorphTraitsShow:0
-MorphTraits:{"Benefit 4 (Multi-millionare)":[""],"Close Attack 7":[""],"Defensive Roll":[""],"Equipment 6":[""],"Inventor":[""],"Jack-of-all-trades":[""],"Move-by Action":[""],"Power Attack":[""],"Quick Draw":[""],"Well-Informed":[""]}
+MorphTraits:{}
 -----Psi Sleights-----
 PsiSleightsShow:0
 PsiSleights:{}

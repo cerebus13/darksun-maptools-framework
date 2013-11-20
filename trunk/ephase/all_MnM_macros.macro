@@ -8356,169 +8356,135 @@ All Tokens added to Initiative!
 
 [h: regEx = "Name::(.*?)@#@#@#"]
 [h: token.name = getGroup(strfind(pasteChar, regEx),1,1)]
-[r: broadcast("Name: " + token.name)]
 
 [h: regEx = "Background::(.*?)@#@#@#"]
 [h: setProperty("Background",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Background: " + getProperty("Background"))]
 
 [h: regEx = "Faction::(.*?)@#@#@#"]
 [h: setProperty("Faction",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Faction: " + getProperty("Faction"))]
 
 [h: regEx = "Morph::(.*?)@#@#@#"]
 [h: setProperty("Morph",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Morph: " + getProperty("Morph"))]
 
 [h: regEx = "Gender::(.*?)@#@#@#"]
 [h: setProperty("Gender",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Gender: " + getProperty("Gender"))]
 
 [h: regEx = "Age::(.*?)@#@#@#"]
 [h: setProperty("Age",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Age: " + getProperty("Age"))]
 
 [h: regEx = "Motivations::(.*?)@#@#@#"]
 [h: setProperty("Motivations",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Motivations: " + getProperty("Motivations"))]
 
 [h: regEx = "Rez::(.*?)@#@#@#"]
 [h: setProperty("RezPoints",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("RezPoints: " + getProperty("RezPoints"))]
 
 [h: regEx = "COG::(.*?)@#@#@#"]
 [h: setProperty("COG",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("COG: " + getProperty("COG"))]
 
 [h: regEx = "COO::(.*?)@#@#@#"]
 [h: setProperty("COO",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("COO: " + getProperty("COO"))]
 
 [h: regEx = "INT::(.*?)@#@#@#"]
 [h: setProperty("INT",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("INT: " + getProperty("INT"))]
 
 [h: regEx = "REF::(.*?)@#@#@#"]
 [h: setProperty("REF",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("REF: " + getProperty("REF"))]
 
 [h: regEx = "SAV::(.*?)@#@#@#"]
 [h: setProperty("SAV",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("SAV: " + getProperty("SAV"))]
 
 [h: regEx = "SOM::(.*?)@#@#@#"]
 [h: setProperty("SOM",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("SOM: " + getProperty("SOM"))]
 
 [h: regEx = "WIL::(.*?)@#@#@#"]
 [h: setProperty("WIL",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("WIL: " + getProperty("WIL"))]
 
 [h: regEx = "TT::(.*?)@#@#@#"]
 [h: setProperty("TT",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("TT: " + getProperty("TT"))]
 
 [h: regEx = "LUC::(.*?)@#@#@#"]
 [h: setProperty("LUC",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("LUC: " + getProperty("LUC"))]
 
 [h: regEx = "IR::(.*?)@#@#@#"]
 [h: setProperty("IR",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("IR: " + getProperty("IR"))]
 
 [h: regEx = "WT::(.*?)@#@#@#"]
 [h: setProperty("WT",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("WT: " + getProperty("WT"))]
 
 [h: regEx = "DUR::(.*?)@#@#@#"]
 [h: setProperty("DUR",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("DUR: " + getProperty("DUR"))]
 
 [h: regEx = "DR::(.*?)@#@#@#"]
 [h: setProperty("DR",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("DR: " + getProperty("DR"))]
 
 [h: regEx = "MOX::(.*?)@#@#@#"]
 [h: setProperty("MOX",getGroup(strfind(pasteChar, regEx),1,1))]
 [h: setProperty("MOX_base",getProperty("MOX"))]
-[h: broadcast("MOX: " + getProperty("MOX"))]
 
 [h: regEx = "INIT::(.*?)@#@#@#"]
 [h: setProperty("INIT",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("INIT: " + getProperty("INIT"))]
 
-[h: regEx = "SPD::(\\d)(?:\\((\\d)\))?(?:/\\d)?@#@#@#"]
+[h: regEx = "SPD::(\\d)(?:\\((\\d)\\))?(?:/\\d)?@#@#@#"]
 [h: search = strfind(pasteChar, regEx)]
 [h,if(getGroupCount(search) > 1): setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1)+getGroup(strfind(pasteChar, regEx),1,2)) ; setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("SPD: " + getProperty("SPD"))]
 
 [h: regEx = "DB::(.*?)@#@#@#"]
 [h: setProperty("DB",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("DB: " + getProperty("DB"))]
 
 [h: regEx = "EnergyArmor::(.*?)@#@#@#"]
 [h: setProperty("Armor_Energy",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Energy Armor: " + getProperty("Armor_Energy"))]
 
 [h: regEx = "KineticArmor::(.*?)@#@#@#"]
 [h: setProperty("Armor_Kinetic",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Kinetic Armor: " + getProperty("Armor_Kinetic"))]
 
 [h: regEx = "@-Rep::(.*?)@#@#@#"]
 [h: setProperty("A-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("@-Rep: " + getProperty("A-Rep"))]
 
 [h: regEx = "c-Rep::(.*?)@#@#@#"]
 [h: setProperty("c-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("c-Rep: " + getProperty("c-Rep"))]
 
 [h: regEx = "e-Rep::(.*?)@#@#@#"]
 [h: setProperty("e-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("e-Rep: " + getProperty("e-Rep"))]
 
 [h: regEx = "f-Rep::(.*?)@#@#@#"]
 [h: setProperty("f-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("f-Rep: " + getProperty("f-Rep"))]
 
 [h: regEx = "g-Rep::(.*?)@#@#@#"]
 [h: setProperty("g-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("g-Rep: " + getProperty("g-Rep"))]
 
 [h: regEx = "i-Rep::(.*?)@#@#@#"]
 [h: setProperty("i-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("i-Rep: " + getProperty("i-Rep"))]
 
 [h: regEx = "r-Rep::(.*?)@#@#@#"]
 [h: setProperty("r-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("r-Rep: " + getProperty("r-Rep"))]
 
 [h: regEx = "x-Rep::(.*?)@#@#@#"]
 [h: setProperty("x-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("x-Rep: " + getProperty("x-Rep"))]
 
 [h: regEx = "u-Rep::(.*?)@#@#@#"]
 [h: setProperty("u-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("u-Rep: " + getProperty("u-Rep"))]
 
 [h: regEx = "Credits::(.*?)@#@#@#"]
 [h: setProperty("Credits",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: broadcast("Credits: " + getProperty("Credits"))]
 
-[h:'<!-- looping for more complicated Property parsing -->']
-[h: regEx = "^Ego Traits::(.*)@#@#@#$"]
+[h: regEx = "Ego Traits::(.*)@#@#@#"]
 [h: search = strfind(pasteChar, regEx)]
 [h: jsonArray = "[]"]
-[h,for(i,1,getFindCount(search)+1): jsonArray = json.union(jsonArray,json.fromList(getGroup(strfind(pasteChar, regEx),i,1)))]
-[h,foreach(tmp, jsonArray),code:
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1)))]
+[h,foreach(tmp, jsonArray,""),code:
 {
-  [h: regEx = "^([a-zA-Z\\s]*)\\s?(?:\\(([a-zA-Z\\s]*)\\))?\\s?(?:\\(Level (\\d)\\))?$"]
+  [h: regEx = "([a-zA-Z\\s]*)\\s?(?:\\(([a-zA-Z\\s]*)\\))?\\s?(?:\\(Level (\\d)\\))?"]
   [h: tmpSearch = strfind(tmp, regEx)]
-  [h: tmpName = getGroup(tmpSearch,1,1)]
-  [h: tmpMod  = getGroup(tmpSearch,1,2)]
-  [h: tmpRank = getGroup(tmpSearch,1,3)]
+  [h: tmpName = trim(getGroup(tmpSearch,1,1))]
   [h: tmpLibItem = json.get(getLibProperty("TRAITS_LIBRARY", LibData),tmpName)]
+  [h: cpOne = json.get(tmpLibItem,"CP1")]
+  [h: cpTwo = json.get(tmpLibItem,"CP2")]
+  [h: cpThree = json.get(tmpLibItem,"CP3")]
+  [h: cpString = strformat("%s%s%s",cpOne,if(length(cpTwo) > 0,", " + cpTwo,""),if(length(cpThree) > 0,", " + cpThree,""))]
+  [h: EgoTraits = json.set(EgoTraits,tmpName,encode(strformat("<b>Cost:</b> %s CP<br/><p align='justify'>%s</p>",cpString,decode(json.get(tmpLibItem,"Description")))))]
 }]
 
+[h: broadcast("IMPORT FINISHED")]
 [h, macro("ClearCache@"+LibFunction):""]
 
 !!
