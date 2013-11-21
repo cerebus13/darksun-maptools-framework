@@ -1,3 +1,7 @@
+r289
+
+Figured out regex error with Ego Trait imports and ended up recoding it to use json.ToList instead and doing more formatting in the excel sheet as it was easier
+
 r288
 
 almost finished with Ego Trait import but have an annoying regex error popping up asking for an assignment, might be related to getting no matches for a group and still trying to reference it
