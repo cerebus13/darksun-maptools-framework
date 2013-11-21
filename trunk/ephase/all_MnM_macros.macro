@@ -8473,15 +8473,19 @@ All Tokens added to Initiative!
 [h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1)))]
 [h,foreach(tmp, jsonArray,""),code:
 {
-  [h: regEx = "([a-zA-Z\\s]*)\\s?(?:\\(([a-zA-Z\\s]*)\\))?\\s?(?:\\(Level (\\d)\\))?"]
-  [h: tmpSearch = strfind(tmp, regEx)]
-  [h: tmpName = trim(getGroup(tmpSearch,1,1))]
+  [h: tmpSearch = json.fromList(tmp,"##")]
+  [h: broadcast("tmpSearch: " + tmpSearch)]
+  [h: tmpName = trim(json.get(tmpSearch,0))]
+  [h: tmpMod  = trim(json.get(tmpSearch,1))]
+  [h,if(length(tmpMod) > 0): tmpMod = ": " + tmpMod]
+  [h: tmpRank = trim(json.get(tmpSearch,2))]
+  [h,if(length(tmpRank) > 0): tmpRank = " (Level " + tmpRank + ")"]
   [h: tmpLibItem = json.get(getLibProperty("TRAITS_LIBRARY", LibData),tmpName)]
   [h: cpOne = json.get(tmpLibItem,"CP1")]
   [h: cpTwo = json.get(tmpLibItem,"CP2")]
   [h: cpThree = json.get(tmpLibItem,"CP3")]
   [h: cpString = strformat("%s%s%s",cpOne,if(length(cpTwo) > 0,", " + cpTwo,""),if(length(cpThree) > 0,", " + cpThree,""))]
-  [h: EgoTraits = json.set(EgoTraits,tmpName,encode(strformat("<b>Cost:</b> %s CP<br/><p align='justify'>%s</p>",cpString,decode(json.get(tmpLibItem,"Description")))))]
+  [h: EgoTraits = json.set(EgoTraits,tmpName+tmpMod+tmpRank,encode(strformat("<b>Cost:</b> %s CP<br/><p align='justify'>%s</p>",cpString,decode(json.get(tmpLibItem,"Description")))))]
 }]
 
 [h: broadcast("IMPORT FINISHED")]
