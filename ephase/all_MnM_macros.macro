@@ -524,7 +524,7 @@
 [h: exoticArray = "[]"]
 [h,foreach(tmp,tmpArray,""), code:
   {
-    [h,if(indexOf(tmp,"Exotic Melee:") != -1): exoticArray = json.append(exoticArray,json.append("[]",tmp,json.get(ActiveSkills,tmp))); ""]
+    [h,if(indexOf(tmp,"Exotic Melee Weapon:") != -1): exoticArray = json.append(exoticArray,json.append("[]",tmp,json.get(ActiveSkills,tmp))); ""]
   }
 ]
 
@@ -2026,8 +2026,8 @@
 [h: ability=json.get(macro.args,1)]
 
 <!-- Skills that can have multiple fields get a prefix -->
-[h: skill = if(startsWith(skill, "Exotic Melee"),"Exotic Melee",skill)]
-[h: skill = if(startsWith(skill, "Exotic Ranged"),"Exotic Ranged",skill)]
+[h: skill = if(startsWith(skill, "Exotic Melee Weapon"),"Exotic Melee Weapon",skill)]
+[h: skill = if(startsWith(skill, "Exotic Ranged Weapon"),"Exotic Ranged Weapon",skill)]
 [h: skill = if(startsWith(skill, "Hardware"),"Hardware",skill)]
 [h: skill = if(startsWith(skill, "Medicine"),"Medicine",skill)]
 [h: skill = if(startsWith(skill, "Networking"),"Networking",skill)]
@@ -2064,8 +2064,8 @@
 [h: skill = if(startsWith(skill, "Interest"),"Interest",skill)]
 [h: skill = if(startsWith(skill, "Language"),"Language",skill)]
 [h: skill = if(startsWith(skill, "Profession"),"Profession",skill)]
-[h: skill = if(startsWith(skill, "Exotic Melee"),"Exotic Melee",skill)]
-[h: skill = if(startsWith(skill, "Exotic Ranged"),"Exotic Ranged",skill)]
+[h: skill = if(startsWith(skill, "Exotic Melee Weapon"),"Exotic Melee Weapon",skill)]
+[h: skill = if(startsWith(skill, "Exotic Ranged Weapon"),"Exotic Ranged Weapon",skill)]
 [h: skill = if(startsWith(skill, "Hardware"),"Hardware",skill)]
 [h: skill = if(startsWith(skill, "Medicine"),"Medicine",skill)]
 [h: skill = if(startsWith(skill, "Networking"),"Networking",skill)]
@@ -4062,7 +4062,7 @@ Knowledge Skills Updated
 
 [h: newActive = json.get(macro.args, "newExoticMelee")]
 [if(newActive == ""),code:{}; {
-  [h: name = "Exotic Melee: "+newActive]
+  [h: name = "Exotic Melee Weapon: "+newActive]
   [h: propBase = json.get(macro.args, "newExoticMeleeBase")]
   [h: propBonus = json.get(macro.args, "newExoticMeleeBonus")]
   [h: propSpec = json.get(macro.args, "newExoticMeleeSpec")]
@@ -4071,7 +4071,7 @@ Knowledge Skills Updated
 }]
 [h: newActive = json.get(macro.args, "newExoticRanged")]
 [if(newActive == ""),code:{}; {
-  [h: name = "Exotic Ranged: "+newActive]
+  [h: name = "Exotic Ranged Weapon: "+newActive]
   [h: propBase = json.get(macro.args, "newExoticRangedBase")]
   [h: propBonus = json.get(macro.args, "newExoticRangedBonus")]
   [h: propSpec = json.get(macro.args, "newExoticRangedSpec")]
@@ -4140,7 +4140,7 @@ Active Skills Updated
 
 [h: newActive = json.get(macro.args, "newExoticMelee")]
 [if(newActive == ""),code:{}; {
-  [h: name = "Exotic Melee: "+newActive]
+  [h: name = "Exotic Melee Weapon: "+newActive]
   [h: propBase = json.get(macro.args, "newExoticMeleeBase")]
   [h: propBonus = json.get(macro.args, "newExoticMeleeBonus")]
   [h: propSpec = json.get(macro.args, "newExoticMeleeSpec")]
@@ -4149,7 +4149,7 @@ Active Skills Updated
 }]
 [h: newActive = json.get(macro.args, "newExoticRanged")]
 [if(newActive == ""),code:{}; {
-  [h: name = "Exotic Ranged: "+newActive]
+  [h: name = "Exotic Ranged Weapon: "+newActive]
   [h: propBase = json.get(macro.args, "newExoticRangedBase")]
   [h: propBonus = json.get(macro.args, "newExoticRangedBonus")]
   [h: propSpec = json.get(macro.args, "newExoticRangedSpec")]
@@ -4706,8 +4706,8 @@ Reputation Updated
     case "Unarmed Combat": tmpJson = json.append("[]","","","","","","","","","",""," selected");
     default: exoticText = substring(weaponSkill,indexOf(weaponSkill,":")+2)
 ]
-[h,if(startsWith(weaponSkill,"Exotic Melee")): tmpJson = json.append("[]","","",""," selected","","","","","","","")]
-[h,if(startsWith(weaponSkill,"Exotic Ranged")): tmpJson = json.append("[]","","","","","selected","","","","","","")]
+[h,if(startsWith(weaponSkill,"Exotic Melee Weapon")): tmpJson = json.append("[]","","",""," selected","","","","","","","")]
+[h,if(startsWith(weaponSkill,"Exotic Ranged Weapon")): tmpJson = json.append("[]","","","","","selected","","","","","","")]
 [h: ws = tmpJson]
 
 [dialog("Edit Weapon", "temporary=0; height=520; width=400; input=1; noframe=0"): 
@@ -4790,8 +4790,8 @@ Reputation Updated
           <option value="Beam Weapons"[r: json.get(ws, 0)]>Beam Weapons</option>
           <option value="Blades"[r: json.get(ws, 1)]>Blades</option>
           <option value="Clubs"[r: json.get(ws, 2)]>Clubs</option>
-          <option value="Exotic Melee"[r: json.get(ws, 3)]>Exotic Melee</option>
-          <option value="Exotic Ranged"[r: json.get(ws, 4)]>Exotic Ranged</option>
+          <option value="Exotic Melee Weapon"[r: json.get(ws, 3)]>Exotic Melee Weapon</option>
+          <option value="Exotic Ranged Weapon"[r: json.get(ws, 4)]>Exotic Ranged Weapon</option>
           <option value="Gunnery"[r: json.get(ws, 5)]>Gunnery</option>
           <option value="Kinetic Weapons"[r: json.get(ws, 6)]>Kinetic Weapons</option>
           <option value="Seeker Weapons"[r: json.get(ws, 7)]>Seeker Weapons</option>
@@ -4915,8 +4915,8 @@ Reputation Updated
           <option value="Beam Weapons" selected="selected">Beam Weapons</option>
           <option value="Blades">Blades</option>
           <option value="Clubs">Clubs</option>
-          <option value="Exotic Melee">Exotic Melee</option>
-          <option value="Exotic Ranged">Exotic Ranged</option>
+          <option value="Exotic Melee Weapon">Exotic Melee Weapon</option>
+          <option value="Exotic Ranged Weapon">Exotic Ranged Weapon</option>
           <option value="Gunnery">Gunnery</option>
           <option value="Kinetic Weapons">Kinetic Weapons</option>
           <option value="Seeker Weapons">Seeker Weapons</option>
@@ -5123,7 +5123,7 @@ Reputation Updated
   }]
     <tr bgcolor="[r: color]">
       <td>
-        <label for="Name"><b>Exotic Melee: </b></label><input type="text" name="newExoticMelee" value="" size="8"></input>
+        <label for="Name"><b>Exotic Melee Weapon: </b></label><input type="text" name="newExoticMelee" value="" size="8"></input>
       </td>
       <td>
         <label for="Base">Base: </label><input type="text" name="newExoticMeleeBase" value="0" size="2"></input>
@@ -5138,7 +5138,7 @@ Reputation Updated
     [h: color=if(color=="#ededed","white","#ededed")]
     <tr bgcolor="[r: color]">
       <td>
-        <label for="Name"><b>Exotic Ranged: </b></label><input type="text" name="newExoticRanged" value="" size="8"></input>
+        <label for="Name"><b>Exotic Ranged Weapon: </b></label><input type="text" name="newExoticRanged" value="" size="8"></input>
       </td>
       <td>
         <label for="Base">Base: </label><input type="text" name="newExoticRangedBase" value="0" size="2"></input>
@@ -5336,7 +5336,7 @@ Reputation Updated
     </tr>
     <tr bgcolor="[r: color]">
       <td>
-        <label for="Name"><b>Exotic Melee: </b></label><input type="text" name="newExoticMelee" value="" size="8"></input>
+        <label for="Name"><b>Exotic Melee Weapon: </b></label><input type="text" name="newExoticMelee" value="" size="8"></input>
       </td>
       <td>
         <label for="Base">Base: </label><input type="text" name="newExoticMeleeBase" value="0" size="2"></input>
@@ -5351,7 +5351,7 @@ Reputation Updated
     [h: color=if(color=="#ededed","white","#ededed")]
     <tr bgcolor="[r: color]">
       <td>
-        <label for="Name"><b>Exotic Ranged: </b></label><input type="text" name="newExoticRanged" value="" size="8"></input>
+        <label for="Name"><b>Exotic Ranged Weapon: </b></label><input type="text" name="newExoticRanged" value="" size="8"></input>
       </td>
       <td>
         <label for="Base">Base: </label><input type="text" name="newExoticRangedBase" value="0" size="2"></input>
@@ -8169,8 +8169,11 @@ All Tokens added to Initiative!
 [h: psiDetails = json.get(macro.args, 2)]
 [h: psiStrain = json.get(macro.args, 3)]
 [h: psiStrainType = json.get(macro.args, 4)]
-[h: hasSiphon = json.contains(PsiSleights,"Siphon (Chi)")]
-[h: hasEfficiency = json.contains(PsiSleights,"Psi Efficiency (Chi)")]
+[h: siphonRank = 0]
+[h,if(json.contains(PsiSleights,"Siphon 1")): siphonRank = 1]
+[h,if(json.contains(PsiSleights,"Siphon 2")): siphonRank = 2]
+[h,if(json.contains(PsiSleights,"Siphon 3")): siphonRank = 3]
+[h,if(siphonRank > 0): hasSiphon = 1; hasSiphon = 0]
 [h,if(psiStrainType == "DV"): strainTypePick = 0;strainTypePick = 1]
 
 [h:choice = input(
@@ -8184,8 +8187,8 @@ All Tokens added to Initiative!
 [h:abort(choice)]
 
 [h,if(psiStrain != "0"): theRoll = ceiling(eval(psiStrain)); theRoll = -1]
-[h,if(hasEfficiency && theRoll > 0): theRoll = theRoll - 1]
-[h: formulaLine = "<br/><small>Strain = " + psiStrain + if(hasEfficiency," -1 Psi Efficiency","") + "</small>"]
+[h,if(hasSiphon && theRoll > 0): theRoll = if(theRoll - siphonRank < 0,0,theRoll - siphonRank)]
+[h: formulaLine = "<br/><small>Strain = " + psiStrain + if(hasSiphon,strformat(" -%d Siphon",siphonRank),"") + "</small>"]
 
 [h: psiStrainText = "None"]
 [h: hurtLine = ""]
@@ -8288,6 +8291,49 @@ All Tokens added to Initiative!
 [h: abort(0)]
 
 !!
+@@ @ClearAllSelectedTokenCache
+@PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
+
+<!-- Clears cache of all selected tokens -->
+
+[h: abort(isGM())]
+[h:selGroup = getSelectedNames("json")]
+
+[h,foreach(token,selGroup,""),CODE:
+{
+  [h,token(token),CODE:
+  { 
+    [h: playerFlag = if(getPropertyType() == "Player" || getPropertyType() == "NonCombatPlayer",1,0)]
+    [h,if(playerFlag): resetProperty("SheetCache")]
+    [h,if(playerFlag): resetProperty("StatsCache")]
+    [h,if(playerFlag): resetProperty("SkillsCache")]
+    [h,if(playerFlag): resetProperty("PowersCache")]
+    [h,if(playerFlag): resetProperty("MuseCache")]
+    [h,if(playerFlag): resetProperty("CombatCache")]
+  }]
+}]
+
+[r: broadcast("All Selected Tokens cache cleared!")]
+[frame("Sheet"):{
+<html>
+<link rel="onChangeSelection" type="macro" href="[r: macroLinkText('SheetLoad@this', 'none','fromClick','selected')]"></link>
+<head><title>Character Sheet</title></head>
+<body>
+			<table width="100%">
+				<tr>
+					<td align="center"><image src='[r: tableImage("Icons",1,300)]' border="0" align="middle"></image><br>
+						<font size = "5"><b>Loaded<br>Please select a token you own</b></font>
+					</td>
+				</tr>
+			</table>
+		}
+	]
+</body>
+</html>
+}]
+[h: abort(0)]
+
+!!
 @@ @SheetLost
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=GM;tooltip=
 
@@ -8348,144 +8394,477 @@ All Tokens added to Initiative!
 @PROPS@ fontColor=black;autoExecute=true;fontSize=1.00em;sortBy=;color=default;playerEditable=false;applyToSelected=false;group=Import;tooltip=
 [h:'<!------------------------------------------------ 2nd step for character import ----------------------------------------------------->']
 [h: pasteChar = json.get(macro.args, "TextBox")]
-[h: pasteChar = replace(pasteChar,"\\n","@#@#@#")]
 
 [h: switchToken(getImpersonated())]
 
+[h: broadcast("IMPORT STARTED")]
+
 [h: setPropertyType("Player")]
+[h: setProperty("Version",1.1)]
 
-[h: regEx = "Name::(.*?)@#@#@#"]
-[h: token.name = getGroup(strfind(pasteChar, regEx),1,1)]
-
-[h: regEx = "Background::(.*?)@#@#@#"]
-[h: setProperty("Background",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "Faction::(.*?)@#@#@#"]
-[h: setProperty("Faction",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "Morph::(.*?)@#@#@#"]
-[h: setProperty("Morph",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "Gender::(.*?)@#@#@#"]
-[h: setProperty("Gender",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "Age::(.*?)@#@#@#"]
-[h: setProperty("Age",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "Motivations::(.*?)@#@#@#"]
-[h: setProperty("Motivations",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "Rez::(.*?)@#@#@#"]
-[h: setProperty("RezPoints",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "COG::(.*?)@#@#@#"]
-[h: setProperty("COG",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "COO::(.*?)@#@#@#"]
-[h: setProperty("COO",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "INT::(.*?)@#@#@#"]
-[h: setProperty("INT",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "REF::(.*?)@#@#@#"]
-[h: setProperty("REF",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "SAV::(.*?)@#@#@#"]
-[h: setProperty("SAV",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "SOM::(.*?)@#@#@#"]
-[h: setProperty("SOM",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "WIL::(.*?)@#@#@#"]
-[h: setProperty("WIL",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "TT::(.*?)@#@#@#"]
-[h: setProperty("TT",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "LUC::(.*?)@#@#@#"]
-[h: setProperty("LUC",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "IR::(.*?)@#@#@#"]
-[h: setProperty("IR",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "WT::(.*?)@#@#@#"]
-[h: setProperty("WT",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "DUR::(.*?)@#@#@#"]
-[h: setProperty("DUR",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "DR::(.*?)@#@#@#"]
-[h: setProperty("DR",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "MOX::(.*?)@#@#@#"]
-[h: setProperty("MOX",getGroup(strfind(pasteChar, regEx),1,1))]
-[h: setProperty("MOX_base",getProperty("MOX"))]
-
-[h: regEx = "INIT::(.*?)@#@#@#"]
-[h: setProperty("INIT",getGroup(strfind(pasteChar, regEx),1,1))]
-
-[h: regEx = "SPD::(\\d)(?:\\((\\d)\\))?(?:/\\d)?@#@#@#"]
+[h: regEx = "(?m)^Name::(.*?)\$"]
 [h: search = strfind(pasteChar, regEx)]
-[h,if(getGroupCount(search) > 1): setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1)+getGroup(strfind(pasteChar, regEx),1,2)) ; setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1))]
+[h,if(getFindCount(search) > 0): token.name = getGroup(strfind(pasteChar, regEx),1,1)]
 
-[h: regEx = "DB::(.*?)@#@#@#"]
-[h: setProperty("DB",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Background::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Background",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "EnergyArmor::(.*?)@#@#@#"]
-[h: setProperty("Armor_Energy",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Faction::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Faction",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "KineticArmor::(.*?)@#@#@#"]
-[h: setProperty("Armor_Kinetic",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Morph::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Morph",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "@-Rep::(.*?)@#@#@#"]
-[h: setProperty("A-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Gender::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Gender",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "c-Rep::(.*?)@#@#@#"]
-[h: setProperty("c-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Age::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Age",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "e-Rep::(.*?)@#@#@#"]
-[h: setProperty("e-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Motivations::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Motivations",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "f-Rep::(.*?)@#@#@#"]
-[h: setProperty("f-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^Rez::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("RezPoints",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "g-Rep::(.*?)@#@#@#"]
-[h: setProperty("g-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^COG::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("COG",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "i-Rep::(.*?)@#@#@#"]
-[h: setProperty("i-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^COO::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("COO",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "r-Rep::(.*?)@#@#@#"]
-[h: setProperty("r-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^INT::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("INT",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "x-Rep::(.*?)@#@#@#"]
-[h: setProperty("x-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^REF::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("REF",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "u-Rep::(.*?)@#@#@#"]
-[h: setProperty("u-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^SAV::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("SAV",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "Credits::(.*?)@#@#@#"]
-[h: setProperty("Credits",getGroup(strfind(pasteChar, regEx),1,1))]
+[h: regEx = "(?m)^SOM::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("SOM",getGroup(strfind(pasteChar, regEx),1,1))]
 
-[h: regEx = "Ego Traits::(.*)@#@#@#"]
+[h: regEx = "(?m)^WIL::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("WIL",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^TT::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("TT",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^LUC::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("LUC",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^IR::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("IR",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^WT::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("WT",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^DUR::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("DUR",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^DR::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("DR",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^MOX::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("MOX",getGroup(strfind(pasteChar, regEx),1,1))]
+[h,if(getFindCount(search) > 0): setProperty("MOX_base",getProperty("MOX"))]
+
+[h: regEx = "(?m)^INIT::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("INIT",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^SPD::(\\d)(?:\\((\\d)\\))?(?:/\\d)?\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0),code:
+{
+  [h,if(getGroupCount(search) > 1): setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1)+getGroup(strfind(pasteChar, regEx),1,2)) ; setProperty("SPD",getGroup(strfind(pasteChar, regEx),1,1))]
+};{}]
+
+[h: regEx = "(?m)^DB::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("DB",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^EnergyArmor::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Armor_Energy",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^KineticArmor::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Armor_Kinetic",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^@-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("A-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^c-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("c-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^e-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("e-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^f-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("f-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^g-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("g-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^i-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("i-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^r-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("r-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^x-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("x-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^u-Rep::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("u-Rep",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^Credits::(.*?)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h,if(getFindCount(search) > 0): setProperty("Credits",getGroup(strfind(pasteChar, regEx),1,1))]
+
+[h: regEx = "(?m)^Ego Traits::(.*)\$"]
 [h: search = strfind(pasteChar, regEx)]
 [h: jsonArray = "[]"]
 [h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1)))]
 [h,foreach(tmp, jsonArray,""),code:
 {
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Ego Trait: " + tmp)]
   [h: tmpSearch = json.fromList(tmp,"##")]
-  [h: broadcast("tmpSearch: " + tmpSearch)]
   [h: tmpName = trim(json.get(tmpSearch,0))]
   [h: tmpMod  = trim(json.get(tmpSearch,1))]
   [h,if(length(tmpMod) > 0): tmpMod = ": " + tmpMod]
   [h: tmpRank = trim(json.get(tmpSearch,2))]
   [h,if(length(tmpRank) > 0): tmpRank = " (Level " + tmpRank + ")"]
-  [h: tmpLibItem = json.get(getLibProperty("TRAITS_LIBRARY", LibData),tmpName)]
-  [h: cpOne = json.get(tmpLibItem,"CP1")]
-  [h: cpTwo = json.get(tmpLibItem,"CP2")]
-  [h: cpThree = json.get(tmpLibItem,"CP3")]
+  [h: libItem = json.get(getLibProperty("TRAITS_LIBRARY", LibData),tmpName)]
+  [h: cpOne = json.get(libItem,"CP1")]
+  [h: cpTwo = json.get(libItem,"CP2")]
+  [h: cpThree = json.get(libItem,"CP3")]
   [h: cpString = strformat("%s%s%s",cpOne,if(length(cpTwo) > 0,", " + cpTwo,""),if(length(cpThree) > 0,", " + cpThree,""))]
-  [h: EgoTraits = json.set(EgoTraits,tmpName+tmpMod+tmpRank,encode(strformat("<b>Cost:</b> %s CP<br/><p align='justify'>%s</p>",cpString,decode(json.get(tmpLibItem,"Description")))))]
+  [h,if(length(cpTwo) < 1): tmpRank = ""]
+  [h: libBook = json.get(libItem,"Book")]
+  [h: libPage = json.get(libItem,"Page")]
+  [h: EgoTraits = json.set(EgoTraits,tmpName+tmpMod+tmpRank,encode(strformat("<b>Cost:</b> %s CP<br/><b>Book:</b> %s p. %s<br/><p align='justify'>%s</p>",cpString,libBook,libPage,decode(json.get(libItem,"Description")))))]
+}]
+
+[h: regEx = "(?m)^Morph Traits::(.*)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1)))]
+[h,foreach(tmp, jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Morph Trait: " + tmp)]
+  [h: tmpSearch = json.fromList(tmp,"##")]
+  [h: tmpName = trim(json.get(tmpSearch,0))]
+  [h: tmpMod  = trim(json.get(tmpSearch,1))]
+  [h,if(length(tmpMod) > 0): tmpMod = ": " + tmpMod]
+  [h: tmpRank = trim(json.get(tmpSearch,2))]
+  [h,if(length(tmpRank) > 0): tmpRank = " (Level " + tmpRank + ")"]
+  [h: libItem = json.get(getLibProperty("TRAITS_LIBRARY", LibData),tmpName)]
+  [h: cpOne = json.get(libItem,"CP1")]
+  [h: cpTwo = json.get(libItem,"CP2")]
+  [h: cpThree = json.get(libItem,"CP3")]
+  [h: cpString = strformat("%s%s%s",cpOne,if(length(cpTwo) > 0,", " + cpTwo,""),if(length(cpThree) > 0,", " + cpThree,""))]
+  [h,if(length(cpTwo) < 1): tmpRank = ""]
+  [h: libBook = json.get(libItem,"Book")]
+  [h: libPage = json.get(libItem,"Page")]
+  [h: MorphTraits = json.set(MorphTraits,tmpName+tmpMod+tmpRank,encode(strformat("<b>Cost:</b> %s CP<br/><b>Book:</b> %s p. %s<br/><p align='justify'>%s</p>",cpString,libBook,libPage,decode(json.get(libItem,"Description")))))]
+}]
+
+[h: regEx = "(?m)^Implants::(.*)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1),"@@"))]
+[h,foreach(tmp, jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Implant: " + tmp)]
+  [h: tSearch = json.fromList(tmp,"##")]
+  [h: tQty  = trim(json.get(tSearch,0))]
+  [h,if(length(tQty) > 0 && tQty != 1): tQty = " (" + tQty + "x)" ; tQty = ""]
+  [h: tName = trim(json.get(tSearch,1))]
+  
+  [h: jsonSubItem = json.fromList(tName,": ")]
+  [h,if(json.length(jsonSubItem) > 1): subItem = trim(json.get(jsonSubItem,1)) ; subItem = ""]
+  [h,if(length(subItem) > 0): subItemDesc = decode(json.get(json.get(getLibProperty("GEAR_LIBRARY", LibData),subItem),"Description")) ; subItemDesc = ""]
+  [h,if(length(subItemDesc) > 0): subItemDesc = strformat("<b>%s:</b><p align='justify'>%s</p>",subItem,subItemDesc)]
+  [h,if(length(subItem) > 0): subItem = ": " + subItem]
+  [h,if(json.length(jsonSubItem) > 1): tName = trim(json.get(jsonSubItem,0))]
+  
+  [h: regEx = "(?m)^([a-zA-Z\\s0-9-\\(\\)/]+?)(?:\\s\\(w/\\s([a-zA-Z0-9\\s,]+)\\))?\$"]
+  [h: search = strfind(tName, regEx)]
+  [h,if(getGroupCount(search) > 1): groupTwo = trim(getGroup(search,1,2))]
+  [h,if(length(groupTwo) > 0): jsonMod = json.fromList(groupTwo),",") ; jsonMod = "[]"]
+  [h: modDesc = ""]
+  [h,if(json.length(jsonMod) > 0),code:
+  {
+    [h,foreach(tM, jsonMod, ""): modDesc = modDesc + strformat("<b>%s:</b><p align='justify'>%s</p>",trim(tM),decode(json.get(json.get(getLibProperty("MODIFICATIONS_LIBRARY", LibData),trim(tM)),"Description")))]
+  };{}]
+  [h,if(getGroupCount(search) > 0): tName = trim(getGroup(search,1,1))]
+  
+  [h: libItem = json.get(getLibProperty("GEAR_LIBRARY", LibData),tName)]
+  [h: libCost = json.get(libItem,"Cost")]
+  [h: libBook = json.get(libItem,"Book")]
+  [h: libPage = json.get(libItem,"Page")]
+  [h: ImplantsEnhancements = json.set(ImplantsEnhancements,tName+subItem+tQty,encode(strformat("<b>Cost:</b> %s<br/><b>Book:</b> %s p. %s<br/><p align='justify'>%s</p>%s%s",libCost,libBook,libPage,decode(json.get(libItem,"Description")),subItemDesc,modDesc)))]
+}]
+
+[h: regEx = "(?m)^Gear::(.*)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1),"@@"))]
+[h,foreach(tmp, jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Gear: " + tmp)]
+  [h: tSearch = json.fromList(tmp,"##")]
+  [h: tQty  = trim(json.get(tSearch,0))]
+  [h,if(length(tQty) > 0 && tQty != 1): tQty = " (" + tQty + "x)" ; tQty = ""]
+  [h: tName = trim(json.get(tSearch,1))]
+  
+  [h: jsonNameAndSubItem = json.fromList(tName,": ")]
+  [h,if(json.length(jsonNameAndSubItem) > 1): subItem = trim(json.get(jsonNameAndSubItem,1)) ; subItem = ""]
+  [h,if(length(subItem) > 0): jsonSubItem = json.get(getLibProperty("GEAR_LIBRARY", LibData),subItem) ; jsonSubItem = ""]
+  [h,if(length(jsonSubItem) > 0): subItemDesc = decode(json.get(jsonSubItem,"Description")) ; subItemDesc = ""]
+  [h,if(length(subItemDesc) > 0): subItemDesc = strformat("<b>%s:</b><p align='justify'>%s</p>",subItem,subItemDesc)]
+  [h,if(length(subItem) > 0): subItem = ": " + subItem]
+  [h,if(json.length(jsonNameAndSubItem) > 1): tName = trim(json.get(jsonNameAndSubItem,0))]
+  
+  [h,if(startsWith(tName,"Ammo::") || startsWith(tName,"Bomb::")): isAmmo = 1; isAmmo = 0]
+  [h,if(startsWith(tName,"Bomb::")): isBomb = 1; isBomb = 0]
+  
+  [h,if(isAmmo != 1): regEx = "(?m)^([a-zA-Z\\s0-9-\\(\\)/]+)(?:\\s\\(w/\\s([a-zA-Z0-9\\s,]+)\\))?\$"; regEx = ""]
+  [h: search = strfind(tName, regEx)]
+  [h,if(getGroupCount(search) > 1): groupTwo = trim(getGroup(search,1,2)) ; groupTwo = ""]
+  [h,if(length(groupTwo) > 0): jsonMod = json.fromList(groupTwo) ; jsonMod = "[]"]
+  [h: modDesc = ""]
+  [h,if(json.length(jsonMod) > 0),code:
+  {
+    [h,foreach(tM, jsonMod, ""): modDesc = modDesc + strformat("<b>%s:</b><p align='justify'>%s</p>",trim(tM),decode(json.get(json.get(getLibProperty("MODIFICATIONS_LIBRARY", LibData),trim(tM)),"Description")))]
+  };{}]
+  [h,if(getGroupCount(search) > 0): tName = trim(getGroup(search,1,1))]
+  
+  [h,if(isAmmo): jsonAmmo = substring(tName,6)]
+  [h,if(isAmmo): ammoType = json.get(jsonAmmo,"Type")]
+  [h,if(isAmmo): ammoSmart = json.get(jsonAmmo,"Smart") ; ammoSmart = ""]
+  [h,if(isAmmo): ammoWeapon = json.get(jsonAmmo,"Weapon") ; ammoWeapon = ""]
+  [h,if(isAmmo && length(ammoSmart) > 0): ammoSmartDesc = decode(json.get(json.get(getLibProperty("AMMO_LIBRARY", LibData),ammoSmart),"Description")) ; ammoSmartDesc = ""]
+  [h,if(length(ammoSmartDesc) > 0): ammoSmartDesc = strformat("<b>%s:</b><p align='justify'>%s</p>",ammoSmart,ammoSmartDesc)]
+  [h,if(isAmmo): tName = ammoType]
+  
+  [h,if(tName == "Seeker Rifle"): tLookupName = "Seeker Rifle - Micromissile" ; tLookupName = tName]
+  [h,if(isAmmo): tName = ammoType + if(length(ammoSmart) > 0," " + ammoSmart,"") + " " + ammoWeapon + if(isBomb,""," Rounds")]
+  
+  [h: libItem = json.get(getLibProperty("GEAR_LIBRARY", LibData),tLookupName)]
+  [h,if(json.isEmpty(libItem)): libItem = json.get(getLibProperty("MELEE_WEAPONS_LIBRARY", LibData),tLookupName)]
+  [h,if(json.isEmpty(libItem)): libItem = json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),tLookupName)]
+  [h,if(json.isEmpty(libItem)): libItem = json.get(getLibProperty("AMMO_LIBRARY", LibData),tLookupName)]
+  [h,if(json.isEmpty(libItem)): libItem = json.get(getLibProperty("ARMORS_LIBRARY", LibData),tLookupName)]
+  [h: libCost = json.get(libItem,"Cost")]
+  [h: libBook = json.get(libItem,"Book")]
+  [h: libPage = json.get(libItem,"Page")]
+  [h: Gear = json.set(Gear,tName+subItem+tQty,encode(strformat("<b>Cost:</b> %s<br/><b>Book:</b> %s p. %s<br/><p align='justify'>%s</p>%s%s%s",libCost,libBook,libPage,decode(json.get(libItem,"Description")),subItemDesc,modDesc,ammoSmartDesc)))]
+}]
+
+[h: regEx = "(?m)^Skills::(.*)\$"]
+[h: search = strfind(pasteChar, regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1)))]
+[h,foreach(tmp, jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Skill: " + tmp)]
+  [h: regEx = "(?m)^([a-zA-Z\\s]*)(?::\\s([a-zA-Z\\s]*))?(?:\\s\\(([a-zA-Z\\s0-9]*)\\))?##([0-9]+)\$"]
+  [h: search = strfind(tmp, regEx)]
+  [h: tName = getGroup(search,1,1)]
+  [h: subItem = getGroup(search,1,2)]
+  [h: tSpec = getGroup(search,1,3)]
+  [h: tRating = getGroup(search,1,4)]
+  [h,switch(trim(tName)):
+    case "Exotic Melee": tName = "Exotic Melee Weapon";
+    case "Exotic Ranged": tName = "Exotic Ranged Weapon";
+    case "Freefall": tName = "Free Fall";
+    case "Thrown Weapons": tName = "Throwing Weapons";
+    default: tName = trim(tName)
+  ]
+  [h: skillType = json.get(json.get(getLibProperty("SKILL_LIBRARY", LibData),tName),"Type")]
+  [h: skillDefaulting = json.get(json.get(getLibProperty("SKILL_LIBRARY", LibData),tName),"Defaulting")]
+  [h: skillAptitude = json.get(json.get(getLibProperty("SKILL_LIBRARY", LibData),tName),"Aptitude")]  
+  [h: skillArray = json.append("",tRating,0,skillAptitude,skillDefaulting,tSpec)]
+  
+  [h,if(skillType == "Active"): ActiveSkills = json.set(ActiveSkills,tName+if(length(subItem) > 0,": "+subItem,""),skillArray) ; KnowledgeSkills = json.set(KnowledgeSkills,tName+if(length(subItem) > 0,": "+subItem,""),skillArray)]  
+}]
+
+[h: regEx = "(?m)^Sleights::(.*)\$"]
+[h: search = strfind(pasteChar,regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,json.fromList(getGroup(search,i,1)))]
+[h,foreach(tmp,jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Sleight: " + tmp)]
+  [h: regEx = "##"]
+  [h: search = strfind(tmp, regEx)]
+  [h,if(getFindCount(search) > 0): jsonSplit = json.fromList(tmp,"##") ; jsonSplit = "[]"]
+  [h,if(json.isEmpty(jsonSplit)): tName = tmp ; tName = json.get(jsonSplit,0)]
+  [h,if(json.isEmpty(jsonSplit)): tRank = 0 ; tRank = json.get(jsonSplit,1)]
+  
+  [h: psiType = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"PsiType")]
+  [h: psiAction = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Action")]
+  [h: psiRange = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Range")]
+  [h: psiDuration = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Duration")]
+  [h: psiStrain = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Strain")]
+  [h: psiStrainType = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"StrainType")]
+  [h: psiSkill = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Skill")]
+  [h: psiLevel = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Type")]
+  [h: psiDescriptionBottom = decode(json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Description"))]
+  
+  [h: psiDescription = encode(strformat("<table width='100%%'><tr><td width='50%%'><b>Type: </b>%s</td><td width='50%%'><b>Action: </b>%s</td></tr><tr><td width='50%%'><b>Range: </b>%s</td><td width='50%%'><b>Duration: </b>%s</td></tr><tr><td width='50%%'><b>Strain: </b>%s</td><td width='50%%'><b>Strain Type: </b>%s</td></tr><tr><td width='50%%'><b>Skill: </b>%s</td><td width='50%%'><b>%s</b></td></tr></table><p align='justify'>%s</p>",psiType,psiAction,psiRange,psiDuration,psiStrain,psiStrainType,psiSkill,psiLevel,psiDescriptionBottom))]
+  
+  [h: psiArray = json.append("",psiDescription,psiStrain,psiStrainType)]
+  
+  [h: PsiSleights = json.set(PsiSleights,tName+if(tRank > 0," "+tRank,""),psiArray)]  
+}]
+
+[h: regEx = "(?m)^MeleeWeapons::(.*)\$"]
+[h: search = strfind(pasteChar,regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,getGroup(search,i,1))]
+[h,foreach(tmp,jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Melee Weapon: " + tmp)]
+  [h: meleeName = json.get(tmp,"Name")]
+  [h: meleeAP = json.get(tmp,"AP")]
+  [h: meleeDV = json.get(tmp,"DV")]
+  [h: meleeSkill = json.get(json.get(getLibProperty("MELEE_WEAPONS_LIBRARY", LibData),meleeName),"Skill")]
+  [h: meleeSpecialText = json.get(json.get(getLibProperty("MELEE_WEAPONS_LIBRARY", LibData),meleeName),"SpecialText")]
+  [h: meleeDescription = json.get(json.get(getLibProperty("MELEE_WEAPONS_LIBRARY", LibData),meleeName),"Description")]
+  
+  [h: meleeJsonArray = json.append("",meleeAP,meleeDV,"[]",0,0,meleeSkill,meleeSpecialText,meleeDescription,0,0)]
+  [h: Weapons = json.set(Weapons,meleeName,meleeJsonArray)]  
+}]
+
+[h: regEx = "(?m)^RangedWeapons::(.*)\$"]
+[h: search = strfind(pasteChar,regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""),code:
+{
+  [h: grp = getGroup(search,i,1)]
+  [h: grp = replace(grp,"@#@#@#","[")]
+  [h: grp = replace(grp,"#@#@#@","]")]
+  [h: jsonArray = json.union(jsonArray,grp)]
+}]
+[h,foreach(tmp,jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Ranged Weapon: " + tmp)]
+  [h: rangedName = json.get(tmp,"Name")]
+  [h: rangedAP = json.get(tmp,"AP")]
+  [h: rangedDV = json.get(tmp,"DV")]
+  [h,if(rangedName == "Thrown"): rangedName = "Thrown - Grenade"]
+  [h,if(rangedName == "Seeker Rifle"): rangedName = "Seeker Rifle - Micromissile"]
+  [h: rangedFiringModes = json.fromList(json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"FiringModes"))]
+  [h: rangedShots = json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"Shots")]
+  [h,if(rangedShots == "Special"): rangedCurrentShots = 0 ; rangedCurrentShots = number(rangedShots)]
+  [h: rangedSkill = json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"Skill")]
+  [h: rangedSpecialText = json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"SpecialText")]
+  
+  [h: rangedDescriptionTop = decode(json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"Description"))]
+  [h: rangedDescriptionTop = strformat("<p align='justify'>%s</p>",rangedDescriptionTop)]
+  [h: rangedModsArray = if(length(json.get(tmp,"Mods")) > 0,json.fromList(json.get(tmp,"Mods")),"[]")]
+  [h: rangedModsDescription = ""]
+  [h,foreach(rm, rangedModsArray, ""): rangedModsDescription = rangedModsDescription + strformat("<b>%s:</b><p align='justify'>%s</p>",trim(rm),decode(json.get(json.get(getLibProperty("MODIFICATIONS_LIBRARY", LibData),trim(rm)),"Description")))]
+  [h: rangedAmmoName = json.get(tmp,"Ammo")]
+  [h: rangedAmmoJson = json.get(tmp,"AmmoJson")]
+  [h,if(json.isEmpty(rangedAmmoJson)),code:
+  {
+    [h: rangedDescription = encode(strformat("%s%s",rangedDescriptionTop,rangedModsDescription))]
+  };
+  {
+    [h: rangedAmmoTypeName = json.get(rangedAmmoJson,"Type")]
+    [h,if(length(rangedAmmoTypeName) > 0): rangedAmmoTypeDescription = decode(json.get(json.get(getLibProperty("AMMO_LIBRARY", LibData),rangedAmmoTypeName),"Description")) ; rangedAmmoTypeDescription = ""]
+    [h,if(length(rangedAmmoTypeName) > 0): rangedAmmoTypeDescription = strformat("<b>%s:</b><p align='justify'>%s</p>",rangedAmmoTypeName,rangedAmmoTypeDescription)]
+    [h: rangedAmmoSmartName = json.get(rangedAmmoJson,"Smart")]
+    [h,if(length(rangedAmmoSmartName) > 0): rangedAmmoSmartDescription = decode(json.get(json.get(getLibProperty("AMMO_LIBRARY", LibData),rangedAmmoSmartName),"Description")) ; rangedAmmoSmartDescription = ""]
+    [h,if(length(rangedAmmoSmartName) > 0): rangedAmmoSmartDescription = strformat("<b>%s:</b><p align='justify'>%s</p>",rangedAmmoSmartName,rangedAmmoSmartDescription)]
+    [h: rangedDescription = encode(strformat("%s%s%s%s",rangedDescriptionTop,rangedModsDescription,rangedAmmoTypeDescription,rangedAmmoSmartDescription))]
+  }]
+  [h,if(json.contains(rangedModsArray,"Smartlink") || json.contains(rangedModsArray,"Laser Sight")): hasLaserOrSmartlink = 1 ; hasLaserOrSmartlink = 0]
+      
+  [h: rangedJsonArray = json.append("",rangedAP,rangedDV,rangedFiringModes,rangedCurrentShots,rangedCurrentShots,rangedSkill,rangedSpecialText,rangedDescription,0,hasLaserOrSmartlink)]
+  [h,if(rangedName == "Thrown - Grenade"): rangedName = "Thrown"]
+  [h,if(rangedName == "Seeker Rifle - Micromissile"): rangedName = "Seeker Rifle"]
+  [h: Weapons = json.set(Weapons,rangedName + if(length(rangedAmmoName) > 0," - " + rangedAmmoName,""),rangedJsonArray)]  
+}]
+
+[h: regEx = "(?m)^Muse::(.*)\$"]
+[h: search = strfind(pasteChar,regEx)]
+[h: jsonArray = "[]"]
+[h,for(i,1,getFindCount(search)+1,1,""): jsonArray = json.union(jsonArray,getGroup(search,i,1))]
+[h,foreach(tmp,jsonArray,""),code:
+{
+  [h: tmp = trim(tmp)]
+  [h: broadcast("Muse: " + tmp)]
+  [h: COG_Muse = json.get(tmp,"COG")]
+  [h: COO_Muse = json.get(tmp,"COO")]
+  [h: INT_Muse = json.get(tmp,"INT")]
+  [h: REF_Muse = json.get(tmp,"REF")]
+  [h: SAV_Muse = json.get(tmp,"SAV")]
+  [h: SOM_Muse = json.get(tmp,"SOM")]
+  [h: WIL_Muse = json.get(tmp,"WIL")]
+  [h: TT_Muse = json.get(tmp,"TT")]
+  [h: LUC_Muse = json.get(tmp,"LUC")]
+  [h: IR_Muse = json.get(tmp,"IR")]
+  [h: museSkillJsonArray = json.get(tmp,"Skills")]
+  
+  [h: tempMuseSkills = "{}"]
+  [h,foreach(ss,museSkillJsonArray,""),code:
+  {
+    [h: museSkillName = json.get(ss,"Name")]
+    [h: museSkillBonus = json.get(ss,"Rating")]
+    [h: museSkillAptitude = json.get(ss,"Aptitude")]
+    [h: regEx = "(?m)^([a-zA-Z\\s]*)(?::\\s([a-zA-Z\\s]*))?\$"]
+    [h: search = strfind(museSkillName, regEx)]
+    [h: museSkillOnlyName = getGroup(search,1,1)]
+    [h: museSkillDefaulting = json.get(json.get(getLibProperty("SKILL_LIBRARY", LibData),museSkillOnlyName),"Defaulting")]
+    [h: museSkillArray = json.append("",museSkillBonus,0,museSkillAptitude,museSkillDefaulting,"")]
+    [h: tempMuseSkills = json.set(tempMuseSkills,museSkillName,museSkillArray)]
+  }]
+  [h: MuseSkills = tempMuseSkills]
 }]
 
 [h: broadcast("IMPORT FINISHED")]
