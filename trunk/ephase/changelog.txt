@@ -1,3 +1,12 @@
+r290
+
+Completed a first draft of the importer, will need extensive testing.
+New Campaign macro: ClearAllSelectedTokenCache.  Simply clears the Cache of all selected tokens, useable by GM only.
+Changed all instances of "Exotic Melee" and "Exotic Ranged" to include the word "Weapon" at the end now in macros.  Old bug that was never caught.
+Added a MODIFICATIONS_LIBRARY and SKILL_LIBRARY to the zData properties.
+Fixed some defaults in Player properties.
+Updated PsiSleightsUse to get rid of Psi Efficiency and instead just use Siphon for the same.  Also made it look for Siphon 1/2/3 and remove the respective amount of strain.
+
 r289
 
 Figured out regex error with Ego Trait imports and ended up recoding it to use json.ToList instead and doing more formatting in the excel sheet as it was easier
