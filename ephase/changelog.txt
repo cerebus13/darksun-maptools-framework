@@ -1,3 +1,8 @@
+r291
+
+implemented NegateWounds and NegateTraumas into the importer
+added a check when importing that if a particular row is empty (like MorphTraits:: with nothing else) it won't crash anymore
+
 r290
 
 Completed a first draft of the importer, will need extensive testing.
