@@ -8736,7 +8736,7 @@ All Tokens added to Initiative!
 {
   [h: tmp = trim(tmp)]
   [h: broadcast("Skill: " + tmp)]
-  [h: regEx = "(?m)^([a-zA-Z\\s]*)(?::\\s([a-zA-Z\\s]*))?(?:\\s\\(([a-zA-Z\\s0-9]*)\\))?##([0-9]+)\$"]
+  [h: regEx = "(?m)^([^:##]+)(?::\\s([^:##]*))?(?:\\s\\(([^:##]*)\\))?##([0-9]+)\$"]
   [h: search = strfind(tmp, regEx)]
   [h: tName = getGroup(search,1,1)]
   [h: subItem = getGroup(search,1,2)]

@@ -1,3 +1,7 @@
+r293
+
+adjusted regex for skills import to grab all text other than ":" or "##" so I wouldn't have to whitelist a bunch of special characters
+
 r292
 
 added a bit of code to the bottom of import to check for Synthetic:: in the spreadsheet to determine whether to increment IgnoreWounds up by 1 for a Synthetic morph or not
