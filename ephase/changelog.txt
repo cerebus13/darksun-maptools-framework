@@ -1,3 +1,8 @@
+r294
+
+added a decode() call to when I'm parsing the Special Text data from ranged/melee weapons
+added ( and ) to blacklist for skill import regex
+
 r293
 
 adjusted regex for skills import to grab all text other than ":" or "##" so I wouldn't have to whitelist a bunch of special characters
