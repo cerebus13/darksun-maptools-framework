@@ -1,3 +1,8 @@
+r292
+
+added a bit of code to the bottom of import to check for Synthetic:: in the spreadsheet to determine whether to increment IgnoreWounds up by 1 for a Synthetic morph or not
+forgot to add a non-greedy modifier (a ?) to the gear section for import
+
 r291
 
 implemented NegateWounds and NegateTraumas into the importer
