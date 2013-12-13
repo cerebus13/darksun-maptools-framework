@@ -8736,7 +8736,7 @@ All Tokens added to Initiative!
 {
   [h: tmp = trim(tmp)]
   [h: broadcast("Skill: " + tmp)]
-  [h: regEx = "(?m)^([^:##]+)(?::\\s([^:##]*))?(?:\\s\\(([^:##]*)\\))?##([0-9]+)\$"]
+  [h: regEx = "(?m)^([^:##()]+)(?::\\s([^:##()]*))?(?:\\s\\(([^:##()]*)\\))?##([0-9]+)\$"]
   [h: search = strfind(tmp, regEx)]
   [h: tName = getGroup(search,1,1)]
   [h: subItem = getGroup(search,1,2)]
@@ -8814,7 +8814,7 @@ All Tokens added to Initiative!
   [h: meleeSpecialText = json.get(json.get(getLibProperty("MELEE_WEAPONS_LIBRARY", LibData),meleeName),"SpecialText")]
   [h: meleeDescription = json.get(json.get(getLibProperty("MELEE_WEAPONS_LIBRARY", LibData),meleeName),"Description")]
   
-  [h: meleeJsonArray = json.append("",meleeAP,meleeDV,"[]",0,0,meleeSkill,meleeSpecialText,meleeDescription,0,0)]
+  [h: meleeJsonArray = json.append("",meleeAP,meleeDV,"[]",0,0,meleeSkill,decode(meleeSpecialText),meleeDescription,0,0)]
   [h: Weapons = json.set(Weapons,meleeName,meleeJsonArray)]  
 }]
 
@@ -8866,7 +8866,7 @@ All Tokens added to Initiative!
   }]
   [h,if(json.contains(rangedModsArray,"Smartlink") || json.contains(rangedModsArray,"Laser Sight")): hasLaserOrSmartlink = 1 ; hasLaserOrSmartlink = 0]
       
-  [h: rangedJsonArray = json.append("",rangedAP,rangedDV,rangedFiringModes,rangedCurrentShots,rangedCurrentShots,rangedSkill,rangedSpecialText,rangedDescription,0,hasLaserOrSmartlink)]
+  [h: rangedJsonArray = json.append("",rangedAP,rangedDV,rangedFiringModes,rangedCurrentShots,rangedCurrentShots,rangedSkill,decode(rangedSpecialText),rangedDescription,0,hasLaserOrSmartlink)]
   [h,if(rangedName == "Thrown - Grenade"): rangedName = "Thrown"]
   [h,if(rangedName == "Seeker Rifle - Micromissile"): rangedName = "Seeker Rifle"]
   [h: Weapons = json.set(Weapons,rangedName + if(length(rangedAmmoName) > 0," - " + rangedAmmoName,""),rangedJsonArray)]  
