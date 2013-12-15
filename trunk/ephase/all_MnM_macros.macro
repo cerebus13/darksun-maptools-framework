@@ -8839,7 +8839,7 @@ All Tokens added to Initiative!
   [h,if(rangedName == "Thrown"): rangedName = "Thrown - Grenade"]
   [h,if(rangedName == "Seeker Rifle"): rangedName = "Seeker Rifle - Micromissile"]
   [h: rangedFiringModes = json.fromList(json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"FiringModes"))]
-  [h: rangedShots = json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"Shots")]
+  [h: rangedShots = json.get(tmp,"Shots")]
   [h,if(rangedShots == "Special"): rangedCurrentShots = 0 ; rangedCurrentShots = number(rangedShots)]
   [h: rangedSkill = json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"Skill")]
   [h: rangedSpecialText = json.get(json.get(getLibProperty("RANGED_WEAPONS_LIBRARY", LibData),rangedName),"SpecialText")]
