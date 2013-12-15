@@ -1,3 +1,7 @@
+r295
+
+changed Ranged weapon parsing in Import to use the spreadsheet ammo value instead of the database lookup
+
 r294
 
 added a decode() call to when I'm parsing the Special Text data from ranged/melee weapons
