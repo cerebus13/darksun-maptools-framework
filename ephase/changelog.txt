@@ -1,3 +1,8 @@
+r296
+
+added a simple check for token name during import to skip it if it is blank
+needed a colspan='2' added to the Psi-Gamma/Psi-Chi row for sleights in import
+
 r295
 
 changed Ranged weapon parsing in Import to use the spreadsheet ammo value instead of the database lookup
