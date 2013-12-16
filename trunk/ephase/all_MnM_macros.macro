@@ -8406,7 +8406,11 @@ All Tokens added to Initiative!
 
 [h: regEx = "(?m)^Name::(.*?)\$"]
 [h: search = strfind(pasteChar, regEx)]
-[h,if(getFindCount(search) > 0): token.name = getGroup(strfind(pasteChar, regEx),1,1)]
+[h,if(getFindCount(search) > 0),code:
+{ 
+    [h: gg = getGroup(strfind(pasteChar, regEx),1,1)]
+    [h,if(length(gg) > 0): token.name = gg]
+};{}]
 
 [h: regEx = "(?m)^Background::(.*?)\$"]
 [h: search = strfind(pasteChar, regEx)]
@@ -8784,7 +8788,7 @@ All Tokens added to Initiative!
   [h: libBook = json.get(libItem,"Book")]
   [h: libPage = json.get(libItem,"Page")]
   
-  [h: psiDescription = encode(strformat("<table width='100%%'><tr><td width='50%%'><b>Type: </b>%s</td><td width='50%%'><b>Action: </b>%s</td></tr><tr><td width='50%%'><b>Range: </b>%s</td><td width='50%%'><b>Duration: </b>%s</td></tr><tr><td width='50%%'><b>Strain: </b>%s</td><td width='50%%'><b>Strain Type: </b>%s</td></tr><tr><td width='50%%'><b>Skill: </b>%s</td><td width='50%%'><b>Book:</b> %s p. %s</td></tr><tr><td align='center'><b>%s</b></td></tr></table><p align='justify'>%s</p>",psiType,psiAction,psiRange,psiDuration,psiStrain,psiStrainType,psiSkill,libBook,libPage,psiLevel,psiDescriptionBottom))]
+  [h: psiDescription = encode(strformat("<table width='100%%'><tr><td width='50%%'><b>Type: </b>%s</td><td width='50%%'><b>Action: </b>%s</td></tr><tr><td width='50%%'><b>Range: </b>%s</td><td width='50%%'><b>Duration: </b>%s</td></tr><tr><td width='50%%'><b>Strain: </b>%s</td><td width='50%%'><b>Strain Type: </b>%s</td></tr><tr><td width='50%%'><b>Skill: </b>%s</td><td width='50%%'><b>Book:</b> %s p. %s</td></tr><tr><td colspan='2' align='center'><b>%s</b></td></tr></table><p align='justify'>%s</p>",psiType,psiAction,psiRange,psiDuration,psiStrain,psiStrainType,psiSkill,libBook,libPage,psiLevel,psiDescriptionBottom))]
   
   [h: igWounds = json.get(libItem,"IgnoreWounds")]
   [h: igTraumas = json.get(libItem,"IgnoreTraumas")]
