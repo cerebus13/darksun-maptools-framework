@@ -1,3 +1,7 @@
+r297
+
+fixed dumb copy/paste error that was breaking sleights import
+
 r296
 
 added a simple check for token name during import to skip it if it is blank
