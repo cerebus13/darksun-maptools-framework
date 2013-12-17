@@ -8785,13 +8785,13 @@ All Tokens added to Initiative!
   [h: psiSkill = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Skill")]
   [h: psiLevel = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Type")]
   [h: psiDescriptionBottom = decode(json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Description"))]
-  [h: libBook = json.get(libItem,"Book")]
-  [h: libPage = json.get(libItem,"Page")]
+  [h: libBook = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Book")]
+  [h: libPage = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"Page")]
   
   [h: psiDescription = encode(strformat("<table width='100%%'><tr><td width='50%%'><b>Type: </b>%s</td><td width='50%%'><b>Action: </b>%s</td></tr><tr><td width='50%%'><b>Range: </b>%s</td><td width='50%%'><b>Duration: </b>%s</td></tr><tr><td width='50%%'><b>Strain: </b>%s</td><td width='50%%'><b>Strain Type: </b>%s</td></tr><tr><td width='50%%'><b>Skill: </b>%s</td><td width='50%%'><b>Book:</b> %s p. %s</td></tr><tr><td colspan='2' align='center'><b>%s</b></td></tr></table><p align='justify'>%s</p>",psiType,psiAction,psiRange,psiDuration,psiStrain,psiStrainType,psiSkill,libBook,libPage,psiLevel,psiDescriptionBottom))]
   
-  [h: igWounds = json.get(libItem,"IgnoreWounds")]
-  [h: igTraumas = json.get(libItem,"IgnoreTraumas")]
+  [h: igWounds = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"IgnoreWounds")]
+  [h: igTraumas = json.get(json.get(getLibProperty("SLEIGHTS_LIBRARY", LibData),tName),"IgnoreTraumas")]
   [h,if(length(igWounds) > 0 && isNumber(igWounds)): negWounds = negWounds + number(igWounds)]
   [h,if(length(igTraumas) > 0 && isNumber(igTraumas)): negTraumas = negTraumas + number(igTraumas)]
   [h,if(indexOf(igWounds,"per level") != -1): negWounds = negWounds + tRank]
