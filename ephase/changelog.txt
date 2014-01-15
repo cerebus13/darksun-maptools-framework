@@ -1,3 +1,7 @@
+r298
+
+added ' character to Gear imports (for stuff like Tracker's Dye)
+
 r297
 
 fixed dumb copy/paste error that was breaking sleights import
