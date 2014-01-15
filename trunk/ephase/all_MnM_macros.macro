@@ -8694,7 +8694,7 @@ All Tokens added to Initiative!
   [h,if(startsWith(tName,"Ammo::") || startsWith(tName,"Bomb::")): isAmmo = 1; isAmmo = 0]
   [h,if(startsWith(tName,"Bomb::")): isBomb = 1; isBomb = 0]
   
-  [h,if(isAmmo != 1): regEx = "(?m)^([a-zA-Z\\s0-9-\\(\\)/]+?)(?:\\s\\(w/\\s([a-zA-Z0-9\\s,]+)\\))?\$"; regEx = ""]
+  [h,if(isAmmo != 1): regEx = "(?m)^(['a-zA-Z\\s0-9-\\(\\)/]+?)(?:\\s\\(w/\\s([a-zA-Z0-9\\s,]+)\\))?\$"; regEx = ""]
   [h: search = strfind(tName, regEx)]
   [h,if(getGroupCount(search) > 1): groupTwo = trim(getGroup(search,1,2)) ; groupTwo = ""]
   [h,if(length(groupTwo) > 0): jsonMod = json.fromList(groupTwo) ; jsonMod = "[]"]
